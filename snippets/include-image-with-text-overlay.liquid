@@ -29,6 +29,7 @@
 {% assign subheading_underline = object.settings.subheading_underline %}
 {% assign subtitle = object.settings.subtitle %}
 {% assign subtitle_color = object.settings.subheading_color %}
+{% assign text_spacing = object.settings.text_spacing | default: 12 %}
 {% assign text_alignment = object.settings.text_alignment %}
 {% assign text_horizontal_position = object.settings.text_horizontal_position %}
 {% assign text_vertical_position = object.settings.text_vertical_position %}
@@ -83,6 +84,9 @@
 {% comment %}Section specific CSS{% endcomment %}
 {% capture section_css -%}
   .caption-content {
+    display: flex;
+    flex-direction: column;
+    gap: {{ text_spacing }}px;
     background-color: {% if background_color_alpha != 100 %}{{ background_color | color_modify: 'alpha', background_color_alpha }}{% else %}{{ background_color }}{% endif %};
     border: {{ caption_border_width }}px solid {{ caption_border_color }};
   }
