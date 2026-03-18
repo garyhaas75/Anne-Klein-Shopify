@@ -39,6 +39,12 @@
     margin: 0 0 1.5rem;
     text-align: {{ heading_alignment }};
   }
+  #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  #shopify-section-{{ id }} .flickity-prev-next-button:focus-visible {
+    outline: 2px solid currentColor; outline-offset: 3px;
+  }
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
@@ -135,6 +141,8 @@
 (function() {
   var sectionId = '{{ id }}';
   var arrowShape = 'M95.04 46 21.68 46 48.18 22.8 42.91 16.78 4.96 50 42.91 83.22 48.18 77.2 21.68 54 95.04 54 95.04 46z';
+  var carouselLabel = {{ title | default: 'Finishing touches' | json }};
+
   function initFinishingTouchesCarousel() {
     if (typeof jQuery === 'undefined') return;
     var $section = jQuery('#shopify-section-' + sectionId);
@@ -150,23 +158,79 @@
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
     if ($gallery.hasClass('flickity-enabled')) $gallery.flickity('destroy');
-    var productsPer = data.products_per || 4;
-    var productsLimit = data.products_limit || 0;
+
+    var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
+    var productsLimit = parseInt(data.products_limit, 10) || 0;
+    var showNav = productsLimit > productsPer;
+    var groupSize = Math.min(productsPer, productsLimit);
+    var totalPages = groupSize > 0 ? Math.ceil(productsLimit / groupSize) : 1;
+
     $gallery.flickity({
       lazyLoad: 2,
-      freeScroll: true,
+      freeScroll: false,
+      groupCells: groupSize > 0 ? groupSize : true,
       imagesLoaded: true,
       draggable: true,
       cellAlign: 'center',
       wrapAround: true,
-      pageDots: false,
+      pageDots: showNav,
       contain: true,
-      prevNextButtons: productsLimit > productsPer,
+      prevNextButtons: showNav,
       initialIndex: 0,
       arrowShape: typeof window.arrowShape !== 'undefined' ? window.arrowShape : arrowShape,
-      on: { ready: function() { setTimeout(function() { $gallery.flickity('resize'); }, 500); } }
+      accessibility: true,
+      on: {
+        ready: function() {
+          setTimeout(function() { $gallery.flickity('resize'); }, 500);
+          setCarouselAccessibility($gallery, $section, carouselLabel, groupSize, totalPages);
+        },
+        change: function(index) {
+          var page = groupSize > 0 ? Math.floor(index / groupSize) + 1 : 1;
+          if (page > totalPages) page = totalPages;
+          updateCarouselLiveRegion($section, page, totalPages, carouselLabel);
+        }
+      }
     });
+
+    if (showNav) {
+      $gallery.on('select.flickity', function() {
+        setCarouselButtonLabels($section);
+      });
+    }
   }
+
+  function setCarouselAccessibility($gallery, $section, label, groupSize, totalPages) {
+    var $prev = $section.find('.flickity-prev-next-button.previous');
+    var $next = $section.find('.flickity-prev-next-button.next');
+    if ($prev.length) $prev.attr('aria-label', 'Previous products');
+    if ($next.length) $next.attr('aria-label', 'Next products');
+
+    var flkty = $gallery.data('flickity');
+    if (flkty && totalPages > 0) {
+      var $live = $section.find('.ak-finishing-touches__sr-status');
+      if (!$live.length) {
+        $live = jQuery('<div class="ak-finishing-touches__sr-status is-sr-only" aria-live="polite" aria-atomic="true"></div>');
+        $gallery.before($live);
+      }
+      var page = groupSize > 0 && flkty.selectedIndex >= 0 ? Math.floor(flkty.selectedIndex / groupSize) + 1 : 1;
+      if (page > totalPages) page = totalPages;
+      updateCarouselLiveRegion($section, page, totalPages, label);
+    }
+    setCarouselButtonLabels($section);
+  }
+
+  function setCarouselButtonLabels($section) {
+    $section.find('.flickity-prev-next-button.previous').attr('aria-label', 'Previous products');
+    $section.find('.flickity-prev-next-button.next').attr('aria-label', 'Next products');
+  }
+
+  function updateCarouselLiveRegion($section, currentPage, totalPages, label) {
+    var $live = $section.find('.ak-finishing-touches__sr-status');
+    if (!$live.length || totalPages <= 0) return;
+    var text = (label ? label + ', ' : '') + 'Page ' + currentPage + ' of ' + totalPages;
+    $live.text(text);
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(initFinishingTouchesCarousel, 100); });
   } else {
