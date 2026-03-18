@@ -134,7 +134,8 @@
         {% assign has_cta = true %}
       {% endif %}
       {% if has_line1 or has_heading or has_cta %}
-        <div class="ak-video__overlay ak-video__overlay--center ak-video__overlay--stack">
+        {% assign ov_pos = section.settings.overlay_vertical_position | default: 'middle' %}
+        <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
           <div class="ak-video__overlay-inner">
             {% if has_line1 %}
               <p class="ak-video__overlay-line1" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }};">{{ section.settings.overlay_subheading }}</p>
@@ -360,9 +361,25 @@
     pointer-events: none;
     z-index: 3;
   }
-  #ak-video-{{ section.id }} .ak-video__overlay--center {
+  #ak-video-{{ section.id }} .ak-video__overlay--center,
+  #ak-video-{{ section.id }} .ak-video__overlay--middle {
     display: flex;
     align-items: center;
+    justify-content: center;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--bottom:not(.ak-video__overlay--stack) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--stack.ak-video__overlay--bottom {
+    display: flex;
+    align-items: flex-end;
     justify-content: center;
   }
   #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-inner {
@@ -870,6 +887,35 @@
     {
       "type": "header",
       "content": "Overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_vertical_position",
+      "label": "Overlay vertical position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "middle"
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_top",
+      "label": "Overlay padding top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_bottom",
+      "label": "Overlay padding bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
     },
     {
       "type": "text",
