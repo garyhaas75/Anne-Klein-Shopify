@@ -23,10 +23,7 @@
   {% endif %}
 {% endfor %}
 
-{% assign use_slider = false %}
-{% if layout_style == 'slider' and products_count > products_per_row %}
-  {% assign use_slider = true %}
-{% endif %}
+{% assign use_slider = layout_style == 'slider' %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -129,6 +126,54 @@
   }
 </script>
 <script data-theme-editor-load-script src="{{ 'z__jsFeaturedCollection-min.js' | asset_url }}" defer></script>
+{% if use_slider %}
+<script>
+(function() {
+  var sectionId = '{{ id }}';
+  var arrowShape = 'M95.04 46 21.68 46 48.18 22.8 42.91 16.78 4.96 50 42.91 83.22 48.18 77.2 21.68 54 95.04 54 95.04 46z';
+  function initFinishingTouchesCarousel() {
+    if (typeof jQuery === 'undefined') return;
+    var $section = jQuery('#shopify-section-' + sectionId);
+    if (!$section.length) return;
+    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
+    if (!$dataEl.length) return;
+    var data = {};
+    try {
+      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
+      data = typeof raw === 'object' ? raw : JSON.parse(raw);
+    } catch (e) { return; }
+    if (data.collection_style !== 'slider') return;
+    var $gallery = $section.find('.slider-gallery');
+    if (!$gallery.length) return;
+    if ($gallery.hasClass('flickity-enabled')) $gallery.flickity('destroy');
+    var productsPer = data.products_per || 4;
+    var productsLimit = data.products_limit || 0;
+    $gallery.flickity({
+      lazyLoad: 2,
+      freeScroll: true,
+      imagesLoaded: true,
+      draggable: true,
+      cellAlign: 'center',
+      wrapAround: true,
+      pageDots: false,
+      contain: true,
+      prevNextButtons: productsLimit > productsPer,
+      initialIndex: 0,
+      arrowShape: typeof window.arrowShape !== 'undefined' ? window.arrowShape : arrowShape,
+      on: { ready: function() { setTimeout(function() { $gallery.flickity('resize'); }, 500); } }
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initFinishingTouchesCarousel, 100); });
+  } else {
+    setTimeout(initFinishingTouchesCarousel, 100);
+  }
+  document.addEventListener('shopify:section:load', function(e) {
+    if (e.detail.sectionId === sectionId) setTimeout(initFinishingTouchesCarousel, 150);
+  });
+})();
+</script>
+{% endif %}
 
 {% schema %}
 {

@@ -11,6 +11,7 @@
 {% assign text_color = section.settings.text_color %}
 {% assign aspect_ratio_mode = section.settings.aspect_ratio_mode | default: 'match_image' %}
 {% assign section_aria_label = section.settings.section_aria_label %}
+{% assign container_width = section.settings.container_width | default: 'full' %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -27,6 +28,10 @@
   }
   #shopify-section-{{ id }} .ak-quad__heading,
   #shopify-section-{{ id }} .ak-quad__cta { color: {{ text_color }}; }
+  #shopify-section-{{ id }} .ak-quad__wrap {
+    margin: 0 auto;
+    {% if container_width == 'standard' %}max-width: 1200px;{% elsif container_width == 'wide' %}max-width: 1400px;{% endif %}
+  }
   #shopify-section-{{ id }} .ak-lifestyle-quad .ak-quad__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -46,11 +51,14 @@
   #shopify-section-{{ id }} .ak-quad__video-wrap { position: absolute; inset: 0; }
   #shopify-section-{{ id }} .ak-quad__pause-btn {
     position: absolute;
-    bottom: 1.5rem;
-    right: 1.25rem;
+    bottom: 1rem;
+    right: 1rem;
     z-index: 4;
-    width: 48px;
-    height: 48px;
+    min-width: 44px;
+    min-height: 44px;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
     border-radius: 50%;
     border: 2px solid currentColor;
     background: rgba(0,0,0,0.5);
@@ -59,15 +67,19 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 700;
+    opacity: 0;
     transition: opacity 0.2s;
   }
-  #shopify-section-{{ id }} .ak-quad__pause-btn:hover,
-  #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 0.9; }
+  #shopify-section-{{ id }} .ak-quad__panel:hover .ak-quad__pause-btn,
+  #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 1; }
   #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .ak-quad__pause-btn { opacity: 1; transition: none; }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-mobile-only { display: none !important; }
@@ -129,7 +141,8 @@
   }
 {% endstyle %}
 
-<section class="section is-width-wide ak-lifestyle-quad has-no-side-gutter" id="shopify-section-{{ id }}" {{ section_aria }}>
+<section class="section is-width-wide ak-lifestyle-quad has-no-side-gutter ak-quad--container-{{ container_width }}" id="shopify-section-{{ id }}" {{ section_aria }}>
+  <div class="ak-quad__wrap">
   <div class="ak-quad__grid">
     {% for block in section.blocks %}
       {% if block.type == 'panel' %}
@@ -238,6 +251,7 @@
       {% endif %}
     {% endfor %}
   </div>
+  </div>
 </section>
 
 <script>
@@ -278,6 +292,18 @@
       "label": "Overlay text color",
       "default": "#ffffff",
       "info": "Use white or light text. The section applies a gradient and text shadow for contrast."
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "default": "full",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "wide", "label": "Wide (1400px)" },
+        { "value": "standard", "label": "Standard (1200px)" }
+      ],
+      "info": "Maximum width of the 2×2 grid. Full width uses the full viewport."
     },
     {
       "type": "select",
