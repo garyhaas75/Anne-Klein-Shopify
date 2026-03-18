@@ -6117,6 +6117,12 @@
           "title": "Video",
           "autoplay": true,
           "loop": true,
+          "overlay_subheading": "",
+          "overlay_subheading_font_size": 16,
+          "overlay_heading": "",
+          "overlay_heading_font_size": 48,
+          "overlay_cta": "",
+          "overlay_cta_font_size": 14,
           "overlay_text": "",
           "text_color": "#ffffff",
           "heading_level": "h1",
@@ -6178,6 +6184,8 @@
         "settings": {
           "heading": "New for the Season",
           "heading_color": "#000000",
+          "heading_font_size": 22,
+          "layout_mode": "inline",
           "background_color": "#ffffff",
           "pill_font_size": 16,
           "pill_letter_spacing": 2,
@@ -6193,6 +6201,8 @@
           "panel_8jABLa": {
             "type": "panel",
             "settings": {
+              "media_type": "video",
+              "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO.mp4",
               "heading": "Dress with Intention",
               "cta_text": "SHOP DRESSES",
               "link": ""
@@ -6201,6 +6211,8 @@
           "panel_3PGkkV": {
             "type": "panel",
             "settings": {
+              "media_type": "image",
+              "image": "shopify://shop_images/02e853a5ad49d824a93e2ceeb6843eff65c56739.jpg",
               "heading": "Business Leisure",
               "cta_text": "SHOP WORKWEAR",
               "link": ""
@@ -6209,6 +6221,8 @@
           "panel_RWrxm7": {
             "type": "panel",
             "settings": {
+              "media_type": "image",
+              "image": "shopify://shop_images/cb48eab5448188900bfe091a063bf7b604c0f0f7.jpg",
               "heading": "Finishing Touches",
               "cta_text": "SHOP ACCESSORIES",
               "link": ""
@@ -6217,6 +6231,8 @@
           "panel_8gJmX4": {
             "type": "panel",
             "settings": {
+              "media_type": "video",
+              "video": "shopify://files/videos/AK_SS26_12_16x9_NO LOGO.mp4",
               "heading": "Vacation Mindset",
               "cta_text": "SHOP RESORT",
               "link": ""
@@ -6244,6 +6260,7 @@
           "tile_EGk7by": {
             "type": "tile",
             "settings": {
+              "image": "shopify://shop_images/f22820a8318c1ea73ef15bb774aaca2273a0fe6a.jpg",
               "label": "Clothing",
               "link": ""
             }
@@ -6251,6 +6268,7 @@
           "tile_CgzwBd": {
             "type": "tile",
             "settings": {
+              "image": "shopify://shop_images/e677998387bcaac2b61c8cd517917bc94da1c2d3.jpg",
               "label": "Watches",
               "link": ""
             }
@@ -6258,6 +6276,7 @@
           "tile_7NN4Hz": {
             "type": "tile",
             "settings": {
+              "image": "shopify://shop_images/3fbbfb7702416112d6d1dd15b952d48aae6fa690.jpg",
               "label": "Handbags",
               "link": ""
             }
@@ -6265,6 +6284,7 @@
           "tile_9qUTDp": {
             "type": "tile",
             "settings": {
+              "image": "shopify://shop_images/44ed6fe5d0b7007fc4bdc500a46e21d4cb80f41a.jpg",
               "label": "Opticals",
               "link": ""
             }
@@ -6284,9 +6304,73 @@
           "heading_font_size": 18,
           "heading_letter_spacing": 2,
           "background_color": "#ffffff",
+          "container_padding": 0,
+          "grid_gap": 24,
           "section_aria_label": "",
           "padding_top": 40,
           "padding_bottom": 40
+        }
+      },
+      "index_finishing_touches_TLVBqV": {
+        "type": "index__finishing-touches",
+        "blocks": {
+          "product_HVTa4c": {
+            "type": "product",
+            "settings": {
+              "product": "large-printed-tote-with-detachable-strap-natural-hazelnut"
+            }
+          },
+          "product_mW7Hga": {
+            "type": "product",
+            "settings": {
+              "product": "puffy-fan-button-earrings-gold-tone"
+            }
+          },
+          "product_gjMQgV": {
+            "type": "product",
+            "settings": {
+              "product": "belted-flap-bag-with-convertible-strap-buttercup"
+            }
+          },
+          "product_B7dVaJ": {
+            "type": "product",
+            "settings": {
+              "product": "medium-belted-satchel-with-convertible-strap-distant-mountain"
+            }
+          },
+          "product_37GMnC": {
+            "type": "product",
+            "settings": {
+              "product": "trendy-oversized-square-sunglasses-blue-lilac"
+            }
+          },
+          "product_z9Emf3": {
+            "type": "product",
+            "settings": {
+              "product": "faux-snake-sculpted-plaque-east-west-shoulder-bag-mink-tonal"
+            }
+          }
+        },
+        "block_order": [
+          "product_HVTa4c",
+          "product_mW7Hga",
+          "product_gjMQgV",
+          "product_B7dVaJ",
+          "product_37GMnC",
+          "product_z9Emf3"
+        ],
+        "name": "AK Finishing Touches",
+        "settings": {
+          "title": "FINISHING TOUCHES",
+          "products_per": 4,
+          "align_height": false,
+          "collection_height": 320,
+          "collection_style": "slider",
+          "width": "wide",
+          "show_gutter": true,
+          "padding_top": 40,
+          "padding_bottom": 40,
+          "section_aria_label": ""
         }
       }
     },
@@ -6301,6 +6385,7 @@
       "index_html_knKheU",
       "index_html_jVHAMD",
       "stylitics_gallery_widget_eLpGBt",
+      "index_finishing_touches_TLVBqV",
       "index_image_with_text_overlay_6aaRey",
       "index_html_iVbjHj",
       "index_html_J4FpUA",
