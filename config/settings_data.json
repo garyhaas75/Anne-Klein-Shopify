@@ -6453,7 +6453,7 @@
           "enable_shop_similar": false,
           "image": "shopify://shop_images/053d51096fa1cc0c96af8da859ecdc6d14079961.jpg",
           "image_alt": "",
-          "max_height_desktop": 720,
+          "max_height_desktop": 1100,
           "max_height_mobile": 0,
           "pretext": "",
           "title": "Spring Botanicals",
