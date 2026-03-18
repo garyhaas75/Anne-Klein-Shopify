@@ -6374,6 +6374,72 @@
           "padding_bottom": 40,
           "section_aria_label": ""
         }
+      },
+      "index_insiders_club_Y4N9di": {
+        "type": "index__insiders-club",
+        "blocks": {
+          "benefit_L7icEG": {
+            "type": "benefit",
+            "settings": {
+              "icon": "shopify://shop_images/7e206ba69e462ce44754169a53aaac33d3345b74.png",
+              "icon_alt_text": "",
+              "text": "Earn points on all purchases"
+            }
+          },
+          "benefit_GagT4x": {
+            "type": "benefit",
+            "settings": {
+              "icon": "shopify://shop_images/111508c5ffb30ac9cb144d6c75651bfd9220fc69.png",
+              "icon_alt_text": "",
+              "text": "Birthday & Anniversary Rewards"
+            }
+          },
+          "benefit_3UafQw": {
+            "type": "benefit",
+            "settings": {
+              "icon": "shopify://shop_images/281ae3f8bb8169b5bdfca3fb3c6858371f34b3d4.png",
+              "icon_alt_text": "",
+              "text": "First sneak peak at new products"
+            }
+          },
+          "benefit_RtJewR": {
+            "type": "benefit",
+            "settings": {
+              "icon": "shopify://shop_images/7f27c6e269e26fbc61c8a6ef008345549c791963.png",
+              "icon_alt_text": "",
+              "text": "Invitation to Exclusive Events"
+            }
+          },
+          "benefit_LVVfkL": {
+            "type": "benefit",
+            "settings": {
+              "icon": "shopify://shop_images/bb39b714cd987f4868876b45254836c8e4daed15.png",
+              "icon_alt_text": "",
+              "text": "And so much more!"
+            }
+          }
+        },
+        "block_order": [
+          "benefit_L7icEG",
+          "benefit_GagT4x",
+          "benefit_3UafQw",
+          "benefit_RtJewR",
+          "benefit_LVVfkL"
+        ],
+        "name": "AK Insider's Club",
+        "settings": {
+          "headline": "Sign up today to gain access to exclusive deals!",
+          "join_text": "JOIN NOW",
+          "join_url": "",
+          "login_text": "LOG IN",
+          "login_url": "",
+          "background_image_opacity": 25,
+          "background_color": "#f0ede3",
+          "text_color": "#000000",
+          "section_aria_label": "",
+          "padding_top": 48,
+          "padding_bottom": 48
+        }
       }
     },
     "content_for_index": [
@@ -6388,6 +6454,7 @@
       "index_html_jVHAMD",
       "stylitics_gallery_widget_eLpGBt",
       "index_finishing_touches_TLVBqV",
+      "index_insiders_club_Y4N9di",
       "index_image_with_text_overlay_6aaRey",
       "index_html_iVbjHj",
       "index_html_J4FpUA",
