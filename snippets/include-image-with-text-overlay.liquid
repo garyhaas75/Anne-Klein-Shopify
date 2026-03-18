@@ -322,8 +322,41 @@
   {% assign caption_click_through = true %}
 {% endif %}
       {% if pretext != blank or title != blank or subtitle != blank or button_1 != blank or button_2 != blank %}
-        <div class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}" style="position: absolute; width: 100%; display: block; text-align: {{ text_horizontal_position }}; {% if text_vertical_position == 'top' %}top: 0; bottom: auto; transform: none;{% elsif text_vertical_position == 'bottom' %}top: auto; bottom: 0; transform: none;{% else %}top: 50%; bottom: auto; transform: translateY(-50%);{% endif %}">
-          <div class="caption-content text-align-{{ text_alignment }}" style="text-align: {{ text_alignment }}; display: inline-block;">
+        <style>
+          #caption-pos-{{ id }} {
+            position: absolute !important;
+            width: 100% !important;
+            display: block !important;
+            text-align: {{ text_horizontal_position }} !important;
+            pointer-events: none !important;
+            padding: 1% !important;
+            {% if text_vertical_position == 'top' %}
+            top: 0 !important;
+            bottom: auto !important;
+            -webkit-transform: none !important;
+            -ms-transform: none !important;
+            transform: none !important;
+            {% elsif text_vertical_position == 'bottom' %}
+            top: auto !important;
+            bottom: 0 !important;
+            -webkit-transform: none !important;
+            -ms-transform: none !important;
+            transform: none !important;
+            {% else %}
+            top: 50% !important;
+            bottom: auto !important;
+            -webkit-transform: translateY(-50%) !important;
+            -ms-transform: translateY(-50%) !important;
+            transform: translateY(-50%) !important;
+            {% endif %}
+          }
+          #caption-pos-{{ id }} .caption-content {
+            pointer-events: all !important;
+            text-align: {{ text_alignment }} !important;
+          }
+        </style>
+        <div id="caption-pos-{{ id }}" class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}">
+          <div class="caption-content text-align-{{ text_alignment }}"  style="text-align: {{ text_alignment }}; display: inline-block;">
             {% if pretext != blank %}
               <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle">
                 {{ pretext }}
