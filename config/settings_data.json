@@ -6304,7 +6304,7 @@
           "label_icon_svg": "",
           "label_icon_style_mobile": "arrow",
           "label_icon_svg_mobile": "",
-          "tile_max_height_desktop": 0,
+          "tile_max_height_desktop": 800,
           "tile_max_height_mobile": 0,
           "container_padding": 0,
           "grid_gap": 8,
