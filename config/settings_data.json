@@ -6372,10 +6372,10 @@
         "settings": {
           "title": "FINISHING TOUCHES",
           "heading_alignment": "center",
+          "heading_font_size": 20,
           "products_per": 6,
           "align_height": false,
           "collection_height": 200,
-          "collection_style": "slider",
           "width": "wide",
           "show_gutter": true,
           "padding_top": 20,
