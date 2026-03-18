@@ -1,0 +1,70 @@
+{% if related_products == true %}
+  {% assign hover_enabled = block.settings.show_related_products_title_on_hover %}
+{% else %}
+  {% assign hover_enabled = settings.thumbnail_hover_enabled %}
+{% endif %}
+
+{% if type == 'block' %} 
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+{% assign secondaryImage = product.media[1] %}
+
+{% assign collection_handles = product.collections | map: 'handle' | join: ' ' %}
+
+{% assign product_tags = product.tags %}
+{% if product.featured_media.preview_image.alt contains 'youtube' or image.alt contains 'vimeo' %}
+  {% assign alt_text = product.title %}
+{% else %}
+  {% assign alt_text = product.featured_media.preview_image.alt %}
+{% endif %}
+
+{% if type == 'block' %}
+  {% assign image_crop = block.settings.image_crop %}
+{% else %}
+  {% assign image_crop = section.settings.image_crop %}
+{% endif %}
+
+{% if section.settings.align_height == true %}
+{% style %}
+  .product-{{ product.id }} .image__container img,
+  .product-{{ product.id }} .product-thumbnail__video .plyr {
+    max-width: 100%;
+    width: {{ height }}px;
+    margin: 0 auto;
+  }
+
+  .shopify-model-viewer-ui model-viewer {
+    --progress-bar-height: 2px;
+    --progress-bar-color: {{ settings.regular_color }};
+  }
+{% endstyle %}
+{% endif %}
+
+<div class="
+  {% include 'column-width', value: products_per_row %}
+  medium-down--one-half
+  {% if object.settings.mobile_products_per_row == '1' %}
+    small-down--one-whole
+  {% else %}
+    small-down--one-half
+  {% endif %}
+  column
+  thumbnail
+  product__thumbnail
+  product__grid-item
+  has-padding-bottom"
+  {% if section.settings.pagination_type != 'basic_pagination' %}
+    data-load-more--grid-item
+  {% endif %}>
+  <div class="product-wrap">
+
+      <div class="product-image__wrapper">
+        <div class="image__container product__imageContainer">
+          <a href="{{ collection.metafields.featured_promo.link }}" class="{{ collection.metafields.featured_promo.custom_classes }}" {% if collection.metafields.featured_promo.open_in_new_tab == true %}target="_blank"{% endif %}><img src="{{ collection.metafields.featured_promo.image[0].src }}"></a>
+        </div>
+      </div>
+  </div>
+</div>

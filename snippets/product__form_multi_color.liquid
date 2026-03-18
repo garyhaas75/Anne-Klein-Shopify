@@ -1,0 +1,454 @@
+{% raw %} 
+<script>
+  window.dk_tmpl_flat_widget = `
+<style>
+  {{resetCSS}}
+  *{
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;;
+      text-transform: initial !important;
+      letter-spacing: initial !important;
+  }
+  .dk-flat-plugin {
+      width: 325px;
+      max-width: 325px;
+      padding: 10px 14px 10px 14px;
+      display: flex;
+      border-radius: 2px;
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      flex-direction: column;
+      {{if(options.showBorder)}}
+      border: 1px solid {{fontColor}};
+      {{#else}}
+      border: none;
+      {{/if}}
+  }
+  .title {
+      padding-top: 10px;
+      line-height: 1.5;
+      font-weight: 400;
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      font-size: 12px;
+  }
+
+  .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 10px;
+  }
+
+  .learn-more {
+      line-height: 1.5;
+      font-size: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      width: fit-content;
+  }
+
+  .learn-more:active {
+      outline: 0;
+  }
+
+  .controls {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+  }
+
+  .control-btn, .control-input {
+      {{if(options.hideOtherInput)}}
+      width: 33%;
+      height: 32px;
+      {{#else}}
+      width: 25%;
+      height: 32px;
+      {{/if}}
+      /* {{if(!options.isTransparent)}}
+      color: {{backgroundColor}};
+      background: {{fontColor}};
+      {{#else}}
+      color: {{fontColor}};
+      background: {{backgroundColor}};
+      {{/if}} */
+      color: {{fontColor}};
+      background: {{backgroundColor}};
+      border: 1px solid {{fontColor}};
+      margin-left: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 1px;
+  }
+
+  .control-btn {
+      cursor: pointer;
+      user-select: none;
+  }
+
+  .control-input {
+      -webkit-appearance: none !important;
+      text-align:center;
+      outline: none;
+      {{if(options.hideOtherInput)}}
+      display: none;
+      {{/if}}
+  }
+
+  .control-input::placeholder {
+      /* {{if(!options.isTransparent)}}
+      color: {{backgroundColor}};
+      {{#else}}
+      color: {{fontColor}};
+      {{/if}} */
+      color: {{fontColor}};
+      font-size: 12px;
+      font-weight: 500;
+      }
+  .control-btn.active, .control-input.active, .control-input:focus {
+      {{if(!options.isTransparent)}}
+      background: {{fontColor}};
+      color: {{backgroundColor}};
+      {{#else}}
+      background: {{backgroundColor}};
+      color: {{fontColor}};
+      {{/if}}
+  }
+
+  .control-btn:first-child {
+      margin-left: 0;
+  }
+
+  .control-input {
+      margin-left: 4px;
+      width: 65px;
+      height: 32px;
+      padding: 0;
+  }
+
+  .created-by {
+      line-height: 1.5;
+      font-size: 8px;
+      padding-top: 4px;
+      display: flex;
+      font-weight: 400;
+      justify-content: center;
+      align-items: center;
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+  }
+
+  .main-text {
+      line-height: 1;
+      font-weight: 500;
+      font-size: 14px;
+      font-family: {{customFontName}}-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+  }
+
+  .positioning {
+      display: flex; width: 100%; min-height: 156px; justify-content: {{contentPosition}};
+  }
+
+  {{if(options.isCenteredWidgetMobile)}}
+  @media only screen and (max-width: 430px)  {
+      .positioning {
+          display: flex; width: 100%; justify-content: center;
+      }
+  }
+  {{/if}}
+</style>
+<div class="positioning">
+  <div
+    id="dk-flat-plugin-widget"
+    class="dk-flat-plugin"
+    style="margin-top: {{verticalIndent}}px; color: {{fontColor}}; background: {{backgroundColor}};"
+  >
+    <span class="main-text">{{headerText}}</span>
+    <span class="title" style="color: {{fontColor}}; text-align: left!important;">{{description}}</span>
+    <div class="controls">
+      <div class="control-btn" id="option-1">\{{price1}}</div>
+      <div class="control-btn" id="option-2">\{{price2}}</div>
+      <div class="control-btn" id="option-3">\{{price3}}</div>
+      <input
+        class="control-input"
+        id="option-custom"
+        placeholder="Custom"
+        inputmode="decimal"
+        onfocus="this.placeholder = ''"
+        onblur="this.placeholder = 'Custom'"
+      />
+    </div>
+    <div style="flex: 1"></div>
+    <div class="footer">
+      <span class="created-by" style="color: {{fontColor}};"
+        >powered by
+        <svg
+          aria-label="DailyKarma"
+          xmlns="http://www.w3.org/2000/svg"
+          style="width: 61px; position: relative; top: 1px; padding-left: 5px; color: {{fontColor}};"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          viewBox="-10 0 4656 1024"
+        >
+          <g transform="matrix(1 0 0 -1 0 960)"><path fill="currentColor" d="{{dkLogo}}" /></g></svg
+      ></span>
+
+      <a
+        href="javascript:void(0)"
+        class="learn-more"
+        id="dk-flat-learn-more"
+        style="text-decoration: underline; color: {{fontColor}};"
+      >
+        Learn about causes
+      </a>
+
+      <a
+        href="javascript:void(0)"
+        class="learn-more"
+        id="dk-flat-add"
+        style="display: none; opacity: 0; color: {{fontColor}}; {{if(options.hideOtherInput)}}display: none;{{/if}}"
+        >Add amount</a
+      >
+    </div>
+  </div>
+
+  <div
+    id="dk-flat-plugin-widget-hidden"
+    class="dk-flat-plugin"
+    style="margin-top: {{verticalIndent}}px; text-align: center; color: {{fontColor}}; background: {{backgroundColor}}; justify-content: center; display: none; position: relative;"
+  >
+    <span class="title" style="margin-top: 0; padding-top: 0; color: {{fontColor}}; font-size: 14px; font-weight: 500;"
+      >Thank you for adding a donation.</span
+    >
+    <span style="line-height: 1; padding-top: 10px; font-weight: 400; font-size: 12px">
+      In a giving mood?
+      <a
+        href="javascript:void(0)"
+        class="learn-more"
+        id="dk-flat-learn-more-added"
+        style="font-size: 12px; font-weight: 500; padding-left: 3px; text-decoration: underline; color: {{fontColor}};"
+      >
+        Adjust amount
+      </a>
+    </span>
+
+    <div style="position: absolute; bottom: 10px; left: 14px">
+      <span class="created-by" style="color: {{fontColor}};"
+        >powered by
+        <svg
+          aria-label="DailyKarma"
+          xmlns="http://www.w3.org/2000/svg"
+          style="width: 77px; position: relative; top: 1px; padding-left: 5px; color: {{fontColor}};"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          viewBox="-10 0 4656 1024"
+        >
+          <g transform="matrix(1 0 0 -1 0 960)"><path fill="currentColor" d="{{dkLogo}}" /></g></svg
+      ></span>
+    </div>
+  </div>
+</div>
+
+
+`;
+</script>
+{% endraw %}
+
+{% if type == 'product' and section.settings.show_payment_button %}
+  {% assign show_payment_button = true %}
+{% elsif type == 'product' and block.settings.show_payment_button %}
+  {% assign show_payment_button = true %}
+{% elsif type == 'quickshop' and settings.show_dynamic_checkout_button %}
+  {% assign show_payment_button = true %}
+{% else %}
+  {% assign show_payment_button = false %}
+{% endif %}
+
+{% assign hide_atc = false %}
+{% assign product_preorder = false %}
+{% assign product_comingsoon = false %}
+{% for tag in product.tags %}
+  {% assign tag_downcase = tag | downcase %}
+  {% if tag_downcase == 'hide atc' %}
+    {% assign hide_atc = true %}
+  {% elsif tag_downcase == 'pre-order' %}
+	{% assign product_preorder = true %}
+  {% elsif tag_downcase == 'coming soon' %}
+    {% assign product_comingsoon = true %}
+  {% endif %}
+{% endfor %}
+
+{% assign variant = product.selected_or_first_available_variant %}
+
+<div class="clearfix product_form init smart-payment-button--{{ show_payment_button }} {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
+      id="product-form-{{ product.id }}"
+      data-product-form
+      data-money-format="{{ shop.money_format }}"
+      data-shop-currency="{{ shop.currency }}"
+      data-select-id="product-select-{{ product.id }}{{ product-form }}{{ object.id }}{{ block.id }}"
+      data-enable-state="{% if template contains 'product' %}true{% else %}false{% endif %}"
+      data-product="{{ product | json | replace: repproductVariants , JspproductVariants | escape }}"
+      {% if settings.limit_quantity or settings.display_inventory_left %}
+        data-variant-inventory='[{%- for v in product.variants -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
+      {% endif %}
+      data-product-id="{{ product.id }}"
+      >
+  {% form 'product', product %}
+
+  
+  
+  {% if productVariants.size > 1 %}
+    {% if product.options.size > 1 %}
+      <div class="select-container">
+          {% if type == 'quickshop' %}
+            <div class="select">
+          {% endif %}
+          <select id="product-select-{{ product.id }}{{ product-form }}{{ object.id }}{{ block.id }}" name="id" class="multi_select" data-variant-selector>
+            {% for v in productVariants %}
+              <option value="{{ v.id }}" data-image-id="{{ v.featured_media.id }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
+            {% endfor %}
+          </select>
+          {% if type == 'quickshop' %}
+            </div>
+          {% endif %}
+      </div>
+    {% elsif product.options.size == 1 and productVariants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
+      <div class="select-container">
+        <label class="label">{{ product.options[0] }}</label>
+        <div>
+          {% if type == 'quickshop' %}
+            <div class="select">
+          {% endif %}
+          <select id="product-select-{{ product.id }}{{ product-form }}{{ object.id }}{{ block.id }}" name="id" data-variant-selector>
+            {% for v in productVariants %}
+              <option value="{{ v.id }}" data-image-id="{{ v.featured_media.id }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
+            {% endfor %}
+          </select>
+          {% if type == 'quickshop' %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    <input type="hidden" name="id" value="{{ variant.id }}" />
+  {% endif %}
+
+  {% if productVariants.size > 1 %}
+    {% if settings.product_form_style == "swatches" and productVariants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
+      <div class="swatch_options collection_swatches">
+        {% for option in product.options %}
+          {% include 'product-swatch-multi-color' with option %}
+        {% endfor %}
+        
+        {% comment %}
+        {% for collection in product.collections %}
+        {% if collection.handle == 'shoes' %}
+        <div style="width: 100%;">
+          <p style="max-width: 370px; font-style: italic; font-size: 16px; color: #882730; margin-top: 20px;">Shoes will not be orderable from 12/31 - 1/10, due to inventory updates. We appreciate your patience and understanding.</p>
+        </div>
+        {% endif %}
+        
+        {% if collection.handle == 'handbags' %}
+        <div style="width: 100%;">
+          <p style="max-width: 370px; font-style: italic; font-size: 16px; color: #882730; margin-top: 20px;">Handbags will not be orderable from 12/31 - 1/10, due to inventory updates.  We appreciate your patience and understanding.</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endcomment %}
+        
+        {% comment %}
+        {% if is_color %}
+        {% if product.vendor == 'Kasper' or product.vendor == 'Komar' or product.vendor == 'One Jeanswear Group' %}
+        <div style="width: 100%;">
+          <p style="max-width: 355px; font-style: italic; font-size: 16px; color: #882730;">Our clothing has a generous fit. We recommend new customers refer to the size chart to find your best fit.</p>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endcomment %}
+        
+        {% if is_color %}<div class="kiwi_swatch_full kiwi_size_chart_injector kiwi_swatch_true"></div> {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+    {% if settings.show_product_preorder and product_preorder %}
+      {% render 'preorder' %}
+    {% endif %}
+
+  	{% unless hide_atc %}
+  
+
+    <div class="purchase-details {% if settings.display_product_quantity %}has-quantity-box{% endif %}">
+      {% if settings.display_product_quantity %}
+        <div class="purchase-details__quantity product-quantity-box quantity-box--{{ settings.qty_box_style }}">
+          {% include 'quantity-box' %}
+        </div>
+      {% endif %}
+      {% comment %} Error message for add to cart action {% endcomment %}
+      <div class="cart-warning"></div>
+      <div class="purchase-details__buttons purchase-details__spb--{{ show_payment_button }}">
+        {% if settings.cart_action == 'reload_page' %}
+          <input type="hidden" name="return_to" value="back" />
+        {% elsif settings.cart_action == 'redirect_checkout' %}
+          <input type="hidden" name="return_to" value="/checkout" />
+        {% endif %}
+        {% if is_size == false %}<div class="kiwi_size_chart_injector kiwi_swatch_false"></div>{% endif %}
+        
+        
+        <!-- Extend -- Add offer element -->
+        <div id="extend-offer"></div>
+        <!-- Extend -- End Extend code -->
+
+        {% if settings.display_inventory_left %}
+        <p class="items_left">
+          {% if variant.inventory_management != blank and variant.inventory_quantity > 0 %}
+            {% capture items_left_text %}
+              {% if variant.inventory_quantity == 1 %}
+                {{ 'products.product.items_left_count.one' | t }}
+              {% else %}
+                {{ 'products.product.items_left_count.other' | t }}
+              {% endif %}
+            {% endcapture %}
+            {% if variant.inventory_quantity <= settings.inventory_threshold %}
+              {{ variant.inventory_quantity }} {{ items_left_text }}
+            {% endif %}
+          {% endif %}
+        </p>
+      {% endif %}
+
+        {% capture add_to_cart_label %}{% if product_comingsoon %}Coming Soon{% elsif settings.show_product_preorder and product_preorder  %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
+
+        <button type="{% if settings.cart_action == 'mini_cart' or settings.cart_action == 'drawer' %}button{% else %}submit{% endif %}" name="add" class="button {% if settings.cart_action == 'mini_cart' or settings.cart_action == 'drawer' %} ajax-submit {% endif %}action_button button--add-to-cart {% if show_payment_button %} action_button--secondary {% endif %}" data-label={{ add_to_cart_label | json }} data-add-to-cart-trigger variant-id="{{ product.first_available_variant.id }}" data-id="{{ product.id}}">
+          {% if  settings.button_cart_icon != blank and settings.button_cart_icon_position == 'left' %}
+            {% include settings.icon, name: settings.button_cart_icon, icon_class: 'icon--cart' %}
+          {% endif %}
+         {% if add_to_cart_label == 'Coming Soon' %}
+            Coming Soon
+          {% else %}
+          <span class="text">{% if settings.show_product_preorder and product_preorder %} Pre-order {% else %}{{ add_to_cart_label }}{% endif %}</span>
+          {% endif %}
+          {% if  settings.button_cart_icon != blank and settings.button_cart_icon_position == 'right' %}
+            {% include settings.icon, name: settings.button_cart_icon, icon_class: 'icon--cart icon--right' %}
+          {% endif %}
+          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+            <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+          </svg>
+        </button>
+        {% if show_payment_button %}
+          {{ form | payment_button }}
+        {% endif %}
+      
+        {% if product.tags contains 'bis-show' %}
+        <button id="BIS_trigger" class="button button--notify"  style="margin-top: 15px; background-color: black; color: #f3ece6; {% if product.available %}display: none;{% endif %}">
+          Notify me
+        </button>
+        {% endif %}
+      </div>
+    </div>
+  
+  <div class="dk-flat-static"></div>
+  	{% endunless %}
+{% endform %}
+</div>

@@ -1,0 +1,47 @@
+{% if product.metafields["global"]["enable_feature_block"] == 'true' or product.metafields["global"]["enable_feature_block"] == 'TRUE' %}
+<section class="product-feature
+                has-xlarge-padding-top
+                has-xlarge-padding-bottom ">
+  <div class="container">
+    <div class="header-wrapper--product-feature
+            heading-wrapper
+            heading-wrapper--short
+            one-whole column
+            is-flex
+            is-flex-column
+            is-align-center
+            text-align-center">
+        <h2 class="product-feature__title title">Product Features</h2>
+    </div>
+  </div>
+  <div class="container item-container">
+    <div class="item-wrap
+              one-third">
+        <div class="image__container feature_image">
+        <img src="{{ product.metafields["global"]["feature-image-1"] }}" alt="" />
+        </div>
+        <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["feature-title-1"] }}</div>
+        <p>{{ product.metafields["global"]["feature-text-1"] }}</p>
+    </div>
+
+    <div class="item-wrap
+              one-third">
+        <div class="image__container feature_image">
+        <img src="{{ product.metafields["global"]["feature-image-2"] }}" alt="" />
+        </div>
+        <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["feature-title-2"] }}</div>
+        <p>{{ product.metafields["global"]["feature-text-1"] }}</p>
+    </div>
+
+    <div class="item-wrap
+              one-third">
+        <div class="image__container feature_image">
+        <img src="{{ product.metafields["global"]["feature-image-3"] }}" alt="" />
+        </div>
+        <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["feature-title-3"] }}</div>
+        <p>{{ product.metafields["global"]["feature-text-1"] }}</p>
+    </div>
+
+  </div>
+</section>
+{% endif %}

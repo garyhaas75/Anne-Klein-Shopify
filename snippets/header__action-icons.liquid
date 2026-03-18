@@ -1,0 +1,94 @@
+{% comment %}Assign object as block or section{% endcomment %}
+{% if type == 'block' %}
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+<div class="header__icons header__icon-style-{{ object.settings.icon_style | replace: '_', '-' }} {{ header_icon_class }}">
+  {% comment %} Search icon {% endcomment %}
+
+  <a class="header__link action-area__link search_hover" title="Search" style="position: relative;">
+    <form action="" method="get" role="search">
+      <input
+        id="Search"
+        name="a"
+        class="search_input"
+        type="search"
+        value="{{ search.terms | escape }}"
+        placeholder="Search"
+      >
+      <input id="search_submit" class="search_submit" value="" type="submit">
+    </form>
+  </a>
+
+  {% if settings.show_multiple_currencies %}
+    {% comment %} Currency converter select {% endcomment %}
+    <div class="header__currency-dropdown header__link action-area__link" title="Currency Converter">
+      {% include settings.icon, name: 'globe', icon_class: 'header__icon' %}
+      <span class="icon-caption select is-arrowless">
+        {% include 'header__currencies-switcher' %}
+      </span>
+    </div>
+  {% endif %}
+
+  <a
+    href="/pages/loyalty-rewards"
+    title="Loyalty & Rewards"
+    aria-label="Loyalty & Rewards"
+    class="header__link action-area__link"
+  >
+    {% include settings.icon, name: 'loyalty', icon_class: 'header__icon' %}
+  </a>
+
+  {% if shop.customer_accounts_enabled %}
+    {% comment %} Account icon {% endcomment %}
+    {% if customer %}
+      {% comment %} Logout {% endcomment %}
+      <a href="{{ routes.account_url }}" title="Logout" aria-label="Logout" class="header__link action-area__link">
+        {% include settings.icon, name: 'avatar', icon_class: 'header__icon' %}
+        <span class="icon-caption">{{ 'layout.customer.my_account' | t | escape }}</span>
+      </a>
+    {% else %}
+      {% comment %} Login {% endcomment %}
+      <a
+        href="{{ routes.account_login_url }}"
+        title="Login or Create Account"
+        aria-label="Login or Create Account"
+        class="header__link action-area__link"
+      >
+        {% include settings.icon, name: 'avatar', icon_class: 'header__icon' %}
+        <span class="icon-caption">{{ 'layout.customer.log_in' | t | escape }}</span>
+      </a>
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Cart icon {% endcomment %}
+  <div
+    class="header-cart action-area__link {% if cart.item_count != 0 %}has-cart-count{% endif %}"
+    data-ajax-cart-trigger
+  >
+    <a
+      class="header__link"
+      href="{{ routes.cart_url }}"
+      title="Shopping Cart"
+      aria-label="Shopping cart, {{ cart.item_count }} items in cart"
+    >
+      <span class="header-cart__icon">
+        {% include settings.icon, name: settings.cart_icon, icon_class: 'header__icon' %}
+        <span class="header-cart__count header-cart__count--badge badge" data-bind="itemCount">
+          {{ cart.item_count }}
+        </span>
+      </span>
+      <span class="header-cart__caption icon-caption">
+        {{ 'layout.general.cart' | t | escape }}
+        {%- if object.settings.icon_style == 'text' -%}
+          <span class="header-cart__count cart__count--text" data-bind="itemCount">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </span>
+    </a>
+    {% if settings.cart_action == 'mini_cart' %}
+      {% include 'ajax-cart' %}
+    {% endif %}
+  </div>
+</div>

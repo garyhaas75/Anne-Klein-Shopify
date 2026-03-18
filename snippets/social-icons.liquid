@@ -1,0 +1,61 @@
+<ul class="social-icons is-flex is-flex-wrap {{flex_alignment}}">
+  {% if settings.twitter_link != '' %}
+    <li><a href="{{ settings.twitter_link }}" title="{{ shop.name }} on Twitter" rel="me" target="_blank"  rel="noopener"class="icon-twitter">{% include settings.icon, name: 'twitter' %}</a></li>
+  {% endif %}
+
+  {% if settings.facebook_link != '' %}
+    <li><a href="{{ settings.facebook_link }}" title="{{ shop.name }} on Facebook" rel="me" target="_blank"  rel="noopener"class="icon-facebook">{% include settings.icon, name: 'facebook' %}</a></li>
+  {% endif %}
+
+  {% if settings.youtube_link != '' %}
+    <li><a href="{{ settings.youtube_link }}" title="{{ shop.name }} on YouTube" rel="me" target="_blank"  rel="noopener"class="icon-youtube">{% include settings.icon, name: 'youtube' %}</a></li>
+  {% endif %}
+
+  {% if settings.vimeo_link != '' %}
+    <li><a href="{{ settings.vimeo_link }}" title="{{ shop.name }} on Vimeo" rel="me" target="_blank"  rel="noopener"class="icon-vimeo">{% include settings.icon, name: 'vimeo' %}</a></li>
+  {% endif %}
+
+  {% if settings.pinterest_link != '' %}
+    <li><a href="{{ settings.pinterest_link }}" title="{{ shop.name }} on Pinterest" rel="me" target="_blank"  rel="noopener"class="icon-pinterest">{% include settings.icon, name: 'pinterest' %}</a></li>
+  {% endif %}
+
+  {% if settings.tumblr_link != '' %}
+    <li><a href="{{ settings.tumblr_link }}" title="{{ shop.name }} on Tumblr" rel="me" target="_blank"  rel="noopener"class="icon-tumblr">{% include settings.icon, name: 'tumblr' %}</a></li>
+  {% endif %}
+
+  {% if settings.instagram_link != '' %}
+    <li><a href="{{ settings.instagram_link }}" title="{{ shop.name }} on Instagram" rel="me" target="_blank"  rel="noopener"class="icon-instagram">{% include settings.icon, name: 'instagram' %}</a></li>
+  {% endif %}
+
+  {% if settings.snapchat_link != '' %}
+    <li><a href="{{ settings.snapchat_link }}" title="{{ shop.name }} on Snapchat" rel="me" target="_blank"  rel="noopener"class="icon-snapchat">{% include settings.icon, name: 'snapchat' %}</a></li>
+  {% endif %}
+
+  {% if settings.houzz_link != '' %}
+    <li><a href="{{ settings.houzz_link }}" title="{{ shop.name }} on Houzz" rel="me" target="_blank"  rel="noopener"class="icon-houzz">{% include settings.icon, name: 'houzz' %}</a></li>
+  {% endif %}
+
+  {% if settings.linkedin_link != '' %}
+    <li><a href="{{ settings.linkedin_link }}" title="{{ shop.name }} on LinkedIn" rel="me" target="_blank"  rel="noopener"class="icon-linkedin">{% include settings.icon, name: 'linkedin' %}</a></li>
+  {% endif %}
+
+  {% if settings.dribbble_link != '' %}
+    <li><a href="{{ settings.dribbble_link }}" title="{{ shop.name }} on Dribbble" rel="me" target="_blank"  rel="noopener"class="icon-dribbble">{% include settings.icon, name: 'dribbble' %}</a></li>
+  {% endif %}
+
+  {% if settings.behance_link != '' %}
+    <li><a href="{{ settings.behance_link }}" title="{{ shop.name }} on Behance" rel="me" target="_blank"  rel="noopener"class="icon-behance">{% include settings.icon, name: 'behance' %}</a></li>
+  {% endif %}
+
+  {% if settings.flickr_link != '' %}
+    <li><a href="{{ settings.flickr_link }}" title="{{ shop.name }} on Flickr" rel="me" target="_blank"  rel="noopener"class="icon-flickr">{% include settings.icon, name: 'flickr' %}</a></li>
+  {% endif %}
+
+  {% if settings.email_link != '' %}
+    <li><a href="mailto:{{ settings.email_link }}" title="Email {{ shop.name }}" target="_blank"  rel="noopener"class="icon-email">{% include settings.icon, name: 'email' %}</a></li>
+  {% endif %}
+
+  {% if settings.tiktok_link != '' %}
+    <li><a href="{{ settings.tiktok_link }}" title="{{ shop.name }} on Tiktok" rel="me" target="_blank"  rel="noopener"class="icon-tiktok"><span class="icon" data-icon="tiktok"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10.44,0c1.1,0,2.18,0,3.26,0a5.27,5.27,0,0,0,1.46,3.48A6,6,0,0,0,18.69,5V8.32a9,9,0,0,1-3.5-.8,12.11,12.11,0,0,1-1.35-.78c0,2.44,0,4.87,0,7.29a6.37,6.37,0,0,1-1.13,3.29A6.19,6.19,0,0,1,7.78,20a6,6,0,0,1-3.4-.86,6.24,6.24,0,0,1-3-4.76c0-.41,0-.83,0-1.24A6.28,6.28,0,0,1,8.6,7.56c0,1.24,0,2.47,0,3.71A2.86,2.86,0,0,0,4.92,13a3.21,3.21,0,0,0-.12,1.34A2.85,2.85,0,0,0,10,15.43a1.94,1.94,0,0,0,.34-.89c.08-1.49.05-3,.06-4.46,0-3.36,0-6.71,0-10.06Z"/></svg></span></a></li>
+  {% endif %}
+</ul>

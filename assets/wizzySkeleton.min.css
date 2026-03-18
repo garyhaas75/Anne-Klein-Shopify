@@ -1,0 +1,186 @@
+.collection__content {
+  justify-content: space-between;
+}
+.wizzy-skeleton-results-filters-header,
+.wizzy-skeleton-results-filters-item,
+.wizzy-skeleton-results-filters-item-head {
+  display: inline-block;
+  width: 100%;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+.wizzy-skeleton-results-filters {
+  width: 300px;
+}
+.wizzy-skeleton-results-filters-header {
+  height: 50px;
+}
+.wizzy-skeleton-results-filters-item {
+  height: 10px;
+}
+.wizzy-skeleton-results-filters-item-head {
+  height: 20px;
+}
+.wizzy-skeleton-style {
+  opacity: 0.7;
+  animation: 1s linear infinite alternate wizzy-skeleton-loading;
+}
+.wizzy-skeleton-wrapper.for-filter .wizzy-skeleton-container {
+  display: none;
+}
+.wizzy-skeleton-wrapper.for-pagination .wizzy-skeleton-results-list {
+  width: 100%;
+}
+.wizzy-skeleton-results-filters-block {
+  text-align: left;
+}
+.wizzy-skeleton-results-filters-item-1 {
+  width: 40%;
+}
+.wizzy-skeleton-results-filters-item-2 {
+  width: 80%;
+}
+.wizzy-skeleton-results-filters-item-3 {
+  width: 60%;
+}
+.wizzy-skeleton-summary-and-sort {
+  height: 100% !important;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wizzy-skeleton-summary {
+  height: 12px;
+  display: inline-block;
+  width: 30%;
+}
+.wizzy-skeleton-sort {
+  height: 50px;
+  width: 15%;
+}
+.wizzy-custom-grid-collection .wizzy-skeleton-results-list {
+  display: none;
+}
+@keyframes wizzy-skeleton-loading {
+  0% {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+@media (min-width: 768px) {
+  #shopify-section-collection__main.has-sidebar-option,
+  #shopify-section-search__main.has-sidebar-option {
+    max-width: 100%;
+    padding-left: 15px;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .wizzy-skeleton-wrapper {
+    padding: 40px 0 0;
+  }
+  .wizzy-skeleton-results-filters {
+    display: none;
+  }
+  .wizzy-skeleton-results-list {
+    width: 100%;
+    padding: 0 10px;
+  }
+  .wizzy-skeleton-result-product {
+    width: calc(50% - 5px);
+  }
+  .wizzy-skeleton-result-product-image {
+    height: 190px;
+  }
+  .wizzy-skeleton-summary-and-sort {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
+  }
+  .wizzy-skeleton-summary,
+  .wizzy-skeleton-sort {
+    width: 100% !important;
+    height: 50px !important;
+  }
+  .wizzy-skeleton-sort {
+    margin: 20px 10px 50px 10px;
+    padding: 10px 15px;
+  }
+}
+@media (min-width: 768px) {
+  /* .wizzy-search-result-skeloton-default {
+    display: none;
+  } */
+  .wizzy-skeleton-wrapper {
+    padding: 40px 0px 0px 0px;
+  }
+  .wizzy-skeleton-product-filters {
+    width: fit-content !important;
+  }
+  .wizzy-custom-grid-collection {
+    display: flex;
+    width: 100%;
+  }
+  .wizzy-custom-grid-collection .wizzy-skeleton-results-list {
+    width: 100% !important;
+    padding: 0 10px;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .wizzy-defualt-skeloton-and-result-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .wizzy-skeleton-result-product {
+    width: calc(25% - 7.5px);
+  }
+
+  .wizzy-skeleton-result-product-image {
+    height: 250px;
+    border-radius: 12px;
+    display: block !important;
+  }
+  .wizzy-skeleton-results-filters-header,
+  .wizzy-skeleton-results-filters-item-head,
+  .wizzy-skeleton-results-filters-item,
+  .wizzy-skeleton-result-product-title,
+  .wizzy-skeleton-result-product-regular-price,
+  .wizzy-skeleton-result-product-discounted-price {
+    height: 16px;
+    display: inline-block;
+    width: 100%;
+    border-radius: 2px;
+    margin-top: 10px;
+  }
+
+  .wizzy-skeleton-result-product-regular-price {
+    width: 20%;
+  }
+
+  .wizzy-skeleton-result-product-discounted-price {
+    width: 40%;
+  }
+
+  .wizzy-skeleton-results-filters {
+    width: 270px;
+  }
+
+  .wizzy-skeleton-results-filters-header {
+    height: 50px;
+  }
+
+  .wizzy-skeleton-results-filters-item {
+    height: 10px;
+  }
+
+  .wizzy-skeleton-results-filters-item-head {
+    height: 20px;
+  }
+}

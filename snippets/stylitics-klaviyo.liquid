@@ -1,0 +1,140 @@
+{% if template contains 'product' %}
+
+<script text="text/javascript">
+
+
+async function fetchData() {
+  const response = await fetch(
+    "https://widget-api.stylitics.com/api/outfits?username=anneklein&item_number={{- product.handle -}}"
+  );
+  const data = await response.json();
+
+  var klaviyo = window.klaviyo || [];
+  var klaviyoItem = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }},
+    StyliticsOutfits: data
+  };
+  
+  console.log(klaviyoItem);
+
+  klaviyo.push(['track', 'Viewed Product', klaviyoItem]);
+  klaviyo.push(['trackViewedItem', {
+    Title: klaviyoItem.Name,
+    ItemId: klaviyoItem.ProductID,
+    Categories: klaviyoItem.Categories,
+    ImageUrl: klaviyoItem.ImageURL,
+    Url: klaviyoItem.URL,
+    Metadata: {
+      Brand: klaviyoItem.Brand,
+      Price: klaviyoItem.Price,
+      CompareAtPrice: klaviyoItem.CompareAtPrice
+    }
+  }]);
+
+  document.querySelector('.button--add-to-cart').addEventListener('click',function (){
+    klaviyo.push(['track', 'Added to Cart', klaviyoItem]);
+  });
+}
+
+fetchData();
+
+</script>
+
+{% comment %}
+<script>
+
+  function poll(isready, success, error, count, interval) {
+  if (count === undefined) {
+    count = 10000;
+  }
+  if (interval === undefined) {
+    interval = 20;
+  }
+  if (isready()) {
+    success();
+    return;
+  }
+  // The call back isn't ready. We need to wait for it
+  setTimeout(function(){
+    if (!count) {
+      // We have run out of retries
+      if (error !== undefined) {
+        error();
+      }
+    } else {
+      // Try again
+      poll(isready, success, error, count -1, interval);
+    }
+  }, interval);
+}
+
+function fetchData() {
+  var data = null;
+  
+  var sendKlaviyoData = function(styliticsData) {
+    var klaviyo = klaviyo || [];
+    var klaviyoItem = {
+      Name: {{ product.title|json }},
+      ProductID: {{ product.id|json }},
+      Categories: {{ product.collections|map:'title'|json }},
+      ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+      URL: "{{ shop.secure_url }}{{ product.url }}",
+      Brand: {{ product.vendor|json }},
+      Price: {{ product.price|money|json }},
+      CompareAtPrice: {{ product.compare_at_price_max|money|json }},
+      StyliticsOutfits: 'data'
+    };
+
+    console.log(klaviyoItem);
+
+    klaviyo.push(['track', 'Viewed Product', klaviyoItem]);
+    klaviyo.push(['trackViewedItem', {
+      Title: klaviyoItem.Name,
+      ItemId: klaviyoItem.ProductID,
+      Categories: klaviyoItem.Categories,
+      ImageUrl: klaviyoItem.ImageURL,
+      Url: klaviyoItem.URL,
+      Metadata: {
+        Brand: klaviyoItem.Brand,
+        Price: klaviyoItem.Price,
+        CompareAtPrice: klaviyoItem.CompareAtPrice,
+        StyliticsOutfits: klaviyoItem.StyliticsOutfits
+      }
+    }]);
+
+    document.querySelector('.button--add-to-cart').addEventListener('click',function (){
+      klaviyo.push(['track', 'Added to Cart', klaviyoItem]);
+    }); 
+  };
+   
+  fetch("https://widget-api.stylitics.com/api/outfits?username=anneklein&item_number={{- product.handle -}}")
+  .then(response => response.json())
+  .then(responseData => {
+    // Store the JSON response in a variable
+    data = responseData; 
+  })
+  .catch(error => {
+    console.error("Error fetching data:", error);
+  });
+  
+  poll(function() {
+    return data;
+  }, function() {
+    sendKlaviyoData(data);
+  }, function() {
+    sendKlaviyoData(data);
+  });
+}
+
+fetchData();
+</script>
+{% endcomment %}
+{% endif %} 
+  

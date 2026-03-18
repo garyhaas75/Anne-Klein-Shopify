@@ -1,0 +1,11 @@
+<main id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section watches-page">
+  <section class="section__wrapper section">
+    
+    <div class="container watches">
+      <h1 class="title">Frequently Asked Questions</h1>
+	   {% section 'page__faq-homegoods-accordion-anchors' %}
+      <hr>
+      {% section 'page__faq-homegoods-accordion' %}
+    </div>
+  </section>
+</main>

@@ -1,0 +1,138 @@
+{{ 'wizzyCustom.css' | asset_url | stylesheet_tag }}
+{{ 'wizzyCustom2.css' | asset_url | stylesheet_tag }}
+
+<style>
+    /* Promotion Banners CSS */
+
+  .wz-banner-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block !important;
+  }
+  .wz-promotion-banner-image {
+    height: 100%;
+  }
+  .wz-promotion-banner.wz-banner-type {
+    margin: 5px 0;
+  }
+
+  @media(max-width:768px){
+    .wz-promotion-banner {
+        position: relative;
+   }
+    .wz-autocomplete-sugegstions-products-wrapper {
+        display: grid;
+   }
+    .wz-promotion-banner.wz-banner-type, .wizzy-autocomplete-wrapper .wz-promotion-banner {
+        height:100px;
+        width:100%;
+   }
+    .wizzy-autocomplete-wrapper .wz-promotion-banner-image{
+        padding:5px 0;
+   }
+    .wizzy-search-results-list .wz-grid-type .wz-promotion-banner-image{
+        padding:5px
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="1"]{
+        width:50%;
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="2"]{
+        width:100%;
+   }
+    .wz-promotion-banner {
+        position: relative;
+   }
+    .wz-promotion-banner-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        transition: opacity 0.6s ease;
+        z-index: 1;
+   }
+    .wz-hover-image {
+        opacity: 0;
+        z-index: 2;
+   }
+    .wz-promotion-banner .wz-promotion-banner-image:not(.wz-hover-image) {
+        animation: fadeOutInDefault 4s infinite;
+   }
+    .wz-promotion-banner .wz-hover-image {
+        animation: fadeInOutHover 4s infinite;
+   }
+    @keyframes fadeOutInDefault {
+        0%, 49% {
+            opacity: 1;
+       }
+        50%, 100% {
+            opacity: 0;
+       }
+   }
+    @keyframes fadeInOutHover {
+        0%, 49% {
+            opacity: 0;
+       }
+        50%, 100% {
+            opacity: 1;
+       }
+   }
+  }
+
+  @media(min-width:768px){
+    .wizzy-autocomplete-wrapper.withPromotionBanners {
+        flex-direction: column;
+   }
+    .wz-autocomplete-sugegstions-products-wrapper {
+        display: flex;
+   }
+   .wizzy-search-wrapper .wz-banner-type {
+       height: 300px;
+       width: 100%;
+   }
+    .wizzy-autocomplete-wrapper .wz-promotion-banner.wz-grid-type{
+        padding-right: 10px;
+   }
+    .wizzy-search-wrapper .wz-promotion-banner.wz-grid-type {
+        padding: 5px;
+   }
+    .wz-promotion-banner-image.wz-hover-image {
+        display: none;
+   }
+    .wz-promotion-banner:hover .wz-promotion-banner-image {
+        display:none;
+   }
+    .wz-promotion-banner:hover .wz-promotion-banner-image.wz-hover-image{
+        display:block;
+   }
+    .wizzy-autocomplete-wrapper .wz-banner-type .wz-promotion-banner-image{
+        height:250px;
+   }
+    .wizzy-autocomplete-wrapper .wz-promotion-banner[data-grid-width="1"] {
+        width: 33%;
+        height: auto;
+   }
+    .wizzy-autocomplete-wrapper .wz-promotion-banner[data-grid-width="2"] {
+        width: 66%;
+        height: auto;
+   }
+    .wizzy-autocomplete-wrapper .wz-promotion-banner[data-grid-width="3"] {
+        width: 99%;
+        height: auto;
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="1"]{
+        width:25%;
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="2"]{
+        width:50%;
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="3"]{
+        width:75%;
+   }
+    .wizzy-search-results-list .wz-promotion-banner[data-grid-width="4"]{
+        width:100%;
+   }
+  }
+</style>

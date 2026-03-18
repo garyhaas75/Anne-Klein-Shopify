@@ -1,0 +1,33 @@
+<div class="watches-header-wrapper">
+  <ul>
+  {% for block in section.blocks %}
+    <li><h4><a class="hover-underline-animation" href="#{{ block.settings.question_id | handleize }}" onclick="event.preventDefault(); $('html').animate({ scrollTop: $('#{{ block.settings.question_id | handleize }}').offset().top }, 0);"> {{ block.settings.question }} </a></h4></li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% schema %}
+  {
+    "name": "Watches Header",
+    "settings": [],
+	"blocks": [
+	  {
+		"name": "Question",
+		"type": "question",
+		"settings": [
+		  {
+			"type": "text",
+			"id": "question_id",
+			"label": "Question Anchor ID"
+		  },
+		  {
+			"type": "text",
+			"id": "question",
+			"label": "Question"
+		  }
+		]
+	  }
+	]
+	
+  }
+{% endschema %}

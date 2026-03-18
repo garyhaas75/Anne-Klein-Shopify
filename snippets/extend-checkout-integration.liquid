@@ -1,0 +1,190 @@
+<!-- Extend - Add necessary SDK script tags and configure the store -->
+<script src="https://sdk.helloextend.com/extend-sdk-client/v1/extend-sdk-client.min.js"></script>
+<script src="https://sdk.helloextend.com/extend-sdk-client-shopify-addon/v1/extend-sdk-client-shopify-addon.min.js"></script>
+<script>
+  Extend.config({ storeId: 'f071e494-ae3a-4874-8a8c-2b5a29e8189d', environment: 'production' })
+</script>
+
+<script>
+    // Wrapping the entire function in an iife gives access to the built in jQuery contained in the Checkout
+    // https://shopify.dev/themes/architecture/layouts/checkout-liquid#checkout-jquery
+    (function($) {
+
+    // If you add content to the Document Object Model (DOM) with only page:load, then there’s a risk that it could be overwritten by a page:change event.
+    // To avoid this issue, you should watch for both events when adding content.
+    $(document).on('page:load page:change', async function () {
+
+        if (meta.page.path != "/checkout/shipping") return;
+
+        var windowSize = window.matchMedia("(max-width: 798px)")
+          if (windowSize.matches) {
+            //Mobile resolution
+            document.querySelector('.order-summary-toggle').click();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+
+        // Create the Extend shipping protection offer element
+        const $extendShippingOfferElement = $('<div id="extend-shipping-offer"></div>')
+
+        // Insert the offer beneath Shipping section
+        $('.edit_checkout>.step__footer').first().after($extendShippingOfferElement)
+
+        // Used in hybrid workaround to subtract from total
+        let SPPrice = 0;
+        // Loop through cart items and hide Extend SP metadata
+        document.querySelectorAll('tbody tr.product').forEach(function(each) {
+            if (each.getAttribute('data-product-type') === 'Extend Shipping Contract') {
+                // Hides SP metadata for line item
+                if (document.querySelector('span.product__description__variant')) document.querySelector('span.product__description__variant').style.display = 'none';
+                if (document.querySelector('span.product__description__property')) document.querySelector('span.product__description__property').style.display = 'none';
+                // Saves SP price for use in hybrid workaround to subtract from cart total when accounting for price band
+                if (document.querySelector('.product__price span')) SPPrice = parseInt(document.querySelector('.product__price span').textContent.replace(/\$|\./g, ''));
+            }
+        })
+
+        // Hybrid Offer Workaround - Behavior to mimic Hybrid SP in Shopify
+        const hybridPrice = 50000; // Price which when exceeded will switch opt method (ie if $500.00, use 50000)
+        // Waits for window load to ensure iframes are ready
+        window.addEventListener('load', function() {
+            const SPIframe = document.querySelector('#extend-shipping-offers-iframe'); // Saves iframe to a variable
+            // Total price minus SP item price if present
+            let totalPrice = parseInt(document.querySelector('.payment-due__price').getAttribute('data-checkout-payment-due-target')) - SPPrice;
+            if (SPIframe) {
+                // Saves Document object of iframe to a variable so that we can interact with its contents
+                SPIframeDocument = SPIframe.contentDocument;
+                const checkbox = SPIframeDocument.querySelector('.shipping-check-box input')
+                // If checkbox is interacted with, prevents further interaction by code to avoid looping
+                checkbox.addEventListener('click', function(e) {localStorage.setItem('ExtendSPUserChecked', 'true')})
+                // If price exceeds band, and SP is enabled, and user has not interacted with SP yet, switches opt method
+                if (totalPrice > hybridPrice && checkbox.checked && localStorage.getItem('ExtendSPUserChecked') != 'true') checkbox.click()
+            }
+        })
+
+        /*************************/
+        /* Cart Mapper Helper    */
+        /*************************/
+        function cartMapper(cart) {
+            try{
+                return cart.items.map(function (item) {
+                    return {
+                        referenceId: item.id.toString(),
+                        quantity: item.quantity,
+                        purchasePrice: item.price,
+                        productName: item.title
+                    }
+                });
+            //returns null if mapping fails
+            }catch(error){
+                console.error("EXTEND: " + error);
+                return null;
+            }
+        }
+
+        //check if Extend and ExtendShopify SDK are loaded
+        if (window.Extend && window.Extend.shippingProtection && window.ExtendShopify) {
+
+            //return cart if successful fetch else set to null
+            let cart = await fetch('/cart.js')
+            .then((result) => {
+                return result.json()
+            })
+            .catch((error) => {
+                console.error("EXTEND: Failed to fetch - ", error)
+            });
+
+            const mappedCartItems = cartMapper(cart);
+
+            //check if shippingProtection is loaded and mappedCartItems is not null
+            if (mappedCartItems) {
+
+                const isShippingProtectionInCart = ExtendShopify.shippingProtectionInCart(cart.items)
+
+                Extend.shippingProtection.render({
+                    selector: '#extend-shipping-offer',
+                    items: mappedCartItems,
+                    isShippingProtectionInCart: isShippingProtectionInCart,
+                    onEnable: function (quote) {
+
+                        try{
+                            ExtendShopify.addSpPlanToCart({
+                                quote,
+                                callback: function (err, resp) {
+
+                                    // an error occurred
+                                    if (err) {
+                                        throw new Error (JSON.stringify(err));
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                }
+                            })
+                        }catch(error){
+                            console.error("EXTEND: " + error);
+                        }
+
+                    },
+                    onDisable: function (quote) {
+
+                        try{
+                            ExtendShopify.updateSpPlanInCart({
+                                action: 'remove',
+                                cart: cart,
+                                callback: function (err, resp) {
+
+                                    // an error occurred
+                                    if (err) {
+                                        throw new Error (JSON.stringify(err));
+                                    } else {
+                                        if (resp.isUpdated) window.location.reload();
+                                    }
+                                }
+                            })
+                        }catch (error){
+                            console.error("EXTEND: " + error);
+                        }
+                    },
+                    onUpdate: function (quote) {
+
+                        try{
+                            ExtendShopify.updateSpPlanInCart({
+                                action: 'update',
+                                cart: cart,
+                                quote: quote,
+                                callback: function (err, resp) {
+
+                                    // an error occurred
+                                    if (err) {
+                                        throw new Error (JSON.stringify(err));
+                                    } else {
+                                        if (resp.isUpdated) window.location.reload();
+                                    }
+                                }
+                            })
+                        }catch (error){
+                            console.error("EXTEND: " + error);
+                        }
+                    }
+                })
+            }else{
+                console.error("EXTEND: Missing Extend.shippingProtection or mappedCartItems");
+            }
+        }else{
+            console.error("EXTEND: Missing Extend SDK");
+        }
+    })
+  })(Checkout.$);
+</script>
+<style>
+
+    #extend-shipping-offer {
+        display: flex;
+        justify-content: flex-start;
+        margin: 10px 0 -10px 0;
+    }
+
+    @media(max-width: 749px) {
+        #extend-shipping-offer {
+            justify-content: center;
+        }
+    }
+</style>

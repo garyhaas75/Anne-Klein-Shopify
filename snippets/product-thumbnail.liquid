@@ -1,0 +1,275 @@
+{% if related_products == true %}
+  {% assign hover_enabled = block.settings.show_related_products_title_on_hover %}
+{% else %}
+  {% assign hover_enabled = settings.thumbnail_hover_enabled %}
+{% endif %}
+
+{% if type == 'block' %} 
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+{% assign secondaryImage = product.media[1] %}
+
+{% assign collection_handles = product.collections | map: 'handle' | join: ' ' %}
+
+{% assign product_tags = product.tags %}
+{% if section.settings.set_alt_as_decorative %}
+  {% assign alt_text = "" %}
+{% elsif product.featured_media.preview_image.alt contains 'youtube' or image.alt contains 'vimeo' %}
+  {% assign alt_text = product.title %}
+{% else %}
+  {% assign alt_text = product.featured_media.preview_image.alt %}
+{% endif %}
+
+{% if type == 'block' %}
+  {% assign image_crop = block.settings.image_crop %}
+{% else %}
+  {% assign image_crop = section.settings.image_crop %}
+{% endif %}
+
+{% if section.settings.align_height == true %}
+{% style %}
+  .product-{{ product.id }} .image__container img,
+  .product-{{ product.id }} .product-thumbnail__video .plyr {
+    max-width: 100%;
+    width: {{ height }}px;
+    margin: 0 auto;
+  }
+
+  .shopify-model-viewer-ui model-viewer {
+    --progress-bar-height: 2px;
+    --progress-bar-color: {{ settings.regular_color }};
+  }
+{% endstyle %}
+{% endif %}
+
+<div class="
+  {% include 'column-width', value: products_per_row %}
+  medium-down--one-half
+  {% if object.settings.mobile_products_per_row == '1' %}
+    small-down--one-whole
+  {% else %}
+    small-down--one-half
+  {% endif %}
+  column
+  {% if settings.enable_quickshop %}
+    quick-shop--true
+    quick-shop--closed
+    product-{{ product.id }} js-product_section
+  {% endif %}
+  {% if settings.stickers_enabled %}
+    has-thumbnail-sticker
+  {% endif %}
+  {% if product.media[1] != blank and settings.show_secondary_image == true %}
+    has-secondary-image-swap
+  {% endif %}
+  thumbnail
+  product__thumbnail
+  product__grid-item
+  thumbnail__hover-overlay--{{ hover_enabled }}
+  has-padding-bottom"
+  {% if section.settings.pagination_type != 'basic_pagination' %}
+    data-load-more--grid-item
+  {% endif %}>
+  <div class="product-wrap">
+
+      <div class="product-image__wrapper">
+        <div class="image__container product__imageContainer">
+          {% if product.tags contains 'Free Gift' or product.tags contains 'gwp' %}
+          
+          <img src="https://cdn.shopify.com/s/files/1/0274/7331/3863/files/free-gift.png?v=1635193846" class="free-gift-img-sticker"
+               style="z-index: 5; visibility: visible !important; opacity: 1 !important; height: auto !important;" alt="+ Free Gift">
+          {% endif %}
+          
+          <a href="{{ product.url | within: collection }}">
+            {% if settings.stickers_enabled %}
+              {% include 'product-thumbnail__sticker' %}
+            {% endif %}
+
+            {% comment %} Primary image {% endcomment %}
+            {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+
+            {% comment %} Secondary image {% endcomment %}
+            {% if product.media[1] != blank and settings.show_secondary_image == true %}
+              {% if product.media[1].media_type == 'external_video' %}
+                <div class="product-thumbnail__video secondary swap--visible video-on-hover">
+                  <div data-youtube-video>
+                    {{ product.media[1] | external_video_tag }}
+                  </div>
+                </div>
+              {% elsif product.media[1].media_type == 'video' %}
+                <div class="product-thumbnail__video secondary swap--visible video-on-hover" data-html5-video>
+                  {{ product.media[1] | video_tag: controls: false }}
+                </div>
+              {% else %}
+                {% include 'image-element', image: product.media[1], alt: alt_text, object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+              {% endif %}
+            {% endif %}
+          </a>
+        </div>
+
+        {% if hover_enabled or settings.enable_quickshop %}
+          <div class="thumbnail-overlay__container">
+            <a class="hidden-product-link" href="{{ product.url | within: collection }}">{{ product.title }}</a>
+            {% if hover_enabled %}
+              <div class="quick-shop__info animated fadeInDown">
+                <div class="thumbnail-overlay">
+                  <div class="info text-align-center">
+                    {% if settings.display_vendor %}
+                      <span class="product-thumbnail__vendor">{{ product.vendor }}</span>
+                    {% endif %}
+                     {% assign prod_collection =  "" %}
+                     {% assign rem_collection =  "" %}
+                     {% if product.title contains " - " %}
+                     {% assign prod_collection = product.title | split : " - " | last %}
+                     {% assign rem_collection = " - " | append : prod_collection %}
+                     {% endif %}
+
+                    <p class="product-thumbnail__title">{{ product.title | remove : rem_collection }}</p>
+                    
+                    
+                    
+                    {% comment %} Yotpo Star Ratings Start
+                    <div class="yotpo bottomLine"
+                         data-product-id="{{ product.id }}"> 
+                      {%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+                      {%- assign time_now = 'now' | date: '%s' %}
+                      {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+                      {%- assign diff_seconds_from_live = time_now | minus: yotpo_live_time %}
+                      {%- assign yotpo_bottomline_last_updated = product.metafields.yotpo.catalog_bottomline_update_time | date: '%s' %}
+                      {%- assign diff_seconds_from_last_bottomline_update = time_now | minus: yotpo_bottomline_last_updated %}
+                      {%- if yotpo_live_time and diff_seconds_from_live < 86400 or yotpo_bottomline_last_updated and diff_seconds_from_last_bottomline_update < 86400 -%}
+                      {%- assign yotpo_bottomline_obsolete = false %}
+                      {%- else %}
+                        {%- assign yotpo_bottomline_obsolete = true %}
+                      {%- endif %}
+                      {%- if yotpo_offload_content == 'yes' and yotpo_bottomline_obsolete != true -%}
+                      {{ product.metafields.yotpo.catalog_bottomline }}
+                      {%- endif %}
+                      </div>
+                     Yotpo Star Ratings End {% endcomment %}
+
+                    {% if prod_collection %}
+<!--                          <span class="title-collection">{{ prod_collection }}</span> -->
+                    {% endif %}
+                    
+                    {% if product.tags contains 'Coming Soon' %}
+                      <span>Coming Soon</span>
+                    {% else %}
+                      <span class="product-thumbnail__price price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
+                        {% if product.available %}
+                          {% if product.price_varies and product.price_min > 0 %}
+                            <small><em>{{ 'products.general.from' | t }}</em></small>
+                          {% endif %}
+                          {% if product.price_min > 0 %}
+                            <span class="money">{{ product.price_min | money }}</span>
+                          {% else %}
+                            {{ settings.free_price_text }}
+                          {% endif %}
+                          {% if product.compare_at_price_max > product.price %}
+                            <span class="product-thumbnail__was-price was-price">
+                              <span class="money">{{ product.compare_at_price_max | money }}</span>
+                            </span>
+                          {% endif %}
+                        {% else %}
+                          <span class="product-thumbnail__sold-out sold-out">{{ 'products.product.sold_out' | t }}</span>
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if settings.enable_quickshop %}
+              {% include 'product-thumbnail__quick-shop-button' %}
+            {% endif %}
+
+            {% if hover_enabled %}
+              {% if settings.enable_shopify_collection_badges and settings.enable_shopify_review_comments %}
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              {% endif %}
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">
+        {% include 'product-thumbnail__product-info' %}
+      </div>
+
+  </div>
+
+  {% include 'product-thumbnail__swatch' %}
+
+  {% if product.tags contains 'plp-message' %}
+    <p style="color: #ba2829;font-family: Avenir Next,Helvetica,sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; padding-top: 2px;">20% discount applied at checkout</p>
+  {% endif %}
+  
+  {% comment %}
+  
+  {% if product.tags contains 'HIDE ATC' or product.tags contains 'Hide ATC' or product.tags contains 'hide atc' or product.tags contains 'hide ATC' %}
+  {% else %}
+  	{% if product.tags contains 'pre-order' and settings.show_product_preorder %}
+  
+  	<button onclick="window.location.href = '{{ product.url }}'" class="button plp--shop-now button--add-to-cart" data-label="Shop Now" variant_id="{{ product.selected_or_first_available_variant.id}}">
+      <span class="text">Pre-order </span>
+      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+        <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+      </svg>
+    </button>
+  
+  	{% elsif product.tags contains 'Coming Soon' %}
+  
+  	<button onclick="window.location.href = '{{ product.url }}'" class="button plp--shop-now button--add-to-cart" data-label="Shop Now" variant_id="{{ product.selected_or_first_available_variant.id}}">
+      <span class="text">Coming Soon</span>
+      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+        <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+      </svg>
+    </button>
+  
+    {% elsif product.available == false %}
+
+    <button type="button" class="button plp--sold-out button--add-to-cart disabled" data-label="Add to cart" variant_id="{{ product.selected_or_first_available_variant.id}}" disabled="disabled">
+      <span class="text">Sold Out</span>
+      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+        <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+      </svg>
+    </button>
+
+  
+  
+    {% elsif product.variants.size == 1 %}
+
+    <button type="button" class="button plp--add-to-cart button--add-to-cart" data-label="{{ add_to_cart_label | json | escape }}" variant_id="{{ product.selected_or_first_available_variant.id}}">
+      <span class="text animated">Add to Cart</span>
+      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+        <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+      </svg>
+    </button>
+
+    {% else %}
+    <button onclick="window.location.href = '{{ product.url }}'" class="button plp--shop-now button--add-to-cart" data-label="Shop Now" variant_id="{{ product.selected_or_first_available_variant.id}}">
+      <span class="text">Shop Now</span>
+      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+        <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+      </svg>
+    </button>
+
+    {% endif %}
+  {% endif %}
+  {% endcomment %}
+  
+  {% if hover_enabled == false %}
+    {% if settings.enable_shopify_collection_badges and settings.enable_shopify_review_comments %}
+    <div class="product-thumbnail__review-stars is-flex is-justify-{{ settings.thumbnail_text_alignment }}">
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+    </div>
+    {% endif %}
+  {% endif %}
+
+</div>

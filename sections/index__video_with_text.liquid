@@ -1,0 +1,79 @@
+{% comment %}
+** Video - dynamic **
+- Draggable section
+{% endcomment %}
+
+{% assign object = section %}
+
+{% if object.settings.iframe_video or object.settings.image %}
+
+    {% assign video_url = object.settings.iframe_video %}
+    {% assign video_id = '' %}
+    {% if video_url contains 'vimeo' %}
+        {% assign video_id = video_url | remove : 'https://vimeo.com/' %}
+    {% endif %}
+    {% assign video_image = '' %}
+    {% if object.settings.image != blank %}
+        {% assign video_image = object.settings.image | img_url : 'original' %}
+    {% endif %}
+
+    {% assign video_title = object.settings.title %}
+    {% assign video_description = object.settings.description %}
+
+    {% include 'include-video-block' %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Video with text",
+  "class": "video-section jsVideo",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video_url",
+      "id": "iframe_video",
+      "label": "Vimeo video URL",
+      "accept": ["vimeo"]
+
+    },
+
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Video Image",
+      "info": "1600 x 900px recommended"
+    },
+
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured video"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Embed a Youtube or Vimeo video.</p>"
+    }
+  ],
+ "presets": [{
+     "name": "Video with text",
+     "category": "Video",
+     "settings": {
+
+       "iframe_video": "https://vimeo.com/314036603"
+
+     }
+   }]
+
+}
+
+{% endschema %}

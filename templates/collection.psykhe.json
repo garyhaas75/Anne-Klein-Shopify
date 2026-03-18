@@ -1,0 +1,39 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header": {
+      "type": "collection__header",
+      "settings": {
+        "collection_breadcrumb": false
+      }
+    },
+    "1758064137ba2a8749": {
+      "type": "apps",
+      "blocks": {
+        "psykhe_ai_anne_klein_collection_XtnWTJ": {
+          "type": "shopify://apps/psykhe-ai-anne-klein/blocks/collection/1e402e43-e9b5-4443-98c1-0fd7f62a4848",
+          "settings": {
+            "region_specific": "all",
+            "map_shopify_filters": false
+          }
+        }
+      },
+      "block_order": [
+        "psykhe_ai_anne_klein_collection_XtnWTJ"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "1758064137ba2a8749"
+  ]
+}

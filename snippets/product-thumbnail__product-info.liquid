@@ -1,0 +1,64 @@
+<div class="product-thumbnail">
+  {% if settings.display_vendor %}
+    <span class="product-thumbnail__vendor">{{ product.vendor }}</span>
+  {% endif %}
+
+    {% assign prod_collection =  "" %}
+    {% assign rem_collection =  "" %}
+    {% if product.title contains " - " %}
+    {% assign prod_collection = product.title | split : " - " | last %}
+    {% assign rem_collection = " - " | append : prod_collection %}
+    {% endif %}
+
+  <p class="product-thumbnail__title">{{ product.title | remove : rem_collection }}</p>
+
+  {% comment %}
+  <a href="{{ product.url }}">
+    
+	{% comment %} Yotpo Star Ratings Start {% endcomment %}
+    <div class="yotpo bottomLine" data-product-id="{{ product.id }}"> 
+    {%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+    {%- assign time_now = 'now' | date: '%s' %}
+    {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+    {%- assign diff_seconds_from_live = time_now | minus: yotpo_live_time %}
+    {%- assign yotpo_bottomline_last_updated = product.metafields.yotpo.catalog_bottomline_update_time | date: '%s' %}
+    {%- assign diff_seconds_from_last_bottomline_update = time_now | minus: yotpo_bottomline_last_updated %}
+    {%- if yotpo_live_time and diff_seconds_from_live < 86400 or yotpo_bottomline_last_updated and diff_seconds_from_last_bottomline_update < 86400 -%}
+    {%- assign yotpo_bottomline_obsolete = false %}
+    {%- else %}
+      {%- assign yotpo_bottomline_obsolete = true %}
+    {%- endif %}
+    {%- if yotpo_offload_content == 'yes' and yotpo_bottomline_obsolete != true -%}
+    {{ product.metafields.yotpo.catalog_bottomline }}
+    {%- endif %}
+    </div>
+    {% comment %} Yotpo Star Ratings End {% endcomment %}
+  </a>
+  {% endcomment %}
+  
+  {% if rem_collection %}
+<!--   <span class="title-collection">{{ prod_collection }}</span> -->
+  {% endif %}
+
+    <span class="product-thumbnail__price price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
+      {% if product.tags contains 'Coming Soon' %}
+      <span class="product-thumbnail__sold-out sold-out">Coming Soon</span>
+      {% elsif product.available %}
+        {% if product.price_varies and product.price_min > 0 %}
+          <small><em>{{ 'products.general.from' | t }}</em></small>
+        {% endif %}
+        {% if product.price_min > 0 %}
+          <span class="money">{{ product.price_min | money }}</span>
+        {% else %}
+          {{ settings.free_price_text }}
+        {% endif %}
+        {% if product.compare_at_price_max > product.price %}
+          <span class="product-thumbnail__was-price was-price">
+            <span class="money">{{ product.compare_at_price_max | money }}</span>
+          </span>
+        {% endif %}
+      {% else %}
+        <span class="product-thumbnail__sold-out sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {% endif %}
+    </span>
+</div>

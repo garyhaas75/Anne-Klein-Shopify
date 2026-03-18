@@ -1,0 +1,91 @@
+<section class="
+                is-width-standard
+                has-gutter-enabled
+                has-xlarge-padding-top
+                has-xlarge-padding-bottom">
+    <div class="container" >
+        <h2 class="insta-title">
+            <div class="marquee">
+                <div class="track">
+                    <div class="content">{{ block.settings.marque_tags }}</div>
+                </div>
+            </div>
+        </h2>
+    </div>
+
+    <div class=" container
+                insta-container-wrapper 
+                is-flex">
+    
+        <div class="insta-logo">
+            <div class="text-share">
+                Share
+            </div>
+            <div class="text-hash">
+                <span>{{ block.settings.hash_tag }}</span>
+                <div class="insta-id"> 
+                    {{ block.settings.insta_id }}
+                </div>
+            </div>
+
+
+        </div>
+        {% if block.settings.access_token != '' %}
+        <div class="insta-image-container
+                    is-flex    
+        
+        ">
+
+            <div class="insta-large-image one-half">
+                <div id="instagram-image-0" class="item"></div>
+            </div>
+            <div class="insta-small-image one-half is-flex is-flex-row is-flex-wrap ">
+                <div id="instagram-image-1" class="item "></div>
+                <div id="instagram-image-2" class="item "></div>
+                <div id="instagram-image-3" class="item "></div>
+                <div id="instagram-image-4" class="item "></div>
+            </div>
+
+
+        </div>
+       {% else %}
+                {{ block.settings.embed_code }}
+      {% endif %}
+    
+    </div>
+</section>                
+
+{% if block.settings.access_token != '' %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function load() {
+        if (!window.jQuery) {
+            return setTimeout(load, 50);
+        }
+        var lastIndex = 1;
+        var instagramURL = 'https://graph.instagram.com/me/media?fields=caption,media_type,media_url,permalink,thumbnail_url&access_token={{ block.settings.access_token }}';
+        var instagram_images = [];
+        $.ajax({
+            url: instagramURL,
+            dataType: 'jsonp',
+            crossDomain: true
+        }).done(function (data) {
+            var images = data.data;
+            for (var i = 0; i <5; i++) {
+                var image = images[i];
+                var imgSrc = image.media_type === 'VIDEO' ? image.thumbnail_url : image.media_url;
+                var html = '<a href="' + image.permalink + '" target="_blank" rel="noreferrer" title="' + image.caption + '">' + '<img src="' + imgSrc +'" alt="' + image.caption + '"/></a>';
+
+                instagram_images.push(html);
+            }
+            instagram_images.forEach(function (currentValue, index) {
+                $('#instagram-image-' + index +'').html(instagram_images.slice(index, lastIndex));
+                lastIndex++;
+            });
+        });
+    }, false);
+</script>
+{% comment %}
+IGQVJXaFFxdVFtTVYwdGNlVS03TGdjc2pvbmZAOM0syYk9tRWszOGFXNTdLUDd5WWV4RjI5N1ZAwazFOZAmN5ZAzVmY2c5blpmcThkN0s1bkt3anNMQ2NUdkIxNTV1LTFjMl9XbGktdElERlNtdEZA3XzV0OAZDZD
+{% endcomment %}
+{% endif %}

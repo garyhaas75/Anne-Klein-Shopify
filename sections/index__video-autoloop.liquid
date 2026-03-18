@@ -1,0 +1,156 @@
+<div id="video_autoloop_{{ section_id }}" class="video_autoloop_wrapper">
+  
+  {% if section.settings.link %}<a href="{{ section.settings.link }}">{% endif %}
+  <video aria-label="Featured Collection" muted autoplay loop playsinline preload title="{{ section.settings.title }}" poster="{{ section.settings.video_poster | img_url: 'master' }}" {% if section.settings.klaviyo_id != blank %}style="cursor:pointer"{% endif %}>
+    <source src="{{ section.settings.video }}" type="video/mp4">
+  </video>
+  {% if section.settings.link %}</a>{% endif %}
+
+  {% unless section.settings.icon_color == 'none' %}
+      <button aria-label="Mute" tabindex="0" class="mute-btn video_autoloop icon_{{ section.settings.icon_color }} video_muted"></button>
+  {% endunless %}
+
+</div>
+
+{% if section.settings.klaviyo_id != blank %}
+<script type="text/javascript">
+	document.querySelector('#video_autoloop_{{ section_id }} video').addEventListener('click', function (){
+		window._klOnsite = window._klOnsite || []; 
+		window._klOnsite.push(['openForm', '{{ section.settings.klaviyo_id }}']);
+	});
+</script>
+{% endif %}
+
+<style>
+  .video_autoloop_wrapper {
+    width: 100%;
+    position: relative;
+  }
+  .video_autoloop_wrapper video {
+    width: 100%;
+  }
+  .video_autoloop {
+    cursor: pointer;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    bottom: 25px;
+    left: 25px;
+    width: 50px;
+    height: 42px;
+  }
+  .icon_black.video_muted {
+    background-image: url("{{ 'volume-mute.png' | asset_img_url: 'master' }}");
+      }
+
+  .icon_black.video_unmuted {
+    background-image: url("{{ 'volume-up.png' | asset_img_url: 'master' }}");
+      }
+
+  .icon_white.video_muted {
+    background-image: url("{{ 'volume-mute-white.png' | asset_img_url: 'master' }}");
+      }
+
+  .icon_white.video_unmuted {
+    background-image: url("{{ 'volume-up-white.png' | asset_img_url: 'master' }}");
+      }
+</style>
+
+<script>
+  $(document).ready(function() {
+
+    $('.video_autoloop').click(function() {
+      var icon = $(this); 
+
+      if (icon.hasClass('video_muted')) {
+        icon.parent().find('video').prop('muted', false);
+        icon.removeClass('video_muted');
+        icon.addClass('video_unmuted');
+      }
+
+      else if (icon.hasClass('video_unmuted')) {
+        icon.parent().find('video').prop('muted', true);
+        icon.removeClass('video_unmuted');
+        icon.addClass('video_muted');
+      }
+
+    });
+
+    $('.video_autoloop').on('keypress', function(e) {
+      if(e.which == 13){
+        var icon = $(this); 
+  
+        if (icon.hasClass('video_muted')) {
+          icon.parent().find('video').prop('muted', false);
+          icon.removeClass('video_muted');
+          icon.addClass('video_unmuted');
+        }
+  
+        else if (icon.hasClass('video_unmuted')) {
+          icon.parent().find('video').prop('muted', true);
+          icon.removeClass('video_unmuted');
+          icon.addClass('video_muted');
+        }
+      }
+    });
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Video with Autoloop",
+    "settings": [
+	  {
+		"type": "url",
+		"id": "video",
+		"label": "Video"
+	  },
+  	  {
+		"type": "image_picker",
+		"id": "video_poster",
+		"label": "Video placeholder"
+	  },
+	  {
+		"type": "url",
+		"id": "link",
+		"label": "Link"
+	  },
+  	  {
+		"type": "text",
+		"id": "title",
+		"label": "Video title"
+	  },
+	  {
+		"type": "select",
+		"id": "icon_color",
+		"options": [
+		  {
+			"label": "Black",
+			"value": "black"
+		  },
+		  {
+			"label": "White",
+			"value": "white"
+		  },
+          {
+            "label": "None",
+			"value": "none"
+          }
+		],
+		"label": "Volume icon color"
+	  },
+      {
+        "type": "header",
+        "content": "Klaviyo"
+      },
+      {
+		"type": "text",
+		"id": "klaviyo_id",
+		"label": "Klaviyo Pop-up ID"
+	  }
+	],
+	"presets": [
+	  { "name": "Video with autoloop", "category": "Video" }
+	]
+  }
+{% endschema %}

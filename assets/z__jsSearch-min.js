@@ -1,0 +1,1 @@
+"use strict";Shopify.theme.jsSearch={init:function(e){Shopify.theme.jsSearch=$.extend(this,Shopify.theme.getSectionData(e)),this.enable_breadcrumb&&"basic_pagination"==this.pagination_type&&Shopify.theme.breadcrumbs.init(this.number_of_pages)},unload:function(){Shopify.theme.breadcrumbs.unload()}};

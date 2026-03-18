@@ -1,0 +1,16 @@
+<script src="{{ 'wizzyCustom.js' | asset_url }}" defer></script>
+{% comment %}
+  <script src="{{ 'wizzyFrontEndBeta.min.js' | asset_url }}" defer></script>
+{% endcomment %}
+<script>
+  if (typeof window.wizzyLazyAssets != "undefined") {
+    window.wizzyLazyAssets = window.wizzyLazyAssets ? window.wizzyLazyAssets : [];
+        window.wizzyLazyAssets.push("{{ 'wizzyFrontEndBeta.min.js' | asset_url  }}",'scripts');
+  }
+</script>
+
+{% render 'wizzy.search.results.product' %}
+{% render 'wizzy.search.wrapper' %}
+{% render 'wizzy.autocomplete.topproducts' %}
+{% render 'wizzy-promotion-banner' %}
+{% render 'wizzy.search.mobile' %}

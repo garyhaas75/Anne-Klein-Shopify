@@ -1,0 +1,85 @@
+{% comment %}
+Required values
+menu_link: linklist
+______________
+Optional values
+linklist_class: <string>
+link_setting: <string>
+{% endcomment %}
+
+<div class="mega-menu__linklist {{ linklist_class }} mobile__block">
+  {% assign menu = linklists[menu_link] %}
+  {% if menu_count > 1 %}
+  <div class="accordion-title">
+   <p class="menu__heading" data-sidebar-block__toggle="closed" aria-label="toggle">
+      {% if link_setting != blank %}<a href="{{ link_setting }}">{% endif %}
+        {{ menu.title }}
+      {% if link_setting != blank %}</a>{% endif %}
+
+      <button class="sidebar-block__toggle-icon icon-style--{{ settings.toggle_icon_style }}">
+        {% if settings.toggle_icon_style == 'plus_and_minus' %}
+          {% include settings.icon, name: 'plus', icon_class: 'icon--active' %}
+          {% include settings.icon, name: 'minus' %}
+        {% else %}
+          {% include settings.icon, name: 'down-caret', icon_class: 'icon--active' %}
+        {% endif %}
+     </button>
+    </p>
+
+  </div>
+  <ul data-sidebar-block__content--collapsible>
+    {% for link in menu.links %}
+      <li>
+        <a href="{{ link.url }}" class="mega-menu__linklist-link {% if link.active %}is-active{% endif %}"
+           {% if section.settings.collection_title_one == link.title and section.settings.collection_color_one %}
+           style="color: {{ section.settings.collection_color_one }};"
+           {% elsif section.settings.collection_title_two == link.title and section.settings.collection_color_two %}
+           style="color: {{ section.settings.collection_color_two }};"
+           {% elsif section.settings.collection_title_three == link.title and section.settings.collection_color_three %}
+           style="color: {{ section.settings.collection_color_three }};"
+           {% endif %}
+           >
+          {% if link.title contains 'NEW!' %}
+          {{ link.title | remove: 'NEW!' }} <span style="border-bottom: 1px solid transparent; color: #882730;">NEW!</span> 
+          {% else %}
+          {{ link.title }}
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+    {{ bottom_link }}
+  </ul>
+  {% else %}
+  <div class="accordion-title image-mobile-hidden">
+     <p class="menu__heading" data-sidebar-block__toggle="closed" aria-label="toggle">
+        {% if link_setting != blank %}<a href="{{ link_setting }}">{% endif %}
+          {{ menu.title }}
+        {% if link_setting != blank %}</a>{% endif %}
+
+        <button class="sidebar-block__toggle-icon icon-style--{{ settings.toggle_icon_style }}">
+          {% if settings.toggle_icon_style == 'plus_and_minus' %}
+            {% include settings.icon, name: 'plus', icon_class: 'icon--active' %}
+            {% include settings.icon, name: 'minus' %}
+          {% else %}
+            {% include settings.icon, name: 'down-caret', icon_class: 'icon--active' %}
+          {% endif %}
+       </button>
+      </p>
+
+    </div>
+        <ul>
+           {% for link in menu.links %}
+             <li>
+               <a href="{{ link.url }}" class="mega-menu__linklist-link {% if link.active %}is-active{% endif %}">
+                 {% if link.title contains 'NEW!' %}
+                 {{ link.title | remove: 'NEW!' }} <span style="border-bottom: 1px solid transparent; color: #882730;">NEW!</span> 
+                 {% else %}
+                 {{ link.title }}
+                 {% endif %}
+               </a>
+             </li>
+           {% endfor %}
+           {{ bottom_link }}
+         </ul>
+  {% endif %}
+</div>

@@ -1,0 +1,54 @@
+<section class="store-locator section">
+  <h1 class="store-locator__title">{{ section.settings.title }}</h1>
+  <div id='storemapper' style='width:100%;'>
+    <p>Store Locator is loading from <a href='https://www.storemapper.co'>Storemapper</a>...</p>
+  </div>
+  <script data-storemapper-start='2024,10,10'
+          data-storemapper-id='28814-ShFBXVOWOeG0kodJ'>
+          (function() {var script = document.createElement('script');
+            script.type  = 'text/javascript';script.async = true;
+            script.src = 'https://www.storemapper.co/js/widget-3.min.js';
+            var entry = document.getElementsByTagName('script')[0];
+            entry.parentNode.insertBefore(script, entry);}
+          ());
+  </script>
+</section>
+
+<style>
+  #shopify-section-{{section.id}} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": [
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Top spacing",
+        "default": 40,
+        "min": 0,
+        "max": 80,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Bottom spacing",
+        "default": 40,
+        "min": 0,
+        "max": 80,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Find a Store Location"
+      }
+    ]
+  }
+{% endschema %}

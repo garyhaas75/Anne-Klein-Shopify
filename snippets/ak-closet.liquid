@@ -1,0 +1,289 @@
+
+
+<section id="shopify-section-akcloset" class="section shopify-section section-waer-anne 
+                is-width-standard
+                  has-gutter-enabled
+                  has-large-padding-top
+                  has-large-padding-bottom
+                  jsAkcloset
+                ">
+    <div class="container">
+        <div class="heading-wrapper--wear-anne-collection
+                    heading-wrapper
+                    heading-wrapper--short
+                    one-whole column
+                    is-flex
+                    is-flex-column
+                    is-align-center
+                    text-align-center"> <h2 class="wear-anne-collection__title title">
+            
+{{ block.settings.block_title }}</h2>
+        
+        </div>
+    </div>
+
+    <div class="container has-column-padding-bottom is-justify-center
+                wear-anne-container">  
+        <div class="mobile-scroll 
+                    is-flex">
+        <div class="wear_anne__item
+                one-fourth
+                medium-down--one-half
+                thumbnail column selected" data-wear-anne="">
+                <img src="{{ block.settings.image_1 | img_url : '450x1000' }}" alt=
+                "{{ block.settings.title_1 }}" />
+                <div class="wear_anne_title title"> <span> {{ block.settings.title_1 }}</span></div>
+        </div>
+        <div class="wear_anne__item
+                one-fourth
+                medium-down--one-half
+                thumbnail column active blured">
+                <img src="{{ block.settings.image_2 | img_url : '450x1000' }}" alt=
+                "{{ block.settings.title_2 }}" />
+                <div class="wear_anne_title title"> <span> {{ block.settings.title_2 }} </span> </div>
+        </div>
+        <div class="wear_anne__item
+                one-fourth
+                medium-down--one-half
+                thumbnail column active blured">
+                <img src="{{ block.settings.image_3 | img_url : '450x1000' }}" alt=
+                "{{ block.settings.title_3 }}" />
+                <div class="wear_anne_title title"> <span> {{ block.settings.title_3 }} </span> </div>
+        </div>
+        <div class="wear_anne__item
+                one-fourth
+                medium-down--one-half
+                thumbnail column active blured">
+                <img src="{{ block.settings.image_4 | img_url : '450x1000' }}" alt=
+                "{{ block.settings.title_4 }}" />
+                <div class="wear_anne_title title"> <span> {{ block.settings.title_4 }} </span> </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<section class="get-the-look
+                is-width-standard
+                has-gutter-enabled
+                has-xlarge-padding-top
+                has-xlarge-padding-bottom ">
+    <div class="container" >
+        <div class="heading-wrapper--get-the-look-collection
+                    heading-wrapper
+                    heading-wrapper--short
+                    one-whole column
+                    is-flex
+                    is-flex-column
+                    is-align-center
+                    text-align-center">
+            <h3 class="get-the-look__title">Get The Look</h3>
+        </div>
+    </div>
+
+{% for i in (1..4) %}
+{% capture large_image %}large_image_{{ i }}{% endcapture %}
+{% capture block_product_1 %}block_{{ i }}_product_1{% endcapture %}
+{% capture block_product_2 %}block_{{ i }}_product_2{% endcapture %}
+{% capture block_product_3 %}block_{{ i }}_product_3{% endcapture %}
+{% capture block_product_4 %}block_{{ i }}_product_4{% endcapture %}
+{% capture block_product_5 %}block_{{ i }}_product_5{% endcapture %}
+
+{% comment %} Get the look First item  {% endcomment %}
+    <div class="container
+                get-the-look-container
+                {% if forloop.first == true %} selected{% endif %}
+                is-align-start">
+
+        <div class="image-with-text__image-column
+                    image-with-text__column
+
+                    one-half
+
+                    medium-down--one-whole
+                    column
+                    is-flex
+                    is-align-center
+
+                    image-crop--none">
+
+
+                        <div class="image-element__wrap" >
+                        <img src="{{ block.settings[large_image] | img_url : '500x' }}" alt="" />
+                        </div>
+
+        </div>
+                            <div class="image-with-text__text-column
+                                image-with-text__column
+                                one-half
+                                medium-down--one-whole
+                                column
+                                has-padding-left
+                                has-padding-right
+
+                                is-flex
+                                is-flex-wrap
+                                is-justify-left
+                                is-align-center
+                                ">
+                                {% assign block_product_1 = block.settings[block_product_1] %}
+                                {% if block_product_1 != blank %}
+                                {%- assign product = all_products[block_product_1] -%}
+                                <div class="image-with-text__wrapper one-whole
+                                            is-flex
+                                            is-flex-nowrap">
+                                        <div class="get-the-look-thumb one-half"><img src="{{ product.featured_image | img_url : '140x'  }}" alt="" /></div>
+                                        <div class="get-the-look-thumb-content one-whole">
+                                                <div class="thumbnail__caption text-align-left">
+                                                    <div class="product-thumbnail">
+                                                        <a href="{{ product.url }}"
+                                                           class="product-thumbnail__title">{{ product.title }}
+
+                                                        </a>
+
+                                                        <span class="product-thumbnail__price price ">
+                                                            <span class="money">{{ product.price | money }}</span>
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                                {% comment %}
+                                                <div class="buttonxs is-left"> <a href="{{ block_1_product_1.url }}" class="button button--primary ">Shop Now</a></div>
+                                                {% endcomment %}
+                                                {% include 'get-the-look-quick-shop-button' %}
+                                        </div>
+                                </div>
+                                {% endif %}
+
+                                {% assign block_product_2 = block.settings[block_product_2] %}
+                                {% if block_product_2 != blank %}
+                                {%- assign product = all_products[block_product_2] -%}
+
+                                <div class="image-with-text__wrapper one-whole
+                                            is-flex
+                                            is-flex-nowrap
+                                            ">
+                                        <div class="get-the-look-thumb one-half"><img src="{{ product.featured_image | img_url : '140x' }}" alt="" /></div>
+                                        <div class="get-the-look-thumb-content one-whole">
+                                                <div class="thumbnail__caption text-align-left">
+                                                    <div class="product-thumbnail">
+                                                        <a href="{{ product.url }}"
+                                                           class="product-thumbnail__title">{{ product.title }}
+                                                        </a>
+
+                                                        <span class="product-thumbnail__price price ">
+                                                            <span class="money">{{ product.price | money }}</span>
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                                {% comment %}
+                                                <div class="buttons is-left"> <a href="{{ block_1_product_2.url }}" class="button button--primary ">Shop Now</a></div>
+                                                {% endcomment %}
+                                                 {% include 'get-the-look-quick-shop-button' %}
+
+                                        </div>
+                                </div>
+                                {% endif %}
+
+                                {% assign block_product_3 = block.settings[block_product_3] %}
+                                {% if block_product_3 != blank %}
+                                {%- assign product = all_products[block_product_3] -%}
+
+                                <div class="image-with-text__wrapper one-whole
+                                            is-flex
+                                            is-flex-nowrap">
+                                        <div class="get-the-look-thumb one-half"><img src="{{ product.featured_image | img_url : '140x' }}" alt="" /></div>
+                                        <div class="get-the-look-thumb-content one-whole">
+                                                <div class="thumbnail__caption text-align-left">
+                                                    <div class="product-thumbnail">
+                                                        <a href="{{ product.url }}"
+                                                           class="product-thumbnail__title">{{ product.title }}
+                                                        </a>
+
+                                                        <span class="product-thumbnail__price price ">
+                                                            <span class="money">{{ product.price | money }}</span>
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                                {% comment %}
+                                                <div class="buttons is-left"> <a href="{{ product.url }}" class="button button--primary ">Shop Now</a></div>
+                                                {% endcomment %}
+
+                                                {% include 'get-the-look-quick-shop-button' %}
+                                        </div>
+                                </div>
+                                {% endif %}
+
+
+                                {% assign block_product_4 = block.settings[block_product_4] %}
+                                {% if block_product_4 != blank %}
+                                {%- assign product = all_products[block_product_4] -%}
+
+                                <div class="image-with-text__wrapper one-whole
+                                            is-flex
+                                            is-flex-nowrap">
+                                        <div class="get-the-look-thumb one-half"><img src="{{ product.featured_image | img_url : '140x' }}" alt="" /></div>
+                                        <div class="get-the-look-thumb-content one-whole">
+                                                <div class="thumbnail__caption text-align-left">
+                                                    <div class="product-thumbnail">
+                                                        <a href="{{ product.url }}"
+                                                           class="product-thumbnail__title">{{ product.title }}
+                                                        </a>
+
+                                                        <span class="product-thumbnail__price price ">
+                                                            <span class="money">{{ product.price | money }}</span>
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                                {% comment %}
+                                                <div class="buttons is-left"> <a href="{{ product.url }}" class="button button--primary ">Shop Now</a></div>
+                                                {% endcomment %}
+
+                                                {% include 'get-the-look-quick-shop-button' %}
+                                        </div>
+                                </div>
+                                {% endif %}
+
+                               {% assign block_product_5 = block.settings[block_product_5] %}
+                               {% if block_product_5 != blank %}
+                               {%- assign product = all_products[block_product_5] -%}
+
+                               <div class="image-with-text__wrapper one-whole
+                                           is-flex
+                                           is-flex-nowrap">
+                                       <div class="get-the-look-thumb one-half"><img src="{{ product.featured_image | img_url : '140x' }}" alt="" /></div>
+                                       <div class="get-the-look-thumb-content one-whole">
+                                               <div class="thumbnail__caption text-align-left">
+                                                   <div class="product-thumbnail">
+                                                       <a href="{{ product.url }}"
+                                                          class="product-thumbnail__title">{{ product.title }}
+                                                       </a>
+
+                                                       <span class="product-thumbnail__price price ">
+                                                           <span class="money">{{ product.price | money }}</span>
+                                                       </span>
+
+                                                   </div>
+                                               </div>
+                                               {% comment %}
+                                               <div class="buttons is-left"> <a href="{{ product.url }}" class="button button--primary ">Shop Now</a></div>
+                                               {% endcomment %}
+
+                                               {% include 'get-the-look-quick-shop-button' %}
+                                       </div>
+                               </div>
+                               {% endif %}
+
+
+                            </div>
+        
+                                        
+    </div>
+
+  {% endfor %}
+
+</section>
+
+{{ 'z__jsAkCloset-min.js' | asset_url | script_tag }}

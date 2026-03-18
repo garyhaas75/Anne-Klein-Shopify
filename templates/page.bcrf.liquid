@@ -1,0 +1,43 @@
+{% section 'bcrf-hero' %} 
+
+{% section 'bcrf-text-top' %} 
+
+{% section 'bcrf-html' %}
+
+<div class="desktop_only">
+{% section 'bcrf-featured-desktop' %} 
+</div>
+
+<div class="mobile_only">
+{% section 'bcrf-featured-mobile' %} 
+</div>
+
+{% section 'bcrf-text-bottom' %} 
+
+<style>
+  .rich-text__text.has-columns--1.text-align-left.content p {
+    font-family: "Avenir Next", Helvetica, sans-serif;
+    line-height: 28px;
+  }
+
+  .product-thumbnail__title {
+    font-family: "Avenir Next",Helvetica,sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+  @media only screen and (max-width: 480px) {
+    .slideshow-classic.page-dots--true {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .rich-text__text.has-columns--1.text-align-left.content p {
+      line-height: 28px;
+      margin-bottom: 15px;
+
+    }
+    .product-thumbnail__title {
+      font-size: 14px;"
+    }
+  }
+</style>

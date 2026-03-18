@@ -1,0 +1,188 @@
+{% if settings.product_layout == 'sections' %}
+{% comment %} Product - sections {% endcomment %}
+  <div id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section product-page">
+    <section class="section__wrapper
+                    section
+                    is-width-wide
+                    ">
+      <div class="container">
+
+        <div class="section is-width-standard">
+
+          <div class="one-whole column breadcrumb__container is-flex is-justify-space-between is-flex-column-reverse-mobile is-align-center has-padding-bottom">
+
+            <div class="breadcrumb__wrapper">
+              {% include 'breadcrumb', type: 'product' %}
+            </div>
+
+            {% comment %}
+            {% if collection.previous_product or collection.next_product %}
+              <div class="page-navigation-arrows has-padding-top has-padding-bottom is-{{ settings.breadcrumb_capitalization }}">
+                {% if collection.previous_product %}
+                  <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="page-navigation__next">
+                    {{ 'products.general.previous_product_html' | t }}
+                  </a>
+                {% endif %}
+                {% if collection.previous_product and collection.next_product %}
+                  <span class="page-navigation__divider"> | </span>
+                {% endif %}
+                {% if collection.next_product %}
+                  <a href="{{collection.next_product}}" title="{{ 'products.general.next_product_html' | t }}" class="page-navigation__next">
+                    {{ 'products.general.next_product_html' | t }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+            {% endcomment %}
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="container">
+        {% section 'product__sidebar' %}
+        {% section 'product__multi_color_multi_option_main' %}
+        {% comment %}
+        {% section 'product__recommendations' %}
+        {% endcomment %}
+      </div>
+  
+      <h4 id="widget-title" class="primary-title" style="display: none; text-align:center;">How to Style It</h4>
+      <div id="stylitics-widget-container"></div>
+  
+      <div data-rebuy-id="55486" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+	  <div data-rebuy-id="23545" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+    </section>
+  </div>
+
+{% elsif settings.product_layout == 'image_scroll' %}
+{% comment %} Product - image scroll {% endcomment %}
+  <div id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section product-page">
+    <section class="section
+                    is-width-wide
+                    has-padding-top
+                    ">
+      <div class="container has-padding-left has-padding-right">
+        <div class="one-whole column breadcrumb__container is-flex is-justify-space-between is-flex-column-reverse-mobile is-align-center">
+
+          <div class="breadcrumb__wrapper">
+            {% include 'breadcrumb', type: 'product' %}
+          </div>
+
+
+          {% comment %}
+          {% if collection.previous_product or collection.next_product %}
+            <div class="page-navigation-arrows has-padding-top has-padding-bottom is-{{ settings.breadcrumb_capitalization }}">
+              {% if collection.previous_product %}
+                <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="page-navigation__next">
+                  {{ 'products.general.previous_product_html' | t }}
+                </a>
+              {% endif %}
+              {% if collection.previous_product and collection.next_product %}
+                <span class="page-navigation__divider"> | </span>
+              {% endif %}
+              {% if collection.next_product %}
+                <a href="{{collection.next_product}}" title="{{ 'products.general.next_product_html' | t }}" class="page-navigation__next">
+                  {{ 'products.general.next_product_html' | t }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% endcomment %}
+
+        </div>
+      </div>
+      <div class="container">
+        {% section 'product__multi_color_main' %}
+        {% comment %}
+        {% section 'product__recommendations' %}
+        {% endcomment %}
+        
+      </div>
+
+      <h4 id="widget-title" class="primary-title" style="display: none; text-align:center;">How to Style It</h4>
+      <div id="stylitics-widget-container"></div>
+  
+      <div data-rebuy-id="55486" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+      <div data-rebuy-id="23545" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+    </section>
+  </div>
+
+{% else %}
+{% comment %} Product - classic (default) {% endcomment %}
+  <div id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section product-page section__wrapper">
+    {% comment %} Breadcrumbs and navigation {% endcomment %}
+    <section class="section
+                    is-width-standard
+                    has-padding-top
+                    has-padding-bottom
+                    ">
+      <div class="container">
+        <div class="one-whole column is-flex is-justify-space-between is-flex-column-reverse-mobile is-align-center">
+
+          <div class="breadcrumb__container">
+            {% include 'breadcrumb', type: 'product' %}
+          </div>
+
+          {% comment %}
+          {% if collection.previous_product or collection.next_product %}
+            <div class="page-navigation-arrows has-padding-top has-padding-bottom is-{{ settings.breadcrumb_capitalization }}">
+              {% if collection.previous_product %}
+                <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="page-navigation__next">
+                  {{ 'products.general.previous_product_html' | t }}
+                </a>
+              {% endif %}
+              {% if collection.previous_product and collection.next_product %}
+                <span class="page-navigation__divider"> | </span>
+              {% endif %}
+              {% if collection.next_product %}
+                <a href="{{collection.next_product}}" title="{{ 'products.general.next_product_html' | t }}" class="page-navigation__next">
+                  {{ 'products.general.next_product_html' | t }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% endcomment %}
+
+        </div>
+      </div>
+    </section>
+
+    {% comment %} Product wrapper {% endcomment %}
+    <section class="section
+                    section--has-sidebar-option">
+      <div class="container">
+        {% section 'product__sidebar' %}
+        {% section 'product__multi_color_multi_option_main' %}
+        {% comment %}
+        {% section 'product__recommendations' %}
+        {% endcomment %}
+      </div>
+      
+      <h4 id="widget-title" class="primary-title" style="display: none; text-align:center;">How to Style It</h4>
+      <div id="stylitics-widget-container"></div>
+
+      <div data-rebuy-id="55486" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+      <div data-rebuy-id="23545" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+    </section>
+  </div>
+{% endif %}
+
+<div class="yotpo-widget-instance" data-yotpo-instance-id="680743" data-yotpo-product-id="{{ product.id }}" data-yotpo-name="{{ product.title | escape }}" data-yotpo-url="{{ shop.url }}{{ product.url }}" data-yotpo-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&amp;','%26'}}" data-yotpo-description="{{ product.description | escape }}"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var $temp = $("<input>");
+    var $url = $(location).attr('href');
+    $('.share-btn--link .button').click(function() {
+      $("body").append($temp);
+      $temp.val($url).select();
+      document.execCommand("copy");
+      $temp.remove();
+      $('#share-btn--link_success').fadeIn('slow', function(){
+        $('#share-btn--link_success').delay(1000).fadeOut(); 
+      });
+    });
+  });
+</script>

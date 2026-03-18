@@ -1,0 +1,17 @@
+{% if page.metafields["global"]["page_video"] or page.metafields["global"]["video_image"] %}
+{% comment %} Video Block Starts{% endcomment %}
+
+    {% assign video_url = page.metafields["global"]["page_video"] %}
+    {% assign video_id = '' %}
+    {% if video_url contains 'vimeo' %}
+        {% assign video_id = video_url | remove : 'https://vimeo.com/' %}
+    {% endif %}
+
+    {% assign video_image = page.metafields["global"]["video_image"] %}
+
+    {% assign video_title = page.metafields["global"]["video_title"] %}
+    {% assign video_description = page.metafields["global"]["video_description"] %}
+
+    {% include 'include-video-block' %}
+
+{% endif %}

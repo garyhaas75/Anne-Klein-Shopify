@@ -1,0 +1,117 @@
+<div id="ValidateModal" style="display: none;">
+  <div id="ValidateModal-container" role="dialog" aria-modal="true" class="">
+    <div id="addressValidatorBox">
+      <h2 class="mb-0">We cannot deliver to a PO Box. Please provide a valid street address.</h2>
+    </div>
+    <span id="input-address"><br><span>1115 Broadway, Fl 11</span><br><span>p.o. box 10</span><br><span>New York</span><br><span>NY</span><br><span>10010</span></span>
+    <div class="btn-row">
+      <button class="av_button" id="btn-validate-update-address">Update address</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.step__footer__continue-btn').click(function(evt) {
+      var address = $('#checkout_shipping_address_address1').val();
+      var address2 = $('#checkout_shipping_address_address2').val();
+
+      if (address.indexOf("PO Box") >= 0 || address.indexOf("po box") >= 0 || address.indexOf("P.O. Box") >= 0  || address.indexOf("P.O.") >= 0 || address.indexOf("p.o. box") >= 0 || address.indexOf("post office") >= 0 || address.indexOf("p o box") >= 0 || address.indexOf("p.o.box") >= 0 || address.indexOf("p.o box") >= 0 || address.indexOf("pobox") >= 0 || address.indexOf("post office box") >= 0 || address.indexOf("Post Office") >= 0 || address.indexOf("Post Box") >= 0 || address.indexOf("post box") >= 0 || address.indexOf("P. O. Box") >= 0 || address.indexOf("p. o. box") >= 0 || address.indexOf("po. box") >= 0 || address.indexOf("PO. Box") >= 0 || address.indexOf("Postal Box") >= 0 || address.indexOf("postal box") >= 0 || address.indexOf("Po Box") >= 0 || address.indexOf("Po box") >= 0 || address.indexOf("PO BOX") >= 0 || address2.indexOf("PO Box") >= 0 || address2.indexOf("po box") >= 0 || address2.indexOf("P.O. Box") >= 0  || address2.indexOf("P.O.") >= 0 || address2.indexOf("p.o. box") >= 0 || address2.indexOf("post office") >= 0 || address2.indexOf("p o box") >= 0 || address2.indexOf("p.o.box") >= 0 || address2.indexOf("p.o box") >= 0 || address2.indexOf("pobox") >= 0 || address2.indexOf("post office box") >= 0 || address2.indexOf("Post Office") >= 0 || address2.indexOf("Post Box") >= 0 || address2.indexOf("post box") >= 0 || address2.indexOf("P. O. Box") >= 0 || address2.indexOf("p. o. box") >= 0 || address2.indexOf("po. box") >= 0 || address2.indexOf("PO. Box") >= 0 || address2.indexOf("Postal Box") >= 0 || address.indexOf("postal box") >= 0 || address2.indexOf("Po Box") >= 0 || address2.indexOf("Po box") >= 0 || address2.indexOf("PO BOX") >= 0 ) {
+      evt.preventDefault();
+      if ($('#disable_po_boxes_wrapper_new').length > 0) {} else {
+        $('.address-fields').prepend('<div class="field field--optional alert-warning" id="disable_po_boxes_wrapper_new">We cannot deliver to a PO Box. Please provide a valid street address.</div>');
+      }
+        $('#ValidateModal').css('display', 'block');
+      } else {
+        if ($('#disable_po_boxes_wrapper_new').length > 0) {
+          $('#disable_po_boxes_wrapper_new').remove();
+        }
+      }
+    });
+    $('#btn-validate-update-address').click(function() {
+      $('#ValidateModal').css('display', 'none');
+    })
+  
+    if ($('.address--tight').length > 0) {
+      var address = $('.address--tight').html();
+      if (address.indexOf("PO Box") >= 0 || address.indexOf("po box") >= 0 || address.indexOf("P.O. Box") >= 0  || address.indexOf("P.O.") >= 0 || address.indexOf("p.o. box") >= 0 || address.indexOf("post office") >= 0 || address.indexOf("p o box") >= 0 || address.indexOf("p.o.box") >= 0 || address.indexOf("p.o box") >= 0 || address.indexOf("pobox") >= 0 || address.indexOf("post office box") >= 0 || address.indexOf("Post Office") >= 0 || address.indexOf("Post Box") >= 0 || address.indexOf("post box") >= 0 || address.indexOf("P. O. Box") >= 0 || address.indexOf("p. o. box") >= 0 || address.indexOf("po. box") >= 0 || address.indexOf("PO. Box") >= 0 || address.indexOf("Postal Box") >= 0 || address.indexOf("postal box") >= 0 || address.indexOf("Po Box") >= 0 || address.indexOf("Po box") >= 0 || address.indexOf("PO BOX") >= 0 ) {
+        $('.section--shipping-method .content-box').css('display', 'none');
+        $('.section--shipping-method .section__content').append('<p>We cannot ship to P.O. Box locations. Please select a different address for shipping.</p>')
+        $('#continue_button').prop('disabled', true);
+      }
+    }
+  });
+</script>
+
+<style>
+  #ValidateModal {
+    display: none;
+    position: fixed;
+    z-index: 40;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,.4);
+  }
+  #ValidateModal-container {
+    z-index: 50;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 0 20px 20px 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    text-align: center;
+  }
+  #addressValidatorBox {
+    background-color: #ffffff;
+    border-color: #000000;
+    color: #000000;
+  }
+  #addressValidatorBox {
+    border: 2px solid #000;
+    border-radius: 10px;
+    color: #000;
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+  }
+  #addressValidatorBox h2, p#loader-text, span#input-address {
+    color: #000000;
+  }
+  #addressValidatorBox h2 {
+    margin-bottom: 0;
+  }
+  .btn-row {
+    margin-top: 10px;
+  }
+  .btn-row button.av_button, div.option_btns > div.option_btns_text {
+    background-color: #ffffff;
+    border-color: #000000;
+    color: #000000;
+  }
+  .av_button {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px 0 10px;
+    cursor: pointer;
+    transition-duration: .4s;
+    z-index: 1000;
+  }
+  .alert-warning {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+</style>

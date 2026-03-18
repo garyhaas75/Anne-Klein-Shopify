@@ -1,0 +1,123 @@
+<div class="page-watches-wrapper">
+  {% for block in section.blocks %}
+  <div class="page-watches-section">
+    {% case block.type %}
+
+    {% when 'anchor' %}
+    <div class="watches-anchor" id="{{ block.settings.watches_anchor | handleize }}">
+    </div>
+    {% when 'question' %}
+    <h4 class="title">{{ block.settings.watches_header }}</h4>
+    
+    {% when 'Answer' %}
+    <div class="">{{ block.settings.paragraph }}</div>
+    
+    {% when 'video' %}
+	<div class="plyr__video-embed video-{{ block.id }}" data-video-element>
+      {% if block.settings.iframe_video.type == 'youtube' %}
+      <iframe src="https://www.youtube.com/embed/{{ block.settings.iframe_video.id }}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1" allowfullscreen allowtransparency allow="autoplay"></iframe>
+      {% elsif block.settings.iframe_video.type == 'vimeo' %}
+      <iframe src="https://player.vimeo.com/video/{{ block.settings.iframe_video.id }}?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media" allowfullscreen allowtransparency allow="autoplay"></iframe>
+      {% endif %}
+    </div>
+    
+    {% when 'pdf' %}
+    <a href="{{ block.settings.pdf_url }}" target="_blank" class="button button--add-to-cart"> {{ block.settings.pdf_text }}</a>
+    
+    {% when 'seperator' %}
+    
+    <div style="height: {{ block.settings.margin }}px;"></div>
+    {% endcase %}
+
+  </div>
+  
+  {% endfor %}
+  
+</div>
+
+{% schema %}
+  {
+    "name": "Watches Blocks",
+    "settings": [],
+	"blocks": [
+	  {
+		"name": "Anchor",
+		"type": "anchor",
+		"settings": [
+		  {
+			"type": "text",
+			"id": "watches_anchor",
+			"label": "Anchor ID",
+			"info": "Must match header ID to link"
+		  }
+		]
+	  },
+	  {
+		"name": "Question",
+		"type": "question",
+		"settings": [
+		  {
+			"type": "text",
+			"id": "watches_header",
+			"label": "Question"
+		  }
+		]
+	  },
+	  {
+		"name": "Answer",
+		"type": "Answer",
+		"settings": [
+		  {
+			"type": "richtext",
+			"id": "paragraph",
+			"label": "Answer"
+		  }
+		]
+	  },
+	  {
+		"name": "Video",
+		"type": "video",
+		"settings": [
+		  {
+			"type": "video_url",
+			"id": "iframe_video",
+			"label": "Video",
+			"accept": ["youtube", "vimeo"]
+		  }
+		]
+	  },
+	  {
+		"name": "PDF Download",
+		"type": "pdf",
+		"settings": [
+		  {
+			"type": "url",
+			"id": "pdf_url",
+			"label": "PDF URL"
+		  },
+		  {
+			"type": "text",
+			"id": "pdf_text",
+			"label": "PDF Text"
+		  }
+		]
+	  },
+	  {
+		"name": "Seperator",
+		"type": "seperator",
+		"settings": [
+		  {
+            "type": "range",
+            "id": "margin",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "label": "Height",
+            "default": 0
+		  }
+		]
+	  }
+	]
+  }
+{% endschema %}

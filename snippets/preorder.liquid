@@ -1,0 +1,12 @@
+<div class="form-check line-item-property__field">
+  <input id="pre_order_checkbox_top" type="hidden" name="properties[Pre-order]" value="">
+  <input id="pre_order_checkbox" required class="required form-check-input" type="checkbox" name="properties[Pre-order]" value="">
+  {% if product.metafields.preorder.text %}
+  <label for="pre_order_checkbox" class="form-check-label" style="color: #ba2829;">{{ product.metafields.preorder.text }}</label>
+  {% elsif settings.product_preorder_text != blank %}
+  <label for="pre_order_checkbox" class="form-check-label" style="color: #ba2829;">{{ settings.product_preorder_text }}</label>
+  {% else %}
+  <label for="pre_order_checkbox" class="form-check-label" style="color: #ba2829;">This product will be pre-ordered</label>
+  {% endif %}
+</div>  
+

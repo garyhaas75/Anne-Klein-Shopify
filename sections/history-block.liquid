@@ -1,0 +1,237 @@
+{% assign id = section.id %}
+{% comment %} Advanced {% endcomment %}
+{% assign css_class = section.settings.css_class %}
+{% assign custom_css = section.settings.custom_css %}
+
+{% comment %} Section specific CSS {% endcomment %}
+{% style %}
+  {% include 'css-loop', css: custom_css, id: id %}
+{% endstyle %}
+
+{% if section.blocks.size > 0 %}
+<section class="details__page ak-history-detail-page section is-width-standard {{ css_class }} jsAkHistory" data-check-for-order="true">
+  <div class="heading-section__content
+                    is-flex
+                    is-flex-column
+                    is-align-center
+                    text-align-center
+                    vertical-spacing-medium">
+    <h6 class="timeline-title">Timeline</h6>
+    <h1 class="heading-section__heading title">History of Anne</h1>
+  </div>
+  <div class="is-flex is-flex-row is-flex-wrap is-justify-space-between history-items-container">
+     {% for block in section.blocks %}
+     <div class="history-items">
+        <div class="history-items-grid" id="{{ block.settings.thumb-year }}">
+            {% if block.settings.thumb-image != blank %}
+                {% include 'image-element', image: block.settings.thumb-image, alt: block.settings.thumb-image.alt %}
+            {% else %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <h4 class="year-cta" id="{{ block.settings.thumb-year }}">{{ block.settings.thumb-year }}</h4>
+            {{ block.settings.thumb-description }}
+            <h5 class="more-link">+ MORE</h5>
+        </div>
+
+        <div class="history-items-details">
+            <div class="ak-history-slider">
+              {% comment %} slide 1 {% endcomment %}
+              {% for i in (1..5) %}
+                  {% capture slider_image %}slide-image-{{ i }}{% endcapture %}
+                  {% capture slider_video %}slide_video{{ i }}{% endcapture %}
+                  {% capture slider_title %}slide-title-{{ i }}{% endcapture %}
+                  {% capture slider_description %}slide-description-{{ i }}{% endcapture %}
+                  {% if block.settings[slider_image] != blank or block.settings[slider_video] != blank %}
+
+                      <div class="ak-slider-items">
+                        <div class="large_image">
+                            {% if block.settings[slider_image] != blank %}
+
+                                {% include 'image-element', image: block.settings.[slider_image], alt: block.settings.[slider_image].alt %}
+
+                            {% else %}
+                                {% if block.settings[slider_video].type == 'youtube' %}
+                                    <iframe src="https://www.youtube.com/embed/{{ block.settings[slider_video].id }}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1" allowfullscreen allowtransparency allow="autoplay"></iframe>
+                                {% else %}
+                                    <iframe src="https://player.vimeo.com/video/{{ block.settings[slider_video].id }}?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media" allowfullscreen allowtransparency allow="autoplay"></iframe>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="large_image_content_area">
+                            <h3>{{ block.settings[slider_title] }}</h3>
+                            {{ block.settings[slider_description] }}
+                        </div>
+                        <h1 class="history-item-year">{{ block.settings.thumb-year }}</h1>
+                      </div>
+                  {% endif %}
+
+              {% endfor %}
+
+
+
+            </div>
+            <div class="close-btn"></div>
+        </div>
+
+      </div>
+     {% endfor %}
+  </div>
+</section>
+{% endif %}
+{{ 'z__jsAkHistory-min.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "History sections",
+  "class": "page-details details jsAkHistory",
+  "max_blocks": 32,
+  "settings": [
+      {
+        "type": "header",
+        "content": "Advanced"
+      }
+   ],
+   "blocks": [
+       {
+
+              "type": "history-block",
+              "name": "History Block",
+              "settings": [
+
+                {
+                  "type": "image_picker",
+                  "id": "thumb-image",
+                  "label": "Thumbnail Image"
+                },
+                {
+                  "type": "text",
+                  "id": "thumb-year",
+                  "label": "Thumbnail Year"
+                },
+                {
+                  "type": "richtext",
+                  "id": "thumb-description",
+                  "label": "Thumbnail Description"
+                },
+
+                {
+                  "type": "image_picker",
+                  "id": "slide-image-1",
+                  "label": "Slide 1 Image",
+                  "info": "Please keep the image blank to display video"
+                },
+                {
+                  "type": "video_url",
+                  "id": "slide_video1",
+                  "label": "YouTube or Vimeo video URL",
+                  "accept": ["youtube", "vimeo"]
+
+                },
+                {
+                  "type": "text",
+                  "id": "slide-title-1",
+                  "label": "Slide 1 title"
+                },
+                {
+                  "type": "richtext",
+                  "id": "slide-description-1",
+                  "label": "Slide 1 Description"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "slide-image-2",
+                  "label": "Slide 2 Image",
+                  "info": "Please keep the image blank to display video"
+                },
+                {
+                  "type": "video_url",
+                  "id": "slide_video2",
+                  "label": "YouTube or Vimeo video URL",
+                  "accept": ["youtube", "vimeo"]
+
+                },
+                {
+                  "type": "text",
+                  "id": "slide-title-2",
+                  "label": "Slide 2 title"
+                },
+                {
+                  "type": "richtext",
+                  "id": "slide-description-2",
+                  "label": "Slide 2 Description"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "slide-image-3",
+                  "label": "Slide 3 Image",
+                  "info": "Please keep the image blank to display video"
+                },
+                {
+                  "type": "video_url",
+                  "id": "slide_video3",
+                  "label": "YouTube or Vimeo video URL",
+                  "accept": ["youtube", "vimeo"]
+
+                },
+                {
+                  "type": "text",
+                  "id": "slide-title-3",
+                  "label": "Slide 3 title"
+                },
+                {
+                  "type": "richtext",
+                  "id": "slide-description-3",
+                  "label": "Slide 3 Description"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "slide-image-4",
+                  "label": "Slide 4 Image",
+                  "info": "Please keep the image blank to display video"
+                },
+                {
+                  "type": "video_url",
+                  "id": "slide_video4",
+                  "label": "YouTube or Vimeo video URL",
+                  "accept": ["youtube", "vimeo"]
+
+                },
+                {
+                  "type": "text",
+                  "id": "slide-title-4",
+                  "label": "Slide 4 title"
+                },
+                {
+                  "type": "richtext",
+                  "id": "slide-description-4",
+                  "label": "Slide 4 Description"
+                },
+                {
+                  "type": "image_picker",
+                  "id": "slide-image-5",
+                  "label": "Slide 5 Image",
+                  "info": "Please keep the image blank to display video"
+                },
+                {
+                  "type": "video_url",
+                  "id": "slide_video5",
+                  "label": "YouTube or Vimeo video URL",
+                  "accept": ["youtube", "vimeo"]
+
+                },
+                {
+                  "type": "text",
+                  "id": "slide-title-5",
+                  "label": "Slide 4 title"
+                },
+                {
+                  "type": "richtext",
+                  "id": "slide-description-5",
+                  "label": "Slide 4 Description"
+                }
+
+             ]
+       }
+    ]
+  }
+{% endschema %}

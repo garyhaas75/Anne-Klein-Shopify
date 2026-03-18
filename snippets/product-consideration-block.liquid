@@ -1,0 +1,122 @@
+{% if product.metafields["global"]["enable_consideration"] == 'true' or product.metafields["global"]["enable_consideration"] == 'TRUE' %}
+{% comment %} Considered Section Starts{% endcomment %}
+
+<section class="section is-width-standard has-gutter-enabled product-considered" >
+    <div class="container">
+
+        <div class="image-with-text__text-column
+                    image-with-text__column one-half
+                    medium-down--one-whole
+                    column
+                    has-padding-right
+                    is-flex
+                    is-flex-wrap
+                    is-justify-left
+                    is-align-center
+                    " >
+            <div class="image-with-text__wrapper">
+                        <h2 class="image-with-text__heading text-align-left is-regular">Considered</h2>
+                        <div class="image-with-text__text text-align-left content">
+                        {% if product.metafields["global"]["solar_power_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.solar_powered_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.solar_powered_title }}</div>
+                                   {{ product.metafields["global"]["solar_power_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["vegan_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.vegan_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.vegan_title }}</div>
+                                   {{ product.metafields["global"]["vegan_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["bioplastic_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.bioplastic_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.bioplastic_title }}</div>
+                                    {{ product.metafields["global"]["bioplastic_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["biobased_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                              <span class="icon is-large">
+                                <img src="{{ settings.biobased_icon | img_url }}" alt="" />
+                              </span>
+                              <div class="feature-list-content">
+                                <div class="sp_feature_heading heading-section__preheading">{{ settings.biobased_title }}</div>
+                                {{ product.metafields["global"]["biobased_description"] }}
+                              </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["apple_peel_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.apple_peel_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.apple_peel_title }}</div>
+                                    {{ product.metafields["global"]["apple_peel_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["cork_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.cork_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.cork_title }}</div>
+                                   {{ product.metafields["global"]["cork_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["swarvoski_description"] %}
+                            <div class="feature-list
+                                        is-flex ">
+                                <span class="icon is-large">
+                                    <img src="{{ settings.swarovski_icon | img_url }}" alt="" />
+                                </span>
+                                <div class="feature-list-content">
+                                    <div class="sp_feature_heading heading-section__preheading">{{ settings.swarovski_title }}</div>
+                                    {{ product.metafields["global"]["swarvoski_description"] }}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+            </div>
+        </div>
+        <div class="image-with-text__image-column
+            image-with-text__column
+            one-half
+            medium-down--one-whole
+            column
+            is-flex
+            is-align-center ">
+
+            <div class="image-element__wrap" >
+                <img src="{{ product.metafields["global"]["consideration_image"] }}" alt="" />
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endif %}

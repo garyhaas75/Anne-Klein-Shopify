@@ -1,0 +1,157 @@
+{% for tag in product.tags %}
+  {% if tag == 'runs-small' %}
+    {% assign size_fit_img = 'runs-small.png' | asset_img_url: 'master' %}
+  {% elsif tag == 'runs-little-small'  %}
+    {% assign size_fit_img = 'runs-little-small.png' | asset_img_url: 'master' %}
+  {% elsif tag == 'runs-true-to-size'  %}
+    {% assign size_fit_img = 'runs-true-to-size.png' | asset_img_url: 'master' %}
+  {% elsif tag == 'runs-little-large'  %}
+    {% assign size_fit_img = 'runs-little-large.png' | asset_img_url: 'master' %}
+  {% elsif tag == 'runs-large'  %}
+    {% assign size_fit_img = 'runs-large.png' | asset_img_url: 'master' %}
+  {% endif %}
+{% endfor %}
+
+
+
+<!-- Code for tabs -->
+    <div class="pdp-tabs">
+      {% if product.description != blank %}
+      <div class="accordion">
+        <button class="heading active" aria-expanded="true">Description</button>
+        <div class="content">{{ product.description }}
+          
+        {% if product.tags contains 'iflex' or product.tags contains 'ortholite' or product.tags contains 'water_resistant' %}
+        	<div class="pdp-description-icons">
+              {% if product.tags contains 'iflex' %}
+              <img src="{{ 'iFlex.png' | asset_img_url: 'master' }}">
+              {% endif %}
+              {% if product.tags contains 'ortholite' %}
+              <img src="{{ 'Ortholite.png' | asset_img_url: 'master' }}">
+              {% endif %}
+              {% if product.tags contains 'water_resistant' %}
+              <img src="{{ 'Water_Resistant.png' | asset_img_url: 'master' }}">
+              {% endif %}
+        	</div>
+            <style>
+              .pdp-description-icons {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                padding-bottom: 20px;
+              }
+              .pdp-description-icons img {
+                width: 60px;
+                height: 100%;
+                margin-right: 20px;
+              }
+            </style>
+        {% endif %}
+        {% comment %} Sunglass Size Chart{% endcomment %}
+        {% comment %}
+        {% if product.tags contains 'Sunglasses' %}
+          <img src="{{ section.settings.sunglasses | img_url: 'master' }}">
+        {% endif %}
+        {% endcomment %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if size_fit_img %}
+      {% assign size_fit_desc = product.metafields.size_fit.description | newline_to_br %}
+      {% assign size_fit_desc = size_fit_desc | split: '/>' %}
+        
+      <div class="accordion">
+        <button class="heading active" aria-expanded="true">Size + Fit</button>
+        <div class="content">
+          {% if size_fit_desc != blank %}
+            <div>
+              <ul>
+                {% for desc_li in size_fit_desc %}
+                  <li>{{ desc_li }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <img src="{{ size_fit_img }}">
+        </div>
+      </div>
+	  {% endif %}
+      
+      {% if product.metafields.product_accordion.video_360_view[0] %}
+      <div class="accordion">
+        <button class="heading active" aria-expanded="true">Video</button>
+        <div class="content">
+          <video controls autoplay loop playsinline muted>
+            <source src="{{ product.metafields.product_accordion.video_360_view[0].src }}" type="video/mp4">
+          </video>
+        </div>
+      </div>
+	  {% endif %}
+      
+      {% if product.metafields.product_accordion.dimensions != blank %}
+      <div class="accordion">
+        <button class="heading" aria-expanded="false">Dimensions</button>
+        <div class="content" style="display:none;">
+          {{ product.metafields.product_accordion.dimensions }}
+        </div>
+      </div>
+	  {% endif %}
+      
+      {% if product.metafields["global"]["Materials"] %}
+      <div class="accordion">
+        <button class="heading" aria-expanded="false">Materials</button>
+        <div class="content" style="display:none;"><p>{{ product.metafields["global"]["Materials"]}}</p></div>
+      </div>
+       {% endif %}
+       {% if product.metafields["global"]["country_of_origin"] %}
+      <div class="accordion">
+        <button class="heading" aria-expanded="false">Country Of Origin</button>
+        <div class="content" style="display:none;"><p>{{ product.metafields["global"]["country_of_origin"]}}</p></div>
+      </div>
+        {% endif %}
+       {% if product.metafields["global"]["Product-Care"] %}
+       <div class="accordion">
+         <button class="heading" aria-expanded="false">Product Care</button>
+         <div class="content" style="display:none;"><p>{{ product.metafields["global"]["Product-Care"]}}</p></div>
+       </div>
+     {% endif %}
+     {% if product.metafields["global"]["special_features"] %}
+      <div class="accordion">
+        <button class="heading" aria-expanded="false">Special Features</button>
+        <div class="content" style="display:none;"><p>{{ product.metafields["global"]["special_features"] }}</p></div>
+      </div>
+     {% endif %}
+    </div>
+    <!-- Code end -->
+
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $(".pdp-tabs .accordion > button").on("click", function(e) {
+          e.preventDefault();
+          if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            $(this).attr('aria-expanded', 'false');
+            $(this).siblings(".content").slideUp(200);
+          } else {
+           /*$(".pdp-tabs .accordion > a").removeClass("active");*/
+
+            $(this).addClass("active");
+            $(this).attr('aria-expanded', 'true');
+            /*$(".pdp-tabs .accordion .content").slideUp(200);*/
+            $(this).siblings(".content").slideDown(200);
+          }
+        });
+      });
+    </script>
+
+<!-- Rebuy Bought With --> 
+  <!-- Watches -->
+  <div data-rebuy-id="23554" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+  <!-- S & H -->
+  <div data-rebuy-id="23552" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+  <!-- Clothing -->
+  <div data-rebuy-id="23549" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+  <!-- Jewelry -->
+  <div data-rebuy-id="23546" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+    

@@ -1,0 +1,62 @@
+<div class="text_bg_img_wrapper">
+  <img src="{{ section.settings.background | img_url: 'master' }}" class="desktop_only">
+  <img src="{{ section.settings.background_mobile | img_url: 'master' }}" class="mobile_only">
+  <div class="text_bg_img_info">{{ section.settings.text }}</div>
+</div>
+
+<style>
+  .text_bg_img_wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+  }
+  .text_bg_img_wrapper img {
+    width: 100%;
+  }
+  .text_bg_img_info {
+    font-family: "Avenir Next", "Helvetica", sans-serif;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;    
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    color: #fff; 
+    font-size: 30px; 
+    line-height: 1.5; 
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+  @media only screen and (max-width: 768px) {
+    .text_bg_img_info {
+      font-size: 20px;
+    }
+  }
+    
+</style>
+{% schema %}
+  {
+    "name": "Text w Background Image",
+    "settings": [
+	  {
+		"type": "image_picker",
+		"id": "background",
+		"label": "Background"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "background_mobile",
+		"label": "Background Mobile"
+	  },
+	  {
+		"type": "textarea",
+		"id": "text",
+		"label": "Text"
+	  }
+	]
+  }
+{% endschema %}

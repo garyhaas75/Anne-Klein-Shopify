@@ -1,0 +1,46 @@
+<!-- Extend - Add necessary SDK script tags and configure the store -->
+<script src='https://sdk.helloextend.com/extend-sdk-client/v1/extend-sdk-client.min.js' defer='defer'></script>
+<script src='https://sdk.helloextend.com/extend-sdk-client-shopify-addon/v1/extend-sdk-client-shopify-addon.min.js'
+    defer='defer'></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        window.Extend.config({ storeId: 'f071e494-ae3a-4874-8a8c-2b5a29e8189d', environment: 'production' });
+        window.Extend.integration = {};
+
+        // Extend - QA Cypress SP booleans
+        window.Extend.integration.isShippingProtectionEnabled = true;
+        window.Extend.integration.isSpCheckOutExt = true;
+        window.Extend.integration.isShippingProtectionOptOut = true;
+
+
+        // Only defines utils if Extend and ExtendShopify is defined
+        if (window.Extend && window.ExtendShopify) {
+
+            let localCart = {{ cart | json }}; // Shopify Cart Object on initial load
+
+            // Returns shipping protection item if present in cart
+            const filteredExtendProducts = localCart.items.filter(function (item) {
+                return item['product_title'] === 'Extend Shipping Protection Plan';
+            });
+
+            if (filteredExtendProducts.length > 0) {
+                function removeItem() {
+                    let variantId = filteredExtendProducts[0].id;
+                    $.ajax({
+                        type: "POST",
+                        url: "/cart/change.js",
+                        dataType: "json",
+                        data: {
+                            id: parseFloat(variantId),
+                            quantity: 0,
+                        },
+                    }).then((data) => {
+                        location.reload()
+                    });
+                }
+                removeItem()
+            }
+        }
+    })
+</script>

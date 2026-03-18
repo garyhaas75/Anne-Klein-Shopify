@@ -1,0 +1,56 @@
+<script type="text/template" id="wizzy-autocomplete-suggestions" wizzy-override>
+  <div class="wizzy-autocomplete-suggestions">
+      [[#hasSuggestions]]
+      <ul class="autocomplete-suggestions-list">
+          [[#suggestions]]
+          [[#isHead]]
+          [[#label]]
+          <li class="autocomplete-item-head" data-index="[[index]]">
+              [[&label]]
+              [[#isRecentSearchHead]]
+              [[#isForDefault]]
+                  <a class="wizzy-recent-search-clear-all">Clear all</a>
+              [[/isForDefault]]
+              [[/isRecentSearchHead]]
+          </li><!-- ending of autocomplete-item-head -->
+          [[/label]]
+          [[/isHead]]
+          [[^isHead]]
+          <li class="autocomplete-item">
+              <a data-selectable="true" data-searchterm="[[&searchTerm]]" href="#"
+                 class="autocomplete-link"
+                 data-index="[[index]]">
+                  [[#isRecentSearch]]
+                      <span class='wizzy-recent-search-icon'> </span>
+                      <span class='wizzy-recent-search-clear-icon'> </span>
+                  [[/isRecentSearch]]
+
+                  [[#isTrendingSearch]]
+                      <span class='wizzy-trending-search-icon'> </span>
+                  [[/isTrendingSearch]]
+
+                  <span class='wizzy-autocomplete-label'> [[&label]] </span>
+                  [[#hasLabelPath]]
+                  <ul class="autocomplete-item-path">
+                      <li>in</li>
+                      [[#labelPath]]
+                      <li>[[&label]]</li>
+                      [[/labelPath]]
+                  </ul>
+                  [[/hasLabelPath]]
+                  [[^isRecentSearch]]
+                      <span class="autocomplete-text-wrapper"></span>
+                  [[/isRecentSearch]]
+              </a><!-- ending of autocomplete-link -->
+          </li><!-- ending of autocomplete-item -->
+          [[/isHead]]
+          [[/suggestions]]
+      </ul>
+      [[/hasSuggestions]]
+      [[^hasSuggestions]]
+      <div class="autocomplete-no-results">
+          <p>No Results Found</p>
+      </div>
+      [[/hasSuggestions]]
+  </div><!-- ending of autocomplete-suggestions -->
+</script>

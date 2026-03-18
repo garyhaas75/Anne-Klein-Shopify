@@ -1,0 +1,64 @@
+{% if video_title != blank %}
+
+    {% comment %} This section will work when there is text with video {% endcomment %}
+
+     <section class="section is-width-wide has-gutter-enabled custom-video-block with-text">
+
+        <div class="video_div">
+
+       {% if video_image != blank %}
+               {% if video_id != blank %}
+                   <a href="#" data-pop="vid_pop_{{ object.id }}" class="js-watch-video"> <img src="{{ video_image }}" alt="" /></a>
+               {% else %}
+                <img src="{{ video_image }}" alt="" />
+               {% endif %}
+
+             {% else %}
+
+               <div class="lazyframe" data-ratio="16:9">
+                <iframe  id="vimeo-video" src="https://player.vimeo.com/video/{{ video_id }}" width="640" height="362" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+               </div>
+             {% endif %}
+        </div>
+
+        <div class="video_desc_div">
+            <div class="video-desc-wrapper">
+                <h2>{{ video_title }}</h2>
+                {{ video_description }} 
+            </div>
+        </div>
+     </section>
+     {% else %}
+
+{% comment %} This section will work when there is only video {% endcomment %}
+
+    <section class="section is-width-wide has-gutter-enabled custom-video-block">
+
+    <div class="video_div">
+    {% if video_image != blank %}
+
+        {% if video_id != blank %}
+            <a href="#" data-pop="vid_pop_{{ object.id }}" class="js-watch-video"> <img src="{{ video_image }}" alt="" /></a>
+        {% else %}
+         <img src="{{ video_image }}" alt="" />
+        {% endif %}
+
+      {% else %}
+
+        <div class="lazyframe" data-ratio="16:9">
+        <iframe  id="vimeo-video" src="https://player.vimeo.com/video/{{ video_id }}" width="640" height="362" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+      {% endif %}
+
+       </div>
+    </section>
+
+{% endif %}
+{% if video_image and video_id %}
+        <div class="watch-video-model vid_pop_{{ object.id }} cms-video-popup" style="width:728px;">
+                      <div class="lazyframe" data-ratio="16:9">
+                        <iframe  id="vimeo-video" src="https://player.vimeo.com/video/{{ video_id }}" width="640" height="362" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    </div>
+                </div>
+    {% endif %}
+

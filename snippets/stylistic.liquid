@@ -1,0 +1,81 @@
+<script src="https://web-assets.stylitics.com/v3-classic/latest/classic.release.js"></script>
+
+
+<script defer>
+  /*
+In the example below, "stylitics-widget-container" is the id of the widget container on your page.
+You control the id of this element, so the id can be anything you want.
+*/
+
+  widgetInstance = new StyliticsDimensionCollageWidget("anneklein", "stylitics-widget-container", {
+    api: {
+      item_number: "{{product.handle}}",
+      min: 3,
+      max: 6,
+    },
+    display: {
+      disableMnM: true,
+      swipeableCarouselArrows: true
+    }
+  });
+  
+  widgetInstance.on("mount", "bundles", function (data) {
+    
+    if (data.bundles && data.bundles.length) {
+      let titleElement = document.getElementById("widget-title");
+      let anchorElement = document.getElementById("styleWidgetAnchor");
+      titleElement.style.display = "block"; // un-hide widget title after widget has loaded with bundles
+      anchorElement.style.visibility = "visible"; // un-hide widget anchor after widget has loaded with bundles
+    }
+  })
+  
+  widgetInstance.on("mount", "bundle", (data) => {
+    let bundle = data.bundle;
+    let element = data.element;
+    // add if statement to make sure badge is added to the correct bundles
+    if (bundle["on-model-image"]) {
+      //create image element
+      let badge = document.createElement("img");
+      // add relative path to the img
+      badge.setAttribute("src", "{{ 'shop-the-look.png' | asset_img_url: '200x' }}");
+      // add alt text or descriptive aria-label
+      badge.setAttribute("alt", "This outfit corresponds with model's on product image");
+      // append img to the "stylitics-bundle-badge" div
+      element.querySelector(".stylitics-bundle-badge").appendChild(badge);
+    }
+  })
+  
+  // All callback methods must be added before the .start() method
+  widgetInstance.start();
+
+  $('.swatch-element.color').click(function() {
+    widgetInstance.refresh({api: {item_number: $(this).attr('handle')}});
+
+    widgetInstance.on("mount", "bundles", function (data) {
+    
+      if (data.bundles && data.bundles.length) {
+        let titleElement = document.getElementById("widget-title");
+        let anchorElement = document.getElementById("styleWidgetAnchor");
+        titleElement.style.display = "block"; // un-hide widget title after widget has loaded with bundles
+        anchorElement.style.visibility = "visible"; // un-hide widget anchor after widget has loaded with bundles
+      } else {
+        let titleElement = document.getElementById("widget-title");
+        let anchorElement = document.getElementById("styleWidgetAnchor");
+        titleElement.style.display = "none"; // hide widget title after widget has loaded with bundles
+        anchorElement.style.visibility = "hidden"; // hide widget anchor after widget has loaded with bundles
+      }
+    })
+  })
+
+  $('#styleWidgetAnchor').click(function(evt) {
+    evt.preventDefault();
+    if ($(window).width() < 768) {
+      $('html, body').scrollTop($("#widget-title").offset().top - 104);
+    } else {
+      $('html, body').scrollTop($("#widget-title").offset().top - 228);
+    }
+  })
+
+  // NOTE: To avoid unexpected behavior, do not use multiple instances of the same action-subject pair.
+  // For example, do not use multiple instances of .on("mount", "bundles",) in the code. You can, however, place multiple actions underneath one callback.
+</script>

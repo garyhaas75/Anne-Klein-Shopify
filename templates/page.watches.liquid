@@ -1,0 +1,13 @@
+<main id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section watches-page">
+  <section class="section__wrapper section">
+    
+    <div class="container watches">
+      <h1 class="title">{{ page.title }}</h1>
+      
+      {% section 'page-watches__header' %}
+      <hr>
+    
+      {% section 'page-watches__blocks' %}
+    </div>
+  </section>
+</main>

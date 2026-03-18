@@ -1,0 +1,12 @@
+<section class="section is-width-standard" style="padding-top: 30px; padding-bottom: 30px;"> 
+  <div class="container has-column-padding-bottom is-justify-center is-align-center small-down--has-limit is-large">
+    <iframe style="width: 100%; min-height: 600px;" src="https://anneklein.jebbit.com/3rizwlpt?L=Full+Page&amp;deferred=true" class="jebbit-iframe" onload="function embedJebbit(t){function e(t){var e=&quot;attach&quot;===t?window.addEventListener:window.removeEventListener;e(&quot;DOMContentLoaded&quot;,n,!1),e(&quot;load&quot;,n,!1),e(&quot;scroll&quot;,n,!1),e(&quot;resize&quot;,n,!1)}var i=document.querySelector(t);function n(){var t,e,n,o;e=(t=i).getBoundingClientRect(),n=t.clientHeight/2,o=t.clientWidth/2,e.top>=0&amp;&amp;e.left>=0&amp;&amp;e.top<=(window.innerHeight||document.documentElement.clientHeight)-n&amp;&amp;e.left<=(window.innerWidth||document.documentElement.clientWidth)-o&amp;&amp;i.contentWindow.postMessage(&quot;startJebbitCampaign&quot;,&quot;*&quot;)}window.addEventListener(&quot;message&quot;,function t(i){i&amp;&amp;&quot;https://anneklein.jebbit.com&quot;===i.origin&amp;&amp;(&quot;jebbitSessionCreated&quot;===i.data?e(&quot;remove&quot;,n):&quot;jebbitCampaignLoaded&quot;===i.data?n():i.data&amp;&amp;&quot;redirect&quot;===i.data.action&amp;&amp;i.data.options&amp;&amp;i.data.options.link&amp;&amp;(window.location.href=i.data.options.link))},!1),e(&quot;attach&quot;)}embedJebbit(&quot;.jebbit-iframe&quot;)" allowfullscreen="" mozallowfullscreen="" webkitallowfullscreen="" frameborder="0" seamless="true"></iframe><script>window.addEventListener("message",function(t){t&&"https://anneklein.jebbit.com"===t.origin&&t.data&&"addToCart"===t.data.action&&(t.source.postMessage({type:"response",isShopify:void 0!==window.Shopify},t.origin),window.Shopify&&fetch(window.Shopify.routes.root+"cart/add.js",{method:"POST",body:JSON.stringify(t.data.formData),headers:{"Content-Type":"application/json"}}).then(function(t){console.log(t)}).catch(function(t){console.log(response)}))});</script>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Holiday Gift Guide Iframe",
+    "settings": []
+  }
+{% endschema %}

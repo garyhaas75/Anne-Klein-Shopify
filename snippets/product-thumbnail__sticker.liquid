@@ -1,0 +1,126 @@
+{% comment %} Check if product is on sale {% endcomment %}
+{% if product.available and product.compare_at_price_max > product.price %}
+  {% assign product_on_sale = true %}
+{% endif %}
+
+{% comment %} Check if sticker holder should be displayed {% endcomment %}
+{% if collection_handles contains 'best-sellers' or
+      collection_handles contains 'coming-soon' or
+      collection_handles contains 'new' or
+      collection_handles contains 'pre-order' or
+      collection_handles contains 'staff-pick' or
+      collection_handles contains 'ak-closet' or
+      collection_handles contains 'considered' or
+      collection_handles contains 'exclusive' or
+	  product_tags contains 'AK SPORT' or
+	  product_tags contains 'DEAL' or
+	  product_tags contains 'SAVE' or
+	  product_tags contains 'Free Gift' or
+	  product_tags contains 'gwp' or
+	  product_tags contains 'AK JEANS' or
+      product_on_sale %}
+  <div class="
+              sticker-holder
+              sticker-shape-{{ settings.sticker_shape }}
+              sticker-position-{{ settings.sticker_position }}">
+    <div class="sticker-holder__content sticker-holder__content--{{ context }}">
+
+      {% if product_tags contains 'Free Gift' and template.name == 'product' %}
+      <div class="free-gift-sticker thumbnail-sticker sticker-{{i}}">
+        <span class="sticker-text">{{ 'collections.general.free_gift' | t }}</span>
+      </div>
+
+      {% elsif product_tags contains 'gwp' and template.name == 'product' %}
+      <div class="free-gift-sticker thumbnail-sticker sticker-{{i}}">
+        <span class="sticker-text">{{ 'collections.general.free_gift' | t }}</span>
+      </div>
+      {% endif %}
+
+      {% if collection_handles contains 'best-sellers' %}
+        <div class="best-sellers-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.best_sellers' | t }}</span>
+        </div>
+      {% endif %}
+
+
+      {% if collection_handles contains 'coming-soon' %}
+        <div class="coming-soon-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.coming_soon' | t }}</span>
+        </div>
+      {% endif %}
+
+
+      {% if collection_handles contains 'new' %}
+        <div class="new-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.new' | t }}</span>
+        </div>
+      {% endif %}
+
+      {% if collection_handles contains 'pre-order' %}
+        <div class="pre-order-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.pre_order' | t }}</span>
+        </div>
+      {% endif %}
+
+      {% if product.available %}
+        {% if product.compare_at_price_max > product.price %}
+      	  {% unless product.tags contains 'Outerwear' %}
+          <div class="sale-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.sale' | t }}</span>
+          </div>
+      	  {% endunless %}
+        {% endif %}
+      {% endif %}
+
+      {% if collection_handles contains 'staff-pick' %}
+        <div class="staff-pick-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.staff_pick' | t }}</span>
+        </div>
+      {% endif %}
+
+      {% if collection_handles contains 'consider-ed' %}
+          <div class="considered-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.considered' | t }}</span>
+          </div>
+        {% endif %}
+
+        {% if collection_handles contains 'ak-closet' %}
+          <div class="ak-closet-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.ak_closet' | t }}</span>
+          </div>
+        {% endif %}
+
+        {% if collection_handles contains 'exclusive' %}
+          <div class="exclusive-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.exclusive' | t }}</span>
+          </div>
+        {% endif %}
+
+      	{% if product_tags contains 'DEAL' %}
+          <div class="deal-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.deal' | t }}</span>
+          </div>
+      	{% endif %}
+      
+      	{% if product_tags contains 'SAVE' %}
+          <div class="save-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.save' | t }}</span>
+          </div>
+      	{% endif %}
+      
+        {% if product_tags contains 'AK SPORT' %}
+          <div class="ak-sport-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.ak_sport' | t }}</span>
+          </div>
+      	{% endif %}
+      
+      	{% if product_tags contains 'AK JEANS' %}
+          <div class="ak-jeans-sticker thumbnail-sticker sticker-{{i}}">
+            <span class="sticker-text">{{ 'collections.general.ak_jeans' | t }}</span>
+          </div>
+      	{% endif %}
+      
+      	
+    </div>
+  </div>
+{% endif %}

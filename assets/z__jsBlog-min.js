@@ -1,0 +1,1 @@
+"use strict";Shopify.theme.jsBlog={init:function(t){Shopify.theme.jsBlog=$.extend(this,Shopify.theme.getSectionData(t)),1==this.enable_filter&&$("#blog_filter").on("change",function(){Shopify.theme.jsBlog.blogFilter()})},blogFilter:function(){var t=$("#blog_filter").val();window.location=t},unload:function(){$("#blog_filter").off()}};

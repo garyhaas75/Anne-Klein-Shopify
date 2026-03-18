@@ -1,0 +1,100 @@
+{% comment %}
+  To edit the contents of this file, look inside the `sections` folder for the file name that comes directly after `section`. Eg. {% section 'product__main' %} or {% section 'page__banner' %}
+
+  - https://help.shopify.com/en/themes/development/templates/collection-liquid
+{% endcomment %}
+
+<div id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section collection-page" data-check-for-order="true">
+  {% comment %} Collection banner {% endcomment %}
+  
+  {% if collection.metafields.banner.video[0] %}
+  <div>
+    <video autoplay playsinline muted loop {% if collection.metafields.banner.video_placeholder[0] %} poster="{{ collection.metafields.banner.video_placeholder[0].src }}" {% endif %}>
+      <source src="{{ collection.metafields.banner.video[0].src }}" type="video/mp4">
+    </video>
+  </div>
+  {% elsif collection.metafields.banner.image_desktop[0] %}
+  <div>
+    <img src="{{ collection.metafields.banner.image_desktop[0].src }}" class="desktop_only" style="width: 100%;">
+    {% if collection.metafields.banner.image_mobile[0] %}
+    <img src="{{ collection.metafields.banner.image_mobile[0].src }}" class="mobile_only" style="width: 100%;">
+    {% else %}
+    <img src="{{ collection.metafields.banner.image_desktop[0].src }}" class="desktop_only" style="width: 100%;">
+    {% endif %}
+  </div>
+  {% endif %}
+  
+  <section class="section__wrapper
+                  section
+                  ">
+    <div class="container {% if settings.heading_divider_style == 'long' %}has-heading-divider-below {% endif %}">
+
+      <div class="collection__spacer three-fifths column hide-when-banner-enabled"></div>
+      <div class="one-whole column collection-title">
+        {% comment %} Collection title {% endcomment %}
+        {% comment %} {% include 'heading', title: collection.title, heading_tag: 'h1', context: 'collection', text_alignment: 'left' %}  {% endcomment %}
+        <div class="heading-wrapper--collection
+                    heading-wrapper
+                    heading-wrapper--{{ settings.heading_divider_style }}
+                    one-whole column
+                    is-flex
+                    is-flex-column
+                    is-align-left
+                    text-align-left" style="align-items: center;">
+          <h1 class="collection__title title">
+            {{ collection.title }}
+          </h1>
+        </div>
+      </div>
+
+      {% if settings.heading_divider_width != 0 and settings.heading_divider_style == 'long' %}
+        <div class="heading-divider-below heading-wrapper one-whole column hide-when-banner-enabled">
+          <div class="heading-divider
+                      heading-divider--{{ settings.heading_divider_style }}"
+                  {% if settings.heading_divider_animation != "none" %}
+            data-scroll-class="{{ settings.heading_divider_animation }}"
+                  {% endif %}>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+
+    {% if collection.metafields.alert.text.markdown != blank %}
+    <div class="container collection_alert_wrapper desktop_only">
+      <div class="collection_alert column one-whole has-no-side-gutter"
+           style="background-color: {{ collection.metafields.alert.background_color }}">{{ collection.metafields.alert.text.markdown }}</div>
+    </div>
+    {% endif %}
+    
+    {% comment %} Collection sidebar and main content area {% endcomment %}
+    <div class="container collection__content">
+
+      {% if collection.metafields.alert.text.markdown != blank %}
+      <div class="container collection_alert_wrapper mobile_only" >
+        <div class="collection_alert column" style="background-color: {{ collection.metafields.alert.background_color }}">{{ collection.metafields.alert.text.markdown }}</div>
+      </div>
+      {% endif %}
+      
+      {% comment %} Collection main {% endcomment %}
+      {% section 'collection__lookbook_main' %}
+    </div>
+  </section>
+</div>
+
+{% assign description_bg = settings.description_bg %}
+
+{% if collection.description != blank %}
+<div class="collection_description" style="background-color: {{ description_bg }};">
+  <div class="section__wrapper section">
+    {{ collection.description }}
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .collection-matrix__wrapper .container { justify-content: space-between; }
+  
+  @media only screen and (min-width: 799px) { .container .collection__main .collection-matrix__wrapper .column.one-third { width: calc(33.33% - 40px); max-width: inherit; } }
+  
+</style>

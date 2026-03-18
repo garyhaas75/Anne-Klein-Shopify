@@ -1,0 +1,19 @@
+<main id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section watches-page">
+  <section class="section__wrapper section">
+    
+    <div class="container watches">
+      <h1 class="title">Loyalty & Referral FAQ</h1>
+	   {% section 'page__loyalty-faq-accordion-anchors' %}
+      <hr>
+      {% section 'page__loyalty-faq-accordion' %}
+    </div>
+  </section>
+</main>
+
+<script>
+  $('.hover-underline-animation').click(function() {
+    event.preventDefault();
+    var scroll_id = $(this).attr('href');
+    $('html').animate({ scrollTop: $(scroll_id).offset().top -73}, 0);
+  })
+</script>

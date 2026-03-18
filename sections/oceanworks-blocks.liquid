@@ -1,0 +1,87 @@
+<section class="section oceanworks_blocks_wrapper">
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; margin: 20px auto; align-items: center;">
+    <div class="oceanworks_blocks">
+      <img src="{{ section.settings.image | img_url: 'master' }}" class="desktop_only">
+      <img src="{{ section.settings.image_mobile | img_url: 'master' }}" class="mobile_only">
+      <h2>{{ section.settings.image_title }}</h2>
+    </div>
+    <div class="oceanworks_blocks">
+      <div class="image-with-text__text text-align-left content">
+        {{ section.settings.text }}
+      </div>
+      <div class="buttons is-left"> 
+        <a class="button button--primary" href="{{ section.settings.cta_url }}" aria-label="{{ section.settings.cta_text }} link" target="_blank">{{ section.settings.cta_text }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .oceanworks_blocks {
+    width: 50%;
+    padding: 30px;
+    position: relative;
+    height: 100%;
+  }
+  .oceanworks_blocks h2 {
+    position: absolute;
+    color: #fff;
+    font-weight: 500;
+    left: 20px;
+    font-size: 42px;
+    top: 20px;
+    max-width: 300px;
+    line-height: 1.25;
+  }
+  .oceanworks_blocks:first-child {
+    padding: 0;
+  }
+  @media only screen and (max-width: 768px) {
+    .oceanworks_blocks,
+    .oceanworks_blocks_wrapper.section {
+      width: 100%;
+    }
+    .oceanworks_blocks h2 {
+      font-size: 32px;
+      max-width: 230px;
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Oceanworks Blocks",
+    "settings": [
+	  {
+		"type": "image_picker",
+		"id": "image",
+		"label": "Image"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "image_mobile",
+		"label": "Image Mobile"
+	  },
+	  {
+		"type": "text",
+		"id": "image_title",
+		"label": "Image Title"
+	  },
+	  {
+		"type": "richtext",
+		"id": "text",
+		"label": "Text"
+	  },
+	  {
+		"type": "url",
+		"id": "cta_url",
+		"label": "CTA Url"
+	  },
+	  {
+		"type": "text",
+		"id": "cta_text",
+		"label": "CTA Text"
+	  }
+	]
+  }
+{% endschema %}

@@ -1,0 +1,74 @@
+{% if product.metafields["global"]["enable_spcifications"] == 'true' or product.metafields["global"]["enable_spcifications"] == 'TRUE' %}
+<section class="section is-width-standard has-gutter-enabled product-specification" > 
+    <div class="container"> 
+        <div class="image-with-text__image-column
+        image-with-text__column
+        one-half
+        medium-down--one-whole
+        column
+        is-flex
+        is-align-center ">
+          
+            <div class="image-element__wrap" >
+            {% if product.metafields["global"]["specification_image"] %}
+                <img src="{{ product.metafields["global"]["specification_image"] }}" alt="" />
+                {% endif %}
+            </div>
+
+        </div> 
+        <div class="image-with-text__text-column
+                    image-with-text__column one-half
+                    medium-down--one-whole
+                    column
+                    has-padding-left
+                    has-padding-right
+                    is-flex
+                    is-flex-wrap
+                    is-justify-left
+                    is-align-center
+                    " > 
+            <div class="image-with-text__wrapper"> 
+                        <h2 class="image-with-text__heading text-align-left is-regular">Specifications</h2> 
+                        <div class="image-with-text__text text-align-left content">
+                           {% if product.metafields["global"]["specification_title_1"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_1"] }}</div>
+                                {{ product.metafields["global"]["specification_description_1"] }}
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["specification_title_2"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_2"] }}</div>
+                               {{ product.metafields["global"]["specification_description_2"] }}
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["specification_title_3"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_3"] }}</div>
+                               {{ product.metafields["global"]["specification_description_3"] }}
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["specification_title_4"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_4"] }}</div>
+                                {{ product.metafields["global"]["specification_description_4"] }}
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["specification_title_5"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_5"] }}</div>
+                               {{ product.metafields["global"]["specification_description_5"] }}
+                            </div>
+                            {% endif %}
+                            {% if product.metafields["global"]["specification_title_6"] %}
+                            <div class="feature-list">
+                                <div class="sp_feature_heading heading-section__preheading">{{ product.metafields["global"]["specification_title_6"] }}</div>
+                                {{ product.metafields["global"]["specification_description_6"] }}
+                            </div>
+                            {% endif %}
+                        </div> 
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

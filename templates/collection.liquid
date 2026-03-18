@@ -1,0 +1,298 @@
+{% comment %}
+  To edit the contents of this file, look inside the `sections` folder for the file name that comes directly after `section`. Eg. {% section 'product__main' %} or {% section 'page__banner' %}
+
+  - https://help.shopify.com/en/themes/development/templates/collection-liquid
+{% endcomment %}
+
+<div
+  id="template-{{ template | replace: '.', '-' | handle }}"
+  class="shopify-section collection-page"
+  data-check-for-order="true"
+>
+  {% render 'stylitics-gallery-widget', tag: collection.metafields.stylitics.tag %}
+
+  {% comment %} Collection banner {% endcomment %}
+  {% section 'collection__banner' %}
+
+{% if collection.metafields.banner.video[0] %}
+  <div>
+    <video
+      autoplay
+      playsinline
+      muted
+      loop
+      {% if collection.metafields.banner.video_placeholder[0] %}
+        poster="{{ collection.metafields.banner.video_placeholder[0].src }}"
+      {% endif %}
+    >
+      <source src="{{ collection.metafields.banner.video[0].src }}" type="video/mp4">
+    </video>
+  </div>
+{% elsif collection.metafields.banner.image_desktop[0] %}
+  <div>
+    {% if collection.metafields.banner.link != blank %}<a href="{{ collection.metafields.banner.link }}">{% endif %}
+    <img src="{{ collection.metafields.banner.image_desktop[0].src }}" class="desktop_only" style="width: 100%;">
+    {% if collection.metafields.banner.image_mobile[0] %}
+      <img src="{{ collection.metafields.banner.image_mobile[0].src }}" class="mobile_only" style="width: 100%;">
+    {% endif %}
+    {% if collection.metafields.banner.link != blank %}</a>{% endif %}
+  </div>
+{% endif %}
+
+  <section
+    class="
+      section__wrapper
+      section
+    "
+  >
+    <div class="container {% if settings.heading_divider_style == 'long' %}has-heading-divider-below {% endif %}">
+      <div class="collection__breadcrumb two-fifths medium-down--one-whole column has-padding-bottom">
+        {% comment %} Collection breadcrumb {% endcomment %}
+        <div class="breadcrumb__container">
+          {% include 'breadcrumb', type: 'collection' %}
+        </div>
+      </div>
+      <div class="collection__spacer three-fifths column hide-when-banner-enabled"></div>
+      <div class="one-half medium-down--one-whole column has-no-side-gutter hide-when-banner-enabled collection-title">
+        {% comment %} Collection title {% endcomment %}
+        {% comment %} {% include 'heading', title: collection.title, heading_tag: 'h1', context: 'collection', text_alignment: 'left' %}  {% endcomment %}
+        <div
+          class="
+            heading-wrapper--collection
+            heading-wrapper
+            heading-wrapper--{{ settings.heading_divider_style }}
+            one-whole column
+            is-flex
+            is-flex-column
+            is-align-left
+            text-align-left
+          "
+        >
+          <h1 class="collection__title title">
+            {{ collection.title }}
+          </h1>
+        </div>
+      </div>
+      <div class="collection__filters one-half medium-down--one-whole column">
+        {% comment %} Collection filters {% endcomment %}
+        {% comment %} {% include 'collection__filters' %} {% endcomment %}
+        <div class="field is-grouped is-flex-wrap">
+          <div class="collection__sort-by-filter select">
+            
+          </div>
+        </div>
+      </div>
+      {% if settings.heading_divider_width != 0 and settings.heading_divider_style == 'long' %}
+        <div class="heading-divider-below heading-wrapper one-whole column hide-when-banner-enabled">
+          <div
+            class="
+              heading-divider
+              heading-divider--{{ settings.heading_divider_style }}
+            "
+            {% if settings.heading_divider_animation != 'none' %}
+              data-scroll-class="{{ settings.heading_divider_animation }}"
+            {% endif %}
+          ></div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% comment %}
+      Collection description
+      <div class="container">
+        <div class="one-whole column">
+          <div class="boost-pfs-filter-collection-description collection__description has-padding-bottom">
+            {{ collection.description }}
+          </div>
+        </div>
+      </div>
+    {% endcomment %}
+
+    {% if collection.metafields.alert.text.markdown != blank %}
+      <div class="container collection_alert_wrapper desktop_only">
+        <div
+          class="collection_alert column one-whole has-no-side-gutter"
+          style="background-color: {{ collection.metafields.alert.background_color }}"
+        >
+          {{ collection.metafields.alert.text.markdown }}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="wizzy-skeleton-summary-and-sort">
+      <span class="wizzy-skeleton-summary wizzy-skeleton-style"> </span>
+      <span class="wizzy-skeleton-sort wizzy-skeleton-style"> </span>
+    </div>
+
+    <div class="container collection__content">
+      <!-- Wizzy Code Starts -->
+
+      {% if collection.metafields.alert.text.markdown != blank %}
+        <div class="container collection_alert_wrapper mobile_only">
+          <div
+            class="collection_alert column"
+            style="background-color: {{ collection.metafields.alert.background_color }}"
+          >
+            {{ collection.metafields.alert.text.markdown }}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="wizzy-custom-grid-collection">
+        <div class="wizzy-skeleton-product-filters">
+          <div class="wizzy-skeleton-results-filters">
+            <span class="wizzy-skeleton-results-filters-header wizzy-skeleton-style"> </span>
+            <div class="wizzy-skeleton-results-filters-block">
+              <span class="wizzy-skeleton-results-filters-item-head wizzy-skeleton-style"> </span>
+              <span
+                class="wizzy-skeleton-results-filters-item wizzy-skeleton-results-filters-item-1 wizzy-skeleton-style"
+              >
+              </span>
+              <span
+                class="wizzy-skeleton-results-filters-item wizzy-skeleton-results-filters-item-2 wizzy-skeleton-style"
+              >
+              </span>
+              <span
+                class="wizzy-skeleton-results-filters-item wizzy-skeleton-results-filters-item-3 wizzy-skeleton-style"
+              >
+              </span>
+            </div>
+            <div class="wizzy-skeleton-results-filters-block">
+              <span class="wizzy-skeleton-results-filters-item-head wizzy-skeleton-style"> </span>
+              <span
+                class="wizzy-skeleton-results-filters-item wizzy-skeleton-results-filters-item-1 wizzy-skeleton-style"
+              >
+              </span>
+              <span
+                class="wizzy-skeleton-results-filters-item wizzy-skeleton-results-filters-item-2 wizzy-skeleton-style"
+              >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="wizzy-defualt-skeloton-and-result-wrapper">
+          <div class="wizzy-search-result-skeloton-default">
+            <div class="wizzy-skeleton-results-list">
+              {% for i in (1..16) %}
+                <div class="wizzy-skeleton-result-product">
+                  <div class="wizzy-skeleton-result-product-image wizzy-skeleton-style"></div>
+                  <div class="wizzy-skeleton-result-product-info">
+                    <span class="wizzy-skeleton-result-product-title wizzy-skeleton-style"> </span>
+                    <div class="wizzy-skeleton-result-product-price">
+                      <span class="wizzy-skeleton-result-product-discounted-price wizzy-skeleton-style"> </span>
+                      <span class="wizzy-skeleton-result-product-regular-price wizzy-skeleton-style"> </span>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% comment %}Collection main {% endcomment %}
+          {% section 'collection__main' %}
+          <!-- Wizzy Code Ends -->
+        </div>
+      </div>
+    </div>
+
+    <div id="wizzy-shopify-collection-page-wrapper"></div>
+    {% comment %}
+      Collection sidebar and main content area
+      <div class="container collection__content">
+        <div class="boost-pfs-filter-sidebar">
+          <aside class="one-whole column has-padding-bottom">
+            <div class="boost-pfs-filter-tree boost-pfs-filter-tree-mobile-button">
+              {% include 'boost-pfs-filter-skeleton', type: 'button' %}
+            </div>
+            <div class="boost-pfs-filter-tree boost-pfs-filter-tree-v"></div>
+          </aside>
+         Collection sidebar
+          {% section 'collection__sidebar' %}
+        </div>
+
+        {% if collection.metafields.alert.text.markdown != blank %}
+          <div class="container collection_alert_wrapper mobile_only">
+            <div
+              class="collection_alert column"
+              style="background-color: {{ collection.metafields.alert.background_color }}"
+            >
+              {{ collection.metafields.alert.text.markdown }}
+            </div>
+          </div>
+        {% endif %}
+
+         Collection main
+        {% section 'collection__main' %}
+      </div>
+    {% endcomment %}
+  </section>
+</div>
+
+{% if collection.handle == 'watches' %}
+  <div id="bv-title-wrapper" style="border-top: 1px solid rgb(227, 227, 227); padding-top: 30px; margin-top: 20px;">
+    <h3 id="bv-title" style="text-align: center;">How You’re Wearing It</h3>
+    <p id="bv-subtitle" style="text-align: center;">
+      Tag Us
+      <a href="https://www.instagram.com/annekleinofficial/?hl=en" target="_blank" class="font-medium"
+        >@AnneKleinOfficial</a
+      >
+    </p>
+    <div id="ugc-button-container">
+      <div class="ugc-button">
+        <a class="ugc-button-link" href="/pages/how-you-re-wearing-it">View Style Gallery</a>
+      </div>
+    </div>
+  </div>
+  <div crl8-container-id="category" crl8-filter="category:'{{ collection.title }}'"></div>
+{% endif %}
+
+{% comment %}
+<div
+  data-rebuy-id="128696"
+  data-rebuy-shopify-product-ids="{{ product.id }}"
+  style="border-top: 1px solid #e3e3e3; padding-top: 30px; margin-top: 20px;"
+></div>
+<div
+  data-rebuy-id="128688"
+  data-rebuy-shopify-product-ids="{{ product.id }}"
+  style="border-top: 1px solid #e3e3e3; padding-top: 30px; margin-top: 20px;"
+></div>
+{% endcomment %}
+
+{% if collection.handle == 'ocean-plastic-watches' %}
+  <style>
+    .cart__savings, .sale {
+      color: black !important;
+    }
+  </style>
+{% endif %}
+
+{% assign description_bg = settings.description_bg %}
+
+{% if collection.description != blank %}
+  <div class="collection_description" style="background-color: {{ description_bg }};">
+    <div class="section__wrapper section">
+      {{ collection.description }}
+    </div>
+  </div>
+{% endif %}
+
+<script>
+      function checkWizzyfiltersApplied(url) {
+    const hasCollections = url.includes("/collections");
+    const hasAppliedFilters = url.includes("[]");
+    return hasCollections && hasAppliedFilters;
+  }
+    if (checkWizzyfiltersApplied(window.location.href)) {
+      let shopifySectionCollectionMain = document.querySelector(
+            "#shopify-section-collection__main"
+          );
+      let defaultCollectionSkeloton = document.querySelector(
+            ".wizzy-custom-grid-collection .wizzy-skeleton-results-list"
+          );
+      if (shopifySectionCollectionMain && defaultCollectionSkeloton) {
+
+        shopifySectionCollectionMain.style.display = "none";
+        defaultCollectionSkeloton.style.display = "flex";
+      }
+    }
+</script>

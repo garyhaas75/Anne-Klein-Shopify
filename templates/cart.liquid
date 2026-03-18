@@ -1,0 +1,17 @@
+{% comment %}
+  The contents of the cart.liquid template can be found in /sections/cart-template.liquid
+{% endcomment %}
+<div id="template-{{ template | replace: '.', '-' | handle }}" class="shopify-section cart-page" data-check-for-order="true">
+  {% section 'cart__banner' %}
+  {% section 'cart__main' %}
+</div>
+
+<style>
+  .cart__checkout-container .cart__buttons,
+  .cart__checkout-container .cart__checkout,
+  .cart__checkout-container button#checkout{
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+</style>

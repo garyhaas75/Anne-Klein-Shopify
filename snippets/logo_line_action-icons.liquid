@@ -1,0 +1,183 @@
+{% comment %}Assign object as block or section{% endcomment %}
+{% if type == 'block' %}
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+<div class="header__icons header__icon-style-{{ object.settings.icon_style | replace: '_', '-' }} {{ header_icon_class }} header__icon__normal">
+  {% comment %} Search icon {% endcomment %}
+
+  <!--
+    <div class='js-search-dropdown search-dropdown bg-white absolute left-0 right-0 pt-4 pb-8 lg:py-8 z-20'>
+      <div class='container px-4 mx-auto'>
+        <div class='lg:w-2/3 mx-auto'>
+          <div class='mb-6'>
+            <form action='/search' method='get' role='search'>
+              <label for='Search' class='label-hidden'></label>
+              <input type='search' name='q' id='Search' value='{{ search.terms | escape }}' placeholder='Search'>
+              <button type='submit' class='button'>Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  -->
+
+  <!--
+    <div id="wrap" class="header__link action-area__link">
+      <form action='/search' method='get' role='search' autocomplete="on">
+        <input id="Search" name="q" type="search" value="{{ search.terms | escape }}" placeholder="Search">
+        <input id="search_submit" value="Rechercher" type="submit">
+      </form>
+    </div>
+  -->
+
+  <a class="header__link action-area__link search_hover" title="Search" style="position: relative;" aria-label="Search">
+    <form action="" method="get" role="search">
+      <input
+        id="Search"
+        class="search_input"
+        name="a"
+        type="search"
+        value="{{ search.terms | escape }}"
+        placeholder="Search"
+      >
+      <input id="search_submit" class="search_submit" value="" type="submit">
+    </form>
+  </a>
+
+  <style>
+        @media only screen and (min-width: 769px) {
+          .search_input {
+            font-size: 16px;
+            display: inline-block;
+            font-weight: 100;
+            border: none;
+            outline: none;
+            padding: 3px;
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            bottom: 10px;
+            opacity: 0;
+            right: 0;
+            background: none;
+            z-index: 3;
+            transition: width 0.5s ease-in-out;
+            cursor: pointer;
+          }
+          .header-sticky-wrapper.is-sticky .search_input {
+            bottom: 20px !important;
+          }
+          .search_input::placeholder {
+            text-indent: -1000px;
+            color: black;
+          }
+          .search_input::placeholder,
+          .search_input::placeholder {
+            text-indent: initial;
+          }
+          .search_input:hover,
+          .search_input:focus:hover {
+            border-bottom: 1px solid #000;
+          }
+          .search_input,
+          .search_input {
+            width: 200px;
+            opacity: 1;
+            z-index: 1;
+            border-bottom: 1px solid #000;
+            transition: width 0.5s ease-in-out;
+            cursor: text;
+          }
+         .search_input + .search_submit,
+          .search_input + .search_submit {
+    /*         background: none; */
+           width: 35px;
+          }
+          .search_submit {
+            height: 20px;
+            width: 30px;
+            display: inline-block;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg id='search' title='Search'%3E%3Cpath d='M92.83,90.18,71.47,68.83a38.58,38.58,0,1,0-6.29,5l22,22ZM14,41.46A30.47,30.47,0,1,1,44.47,71.93,30.51,30.51,0,0,1,14,41.46Z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E") center center no-repeat;
+            background-size: contain;
+            border: none;
+            top: 0;
+            right: 0;
+    /*         z-index: 2; */
+            cursor: pointer;
+          }
+          .boost-pfs-search-box:hover,
+          .boost-pfs-search-box:focus {
+            box-shadow: none;
+          }
+          .search_submit:hover,
+          .search_submit:focus {
+            opacity: 0.8;
+          }
+        }
+  </style>
+
+  {% if settings.show_multiple_currencies %}
+    {% comment %} Currency converter select {% endcomment %}
+    <div class="header__currency-dropdown header__link action-area__link">
+      {% include settings.icon, name: 'globe', icon_class: 'header__icon' %}
+      <span class="icon-caption select is-arrowless">
+        {% include 'header__currencies-switcher' %}
+      </span>
+    </div>
+  {% endif %}
+
+  <a
+    href="/pages/loyalty-rewards"
+    title="Loyalty & Rewards"
+    aria-label="Loyalty & Rewards"
+    class="header__link action-area__link"
+  >
+    {% include settings.icon, name: 'loyalty', icon_class: 'header__icon' %}
+  </a>
+
+  {% if shop.customer_accounts_enabled %}
+    {% comment %} Account icon {% endcomment %}
+    {% if customer %}
+      {% comment %} Logout {% endcomment %}
+      <a href="{{ routes.account_url }}" title="Logout" aria-label="Logout" class="header__link action-area__link">
+        {% include settings.icon, name: 'avatar', icon_class: 'header__icon' %}
+      </a>
+    {% else %}
+      {% comment %} Login {% endcomment %}
+      <a
+        href="{{ routes.account_login_url }}"
+        title="Login or Create Account"
+        aria-label="Login or Create Account"
+        class="header__link action-area__link"
+      >
+        {% include settings.icon, name: 'avatar', icon_class: 'header__icon' %}
+      </a>
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Cart icon {% endcomment %}
+  <div
+    class="header-cart action-area__link {% if cart.item_count != 0 %}has-cart-count{% endif %}"
+    data-ajax-cart-trigger
+  >
+    <a
+      class="header__link"
+      href="{{ routes.cart_url }}"
+      title="Shopping Cart"
+      aria-label="Shopping cart, {{ cart.item_count }} items in cart"
+    >
+      <span class="header-cart__icon">
+        {% include settings.icon, name: settings.cart_icon, icon_class: 'header__icon' %}
+        <span class="header-cart__count header-cart__count--badge badge" data-bind="itemCount">
+          {{ cart.item_count }}
+        </span>
+      </span>
+    </a>
+    {% if settings.cart_action == 'mini_cart' %}
+      {% include 'ajax-cart' %}
+    {% endif %}
+  </div>
+</div>

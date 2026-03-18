@@ -1,0 +1,197 @@
+<a href="javascript:void(0);" title="Buy with Confidence!" class="fitrec-register" style="text-align: center; display: block; margin: 40px auto; max-width: 1200px; padding: 20px 0; border: 1px solid #f1ede2;">
+  <h3 class="size-guide-title" style="">Buy with Confidence!</h3>
+  <h6 style="font-family: Avenir Next,Helvetica,sans-serif; font-size: 16px; text-align: center; margin-bottom: 15px; padding: 0 10px;"> We’ve made finding your perfect size easy.</h6>
+</a>
+
+<div class="Panel">
+  <h3 class="size-guide-tabs-title" style="">Size Guide</h3>
+
+  <nav>
+      <ul class="Tabs">
+          <li class="Tabs__tab active Tab" data="clothing"><a href="javascript:void(0)">Clothing</a></li>
+          <li class="Tabs__tab Tab" data="eyewear"><a href="javascript:void(0)">Eyewear</a></li>
+          <li class="Tabs__tab Tab" data="Shoes"><a href="javascript:void(0)">Shoes</a></li>
+        <li class="Tabs__tab Tab" data="handbag"><a href="javascript:void(0)">Handbag</a></li>
+          <li class="Tabs__presentation-slider" role="presentation"></li>
+      </ul>
+  </nav>
+  <div class="Panel__body active" data="clothing">
+    <img src="https://cdn.shopify.com/s/files/1/0274/7331/3863/files/AK_Clothing_Size_Chart_Small_837ac05d-6630-42cb-9bed-32e559735885.png?v=1710355330" alt="clothing size chart">
+  </div>
+  <div class="Panel__body" data="eyewear">
+    <img src="https://cdn.shopify.com/s/files/1/0274/7331/3863/files/AK_Eyewear_Fit_Chart_445b858e-3d04-4a88-8a38-5f0f5e43ca66.jpg?v=1710353163" alt="eyewear size chart">
+  </div>
+  <div class="Panel__body" data="handbag">
+    <img src="https://cdn.shopify.com/s/files/1/0274/7331/3863/files/AK_Handbag_Size_Diagram_1.jpg?v=1710353163" alt="handbag size chart">
+  </div>
+  <div class="Panel__body" data="Shoes">
+    <img src="https://cdn.shopify.com/s/files/1/0274/7331/3863/files/AK_Shoes_Size_Chart.png?v=1712356631" alt="shoe size chart">
+  </div>
+</div>
+
+<script>
+  
+var tabs = document.getElementsByClassName('Tab');
+var panels = document.getElementsByClassName('Panel__body');
+
+Array.prototype.forEach.call(tabs, function(tab) {
+  tab.addEventListener('click', setActiveClass);
+});
+
+function setActiveClass(evt) {  
+  
+  Array.prototype.forEach.call(tabs, function(tab) {
+      tab.classList.remove('active');
+  });
+
+  Array.prototype.forEach.call(panels, function(panel) {
+    panel.classList.remove('active');
+    if (panel.getAttribute('data') == evt.currentTarget.getAttribute('data')) {
+      panel.classList.add('active');
+    }
+  });
+
+  evt.currentTarget.classList.add('active');
+}
+  
+</script>
+
+<style>
+#shopify-section-template--15961290178631__size-guide-page {
+  margin: 0 auto 60px;
+  max-width: 1200px;
+}
+a.fitrec-register {
+  text-align: center;
+  display: block;
+  margin: 40px auto;
+  max-width: 1200px;
+  padding: 20px 0;
+  border: 1px solid #f1ede2;
+  margin: 40px 20px;
+}
+.size-guide-title {
+  font-family: Avenir Next,Helvetica,sans-serif; 
+  font-size: 26px; 
+  margin-bottom: 5px;
+  line-height: 31px;
+}
+
+.size-guide-tabs-title {
+  text-align: center; 
+  font-family: Avenir Next,Helvetica,sans-serif; 
+  font-size: 26px; 
+  margin-bottom: 25px;
+  line-height: 31px;
+}
+  
+.Panel {
+  width: 100%;
+  padding: 30px 0 0;
+  background: #f7f8f4;
+}
+  
+.Panel__body {
+  background-color: #f7f8f4;
+  padding: 10px 20px;
+  display: none;
+}
+  
+.Panel__body.active {
+  display: block;
+}
+  
+.Tabs {
+  position: relative;
+  background-color: #f7f8f4;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid #666;
+}
+  
+.Tabs:after {
+  content: ' ';
+  display: table;
+  clear: both;
+}
+  
+.Tabs__tab {
+  float: left;
+  width: 25%;
+  text-align: center;
+}
+  
+.Tabs__tab:first-child.active ~ .Tabs__presentation-slider {
+  transform: translateX(0) scaleX(0.25);
+}
+  
+.Tabs__tab:nth-child(2).active ~ .Tabs__presentation-slider {
+  transform: translateX(25%) scaleX(0.25);
+}
+  
+.Tabs__tab:nth-child(3).active ~ .Tabs__presentation-slider {
+  transform: translateX(calc(25% * 2)) scaleX(0.25);
+}
+
+.Tabs__tab:nth-child(4).active ~ .Tabs__presentation-slider {
+  transform: translateX(calc(25% * 3)) scaleX(0.25);
+}
+  
+.Tabs__presentation-slider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+  transform-origin: 0 0;
+  transition: transform 0.25s;
+}
+  
+.Tab {
+  font-family: Avenir Next,Helvetica,sans-serif;
+}
+  
+.Tab > a {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #666;
+  transition: color 0.15s;
+}
+  
+.Tab.active > a {
+  color: #000;
+}
+  
+.Tab:hover > a {
+  color: #000;
+}
+  
+@media only screen and (max-width: 768px) {
+  #shopify-section-template--15961290178631__size-guide-page {
+    margin: 0 auto 40px;
+  }
+  a.tfc-fitrec-register { 
+    max-width: 90%;
+  }
+  .size-guide-title {
+    font-size: 22px; 
+  }
+  .size-guide-tabs-title {
+    font-size: 22px; 
+    margin-bottom: 10px;
+  }
+  .Tab > a {
+    padding: 10px 5px 5px;
+  }
+}
+</style>
+
+{% schema %}
+  {
+    "name": "True Fit",
+    "settings": []
+  }
+{% endschema %}

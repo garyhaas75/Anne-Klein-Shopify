@@ -1,0 +1,204 @@
+<div class="oceanworks_wrapper">
+  <div class="oceanworks_inner_wrapper">
+  <div class="oceanworks_row">
+    <h2 style="font-weight: 500; line-height: 1.25; max-width: 260px;">{{ section.settings.title }}</h2>
+    <div style="font-size: 18px; line-height: 1.5; max-width: 600px;">{{ section.settings.text }}</div>
+  </div>
+  
+  <div class="oceanworks_col_wrapper">
+    <div class="oceanworks_col">
+      <h2>{{ section.settings.title_1 }}</h2>
+      <div style="max-width: 260px; margin-left: auto; margin-right: auto;">{{ section.settings.subtitle_1 }}</div>
+      <img src="{{ section.settings.icon_1 | img_url: 'master' }}" style="max-width: 280px; margin-left: auto; margin-right: auto;">
+    </div>
+    
+    <div class="oceanworks_col" style="max-width: 200px; margin-left: auto; margin-right: auto;">
+      <h2>{{ section.settings.title_2 }}</h2>
+      <div>{{ section.settings.subtitle_2 }}</div>
+      <img src="{{ section.settings.icon_2 | img_url: 'master' }}">
+    </div>
+    
+    <div class="oceanworks_col">
+      <h2>{{ section.settings.title_3 }}</h2>
+      <div>{{ section.settings.subtitle_3 }}</div>
+      <img src="{{ section.settings.icon_3 | img_url: 'master' }}" style="max-width: 280px; margin-left: auto; margin-right: auto;">
+    </div>
+  </div>
+  </div>
+</div>
+
+<style>
+  .oceanworks_wrapper {   
+    background-image: url('{{ section.settings.bg_image | img_url: 'master' }}');
+      background-size: cover;
+      background-position: center;
+      margin-top: 20px;
+  }
+  .oceanworks_inner_wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px;
+  }
+  .oceanworks_wrapper div,
+  .oceanworks_wrapper p,
+  .oceanworks_wrapper h2 {
+    font-family: "Avenir Next", "Helvetica", sans-serif;
+    line-height: 1.5;
+  }
+  .oceanworks_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto 80px;
+  }
+  .oceanworks_col_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .oceanworks_col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 31%;
+    text-align: center;
+  }
+  .oceanworks_col div {
+    margin-bottom: 20px;
+  }
+  .oceanworks_col h2 {
+    font-size: 55px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .oceanworks_col p {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 100;
+  }
+  .oceanworks_col img {
+    margin-top: 10px;
+  }
+  @media only screen and (max-width: 768px) {
+    .oceanworks_wrapper {
+    background-image: url('{{ section.settings.bg_image_mobile | img_url: 'master' }}');
+  }
+    .oceanworks_row {
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+    .oceanworks_row h2,
+    .oceanworks_row div {
+      max-width: 100% !important;
+      padding: 0 20px 20px;
+      text-align: center;
+    }
+    .oceanworks_col {
+      width: 100%;
+      padding: 20px 20px 0;
+    }
+    .oceanworks_col h2 {
+      font-size: 42px;
+    }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Oceanworks",
+    "settings": [
+	  {
+		"content": "General",
+		"type": "header"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "bg_image",
+		"label": "Background Image"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "bg_image_mobile",
+		"label": "Background Image Mobile"
+	  },
+	  {
+		"content": "Top",
+		"type": "header"
+	  },
+	  {
+		"type": "text",
+		"id": "title",
+		"label": "Title"
+	  },
+	  {
+		"type": "richtext",
+		"id": "text",
+		"label": "Text"
+	  },
+	  {
+		"content": "Left",
+		"type": "header"
+	  },
+	  {
+		"type": "text",
+		"id": "title_1",
+		"label": "Title"
+	  },
+	  {
+		"type": "textarea",
+		"id": "subtitle_1",
+		"label": "Subtitle"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "icon_1",
+		"label": "Icon"
+	  },
+	  {
+		"content": "Center",
+		"type": "header"
+	  },
+	  {
+		"type": "text",
+		"id": "title_2",
+		"label": "Title"
+	  },
+	  {
+		"type": "textarea",
+		"id": "subtitle_2",
+		"label": "Subtitle"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "icon_2",
+		"label": "Icon"
+	  },
+	  {
+		"content": "Right",
+		"type": "header"
+	  },
+	  {
+		"type": "text",
+		"id": "title_3",
+		"label": "Title"
+	  },
+	  {
+		"type": "textarea",
+		"id": "subtitle_3",
+		"label": "Subtitle"
+	  },
+	  {
+		"type": "image_picker",
+		"id": "icon_3",
+		"label": "Icon"
+	  }
+	]
+  }
+{% endschema %}
+

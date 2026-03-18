@@ -1,0 +1,63 @@
+<script>
+window.addEventListener("klaviyoForms", (event) => {
+ try {
+   if (event.detail && event.detail?.type === "close") {
+     const formId = event.detail?.formId;
+     switch (formId) {
+       // standard desktop
+       case "TKFmRw":
+         window.__attentive.trigger(null, null, null, "1055004");
+         break;
+       // standard mobile
+       case "XDapZX":
+         window.__attentive.trigger(null, null, null, "989894");
+         break;
+       // standard desktop unveild
+       case "WZPchY":
+         window.__attentive.trigger(null, null, null, "1054842");
+         break;
+       // standard mobile unveild
+       case "UfReMi":
+         window.__attentive.trigger(null, null, null, "1054841");
+         break;
+       // bf desktop
+       case "Rgf4Aw":
+         window.__attentive.trigger(null, null, null, "1077684");
+         break;
+       // bf mobile
+       case "TcvGFC":
+         window.__attentive.trigger(null, null, null, "1077681");
+         break;
+       // bf desktop unveild
+       case "Vf4ipu":
+         window.__attentive.trigger(null, null, null, "1081637");
+         break;
+       // bf mobile unveild
+       case "Ts3aQD":
+         window.__attentive.trigger(null, null, null, "1081638");
+         break;
+       // cm desktop
+       case "X3BeKF":
+         window.__attentive.trigger(null, null, null, "1077684");
+         break;
+       // cm mobile
+       case "SdiCxP":
+         window.__attentive.trigger(null, null, null, "1077681");
+         break;
+       // cm desktop unveild
+       case "VNRQLS":
+         window.__attentive.trigger(null, null, null, "1081637");
+         break;
+       // cm mobile unveild
+       case "VCqPZn":
+         window.__attentive.trigger(null, null, null, "1081638");
+         break;
+       default:
+         window.__attentive.trigger(true);
+     }
+   }
+ } catch (e) {
+   console.error("Attentive Popup Triggering failed", e);
+ }
+});
+</script>

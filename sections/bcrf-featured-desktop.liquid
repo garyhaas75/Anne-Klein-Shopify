@@ -1,0 +1,126 @@
+{% comment %}Assign object as block or section{% endcomment %}
+{% if type == 'block' %}
+  {% assign object = block %}
+{% else %}
+  {% assign object = section %}
+{% endif %}
+
+{% comment %}Logic and variables{% endcomment %}
+{% assign id = object.id %}
+{% assign limit = object.settings.products_limit %}
+{% assign col = object.settings.collection %}
+{% assign products = collections[col].products %}
+{% assign products_per_row  = object.settings.products_per %}
+{% assign align_height = object.settings.align_height %}
+{% assign height = object.settings.collection_height %}
+{% assign width = object.settings.width %}
+{% assign show_gutter = object.settings.show_gutter %}
+{% assign padding_top = object.settings.padding_top %}
+{% assign padding_bottom = object.settings.padding_bottom %}
+{% assign animation = object.settings.animation | default: 'none' %}
+{% comment %}Advanced{% endcomment %}
+{% assign css_class = object.settings.css_class %}
+{% assign custom_css = object.settings.custom_css %}
+
+{% comment %} Assign product length to be selected limit for onboarding {% endcomment %}
+{% if col != blank and products != blank %}
+  {%- assign section_onboarding = false -%}
+{% else %}
+  {%- assign section_onboarding = true -%}
+{% endif %}
+
+{% comment %} Check to see if enough products available to create slide {% endcomment %}
+{% if object.settings.collection_style == 'slider' %}
+  {% if object.settings.products_limit > products_per_row and collections[col].all_products_count > products_per_row %}
+    {% assign layout = 'slider' %}
+  {% else %}
+    {% assign layout = 'grid' %}
+  {% endif %}
+{% else %}
+  {% assign layout = 'grid' %}
+{% endif %}
+
+{% comment %} Section specific CSS {% endcomment %}
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    {% if width == 'wide' %}
+      width: 100%;
+    {% endif %}
+  }
+  {% include 'css-loop', css: custom_css, id: id %}
+{% endstyle %}
+
+
+<section class="section
+                {{ css_class }}
+                is-width-{{ width }}
+                {% if show_gutter == false %}
+                  has-no-side-gutter
+                  has-background
+                {% else %}
+                  has-gutter-enabled
+                {% endif %}
+                "
+                {% if animation != "none" %}
+                  data-scroll-class="{{ animation }}"
+                {% endif %}>
+
+  <div class="container">
+    {% include 'heading', title: object.settings.title, heading_tag: 'h4', context: 'featured-collection', text_alignment: 'center', url: collections[col].url %}
+  </div>
+
+  
+  <div style="display:flex; flex-direction: row; flex-wrap: wrap;">
+  {% for block in section.blocks %}
+  <div style="width: 33.333%; padding: 0 20px 35px; text-align: center;">
+    <a href="{{ block.settings.image_url }}">
+      <img src="{{ block.settings.image_featured | img_url: 'master' }}" style="max-width: 100%; margin-bottom: 10px;">
+    </a>
+    <a href="{{ block.settings.image_url }}" class="product-thumbnail__title">{{ block.settings.image_title }}</a>
+    
+    </div>
+    
+    
+ 
+  
+  {% endfor %}
+     </div>
+</section>
+{% schema %}
+  {
+    "name": "Featured desktop",
+    "settings": [
+	  {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+      }
+	],
+	"blocks": [
+	  {
+		"name": "Block",
+		"type": "block",
+		"settings": [
+		  {
+			"type": "image_picker",
+			"id": "image_featured",
+			"label": "Image"
+		  },
+		  {
+			"type": "text",
+			"id": "image_title",
+			"label": "Title"
+		  },
+		  {
+			"type": "url",
+			"id": "image_url",
+			"label": "url"
+		  }
+		]
+	  }
+	]
+  }
+{% endschema %}
