@@ -78,6 +78,11 @@
     margin: 0;
     display: flex;
   }
+  #shopify-section-{{ id }} .flickity-prev-next-button[aria-disabled="true"] {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+  }
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
@@ -197,19 +202,17 @@
     var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
     var productsLimit = parseInt(data.products_limit, 10) || 0;
     var showNav = productsLimit > productsPer;
-    var groupSize = Math.min(productsPer, productsLimit);
-    var totalPages = groupSize > 0 ? Math.ceil(productsLimit / groupSize) : 1;
 
     $gallery.flickity({
       lazyLoad: 2,
       freeScroll: false,
-      groupCells: groupSize > 0 ? groupSize : true,
+      groupCells: productsPer,
       imagesLoaded: true,
       draggable: true,
-      cellAlign: 'center',
-      wrapAround: true,
-      pageDots: showNav,
+      cellAlign: 'left',
+      wrapAround: false,
       contain: true,
+      pageDots: showNav,
       prevNextButtons: showNav,
       initialIndex: 0,
       arrowShape: typeof window.arrowShape !== 'undefined' ? window.arrowShape : arrowShape,
@@ -218,33 +221,27 @@
         ready: function() {
           setTimeout(function() { $gallery.flickity('resize'); }, 500);
           moveNavBelowSlider($section);
-          setCarouselAccessibility($gallery, $section, carouselLabel, groupSize, totalPages);
-          bindWheelToCarousel($gallery);
+          labelCells($gallery);
+          insertLiveRegion($gallery, $section);
+          setButtonLabels($section);
+          updateNavState($gallery, $section);
+          bindTrackpadScroll($gallery);
         },
-        change: function(index) {
-          var page = groupSize > 0 ? Math.floor(index / groupSize) + 1 : 1;
-          if (page > totalPages) page = totalPages;
-          updateCarouselLiveRegion($section, page, totalPages, carouselLabel);
+        change: function() {
+          updateNavState($gallery, $section);
         }
       }
     });
-
-    if (showNav) {
-      $gallery.on('select.flickity', function() {
-        setCarouselButtonLabels($section);
-      });
-    }
   }
 
   function moveNavBelowSlider($section) {
-    var $wrap = $section.find('.ak-finishing-touches__carousel-wrap');
-    var $gallery = $wrap.find('.flickity-enabled');
+    var $gallery = $section.find('.flickity-enabled');
     if (!$gallery.length) return;
     var $prev = $gallery.find('.flickity-prev-next-button.previous');
     var $next = $gallery.find('.flickity-prev-next-button.next');
     var $dots = $gallery.find('.flickity-page-dots');
     if ($prev.length || $next.length || $dots.length) {
-      var $nav = jQuery('<div class="ak-finishing-touches__nav" aria-hidden="true"></div>');
+      var $nav = jQuery('<nav class="ak-finishing-touches__nav" aria-label="Carousel navigation"></nav>');
       if ($prev.length) $nav.append($prev);
       if ($dots.length) $nav.append($dots);
       if ($next.length) $nav.append($next);
@@ -252,58 +249,79 @@
     }
   }
 
-  function bindWheelToCarousel($gallery) {
-    var flkty = $gallery.data('flickity');
-    if (!flkty) return;
-    var viewport = $gallery.find('.flickity-viewport')[0];
-    if (!viewport) return;
-    var deltaAccum = 0;
-    var threshold = 80;
-    viewport.addEventListener('wheel', function(e) {
-      if (e.ctrlKey || e.metaKey) return;
-      deltaAccum += e.deltaY;
-      if (deltaAccum >= threshold) {
-        deltaAccum = 0;
-        $gallery.flickity('next');
-        e.preventDefault();
-      } else if (deltaAccum <= -threshold) {
-        deltaAccum = 0;
-        $gallery.flickity('previous');
-        e.preventDefault();
-      }
-    }, { passive: false });
+  function labelCells($gallery) {
+    var $cells = $gallery.find('.gallery-cell');
+    $cells.each(function(i) {
+      var $cell = jQuery(this);
+      $cell.attr('role', 'group');
+      $cell.attr('aria-roledescription', 'slide');
+      var productName = $cell.find('.thumbnail__caption .product-thumbnail__title, .product-thumbnail__title, .product-info__title').first().text().trim();
+      $cell.attr('aria-label', productName || ('Product ' + (i + 1) + ' of ' + $cells.length));
+    });
   }
 
-  function setCarouselAccessibility($gallery, $section, label, groupSize, totalPages) {
-    var $prev = $section.find('.flickity-prev-next-button.previous');
-    var $next = $section.find('.flickity-prev-next-button.next');
-    if ($prev.length) $prev.attr('aria-label', 'Previous products');
-    if ($next.length) $next.attr('aria-label', 'Next products');
-
-    var flkty = $gallery.data('flickity');
-    if (flkty && totalPages > 0) {
-      var $live = $section.find('.ak-finishing-touches__sr-status');
-      if (!$live.length) {
-        $live = jQuery('<div class="ak-finishing-touches__sr-status is-sr-only" aria-live="polite" aria-atomic="true"></div>');
-        $gallery.before($live);
-      }
-      var page = groupSize > 0 && flkty.selectedIndex >= 0 ? Math.floor(flkty.selectedIndex / groupSize) + 1 : 1;
-      if (page > totalPages) page = totalPages;
-      updateCarouselLiveRegion($section, page, totalPages, label);
-    }
-    setCarouselButtonLabels($section);
+  function insertLiveRegion($gallery, $section) {
+    if ($section.find('.ak-finishing-touches__sr-status').length) return;
+    var $live = jQuery('<div class="ak-finishing-touches__sr-status is-sr-only" aria-live="polite" aria-atomic="true"></div>');
+    $gallery.before($live);
   }
 
-  function setCarouselButtonLabels($section) {
+  function setButtonLabels($section) {
     $section.find('.flickity-prev-next-button.previous').attr('aria-label', 'Previous products');
     $section.find('.flickity-prev-next-button.next').attr('aria-label', 'Next products');
   }
 
-  function updateCarouselLiveRegion($section, currentPage, totalPages, label) {
+  function updateNavState($gallery, $section) {
+    var flkty = $gallery.data('flickity');
+    if (!flkty) return;
+    var slides = flkty.slides || [];
+    var idx = flkty.selectedIndex;
+    var total = slides.length;
+    var isFirst = idx === 0;
+    var isLast = idx >= total - 1;
+    var $prev = $section.find('.flickity-prev-next-button.previous');
+    var $next = $section.find('.flickity-prev-next-button.next');
+    $prev.attr('aria-disabled', isFirst ? 'true' : 'false');
+    $next.attr('aria-disabled', isLast ? 'true' : 'false');
     var $live = $section.find('.ak-finishing-touches__sr-status');
-    if (!$live.length || totalPages <= 0) return;
-    var text = (label ? label + ', ' : '') + 'Page ' + currentPage + ' of ' + totalPages;
-    $live.text(text);
+    if ($live.length && total > 0) {
+      $live.text((carouselLabel ? carouselLabel + ', ' : '') + 'Page ' + (idx + 1) + ' of ' + total);
+    }
+  }
+
+  function bindTrackpadScroll($gallery) {
+    var flkty = $gallery.data('flickity');
+    if (!flkty) return;
+    var viewport = $gallery.find('.flickity-viewport')[0];
+    if (!viewport) return;
+    var accumX = 0;
+    var accumY = 0;
+    var threshold = 60;
+    var scrolling = false;
+    var resetTimer;
+    viewport.addEventListener('wheel', function(e) {
+      if (e.ctrlKey || e.metaKey) return;
+      var dx = Math.abs(e.deltaX);
+      var dy = Math.abs(e.deltaY);
+      var isHorizontal = dx > dy;
+      if (isHorizontal) {
+        accumX += e.deltaX;
+      } else {
+        accumX += e.deltaY;
+      }
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function() { accumX = 0; accumY = 0; scrolling = false; }, 200);
+      if (scrolling) { e.preventDefault(); return; }
+      if (accumX >= threshold) {
+        accumX = 0; scrolling = true;
+        $gallery.flickity('next');
+        e.preventDefault();
+      } else if (accumX <= -threshold) {
+        accumX = 0; scrolling = true;
+        $gallery.flickity('previous');
+        e.preventDefault();
+      }
+    }, { passive: false });
   }
 
   if (document.readyState === 'loading') {
