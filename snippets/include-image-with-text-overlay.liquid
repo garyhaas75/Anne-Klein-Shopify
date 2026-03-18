@@ -143,15 +143,21 @@
 {% style %}
   {% include 'css-loop', css: section_css, id: id %}
 
-  @media only screen and (max-width: 480px) {
+  @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .image-with-text-overlay__heading {
-      color: {% if mobile_headline_alpha != 0 %}{{ mobile_headline_color}}{% endif %};
+      color: {% if mobile_headline_alpha != 0 %}{{ mobile_headline_color }}{% elsif heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %};
     }
     #shopify-section-{{ id }} .image-with-text-overlay__preheading {
-      color: {% if mobile_preheading_alpha != 0 %}{{ mobile_preheading_color}}{% endif %};
+      color: {% if mobile_preheading_alpha != 0 %}{{ mobile_preheading_color }}{% elsif preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %};
     }
     #shopify-section-{{ id }} .image-with-text-overlay__subheading {
-      color: {% if mobile_subtitle_alpha != 0 %}{{ mobile_subtitle_color}}{% endif %};
+      color: {% if mobile_subtitle_alpha != 0 %}{{ mobile_subtitle_color }}{% elsif subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %};
+    }
+    #shopify-section-{{ id }} .caption {
+      text-align: {{ text_alignment }};
+    }
+    #shopify-section-{{ id }} .caption-content {
+      text-align: {{ text_alignment }};
     }
   }
 
