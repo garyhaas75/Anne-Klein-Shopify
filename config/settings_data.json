@@ -5916,6 +5916,8 @@
           "image": "shopify://shop_images/AK_-_Show_6_-_Desktop-REPLAY.jpg",
           "mobile_image": "shopify://shop_images/AK_-_Show_6_-_Mobile_REPLAY.jpg",
           "image_alt": "",
+          "max_height_desktop": 0,
+          "max_height_mobile": 0,
           "pretext": "",
           "title": "",
           "subtitle": "",
@@ -5961,6 +5963,7 @@
       },
       "index_html_UP4kQU": {
         "type": "index__html",
+        "disabled": true,
         "name": "Custom HTML",
         "settings": {
           "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/e44809e3-29fb-4ff4-9290-198d725b5dd5/init.js\"></script>",
@@ -5991,6 +5994,7 @@
       },
       "index_html_jVHAMD": {
         "type": "index__html",
+        "disabled": true,
         "name": "Custom HTML",
         "settings": {
           "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/853097bf-e8cc-4c7d-b5a5-57278c8026a1/init.js\"></script>",
@@ -6260,7 +6264,7 @@
         "settings": {
           "text_color": "#ffffff",
           "container_width": "full",
-          "aspect_ratio_mode": "match_image",
+          "aspect_ratio_mode": "3_4",
           "section_aria_label": "",
           "padding_top": 0,
           "padding_bottom": 0
@@ -6324,12 +6328,14 @@
           "background_color": "#ffffff",
           "label_font_size": 15,
           "label_font_weight": "600",
-          "label_icon_image": "shopify://shop_images/AK_Homepage_Arrow_Desktop.svg",
+          "label_icon_image": "shopify://shop_images/AK_Homepage_Arrow_Short_Desktop.svg",
           "label_icon_image_mobile": "shopify://shop_images/AK_Homepage_Arrow_Mobile.svg",
           "label_icon_style": "arrow",
           "label_icon_svg": "",
           "label_icon_style_mobile": "arrow",
           "label_icon_svg_mobile": "",
+          "tile_max_height_desktop": 0,
+          "tile_max_height_mobile": 0,
           "container_padding": 0,
           "grid_gap": 8,
           "section_aria_label": "",
@@ -6477,6 +6483,8 @@
           "enable_shop_similar": false,
           "image": "shopify://shop_images/053d51096fa1cc0c96af8da859ecdc6d14079961.jpg",
           "image_alt": "",
+          "max_height_desktop": 640,
+          "max_height_mobile": 0,
           "pretext": "",
           "title": "Spring Botanicals",
           "subtitle": "<p>shop now</p>",
@@ -6519,10 +6527,44 @@
           "css_class": "",
           "custom_css": ""
         }
+      },
+      "ak_video_JDTPRV": {
+        "type": "ak-video",
+        "name": "AK Video",
+        "settings": {
+          "layout": "hero",
+          "section_max_width": 0,
+          "section_max_height": 0,
+          "video_max_width": 0,
+          "video_max_height": 0,
+          "video_fit": "cover",
+          "video_background_color": "#000000",
+          "video": "shopify://files/videos/compressed-desktop.mp4",
+          "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
+          "title": "Video",
+          "autoplay": true,
+          "loop": true,
+          "overlay_subheading": "Spring 2026 Campaign",
+          "overlay_subheading_font_size": 16,
+          "overlay_heading": "The Invisible Thread",
+          "overlay_heading_font_size": 48,
+          "overlay_cta": "Discover",
+          "overlay_cta_font_size": 16,
+          "overlay_text": "",
+          "text_color": "#ffffff",
+          "heading_level": "h1",
+          "show_logo_overlay": false,
+          "start_card_heading": "",
+          "start_card_text": "",
+          "end_card_heading": "",
+          "end_card_button_label": "Watch again",
+          "transcript": ""
+        }
       }
     },
     "content_for_index": [
       "index_html_mXCmrC",
+      "ak_video_JDTPRV",
       "index_html_r7tHWd",
       "index_category_pills_QCdmYD",
       "index_html_UP4kQU",
