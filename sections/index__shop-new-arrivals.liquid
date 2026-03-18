@@ -58,27 +58,38 @@
 {% endif %}
 
 {% style %}
-  #shopify-section-{{ id }} {
+  #shopify-section-{{ id }} .ak-new-arrivals {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
+    box-sizing: border-box;
   }
-  #shopify-section-{{ id }} .ak-new-arrivals__title { color: {{ heading_color }}; }
-  #shopify-section-{{ id }} .ak-shop-new-arrivals .container { max-width: {{ section_max_width }}px; margin: 0 auto; padding: 0 20px; width: 100%; box-sizing: border-box; }
+  #shopify-section-{{ id }} .ak-new-arrivals__inner {
+    display: block;
+    max-width: {{ section_max_width }}px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
   #shopify-section-{{ id }} .ak-new-arrivals__title {
     display: block;
     width: 100%;
-    flex: 0 0 100%;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: {{ heading_font_size }}px;
     font-weight: 700;
     text-align: {{ heading_alignment }};
     margin: 0 0 1.5rem;
+    color: {{ heading_color }};
     letter-spacing: {% if heading_letter_spacing == 0 %}0{% else %}{{ heading_ls_str }}em{% endif %};
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
   }
-  #shopify-section-{{ id }} .ak-new-arrivals__title-link { color: inherit; {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %} }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link { color: inherit; text-decoration: {% if heading_underline %}underline{% else %}none{% endif %}; }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:hover,
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible { opacity: 0.8; }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible {
@@ -90,6 +101,8 @@
     grid-template-columns: repeat(4, 1fr);
     gap: {{ grid_gap }}px;
     padding: {{ container_padding }}px;
+    width: 100%;
+    box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-link {
     display: flex;
@@ -153,9 +166,10 @@
     font-size: {{ label_font_size }}px;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
-    height: {{ label_font_size }}px;
-    width: auto;
-    object-fit: contain;
+    height: {{ label_font_size }}px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    position: static !important;
     display: block;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: none; }
@@ -167,8 +181,8 @@
   }
 {% endstyle %}
 
-<section class="section is-width-wide ak-shop-new-arrivals" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="container">
+<section class="ak-new-arrivals" {{ section_aria }}>
+  <div class="ak-new-arrivals__inner">
     {% if heading != blank %}
       <h2 class="ak-new-arrivals__title" id="new-arrivals-heading-{{ id }}">
         {% if heading_link != blank %}
