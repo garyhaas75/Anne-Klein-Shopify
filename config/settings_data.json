@@ -6272,6 +6272,7 @@
             "type": "tile",
             "settings": {
               "image": "shopify://shop_images/f22820a8318c1ea73ef15bb774aaca2273a0fe6a.jpg",
+              "image_alt": "",
               "label": "Clothing",
               "link": ""
             }
@@ -6280,6 +6281,7 @@
             "type": "tile",
             "settings": {
               "image": "shopify://shop_images/e677998387bcaac2b61c8cd517917bc94da1c2d3.jpg",
+              "image_alt": "",
               "label": "Watches",
               "link": ""
             }
@@ -6288,6 +6290,7 @@
             "type": "tile",
             "settings": {
               "image": "shopify://shop_images/3fbbfb7702416112d6d1dd15b952d48aae6fa690.jpg",
+              "image_alt": "",
               "label": "Handbags",
               "link": ""
             }
@@ -6296,6 +6299,7 @@
             "type": "tile",
             "settings": {
               "image": "shopify://shop_images/44ed6fe5d0b7007fc4bdc500a46e21d4cb80f41a.jpg",
+              "image_alt": "",
               "label": "Opticals",
               "link": ""
             }
@@ -6314,12 +6318,19 @@
           "heading_color": "#000000",
           "heading_font_size": 20,
           "heading_letter_spacing": 2,
+          "heading_underline": true,
           "background_color": "#ffffff",
+          "label_font_size": 15,
+          "label_font_weight": "600",
+          "label_icon_style": "arrow",
+          "label_icon_svg": "",
+          "label_icon_style_mobile": "arrow",
+          "label_icon_svg_mobile": "",
           "container_padding": 0,
           "grid_gap": 8,
           "section_aria_label": "",
-          "padding_top": 40,
-          "padding_bottom": 40
+          "padding_top": 16,
+          "padding_bottom": 16
         }
       },
       "index_finishing_touches_TLVBqV": {
