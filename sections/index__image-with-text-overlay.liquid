@@ -59,6 +59,28 @@
       "info": "Required for ADA (WCAG). Describe the image for screen readers. If blank, the image’s media alt or the heading is used."
     },
     {
+      "type": "range",
+      "id": "max_height_desktop",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Max height (desktop)",
+      "default": 0,
+      "info": "0 = no limit. Caps the banner height on desktop."
+    },
+    {
+      "type": "range",
+      "id": "max_height_mobile",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Max height (mobile)",
+      "default": 0,
+      "info": "0 = no limit. Caps the banner height on mobile (viewport 798px and below)."
+    },
+    {
       "type": "header",
       "content": "Text"
     },

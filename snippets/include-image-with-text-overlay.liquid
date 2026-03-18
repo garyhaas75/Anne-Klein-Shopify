@@ -14,6 +14,8 @@
 {% assign image = object.settings.image %}
 {% assign mobile_image = object.settings.mobile_image %}
 {% assign image_alt_override = object.settings.image_alt %}
+{% assign max_height_desktop = object.settings.max_height_desktop | default: 0 %}
+{% assign max_height_mobile = object.settings.max_height_mobile | default: 0 %}
 {% assign link = object.settings.link %}
 {% assign label = object.settings.label %}
 {% assign open_in_new_tab = object.settings.open_in_new_tab %}
@@ -173,6 +175,44 @@
 
   #shopify-section-{{ id }} .caption--click-through {
     pointer-events: none;
+  }
+
+  {% if max_height_desktop > 0 %}
+  #shopify-section-{{ id }} .image-with-text-overlay__banner {
+    height: {{ max_height_desktop }}px;
+    max-height: {{ max_height_desktop }}px;
+    overflow: hidden;
+  }
+  {% endif %}
+
+  {% if max_height_desktop > 0 or max_height_mobile > 0 %}
+  #shopify-section-{{ id }} .image-with-text-overlay__banner .image-element__wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  #shopify-section-{{ id }} .image-with-text-overlay__banner .image-element__wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #shopify-section-{{ id }} .image-with-text-overlay__banner .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  {% endif %}
+
+  @media only screen and (max-width: 798px) {
+    {% if max_height_mobile > 0 %}
+    #shopify-section-{{ id }} .image-with-text-overlay__banner {
+      height: {{ max_height_mobile }}px;
+      max-height: {{ max_height_mobile }}px;
+      overflow: hidden;
+    }
+    {% endif %}
   }
 
   {% include 'css-loop', css: custom_css, id: id %}
