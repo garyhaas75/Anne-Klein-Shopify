@@ -6365,9 +6365,9 @@
         "settings": {
           "title": "FINISHING TOUCHES",
           "heading_alignment": "center",
-          "products_per": 6,
+          "products_per": 5,
           "align_height": false,
-          "collection_height": 320,
+          "collection_height": 200,
           "collection_style": "slider",
           "width": "wide",
           "show_gutter": true,
