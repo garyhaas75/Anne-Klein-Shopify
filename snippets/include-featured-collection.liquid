@@ -34,9 +34,17 @@
   {%- assign section_onboarding = true -%}
 {% endif %}
 
+{% comment %} Coerce to numbers to avoid "comparison of String with 0 failed" when collection blank or settings are strings {% endcomment %}
+{% assign products_limit_num = object.settings.products_limit | default: 0 | plus: 0 %}
+{% assign products_per_row_num = products_per_row | default: 0 | plus: 0 %}
+{% assign all_products_count_num = 0 %}
+{% if col != blank and collections[col] != blank %}
+  {% assign all_products_count_num = collections[col].all_products_count | default: 0 | plus: 0 %}
+{% endif %}
+
 {% comment %} Check to see if enough products available to create slide {% endcomment %}
 {% if object.settings.collection_style == 'slider' %}
-  {% if object.settings.products_limit > products_per_row and collections[col].all_products_count > products_per_row %}
+  {% if products_limit_num > products_per_row_num and all_products_count_num > products_per_row_num %}
     {% assign layout = 'slider' %}
   {% else %}
     {% assign layout = 'grid' %}
@@ -71,7 +79,7 @@
                 {% if animation != "none" %}
                   data-scroll-class="{{ animation }}"
                 {% endif %}>
-  {% if collections[col].all_products_count > 0 %}
+  {% if all_products_count_num > 0 %}
       {% if object.settings.title != blank %}
         <div class="container">
           {% include 'heading', title: object.settings.title, heading_tag: 'h4', context: 'featured-collection', text_alignment: 'center', url: collections[col].url %}
@@ -79,15 +87,15 @@
       {% endif %}
   {% endif %}
   <div class="container">
-      <div class="one-whole column has-column-padding-bottom featured-collection layout--{{ layout }} masonry--{{ object.settings.enable_masonry_layout }} is-justify-center is-flex is-flex-wrap is-flex-row">
+      <div class="one-whole column has-column-padding-bottom featured-collection layout--{{ layout }} masonry--{{ object.settings.enable_masonry_layout | default: false }} is-justify-center is-flex is-flex-wrap is-flex-row">
         {% if section_onboarding == false %}
           {% comment %} Loop through products {% endcomment %}
           {% if layout == 'slider' %}
-            {% if collections[col].all_products_count > 0 %}
+            {% if all_products_count_num > 0 %}
               {% include 'product-slider', show_gutter: show_gutter %}
             {% endif %}
           {% else %}
-            {% if collections[col].all_products_count > 0 %}
+            {% if all_products_count_num > 0 %}
               {% include 'product-loop', align_height: align_height, height: height %}
             {% endif %}
           {% endif %}
@@ -104,10 +112,10 @@
   data-section-data
 >
   {
-    "enable_masonry_layout": {{ object.settings.enable_masonry_layout | json }},
+    "enable_masonry_layout": {{ object.settings.enable_masonry_layout | default: false | json }},
     "collection_style": {{ layout | json }},
     "products_per": {{ object.settings.products_per | json }},
-    "products_available": {{ collections[col].all_products_count | json }},
+    "products_available": {{ all_products_count_num | json }},
     "products_limit": {{ object.settings.products_limit | json }},
     "align_height": {{ object.settings.align_height | json }}
   }

@@ -37,6 +37,38 @@
   #shopify-section-{{ id }} .ak-quad__media { position: absolute; inset: 0; }
   #shopify-section-{{ id }} .ak-quad__img { width: 100%; height: 100%; object-fit: cover; display: block; }
   #shopify-section-{{ id }} .ak-quad__media .is-hidden-desktop-only { display: none; }
+  #shopify-section-{{ id }} .ak-quad__media video.ak-quad__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-quad__video-wrap { position: absolute; inset: 0; }
+  #shopify-section-{{ id }} .ak-quad__pause-btn {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.25rem;
+    z-index: 4;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: opacity 0.2s;
+  }
+  #shopify-section-{{ id }} .ak-quad__pause-btn:hover,
+  #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 0.9; }
+  #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-mobile-only { display: none !important; }
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-desktop-only { display: block !important; }
@@ -101,6 +133,8 @@
   <div class="ak-quad__grid">
     {% for block in section.blocks %}
       {% if block.type == 'panel' %}
+        {% assign panel_media_type = block.settings.media_type | default: 'image' %}
+        {% assign panel_video = block.settings.video %}
         {% assign panel_image = block.settings.image %}
         {% assign panel_mobile_image = block.settings.mobile_image | default: panel_image %}
         {% assign panel_heading = block.settings.heading %}
@@ -108,8 +142,15 @@
         {% assign panel_link = block.settings.link %}
         {% assign panel_alt = panel_image.alt | default: panel_heading | default: "Campaign image" %}
         {% assign panel_mobile_alt = panel_mobile_image.alt | default: panel_heading | default: "Campaign image" %}
+        {% assign use_video = false %}
+        {% if panel_media_type == 'video' and panel_video != blank %}
+          {% assign use_video = true %}
+        {% endif %}
 
-        {% if aspect_ratio_mode == 'match_image' and panel_image != blank %}
+        {% if use_video %}
+          {% assign ratio_style = 'style="--ak-quad-ratio: 3 / 4;"' %}
+          {% assign padding_pct = 133 %}
+        {% elsif aspect_ratio_mode == 'match_image' and panel_image != blank %}
           {% assign pw = panel_image.width %}
           {% assign ph = panel_image.height %}
           {% assign ratio_style = 'style="--ak-quad-ratio: ' | append: pw | append: ' / ' | append: ph | append: ';"' %}
@@ -132,15 +173,38 @@
           <div class="ak-quad__panel" data-aspect-ratio {{ ratio_style }}>
             <div class="ak-quad__panel-inner" style="padding-bottom: {{ padding_pct }}%;">
               <div class="ak-quad__media">
-                {% if panel_image != blank %}
-                  {% include 'image-element', image: panel_image, alt: panel_alt, stretch_width: true, additional_classes: 'ak-quad__img is-hidden-mobile-only' %}
-                {% else %}
-                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg ak-quad__img' }}
-                {% endif %}
-                {% if panel_mobile_image != blank %}
-                  <div class="is-hidden-desktop-only">
-                    {% include 'image-element', image: panel_mobile_image, alt: panel_mobile_alt, stretch_width: true, additional_classes: 'ak-quad__img' %}
+                {% if use_video %}
+                  <div class="ak-quad__video-wrap">
+                    <video
+                      class="ak-quad__video is-hidden-mobile-only"
+                      autoplay
+                      muted
+                      playsinline
+                      loop
+                      aria-label="{{ panel_heading | default: 'Panel video' | escape }}"
+                      data-panel-video="{{ block.id }}"
+                    >
+                      {% for source in panel_video.sources %}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                      {% endfor %}
+                    </video>
                   </div>
+                  {% if panel_image != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: panel_image, alt: panel_alt, stretch_width: true, additional_classes: 'ak-quad__img' %}
+                    </div>
+                  {% endif %}
+                {% else %}
+                  {% if panel_image != blank %}
+                    {% include 'image-element', image: panel_image, alt: panel_alt, stretch_width: true, additional_classes: 'ak-quad__img is-hidden-mobile-only' %}
+                  {% else %}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg ak-quad__img' }}
+                  {% endif %}
+                  {% if panel_mobile_image != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: panel_mobile_image, alt: panel_mobile_alt, stretch_width: true, additional_classes: 'ak-quad__img' %}
+                    </div>
+                  {% endif %}
                 {% endif %}
                 <div class="ak-quad__gradient" aria-hidden="true"></div>
               </div>
@@ -165,12 +229,43 @@
                 {% endif %}
               </div>
             {% endif %}
+
+            {% if use_video and panel_video.sources[0] != blank %}
+              <button type="button" class="ak-quad__pause-btn" aria-label="Pause video" data-pause-btn="{{ block.id }}">Pause</button>
+            {% endif %}
           </div>
         </div>
       {% endif %}
     {% endfor %}
   </div>
 </section>
+
+<script>
+  (function() {
+    var section = document.getElementById('shopify-section-{{ id }}');
+    if (!section) return;
+    section.querySelectorAll('[data-pause-btn]').forEach(function(btn) {
+      var blockId = btn.getAttribute('data-pause-btn');
+      var video = section.querySelector('.ak-quad__video[data-panel-video="' + blockId + '"]');
+      if (!video) return;
+      function updateLabel() {
+        btn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+        btn.textContent = video.paused ? 'Play' : 'Pause';
+      }
+      btn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+        updateLabel();
+      });
+      video.addEventListener('play', updateLabel);
+      video.addEventListener('pause', updateLabel);
+      updateLabel();
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -231,10 +326,27 @@
       "name": "Panel",
       "settings": [
         {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ],
+          "info": "Video shows a pause/play button for accessibility (ADA)."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Used when Media type is Video. Desktop only; use Image for mobile fallback."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Add alt in media library; panel heading used as fallback."
+          "info": "Add alt in media library; panel heading used as fallback. Used as mobile fallback when Video is set."
         },
         {
           "type": "image_picker",

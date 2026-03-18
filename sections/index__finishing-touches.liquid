@@ -1,15 +1,135 @@
 {% comment %}
   AK Homepage 2026 – Finishing Touches
-  Product carousel: title, collection picker, product image/title/price, links to product URL.
-  Uses theme's featured-collection snippet (slider layout). Products pulled from Shopify collection.
+  Product carousel: title + individually selected products (blocks). Each block = one product.
+  Uses theme's slider markup/JS so carousel behavior matches Featured collection.
 {% endcomment %}
 
-{% include 'include-featured-collection' %}
+{% assign id = section.id %}
+{% assign title = section.settings.title %}
+{% assign products_per_row = section.settings.products_per | default: 4 | plus: 0 %}
+{% assign align_height = section.settings.align_height %}
+{% assign height = section.settings.collection_height | default: 320 | plus: 0 %}
+{% assign width = section.settings.width | default: 'wide' %}
+{% assign show_gutter = section.settings.show_gutter %}
+{% assign padding_top = section.settings.padding_top | default: 40 | plus: 0 %}
+{% assign padding_bottom = section.settings.padding_bottom | default: 40 | plus: 0 %}
+{% assign layout_style = section.settings.collection_style | default: 'slider' %}
+
+{% assign products_count = 0 %}
+{% for block in section.blocks %}
+  {% if block.type == 'product' and block.settings.product != blank %}
+    {% assign products_count = products_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+{% assign use_slider = false %}
+{% if layout_style == 'slider' and products_count > products_per_row %}
+  {% assign use_slider = true %}
+{% endif %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    {% if width == 'wide' %}width: 100%;{% endif %}
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__heading {
+    margin: 0 0 1.5rem;
+    text-align: center;
+  }
+{% endstyle %}
+
+{% assign section_aria_label = section.settings.section_aria_label %}
+<section class="section is-width-{{ width }} ak-finishing-touches-section jsFeaturedCollection {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
+  {% if title != blank %}
+    <div class="container">
+      <h2 class="ak-finishing-touches__heading text-align-center" id="finishing-heading-{{ id }}">{{ title }}</h2>
+    </div>
+  {% endif %}
+  <div class="container">
+    <div class="one-whole column has-column-padding-bottom featured-collection layout--{% if use_slider %}slider{% else %}grid{% endif %} is-justify-center is-flex is-flex-wrap is-flex-row">
+      {% if products_count > 0 %}
+        <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
+             data-products-per-slide="{{ products_per_row }}"
+             data-products-limit="{{ products_count }}"
+             data-products-available="{{ products_count }}"
+             aria-live="polite">
+          {% for block in section.blocks %}
+            {% if block.type == 'product' and block.settings.product != blank %}
+              {% assign product = block.settings.product %}
+              {% assign hover_enabled = settings.thumbnail_hover_enabled %}
+              {% if product.featured_media.preview_image.alt != blank %}
+                {% assign alt_text = product.featured_media.preview_image.alt %}
+              {% else %}
+                {% assign alt_text = product.title %}
+              {% endif %}
+              <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+                <a href="{{ product.url }}">
+                  <div class="product-wrap">
+                    <div class="product-image__wrapper">
+                      <div class="image__container product__imageContainer">
+                        {% if settings.stickers_enabled %}
+                          {% include 'product-thumbnail__sticker' %}
+                        {% endif %}
+                        {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                        {% if product.media[1] != blank and settings.show_secondary_image %}
+                          {% include 'image-element', image: product.media[1], alt: alt_text, object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                        {% endif %}
+                      </div>
+                      {% if hover_enabled or settings.enable_quickshop %}
+                        <div class="thumbnail-overlay__container">
+                          {% if hover_enabled %}
+                            <div class="quick-shop__info animated fadeInDown">
+                              <div class="thumbnail-overlay">
+                                <div class="info text-align-{{ settings.thumbnail_text_alignment }}">
+                                  {% include 'product-thumbnail__product-info' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if settings.enable_quickshop %}
+                            {% include 'product-thumbnail__quick-shop-button' %}
+                          {% endif %}
+                          {% if hover_enabled and settings.enable_shopify_collection_badges and settings.enable_shopify_review_comments %}
+                            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                    {% if hover_enabled == false %}
+                      <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">
+                        {% include 'product-thumbnail__product-info' %}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% include 'product-thumbnail__swatch' %}
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-align-center" style="margin: 0;">Add products using the "Product" blocks below.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script type="application/json" data-section-id="{{ id }}" data-section-data>
+  {
+    "collection_style": "{{ layout_style }}",
+    "products_per": {{ products_per_row }},
+    "products_available": {{ products_count }},
+    "products_limit": {{ products_count }},
+    "align_height": {{ align_height | json }}
+  }
+</script>
+<script data-theme-editor-load-script src="{{ 'z__jsFeaturedCollection-min.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
   "name": "AK Finishing Touches",
-  "class": "ak-finishing-touches-section jsFeaturedCollection",
+  "class": "ak-finishing-touches-section",
   "settings": [
     {
       "type": "text",
@@ -19,39 +139,23 @@
       "info": "Section title shown above the product carousel."
     },
     {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection",
-      "info": "Products from this collection are shown in the carousel. Uses product image, title, price, and product URL."
-    },
-    {
       "type": "header",
-      "content": "Product carousel"
+      "content": "Carousel"
     },
     {
       "type": "range",
       "id": "products_per",
-      "label": "Products per row (visible at once)",
+      "label": "Products visible at once",
       "min": 2,
       "max": 6,
       "default": 4,
       "info": "Number of product cards visible in the carousel."
     },
     {
-      "type": "range",
-      "id": "products_limit",
-      "label": "Limit products",
-      "min": 4,
-      "max": 24,
-      "default": 12,
-      "info": "Maximum number of products in the carousel."
-    },
-    {
       "type": "checkbox",
       "id": "align_height",
       "label": "Align to height",
-      "default": false,
-      "info": "Use fixed height for product images."
+      "default": false
     },
     {
       "type": "range",
@@ -76,8 +180,7 @@
       "options": [
         { "value": "slider", "label": "Carousel (slider)" },
         { "value": "grid", "label": "Grid" }
-      ],
-      "info": "Carousel scrolls horizontally; grid shows all in rows."
+      ]
     },
     {
       "type": "select",
@@ -114,49 +217,42 @@
       "unit": "px"
     },
     {
-      "type": "select",
-      "id": "animation",
-      "label": "Animation",
-      "default": "none",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "fadeIn", "label": "Fade in" },
-        { "value": "fadeInDown", "label": "Fade in down" },
-        { "value": "fadeInLeft", "label": "Fade in left" },
-        { "value": "fadeInRight", "label": "Fade in right" }
-      ]
-    },
-    {
       "type": "header",
-      "content": "Advanced"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_masonry_layout",
-      "label": "Enable masonry layout",
-      "default": false,
-      "info": "Only applies when layout is Grid."
+      "content": "Accessibility"
     },
     {
       "type": "text",
-      "id": "css_class",
-      "label": "CSS Class"
-    },
+      "id": "section_aria_label",
+      "label": "Section ARIA label",
+      "info": "Accessible label for screen readers. Used when the heading is hidden. Defaults to 'Finishing touches'."
+    }
+  ],
+  "blocks": [
     {
-      "type": "textarea",
-      "id": "custom_css",
-      "label": "Custom CSS"
+      "type": "product",
+      "name": "Product",
+      "limit": 24,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Select a product to show in the carousel. Add more blocks to add more products; order is the display order."
+        }
+      ]
     }
   ],
   "presets": [
     {
       "name": "AK Finishing Touches",
-      "settings": {
-        "title": "FINISHING TOUCHES",
-        "collection_style": "slider",
-        "products_per": 4,
-        "products_limit": 12
-      }
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
     }
   ]
 }

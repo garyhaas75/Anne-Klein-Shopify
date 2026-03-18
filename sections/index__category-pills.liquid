@@ -8,6 +8,8 @@
 {% assign id = section.id %}
 {% assign heading = section.settings.heading %}
 {% assign heading_color = section.settings.heading_color %}
+{% assign heading_font_size = section.settings.heading_font_size | default: 30 %}
+{% assign layout_mode = section.settings.layout_mode | default: 'inline' %}
 {% assign bg_color = section.settings.background_color %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
@@ -40,14 +42,34 @@
   }
   #shopify-section-{{ id }} .ak-pills__heading { color: {{ heading_color }}; }
   #shopify-section-{{ id }} .ak-category-pills .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-  #shopify-section-{{ id }} .ak-pills__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 0.75rem; }
+  #shopify-section-{{ id }} .ak-pills__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 0.75rem;
+  }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline {
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
   #shopify-section-{{ id }} .ak-pills__heading {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+    font-size: {{ heading_font_size }}px;
     font-weight: 400;
     margin: 0;
     flex: 0 0 100%;
     text-align: center;
+  }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline .ak-pills__heading {
+    flex: 0 0 auto;
+    text-align: left;
+    margin-right: 1rem;
+  }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline .ak-pills__list {
+    flex: 1 1 auto;
+    justify-content: flex-start;
   }
   #shopify-section-{{ id }} .ak-pills__list {
     display: flex;
@@ -91,7 +113,7 @@
 
 <section class="section is-width-wide ak-category-pills" id="shopify-section-{{ id }}" {{ section_aria }}>
   <div class="container">
-    <div class="ak-pills__inner">
+    <div class="ak-pills__inner {% if layout_mode == 'inline' %}ak-pills__inner--inline{% endif %}">
       {% if heading != blank %}
         <h2 class="ak-pills__heading" id="pills-heading-{{ id }}">{{ heading }}</h2>
       {% endif %}
@@ -143,6 +165,28 @@
       "id": "heading_color",
       "label": "Heading color",
       "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size",
+      "default": 30,
+      "info": "Font size for the section heading (e.g. New for the Season)."
+    },
+    {
+      "type": "select",
+      "id": "layout_mode",
+      "label": "Layout",
+      "default": "inline",
+      "options": [
+        { "value": "inline", "label": "Inline (heading left, pills right)" },
+        { "value": "stacked", "label": "Stacked (heading above pills)" }
+      ],
+      "info": "Inline matches Figma: heading and pills on the same row."
     },
     {
       "type": "color",
