@@ -1,0 +1,745 @@
+{% if section.settings.video != blank %}
+{% liquid
+  assign use_mobile = false
+  if section.settings.video_mobile != blank
+    assign use_mobile = true
+  endif
+  assign layout = section.settings.layout | default: 'hero'
+  assign is_hero = false
+  if layout == 'hero'
+    assign is_hero = true
+  endif
+  assign heading_tag = section.settings.heading_level | default: 'h1'
+%}
+<section
+  class="ak-video ak-video--{{ layout }} relative w-full overflow-hidden"
+  id="ak-video-{{ section.id }}"
+  role="region"
+  aria-label="{{ section.settings.title | default: 'Video' | escape }}"
+>
+  <div class="ak-video__wrap">
+    <video
+      class="ak-video__player w-full block"
+      {% if section.settings.autoplay %}autoplay{% endif %}
+      {% if section.settings.loop %}loop{% endif %}
+      muted
+      playsinline
+      controls
+      title="{{ section.settings.title | default: 'Video' | escape }}"
+      {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
+      {% if use_mobile %}data-has-mobile="true"{% endif %}
+      {% if section.settings.start_card_image != blank %}poster="{{ section.settings.start_card_image | image_url: width: 1920 }}"{% endif %}
+    >
+      {% for source in section.settings.video.sources %}
+        <source
+          src="{{ source.url }}"
+          type="{{ source.mime_type }}"
+          data-desktop-src="{{ source.url }}"
+          {% if use_mobile %}
+            {% for msrc in section.settings.video_mobile.sources %}
+              {% if msrc.mime_type == source.mime_type %}
+                data-mobile-src="{{ msrc.url }}"
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        >
+      {% endfor %}
+      {% if use_mobile %}
+        {% for msrc in section.settings.video_mobile.sources %}
+          {% assign has_match = false %}
+          {% for dsrc in section.settings.video.sources %}
+            {% if dsrc.mime_type == msrc.mime_type %}
+              {% assign has_match = true %}
+            {% endif %}
+          {% endfor %}
+          {% unless has_match %}
+            <source
+              src="{{ msrc.url }}"
+              type="{{ msrc.mime_type }}"
+              data-mobile-src="{{ msrc.url }}"
+            >
+          {% endunless %}
+        {% endfor %}
+      {% endif %}
+    </video>
+
+    {% comment %} Start card: shown when video not yet playing {% endcomment %}
+    {% if section.settings.start_card_image != blank or section.settings.start_card_heading != blank or section.settings.start_card_text != blank %}
+      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" role="button" tabindex="0" aria-label="Play video">
+        {% if section.settings.start_card_image != blank %}
+          <div class="ak-video__start-card-bg" style="background-image: url({{ section.settings.start_card_image | image_url: width: 1920 }});"></div>
+        {% endif %}
+        <div class="ak-video__start-card-content">
+          <span class="ak-video__play-circle" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" fill="rgba(0,0,0,0.4)"/>
+              <polygon points="26,20 26,44 46,32" fill="white"/>
+            </svg>
+          </span>
+          {% if section.settings.start_card_heading != blank %}
+            <h2 class="ak-video__start-card-heading">{{ section.settings.start_card_heading }}</h2>
+          {% endif %}
+          {% if section.settings.start_card_text != blank %}
+            <p class="ak-video__start-card-text">{{ section.settings.start_card_text }}</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} Logo overlay (Hero layout only) {% endcomment %}
+    {% if is_hero and section.settings.show_logo_overlay %}
+      <div class="ak-video__logo-overlay" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" class="ak-video__logo-overlay-svg">
+          <defs>
+            <mask id="ak-video-logo-mask-{{ section.id }}">
+              <rect width="100%" height="100%" fill="white"/>
+              <polygon points="720,50 1150,405 720,760 290,405" fill="black"/>
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="rgba(0,0,0,0.45)" mask="url(#ak-video-logo-mask-{{ section.id }})"/>
+        </svg>
+      </div>
+    {% endif %}
+
+    {% comment %} Overlay text: Hero = centered title, Feature = bottom hashtag {% endcomment %}
+    {% if section.settings.overlay_text != blank %}
+      {% if is_hero %}
+        <div class="ak-video__overlay ak-video__overlay--center">
+          <{{ heading_tag }} class="ak-video__title" style="color: {{ section.settings.text_color | default: '#ffffff' }};">{{ section.settings.overlay_text }}</{{ heading_tag }}>
+        </div>
+      {% else %}
+        <div class="ak-video__overlay ak-video__overlay--bottom">
+          <p class="ak-video__hashtag" style="color: {{ section.settings.text_color | default: '#ffffff' }};">{{ section.settings.overlay_text }}</p>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% comment %} End card: shown when video ended and not looping {% endcomment %}
+    {% if section.settings.end_card_image != blank or section.settings.end_card_heading != blank or section.settings.end_card_button_label != blank %}
+      <div class="ak-video__end-card" id="ak-video-end-{{ section.id }}" aria-hidden="true" hidden>
+        {% if section.settings.end_card_image != blank %}
+          <div class="ak-video__end-card-bg" style="background-image: url({{ section.settings.end_card_image | image_url: width: 1920 }});"></div>
+        {% endif %}
+        <div class="ak-video__end-card-content">
+          {% if section.settings.end_card_heading != blank %}
+            <h2 class="ak-video__end-card-heading">{{ section.settings.end_card_heading }}</h2>
+          {% endif %}
+          {% if section.settings.end_card_button_label != blank %}
+            <button type="button" class="ak-video__replay" aria-label="{{ section.settings.end_card_button_label | escape }}">
+              {{ section.settings.end_card_button_label }}
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} Controls: pause/play, mute (WCAG 2.2: 44px min, focus-visible) {% endcomment %}
+    <div class="ak-video__controls">
+      <button type="button" class="ak-video__pause" aria-label="Pause video" aria-pressed="false">
+        <span class="ak-video__pause-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+        </span>
+        <span class="ak-video__play-icon" aria-hidden="true" hidden>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5z"/></svg>
+        </span>
+      </button>
+      <button type="button" class="ak-video__mute" aria-label="Unmute">
+        <span class="ak-video__mute-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15" class="ak-video__mute-x"></line>
+            <line x1="17" y1="9" x2="23" y2="15" class="ak-video__mute-x"></line>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    {% if section.settings.transcript != blank %}
+      <div id="ak-video-transcript-{{ section.id }}" class="ak-video__transcript">
+        <details class="ak-video__transcript-details">
+          <summary class="ak-video__transcript-summary">Transcript</summary>
+          <div class="ak-video__transcript-body">{{ section.settings.transcript | newline_to_br }}</div>
+        </details>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #ak-video-{{ section.id }} {
+    {% if is_hero %}max-height: 100vh;{% endif %}
+  }
+  #ak-video-{{ section.id }} .ak-video__player {
+    object-fit: cover;
+    width: 100%;
+    min-height: 400px;
+  }
+  #ak-video-{{ section.id }} .ak-video__wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card,
+  #ak-video-{{ section.id }} .ak-video__end-card {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__end-card[hidden],
+  #ak-video-{{ section.id }} .ak-video__start-card[hidden] {
+    display: none !important;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card:not([hidden]),
+  #ak-video-{{ section.id }} .ak-video__end-card:not([hidden]) {
+    pointer-events: auto;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card {
+    cursor: pointer;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card:focus-visible {
+    outline: 3px solid #4A90D9;
+    outline-offset: 2px;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-bg,
+  #ak-video-{{ section.id }} .ak-video__end-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-content,
+  #ak-video-{{ section.id }} .ak-video__end-card-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+  }
+  #ak-video-{{ section.id }} .ak-video__play-circle {
+    display: block;
+    margin: 0 auto 1rem;
+    line-height: 0;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-heading,
+  #ak-video-{{ section.id }} .ak-video__end-card-heading {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-text {
+    margin: 0;
+    font-size: 1rem;
+  }
+  #ak-video-{{ section.id }} .ak-video__replay {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: background 0.2s, border-color 0.2s, outline 0.15s;
+  }
+  #ak-video-{{ section.id }} .ak-video__replay:hover {
+    background: #fff;
+  }
+  #ak-video-{{ section.id }} .ak-video__replay:focus-visible {
+    outline: 3px solid #4A90D9;
+    outline-offset: 2px;
+  }
+  #ak-video-{{ section.id }} .ak-video__logo-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  #ak-video-{{ section.id }} .ak-video__logo-overlay-svg {
+    width: 100%;
+    height: 100%;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: linear-gradient(transparent 60%, rgba(0,0,0,0.6) 100%);
+    padding-bottom: 40px;
+  }
+  #ak-video-{{ section.id }} .ak-video__title {
+    font-size: clamp(1.5rem, 5vw, 4rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  #ak-video-{{ section.id }} .ak-video__hashtag {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  #ak-video-{{ section.id }} .ak-video__mute,
+  #ak-video-{{ section.id }} .ak-video__pause {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s, border-color 0.2s, outline 0.15s;
+  }
+  #ak-video-{{ section.id }} .ak-video__mute:hover,
+  #ak-video-{{ section.id }} .ak-video__pause:hover {
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  #ak-video-{{ section.id }} .ak-video__mute:focus-visible,
+  #ak-video-{{ section.id }} .ak-video__pause:focus-visible {
+    outline: 3px solid #4A90D9;
+    outline-offset: 2px;
+  }
+  #ak-video-{{ section.id }} .ak-video__mute[data-playing="true"] .ak-video__mute-x {
+    display: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__pause .ak-video__play-icon[hidden] {
+    display: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__controls,
+  #ak-video-{{ section.id }} .ak-video__transcript {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  #ak-video-{{ section.id }}:hover .ak-video__controls,
+  #ak-video-{{ section.id }}:hover .ak-video__transcript,
+  #ak-video-{{ section.id }} .ak-video__controls:focus-within,
+  #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
+    opacity: 1;
+  }
+  #ak-video-{{ section.id }} .ak-video__controls {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #ak-video-{{ section.id }} .ak-video__transcript {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    max-width: 40%;
+  }
+  #ak-video-{{ section.id }} .ak-video__transcript-details {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    padding: 4px 8px;
+  }
+  #ak-video-{{ section.id }} .ak-video__transcript-summary {
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    list-style: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__transcript-summary::-webkit-details-marker {
+    display: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__transcript-body {
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 8px;
+    padding: 8px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.3);
+  }
+  @media (max-width: 768px) {
+    #ak-video-{{ section.id }} .ak-video__player {
+      min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
+    }
+    #ak-video-{{ section.id }} .ak-video__title {
+      font-size: 2rem;
+    }
+    #ak-video-{{ section.id }} .ak-video__hashtag {
+      font-size: 1rem;
+    }
+    #ak-video-{{ section.id }} .ak-video__transcript {
+      max-width: 60%;
+    }
+    #ak-video-{{ section.id }} .ak-video__controls,
+    #ak-video-{{ section.id }} .ak-video__transcript {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ak-video-{{ section.id }} .ak-video__player {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    var sectionEl = document.getElementById('ak-video-{{ section.id }}');
+    if (!sectionEl) return;
+    var video = sectionEl.querySelector('.ak-video__player');
+    var muteBtn = sectionEl.querySelector('.ak-video__mute');
+    var pauseBtn = sectionEl.querySelector('.ak-video__pause');
+    var startCard = sectionEl.querySelector('#ak-video-start-{{ section.id }}');
+    var endCard = sectionEl.querySelector('#ak-video-end-{{ section.id }}');
+    var replayBtn = sectionEl.querySelector('.ak-video__replay');
+    if (!video) return;
+
+    video.removeAttribute('controls');
+
+    var loop = {{ section.settings.loop | default: true }};
+
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion && video.autoplay) {
+      video.autoplay = false;
+      video.pause();
+    }
+
+    if (video.dataset.hasMobile === 'true' && window.innerWidth <= 768) {
+      var sources = video.querySelectorAll('source[data-mobile-src]');
+      sources.forEach(function(s) {
+        s.src = s.dataset.mobileSrc || s.src;
+      });
+      video.load();
+    }
+
+    function showStartCard() {
+      if (startCard) {
+        startCard.removeAttribute('hidden');
+        startCard.setAttribute('aria-hidden', 'false');
+      }
+      if (endCard) {
+        endCard.setAttribute('hidden', '');
+        endCard.setAttribute('aria-hidden', 'true');
+      }
+    }
+    function hideStartCard() {
+      if (startCard) {
+        startCard.setAttribute('hidden', '');
+        startCard.setAttribute('aria-hidden', 'true');
+      }
+    }
+    function showEndCard() {
+      if (endCard) {
+        endCard.removeAttribute('hidden');
+        endCard.setAttribute('aria-hidden', 'false');
+      }
+      if (startCard) {
+        startCard.setAttribute('hidden', '');
+        startCard.setAttribute('aria-hidden', 'true');
+      }
+    }
+    function hideEndCard() {
+      if (endCard) {
+        endCard.setAttribute('hidden', '');
+        endCard.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    video.addEventListener('play', function() {
+      hideStartCard();
+      hideEndCard();
+    });
+    video.addEventListener('pause', function() {
+      if (video.currentTime === 0) showStartCard();
+    });
+    video.addEventListener('ended', function() {
+      if (!loop && endCard) showEndCard();
+    });
+
+    if (replayBtn && endCard) {
+      replayBtn.addEventListener('click', function() {
+        video.currentTime = 0;
+        video.play();
+        hideEndCard();
+      });
+    }
+    if (startCard) {
+      startCard.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+          updatePauseButton();
+        }
+      });
+      startCard.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (video.paused) {
+            video.play();
+            updatePauseButton();
+          }
+        }
+      });
+    }
+
+    if (startCard && video.paused && video.currentTime === 0) {
+      showStartCard();
+    } else {
+      hideStartCard();
+    }
+    if (endCard) hideEndCard();
+
+    function updateMuteButton() {
+      if (!muteBtn) return;
+      var muted = video.muted;
+      muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+      muteBtn.setAttribute('data-playing', muted ? 'false' : 'true');
+      var xLines = muteBtn.querySelectorAll('.ak-video__mute-x');
+      xLines.forEach(function(line) {
+        line.style.display = muted ? '' : 'none';
+      });
+    }
+
+    if (muteBtn) {
+      updateMuteButton();
+      muteBtn.addEventListener('click', function() {
+        video.muted = !video.muted;
+        updateMuteButton();
+      });
+    }
+
+    function updatePauseButton() {
+      if (!pauseBtn) return;
+      var paused = video.paused;
+      pauseBtn.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
+      pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      var pauseIcon = pauseBtn.querySelector('.ak-video__pause-icon');
+      var playIcon = pauseBtn.querySelector('.ak-video__play-icon');
+      if (pauseIcon && playIcon) {
+        pauseIcon.hidden = paused;
+        playIcon.hidden = !paused;
+      }
+    }
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', function() {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+        updatePauseButton();
+      });
+      video.addEventListener('play', updatePauseButton);
+      video.addEventListener('pause', updatePauseButton);
+      updatePauseButton();
+    }
+
+    function registerGlobalPause() {
+      if (typeof window.ADA_GlobalPause === 'undefined' || !window.ADA_GlobalPause.registerCustom) return;
+      window.ADA_GlobalPause.registerCustom({
+        pause: function() { video.pause(); updatePauseButton(); },
+        resume: function() { video.play(); updatePauseButton(); }
+      });
+      if (window.ADA_GlobalPause.isPaused && window.ADA_GlobalPause.isPaused()) {
+        video.pause();
+        updatePauseButton();
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.ADA_GlobalPause) registerGlobalPause();
+        else document.addEventListener('ada-global-pause:ready', registerGlobalPause);
+      });
+    } else {
+      if (window.ADA_GlobalPause) registerGlobalPause();
+      else document.addEventListener('ada-global-pause:ready', registerGlobalPause);
+    }
+    document.addEventListener('ada-global-pause:changed', function(e) {
+      if (e.detail && e.detail.paused) {
+        if (!video.paused) { video.pause(); updatePauseButton(); }
+      } else {
+        video.play();
+        updatePauseButton();
+      }
+    });
+  })();
+</script>
+
+{% else %}
+<section class="ak-video ak-video--empty" id="ak-video-{{ section.id }}" style="min-height: 400px; display: flex; align-items: center; justify-content: center; background: #000;">
+  <p class="ak-video__placeholder" style="color: #fff; font-size: 1.25rem; opacity: 0.5;">Upload a video in the section settings</p>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "AK Video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "hero", "label": "Hero (centered title, optional logo overlay)" },
+        { "value": "feature", "label": "Feature (bottom overlay text)" }
+      ],
+      "default": "hero"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video (desktop)"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Video (mobile, optional)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Video title (accessibility)",
+      "default": "Video"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop video",
+      "default": true,
+      "info": "If unchecked, end card will show when video finishes."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "text",
+      "id": "overlay_text",
+      "label": "Overlay text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Overlay text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Overlay heading level",
+      "options": [
+        { "value": "h1", "label": "H1 (use when this is the page hero)" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "Paragraph (no heading)" }
+      ],
+      "default": "h1",
+      "info": "Choose H1 only if this section is the primary hero. Use H2 or lower when the page already has an H1."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo_overlay",
+      "label": "Show logo overlay",
+      "default": false,
+      "info": "Hero layout only. Shows a cutout overlay over the video."
+    },
+    {
+      "type": "header",
+      "content": "Start card"
+    },
+    {
+      "type": "image_picker",
+      "id": "start_card_image",
+      "label": "Start card image",
+      "info": "Shown when video is not yet playing (e.g. before play or if autoplay is blocked)."
+    },
+    {
+      "type": "text",
+      "id": "start_card_heading",
+      "label": "Start card heading"
+    },
+    {
+      "type": "text",
+      "id": "start_card_text",
+      "label": "Start card text"
+    },
+    {
+      "type": "header",
+      "content": "End card"
+    },
+    {
+      "type": "image_picker",
+      "id": "end_card_image",
+      "label": "End card image",
+      "info": "Shown when video ends (if loop is off)."
+    },
+    {
+      "type": "text",
+      "id": "end_card_heading",
+      "label": "End card heading"
+    },
+    {
+      "type": "text",
+      "id": "end_card_button_label",
+      "label": "End card button label",
+      "default": "Watch again"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "textarea",
+      "id": "transcript",
+      "label": "Video transcript (WCAG 2.2)",
+      "info": "Provide a text transcript for screen reader users. Include dialogue and important visual information."
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Video",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}
