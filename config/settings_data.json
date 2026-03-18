@@ -6127,13 +6127,177 @@
           "end_card_button_label": "Watch again",
           "transcript": "this is the transcript"
         }
+      },
+      "index_category_pills_QCdmYD": {
+        "type": "index__category-pills",
+        "blocks": {
+          "pill_Wbm6VR": {
+            "type": "pill",
+            "settings": {
+              "label": "Clothing",
+              "link": ""
+            }
+          },
+          "pill_fLLfEr": {
+            "type": "pill",
+            "settings": {
+              "label": "Shoes",
+              "link": ""
+            }
+          },
+          "pill_byRCig": {
+            "type": "pill",
+            "settings": {
+              "label": "Handbags",
+              "link": ""
+            }
+          },
+          "pill_dQhzEA": {
+            "type": "pill",
+            "settings": {
+              "label": "Watches",
+              "link": ""
+            }
+          },
+          "pill_37QK6E": {
+            "type": "pill",
+            "settings": {
+              "label": "Jewelry",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "pill_Wbm6VR",
+          "pill_fLLfEr",
+          "pill_byRCig",
+          "pill_dQhzEA",
+          "pill_37QK6E"
+        ],
+        "name": "AK Category Pills",
+        "settings": {
+          "heading": "New for the Season",
+          "heading_color": "#000000",
+          "background_color": "#ffffff",
+          "pill_font_size": 16,
+          "pill_letter_spacing": 2,
+          "default_menu": "",
+          "section_aria_label": "",
+          "padding_top": 20,
+          "padding_bottom": 24
+        }
+      },
+      "index_lifestyle_quad_P3Phpq": {
+        "type": "index__lifestyle-quad",
+        "blocks": {
+          "panel_8jABLa": {
+            "type": "panel",
+            "settings": {
+              "heading": "Dress with Intention",
+              "cta_text": "SHOP DRESSES",
+              "link": ""
+            }
+          },
+          "panel_3PGkkV": {
+            "type": "panel",
+            "settings": {
+              "heading": "Business Leisure",
+              "cta_text": "SHOP WORKWEAR",
+              "link": ""
+            }
+          },
+          "panel_RWrxm7": {
+            "type": "panel",
+            "settings": {
+              "heading": "Finishing Touches",
+              "cta_text": "SHOP ACCESSORIES",
+              "link": ""
+            }
+          },
+          "panel_8gJmX4": {
+            "type": "panel",
+            "settings": {
+              "heading": "Vacation Mindset",
+              "cta_text": "SHOP RESORT",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "panel_8jABLa",
+          "panel_3PGkkV",
+          "panel_RWrxm7",
+          "panel_8gJmX4"
+        ],
+        "name": "AK Lifestyle Quad",
+        "settings": {
+          "text_color": "#ffffff",
+          "aspect_ratio_mode": "match_image",
+          "section_aria_label": "",
+          "padding_top": 0,
+          "padding_bottom": 0
+        }
+      },
+      "index_shop_new_arrivals_JiGV4g": {
+        "type": "index__shop-new-arrivals",
+        "blocks": {
+          "tile_EGk7by": {
+            "type": "tile",
+            "settings": {
+              "label": "Clothing",
+              "link": ""
+            }
+          },
+          "tile_CgzwBd": {
+            "type": "tile",
+            "settings": {
+              "label": "Watches",
+              "link": ""
+            }
+          },
+          "tile_7NN4Hz": {
+            "type": "tile",
+            "settings": {
+              "label": "Handbags",
+              "link": ""
+            }
+          },
+          "tile_9qUTDp": {
+            "type": "tile",
+            "settings": {
+              "label": "Opticals",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "tile_EGk7by",
+          "tile_CgzwBd",
+          "tile_7NN4Hz",
+          "tile_9qUTDp"
+        ],
+        "name": "AK Shop New Arrivals",
+        "settings": {
+          "heading": "SHOP NEW ARRIVALS",
+          "heading_link": "",
+          "heading_color": "#000000",
+          "heading_font_size": 18,
+          "heading_letter_spacing": 2,
+          "background_color": "#ffffff",
+          "section_aria_label": "",
+          "padding_top": 40,
+          "padding_bottom": 40
+        }
       }
     },
     "content_for_index": [
       "index_html_mXCmrC",
       "index_html_r7tHWd",
+      "index_category_pills_QCdmYD",
       "index_html_UP4kQU",
+      "index_lifestyle_quad_P3Phpq",
       "index_html_erAPCR",
+      "index_shop_new_arrivals_JiGV4g",
       "index_html_knKheU",
       "index_html_jVHAMD",
       "stylitics_gallery_widget_eLpGBt",
