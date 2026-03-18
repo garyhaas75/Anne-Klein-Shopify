@@ -143,6 +143,30 @@
 {% style %}
   {% include 'css-loop', css: section_css, id: id %}
 
+  #shopify-section-{{ id }} .caption {
+    position: absolute !important;
+    width: 100% !important;
+    display: block !important;
+    padding: 1% !important;
+    text-align: {{ text_horizontal_position }} !important;
+    {% if text_vertical_position == 'top' %}
+    top: 0 !important;
+    bottom: auto !important;
+    transform: none !important;
+    {% elsif text_vertical_position == 'bottom' %}
+    top: auto !important;
+    bottom: 0 !important;
+    transform: none !important;
+    {% else %}
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    {% endif %}
+  }
+  #shopify-section-{{ id }} .caption-content {
+    text-align: {{ text_alignment }} !important;
+  }
+
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .image-with-text-overlay__heading {
       color: {% if mobile_headline_alpha != 0 %}{{ mobile_headline_color }}{% elsif heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
@@ -153,26 +177,15 @@
     #shopify-section-{{ id }} .image-with-text-overlay__subheading {
       color: {% if mobile_subtitle_alpha != 0 %}{{ mobile_subtitle_color }}{% elsif subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     }
+    {% if mobile_text_below_media == true %}
     #shopify-section-{{ id }} .caption {
-      text-align: {{ text_horizontal_position }} !important;
-      {% if mobile_text_below_media != true %}
-      position: absolute !important;
-      width: 100% !important;
-      {% if text_vertical_position == 'top' %}
-      top: 0 !important;
-      bottom: auto !important;
+      position: static !important;
       transform: none !important;
-      {% elsif text_vertical_position == 'bottom' %}
+      text-align: {{ text_alignment }} !important;
       top: auto !important;
-      bottom: 0 !important;
-      transform: none !important;
-      {% else %}
-      top: 50% !important;
       bottom: auto !important;
-      transform: translateY(-50%) !important;
-      {% endif %}
-      {% endif %}
     }
+    {% endif %}
     #shopify-section-{{ id }} .caption-content {
       text-align: {{ text_alignment }} !important;
     }
