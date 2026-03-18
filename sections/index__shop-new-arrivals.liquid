@@ -26,10 +26,8 @@
 {% assign label_icon_svg_mobile = section.settings.label_icon_svg_mobile %}
 {% assign label_icon_image = section.settings.label_icon_image %}
 {% assign label_icon_image_mobile = section.settings.label_icon_image_mobile %}
-{% assign tile_max_height_desktop = section.settings.tile_max_height_desktop | default: 0 %}
-{% assign tile_max_height_mobile = section.settings.tile_max_height_mobile | default: 0 %}
-{% assign tile_aspect_ratio = section.settings.tile_aspect_ratio | default: '3/4' %}
-{% assign section_max_width = section.settings.section_max_width | default: 1200 %}
+{% assign tile_aspect_ratio = section.settings.tile_aspect_ratio | default: '3_4' %}
+{% assign section_max_width = section.settings.section_max_width | default: 1400 %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -49,6 +47,16 @@
   {% assign heading_ls_str = heading_letter_spacing | append: '' | prepend: '0.0' %}
 {% endif %}
 
+{% if tile_aspect_ratio == '1_1' %}
+  {% assign tile_pb = '100%' %}
+{% elsif tile_aspect_ratio == '4_5' %}
+  {% assign tile_pb = '125%' %}
+{% elsif tile_aspect_ratio == '2_3' %}
+  {% assign tile_pb = '150%' %}
+{% else %}
+  {% assign tile_pb = '133.33%' %}
+{% endif %}
+
 {% style %}
   #shopify-section-{{ id }} {
     padding-top: {{ padding_top }}px;
@@ -56,7 +64,7 @@
     background-color: {{ bg_color }};
   }
   #shopify-section-{{ id }} .ak-new-arrivals__title { color: {{ heading_color }}; }
-  #shopify-section-{{ id }} .ak-shop-new-arrivals .container { max-width: {{ section_max_width }}px; margin: 0 auto; padding: 0 20px; width: 100%; }
+  #shopify-section-{{ id }} .ak-shop-new-arrivals .container { max-width: {{ section_max_width }}px; margin: 0 auto; padding: 0 20px; width: 100%; box-sizing: border-box; }
   #shopify-section-{{ id }} .ak-new-arrivals__title {
     display: block;
     width: 100%;
@@ -97,49 +105,32 @@
     outline-offset: 3px;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
+    position: relative;
     width: 100%;
+    height: 0;
+    padding-bottom: {{ tile_pb }};
     overflow: hidden;
     margin-bottom: 0.75rem;
-    {% if tile_max_height_desktop > 0 %}
-    height: {{ tile_max_height_desktop }}px;
-    {% else %}
-    aspect-ratio: {{ tile_aspect_ratio }};
-    {% endif %}
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-media .image-element__wrap {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    display: block !important;
   }
-  {% if tile_max_height_desktop == 0 %}
-  {% if tile_aspect_ratio == '3/4' %}
-  @supports not (aspect-ratio: 1) {
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 133.33%; position: relative; }
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-  }
-  {% elsif tile_aspect_ratio == '4/5' %}
-  @supports not (aspect-ratio: 1) {
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 125%; position: relative; }
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-  }
-  {% elsif tile_aspect_ratio == '1/1' %}
-  @supports not (aspect-ratio: 1) {
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 100%; position: relative; }
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-  }
-  {% elsif tile_aspect_ratio == '2/3' %}
-  @supports not (aspect-ratio: 1) {
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 150%; position: relative; }
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-  }
-  {% endif %}
-  {% endif %}
   #shopify-section-{{ id }} .ak-new-arrivals__tile-label-wrap {
     display: inline-flex;
     align-items: center;
@@ -173,12 +164,6 @@
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
     #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
-    {% if tile_max_height_mobile > 0 %}
-    #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
-      height: {{ tile_max_height_mobile }}px;
-      aspect-ratio: auto;
-    }
-    {% endif %}
   }
 {% endstyle %}
 
@@ -408,43 +393,21 @@
       "step": 50,
       "unit": "px",
       "label": "Section max width",
-      "default": 1200,
+      "default": 1400,
       "info": "Maximum width of the tile grid container. Increase to make the section wider and tiles larger."
     },
     {
       "type": "select",
       "id": "tile_aspect_ratio",
       "label": "Tile image shape",
-      "default": "3/4",
+      "default": "3_4",
       "options": [
-        { "value": "1/1", "label": "Square (1:1)" },
-        { "value": "4/5", "label": "Portrait (4:5)" },
-        { "value": "3/4", "label": "Portrait tall (3:4)" },
-        { "value": "2/3", "label": "Portrait taller (2:3)" }
+        { "value": "1_1", "label": "Square (1:1)" },
+        { "value": "4_5", "label": "Portrait (4:5)" },
+        { "value": "3_4", "label": "Portrait tall (3:4) — default" },
+        { "value": "2_3", "label": "Portrait taller (2:3)" }
       ],
-      "info": "Aspect ratio of tile images. Images scale with tile width so they always fill properly. Overridden when a fixed pixel height is set below."
-    },
-    {
-      "type": "range",
-      "id": "tile_max_height_desktop",
-      "min": 0,
-      "max": 800,
-      "step": 20,
-      "unit": "px",
-      "label": "Tile fixed height override (desktop)",
-      "default": 0,
-      "info": "0 = use aspect ratio above (recommended). Set a pixel value only if you need an exact height."
-    },
-    {
-      "type": "range",
-      "id": "tile_max_height_mobile",
-      "min": 0,
-      "max": 800,
-      "step": 20,
-      "unit": "px",
-      "label": "Tile fixed height override (mobile)",
-      "default": 0,
-      "info": "0 = use desktop setting or aspect ratio."
+      "info": "Aspect ratio of tile images. Images always fill the container and scale with tile width. Increase Section max width above to make tiles larger."
     },
     {
       "type": "range",
