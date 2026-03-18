@@ -511,8 +511,18 @@
     border-top: 1px solid rgba(255,255,255,0.3);
   }
   @media (max-width: 768px) {
+    {% if section.settings.section_max_height_mobile != blank and section.settings.section_max_height_mobile > 0 %}
+    #ak-video-{{ section.id }} {
+      height: {{ section.settings.section_max_height_mobile }}px;
+      max-height: {{ section.settings.section_max_height_mobile }}px;
+    }
+    {% endif %}
     #ak-video-{{ section.id }} .ak-video__player {
       min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
+      {% if section.settings.video_max_height_mobile != blank and section.settings.video_max_height_mobile > 0 %}
+      max-height: {{ section.settings.video_max_height_mobile }}px;
+      min-height: 0;
+      {% endif %}
     }
     #ak-video-{{ section.id }} .ak-video__title {
       font-size: 2rem;
@@ -759,12 +769,22 @@
     {
       "type": "range",
       "id": "section_max_height",
-      "label": "Section max height (px)",
+      "label": "Section max height — desktop (px)",
       "min": 0,
       "max": 2400,
       "step": 50,
       "default": 0,
       "info": "0 = no limit."
+    },
+    {
+      "type": "range",
+      "id": "section_max_height_mobile",
+      "label": "Section max height — mobile (px)",
+      "min": 0,
+      "max": 1200,
+      "step": 25,
+      "default": 0,
+      "info": "0 = no limit. Applied below 768px."
     },
     {
       "type": "range",
@@ -779,12 +799,22 @@
     {
       "type": "range",
       "id": "video_max_height",
-      "label": "Video max height (px)",
+      "label": "Video max height — desktop (px)",
       "min": 0,
       "max": 2400,
       "step": 50,
       "default": 0,
       "info": "0 = no limit."
+    },
+    {
+      "type": "range",
+      "id": "video_max_height_mobile",
+      "label": "Video max height — mobile (px)",
+      "min": 0,
+      "max": 1200,
+      "step": 25,
+      "default": 0,
+      "info": "0 = no limit. Applied below 768px."
     },
     {
       "type": "select",
