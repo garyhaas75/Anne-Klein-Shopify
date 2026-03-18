@@ -6107,7 +6107,7 @@
         "settings": {
           "layout": "hero",
           "section_max_width": 0,
-          "section_max_height": 650,
+          "section_max_height": 0,
           "video_max_width": 0,
           "video_max_height": 0,
           "video_fit": "cover",
