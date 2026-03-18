@@ -114,7 +114,8 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 ## Learnings and references
 
 - **Lotto Legends video:** Hero and Feature video sections were merged into one AK section with Layout + logo overlay + start/end cards. Lotto’s global pause and contrast mode are not used on Anne Klein.
-- **Plans:** Feature work may be documented in Cursor plans (e.g. `ak_video_player_refactor_*.plan.md`). This PROJECT.md records durable decisions and rules; plans record implementation steps for specific features.
+- **Plans:** Feature work may be documented in Cursor plans or in `docs/` (e.g. `docs/HOMEPAGE-2026-AUDIT-PLAN.md`). This PROJECT.md records durable decisions and rules; plans record implementation steps for specific features.
+- **Section best practices:** See `docs/BEST-PRACTICES-SECTIONS.md` for accessibility, semantics, links, focus, images, schema, and code patterns for building and auditing theme sections (WCAG 2.2 AA–aligned).
 - **WCAG 2.2:** Always refer to the official W3C WCAG 2.2 specification and quick reference when checking or implementing accessibility.
 - **Code review: AK Video v1 issues (all resolved):**
   1. Missing `presets` in schema = section invisible in theme editor.
@@ -135,3 +136,4 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 
 - **Initial:** WCAG 2.2 AA as hard rule; project guide created; key decisions and guidelines for AK Video section and theme.
 - **Video review pass:** Added 11 learnings from AK Video v1 code review; expanded accessibility, sections, and "what not to do" guidelines; added rules for presets, ARIA state, contrast scrims, mobile controls, heading levels, no-JS fallback, and reduced motion.
+- **Homepage 2026 audit:** Added references to `docs/HOMEPAGE-2026-AUDIT-PLAN.md` (audit plan) and `docs/BEST-PRACTICES-SECTIONS.md` (section best practices for links, focus, semantics, images, schema, and code).

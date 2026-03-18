@@ -88,18 +88,34 @@
       </div>
     {% endif %}
 
-    {% comment %} Logo overlay (Hero layout only) {% endcomment %}
-    {% if is_hero and section.settings.show_logo_overlay %}
-      <div class="ak-video__logo-overlay" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" class="ak-video__logo-overlay-svg">
-          <defs>
-            <mask id="ak-video-logo-mask-{{ section.id }}">
-              <rect width="100%" height="100%" fill="white"/>
-              <polygon points="720,50 1150,405 720,760 290,405" fill="black"/>
-            </mask>
-          </defs>
-          <rect width="100%" height="100%" fill="rgba(0,0,0,0.45)" mask="url(#ak-video-logo-mask-{{ section.id }})"/>
-        </svg>
+    {% comment %} Logo overlay: uploaded image, size/placement/padding (desktop + mobile, mobile can be off) {% endcomment %}
+    {% if is_hero and section.settings.logo_image != blank %}
+      <div
+        class="ak-video__logo-overlay ak-video__logo-overlay--desktop {% unless section.settings.show_logo_overlay_mobile %}ak-video__logo-overlay--hide-mobile{% endunless %}"
+        aria-hidden="true"
+        style="
+          --logo-padding-top-d: {{ section.settings.logo_padding_top_desktop | default: 20 }}px;
+          --logo-padding-right-d: {{ section.settings.logo_padding_right_desktop | default: 20 }}px;
+          --logo-padding-bottom-d: {{ section.settings.logo_padding_bottom_desktop | default: 20 }}px;
+          --logo-padding-left-d: {{ section.settings.logo_padding_left_desktop | default: 20 }}px;
+          --logo-size-d: {{ section.settings.logo_size_desktop | default: 180 }}px;
+          --logo-padding-top-m: {{ section.settings.logo_padding_top_mobile | default: 16 }}px;
+          --logo-padding-right-m: {{ section.settings.logo_padding_right_mobile | default: 16 }}px;
+          --logo-padding-bottom-m: {{ section.settings.logo_padding_bottom_mobile | default: 16 }}px;
+          --logo-padding-left-m: {{ section.settings.logo_padding_left_mobile | default: 16 }}px;
+          --logo-size-m: {{ section.settings.logo_size_mobile | default: 120 }}px;
+        "
+      >
+        <img
+          src="{{ section.settings.logo_image | image_url: width: 800 }}"
+          alt=""
+          role="presentation"
+          width="{{ section.settings.logo_size_desktop | default: 180 }}"
+          height=""
+          class="ak-video__logo-overlay-img"
+          loading="lazy"
+          decoding="async"
+        >
       </div>
     {% endif %}
 
@@ -171,6 +187,12 @@
   #ak-video-{{ section.id }} {
     position: relative;
     overflow: hidden;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    isolation: isolate;
+    z-index: 0;
     {% if section.settings.section_max_width != blank and section.settings.section_max_width > 0 %}
     max-width: {{ section.settings.section_max_width }}px;
     margin-left: auto;
@@ -197,6 +219,8 @@
     justify-content: center;
   }
   #ak-video-{{ section.id }} .ak-video__player {
+    display: block;
+    vertical-align: bottom;
     object-fit: {{ video_fit }};
     width: 100%;
     height: 100%;
@@ -210,6 +234,12 @@
     min-height: 0;
     {% endif %}
   }
+  {% unless section.settings.video_max_height != blank and section.settings.video_max_height > 0 %}
+  /* Remove subpixel gap below video (black line); wrap overflow clips the excess */
+  #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
+    min-height: calc(100% + 4px);
+  }
+  {% endunless %}
   #ak-video-{{ section.id }} .ak-video__start-card,
   #ak-video-{{ section.id }} .ak-video__end-card {
     position: absolute;
