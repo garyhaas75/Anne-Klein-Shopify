@@ -6316,6 +6316,12 @@
       "index_finishing_touches_TLVBqV": {
         "type": "index__finishing-touches",
         "blocks": {
+          "product_gD7CjU": {
+            "type": "product",
+            "settings": {
+              "product": "15mm-twisted-hoop-earrings-gold-tone"
+            }
+          },
           "product_HVTa4c": {
             "type": "product",
             "settings": {
@@ -6354,6 +6360,7 @@
           }
         },
         "block_order": [
+          "product_gD7CjU",
           "product_HVTa4c",
           "product_mW7Hga",
           "product_gjMQgV",
