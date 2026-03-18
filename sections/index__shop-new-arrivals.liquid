@@ -26,6 +26,8 @@
 {% assign label_icon_svg_mobile = section.settings.label_icon_svg_mobile %}
 {% assign label_icon_image = section.settings.label_icon_image %}
 {% assign label_icon_image_mobile = section.settings.label_icon_image_mobile %}
+{% assign tile_max_height_desktop = section.settings.tile_max_height_desktop | default: 0 %}
+{% assign tile_max_height_mobile = section.settings.tile_max_height_mobile | default: 0 %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -94,9 +96,13 @@
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
     width: 100%;
-    aspect-ratio: 3/4;
     overflow: hidden;
     margin-bottom: 0.75rem;
+    {% if tile_max_height_desktop > 0 %}
+    height: {{ tile_max_height_desktop }}px;
+    {% else %}
+    aspect-ratio: 3/4;
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg {
@@ -106,9 +112,11 @@
     display: block;
   }
   @supports not (aspect-ratio: 1) {
+    {% if tile_max_height_desktop == 0 %}
     #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 133.33%; position: relative; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
     #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-label-wrap {
     display: inline-flex;
@@ -143,6 +151,12 @@
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
     #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
+    {% if tile_max_height_mobile > 0 %}
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
+      height: {{ tile_max_height_mobile }}px;
+      aspect-ratio: auto;
+    }
+    {% endif %}
   }
 {% endstyle %}
 
@@ -363,6 +377,28 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "tile_max_height_desktop",
+      "min": 0,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Tile image height (desktop)",
+      "default": 0,
+      "info": "Fixed height for all tile images on desktop. 0 = use aspect ratio (3:4). Set a value (e.g. 400) so every tile is the same size."
+    },
+    {
+      "type": "range",
+      "id": "tile_max_height_mobile",
+      "min": 0,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Tile image height (mobile)",
+      "default": 0,
+      "info": "Fixed height for all tile images on mobile. 0 = same as desktop or aspect ratio."
     },
     {
       "type": "range",
