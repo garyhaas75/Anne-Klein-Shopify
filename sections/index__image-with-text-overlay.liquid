@@ -15,8 +15,8 @@
     {
       "type": "url",
       "id": "link",
-      "label": "Link",
-      "info": "Links entire image"
+      "label": "Link (entire container)",
+      "info": "Makes the whole section clickable (image + text). When no buttons are set, the entire overlay is linked. When buttons are set, they use their own links."
     },
     {
       "type": "text",
@@ -85,6 +85,33 @@
       "id": "heading_color",
       "label": "Heading",
       "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_underline",
+      "label": "Heading underline",
+      "default": false
     },
     {
       "type": "color",

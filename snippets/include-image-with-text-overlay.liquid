@@ -21,6 +21,9 @@
 {% assign pretext_color = object.settings.pretext_color %}
 {% assign title = object.settings.title %}
 {% assign title_color = object.settings.heading_color %}
+{% assign heading_font_size = object.settings.heading_font_size | default: 32 %}
+{% assign heading_font_weight = object.settings.heading_font_weight | default: '400' %}
+{% assign heading_underline = object.settings.heading_underline %}
 {% assign subtitle = object.settings.subtitle %}
 {% assign subtitle_color = object.settings.subheading_color %}
 {% assign text_alignment = object.settings.text_alignment %}
@@ -80,6 +83,9 @@
 
   .image-with-text-overlay__heading {
     color: {% if heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %};
+    font-size: {{ heading_font_size }}px;
+    font-weight: {{ heading_font_weight }};
+    {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
   }
 
   .image-with-text-overlay__preheading {
@@ -124,6 +130,10 @@
     {% elsif width == 'half' %}
       width: 50%;
     {% endif %}
+  }
+
+  #shopify-section-{{ id }} .caption--click-through {
+    pointer-events: none;
   }
 
   {% include 'css-loop', css: custom_css, id: id %}
@@ -174,8 +184,12 @@
         <a href="{{ link }}" {% if open_in_new_tab %}target="_blank"{% endif %} class="banner--full-link"{% if label != blank %} aria-label="{{ label }}"{% endif %}></a>
       {% endif %}
 
+      {% assign caption_click_through = false %}
+{% if link != blank and button_1 == blank and button_2 == blank %}
+  {% assign caption_click_through = true %}
+{% endif %}
       {% if pretext != blank or title != blank or subtitle != blank or button_1 != blank or button_2 != blank %}
-        <div class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}">
+        <div class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}">
           <div class="caption-content text-align-{{ text_alignment }}">
             {% if pretext != blank %}
               <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle">
