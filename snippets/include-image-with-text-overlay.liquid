@@ -91,6 +91,12 @@
     border: {{ caption_border_width }}px solid {{ caption_border_color }};
   }
 
+  .caption-content .image-with-text-overlay__preheading,
+  .caption-content .image-with-text-overlay__heading,
+  .caption-content .image-with-text-overlay__subheading {
+    margin: 0;
+  }
+
   .image-with-text-overlay__heading {
     color: {% if heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %};
     font-size: {{ heading_font_size }}px;
