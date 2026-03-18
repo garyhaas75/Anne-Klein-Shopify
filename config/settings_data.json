@@ -6428,6 +6428,7 @@
         ],
         "name": "AK Insider's Club",
         "settings": {
+          "image": "shopify://shop_images/0b57ddf724e4d3df6fcd103c55b48d6fc0e17f1c.png",
           "headline": "Sign up today to gain access to exclusive deals!",
           "join_text": "JOIN NOW",
           "join_url": "",
