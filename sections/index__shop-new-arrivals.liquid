@@ -1,0 +1,269 @@
+{% comment %}
+  AK Homepage 2026 – Shop New Arrivals
+  Heading + 4 category tiles (image, label, link)
+  WCAG 2.2 AA: focus styles, conditional heading link (no #), section label. B2/B4: system font + schema size/spacing. C3: aspect-ratio fallback.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign heading = section.settings.heading %}
+{% assign heading_link = section.settings.heading_link %}
+{% assign heading_color = section.settings.heading_color %}
+{% assign heading_font_size = section.settings.heading_font_size | default: 18 %}
+{% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 2 %}
+{% assign bg_color = section.settings.background_color %}
+{% assign padding_top = section.settings.padding_top %}
+{% assign padding_bottom = section.settings.padding_bottom %}
+{% assign section_aria_label = section.settings.section_aria_label %}
+
+{% capture section_aria %}
+  {% if heading != blank %}
+    aria-labelledby="new-arrivals-heading-{{ id }}"
+  {% elsif section_aria_label != blank %}
+    aria-label="{{ section_aria_label | escape }}"
+  {% else %}
+    aria-label="Shop new arrivals"
+  {% endif %}
+{% endcapture %}
+
+{% if heading_letter_spacing >= 10 %}
+  {% assign heading_ls_str = heading_letter_spacing | append: '' | prepend: '0.' %}
+{% else %}
+  {% assign heading_ls_str = heading_letter_spacing | append: '' | prepend: '0.0' %}
+{% endif %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    background-color: {{ bg_color }};
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__title { color: {{ heading_color }}; }
+  #shopify-section-{{ id }} .ak-shop-new-arrivals .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  #shopify-section-{{ id }} .ak-new-arrivals__title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ heading_font_size }}px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 1.5rem;
+    letter-spacing: {{ heading_ls_str }}em;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link { text-decoration: underline; color: inherit; }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link:hover,
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible { opacity: 0.8; }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-link:hover .ak-new-arrivals__tile-label,
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-link:focus-visible .ak-new-arrivals__tile-label { text-decoration: underline; }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @supports not (aspect-ratio: 1) {
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-media { height: 0; padding-bottom: 133.33%; position: relative; }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #000;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-arrow { margin-left: 0.25rem; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  }
+{% endstyle %}
+
+<section class="section is-width-wide ak-shop-new-arrivals" id="shopify-section-{{ id }}" {{ section_aria }}>
+  <div class="container">
+    {% if heading != blank %}
+      <h2 class="ak-new-arrivals__title" id="new-arrivals-heading-{{ id }}">
+        {% if heading_link != blank %}
+          <a href="{{ heading_link }}" class="ak-new-arrivals__title-link">{{ heading }}</a>
+        {% else %}
+          {{ heading }}
+        {% endif %}
+      </h2>
+    {% endif %}
+    <div class="ak-new-arrivals__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'tile' and block.settings.label != blank %}
+          <div class="ak-new-arrivals__tile" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="ak-new-arrivals__tile-link">
+                <div class="ak-new-arrivals__tile-media">
+                  {% if block.settings.image != blank %}
+                    {% include 'image-element', image: block.settings.image, alt: block.settings.label, stretch_width: true %}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
+                <span class="ak-new-arrivals__tile-arrow" aria-hidden="true">→</span>
+              </a>
+            {% else %}
+              <div class="ak-new-arrivals__tile-link">
+                <div class="ak-new-arrivals__tile-media">
+                  {% if block.settings.image != blank %}
+                    {% include 'image-element', image: block.settings.image, alt: block.settings.label, stretch_width: true %}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Shop New Arrivals",
+  "class": "ak-shop-new-arrivals-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SHOP NEW ARRIVALS"
+    },
+    {
+      "type": "url",
+      "id": "heading_link",
+      "label": "Heading link",
+      "info": "Optional. If set, the heading becomes a link. Leave blank to show heading as text only."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Heading typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "label": "Heading letter spacing",
+      "default": 2,
+      "info": "0–10, as % of em (2 ≈ 0.02em)."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (for screen readers)",
+      "info": "Optional. Used when heading is blank. Leave blank for default."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Category tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Shop New Arrivals",
+      "blocks": [
+        { "type": "tile", "settings": { "label": "Clothing" } },
+        { "type": "tile", "settings": { "label": "Watches" } },
+        { "type": "tile", "settings": { "label": "Handbags" } },
+        { "type": "tile", "settings": { "label": "Opticals" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

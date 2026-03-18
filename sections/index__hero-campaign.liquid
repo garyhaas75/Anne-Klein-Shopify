@@ -1,0 +1,272 @@
+{% comment %}
+  AK Homepage 2026 – Hero Campaign
+  Full-width hero: preheading, main heading (Amiri), DISCOVER link
+  Matches Figma: AK_Homepage Launch 2026_Desktop – hero block
+  WCAG 2.2 AA: single CTA link (stretched), focus styles, contrast, section label.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign image = section.settings.image %}
+{% assign mobile_image = section.settings.mobile_image | default: image %}
+{% assign link = section.settings.link %}
+{% assign preheading = section.settings.preheading %}
+{% assign heading = section.settings.heading %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign text_color = section.settings.text_color %}
+{% assign padding_top = section.settings.padding_top %}
+{% assign padding_bottom = section.settings.padding_bottom %}
+{% assign section_aria_label = section.settings.section_aria_label %}
+{% assign hero_alt = image.alt | default: heading | default: preheading | default: "Campaign hero" %}
+{% assign mobile_alt = mobile_image.alt | default: heading | default: preheading | default: "Campaign hero" %}
+
+{% capture section_aria %}
+  {% if heading != blank %}
+    aria-labelledby="hero-heading-{{ id }}"
+  {% elsif section_aria_label != blank %}
+    aria-label="{{ section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign hero"
+  {% endif %}
+{% endcapture %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__preheading,
+  #shopify-section-{{ id }} .ak-hero-campaign__heading,
+  #shopify-section-{{ id }} .ak-hero-campaign__cta {
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__banner { position: relative; overflow: hidden; }
+  #shopify-section-{{ id }} .ak-hero-campaign__media { position: relative; }
+  #shopify-section-{{ id }} .ak-hero-campaign__media .placeholder-svg,
+  #shopify-section-{{ id }} .ak-hero-campaign__media img { width: 100%; height: auto; display: block; vertical-align: middle; }
+  #shopify-section-{{ id }} .ak-hero-campaign__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-hero-campaign__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-hero-campaign__media .is-hidden-desktop-only { display: block !important; }
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__gradient {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    min-height: 200px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 2rem 1.5rem 3rem;
+    z-index: 1;
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__caption-inner { position: relative; width: 100%; height: 100%; }
+  #shopify-section-{{ id }} .ak-hero-campaign__content { text-align: center; width: 100%; max-width: 900px; }
+  #shopify-section-{{ id }} .ak-hero-campaign__preheading {
+    font-family: Amiri, serif;
+    font-size: clamp(1.125rem, 2vw, 2.25rem);
+    line-height: 1.2;
+    margin: 0 0 0.25em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__heading {
+    font-family: Amiri, serif;
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    line-height: 1.1;
+    margin: 0 0 0.5em;
+    font-weight: 400;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__cta {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__cta-link {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-hero-campaign__cta-link:hover,
+  #shopify-section-{{ id }} .ak-hero-campaign__cta-link:focus-visible { opacity: 0.9; }
+  #shopify-section-{{ id }} .ak-hero-campaign__cta-link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+{% endstyle %}
+
+<section class="section is-width-wide ak-hero-campaign under-overlay-menu" id="shopify-section-{{ id }}" {{ section_aria }}>
+  <div class="container equal-columns--outside-trim">
+    <div class="ak-hero-campaign__banner columns one-whole">
+      <div class="ak-hero-campaign__media">
+        {% if image != blank %}
+          {% include 'image-element', image: image, alt: hero_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+        {% if mobile_image != blank %}
+          <div class="is-hidden-desktop-only">
+            {% include 'image-element', image: mobile_image, alt: mobile_alt, stretch_width: true %}
+          </div>
+        {% endif %}
+        <div class="ak-hero-campaign__gradient" aria-hidden="true"></div>
+      </div>
+
+      <div class="ak-hero-campaign__caption">
+        <div class="ak-hero-campaign__caption-inner">
+          {% if link != blank %}
+            <a href="{{ link }}" class="ak-hero-campaign__cta-link" aria-label="{{ heading | default: cta_text | default: 'Discover' }}">
+              <div class="ak-hero-campaign__content">
+                {% if preheading != blank %}
+                  <p class="ak-hero-campaign__preheading">{{ preheading }}</p>
+                {% endif %}
+                {% if heading != blank %}
+                  <h1 class="ak-hero-campaign__heading" id="hero-heading-{{ id }}">{{ heading }}</h1>
+                {% endif %}
+                {% if cta_text != blank %}
+                  <p class="ak-hero-campaign__cta">{{ cta_text }}</p>
+                {% endif %}
+              </div>
+            </a>
+          {% else %}
+            <div class="ak-hero-campaign__content">
+              {% if preheading != blank %}
+                <p class="ak-hero-campaign__preheading">{{ preheading }}</p>
+              {% endif %}
+              {% if heading != blank %}
+                <h1 class="ak-hero-campaign__heading" id="hero-heading-{{ id }}">{{ heading }}</h1>
+              {% endif %}
+              {% if cta_text != blank %}
+                <p class="ak-hero-campaign__cta">{{ cta_text }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Hero Campaign",
+  "class": "ak-hero-campaign-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1920 x 1080px recommended. Add alt text in the media library for accessibility; the section heading is used as fallback if blank."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "Optional. 900 x 1200px recommended"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Links entire hero (e.g. campaign collection)"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "preheading",
+      "label": "Preheading",
+      "default": "Spring 2026 Campaign"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Invisible Thread"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "DISCOVER"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff",
+      "info": "Use white or light text. The section applies a gradient overlay and text shadow for contrast over images."
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (for screen readers)",
+      "info": "Optional. Used when this section has no visible heading. Leave blank to use the heading above or a default."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Hero Campaign",
+      "settings": {
+        "preheading": "Spring 2026 Campaign",
+        "heading": "The Invisible Thread",
+        "cta_text": "DISCOVER"
+      }
+    }
+  ]
+}
+{% endschema %}

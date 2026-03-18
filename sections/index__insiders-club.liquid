@@ -1,0 +1,330 @@
+{% comment %}
+  AK Homepage 2026 – Insider's Club
+  Logo, headline, benefit list, JOIN NOW / LOG IN. Two-column layout on desktop (Figma).
+  WCAG 2.2 AA: focus styles, icon alt, section label. B5: two-column + divider. B6: bg image on left + opacity. C1: Liquid quote fix.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign image = section.settings.image %}
+{% assign headline = section.settings.headline %}
+{% assign join_url = section.settings.join_url %}
+{% assign login_url = section.settings.login_url %}
+{% assign join_text = section.settings.join_text %}
+{% assign login_text = section.settings.login_text %}
+{% assign bg_image = section.settings.background_image %}
+{% assign bg_opacity_pct = section.settings.background_image_opacity | default: 25 %}
+{% if bg_opacity_pct >= 100 %}
+  {% assign bg_opacity_css = 1 %}
+{% elsif bg_opacity_pct >= 10 %}
+  {% assign bg_opacity_css = '0.' | append: bg_opacity_pct %}
+{% else %}
+  {% assign bg_opacity_css = '0.0' | append: bg_opacity_pct %}
+{% endif %}
+{% assign bg_color = section.settings.background_color %}
+{% assign text_color = section.settings.text_color %}
+{% assign padding_top = section.settings.padding_top %}
+{% assign padding_bottom = section.settings.padding_bottom %}
+{% assign section_aria_label = section.settings.section_aria_label %}
+{% assign logo_alt = "Anne Klein Insider's Club" %}
+
+{% capture section_aria %}
+  {% if section_aria_label != blank %}
+    aria-label="{{ section_aria_label | escape }}"
+  {% else %}
+    aria-label="Insider's Club"
+  {% endif %}
+{% endcapture %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-insiders__headline,
+  #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; }
+  #shopify-section-{{ id }} .ak-insiders-club { position: relative; }
+  #shopify-section-{{ id }} .ak-insiders__two-col {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 20px;
+    position: relative;
+    z-index: 1;
+  }
+  #shopify-section-{{ id }} .ak-insiders__left {
+    flex: 1 1 280px;
+    max-width: 400px;
+    position: relative;
+  }
+  #shopify-section-{{ id }} .ak-insiders__left-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 0;
+  }
+  #shopify-section-{{ id }} .ak-insiders__left-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: {{ bg_opacity_css }};
+  }
+  #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; }
+  #shopify-section-{{ id }} .ak-insiders__right {
+    flex: 1 1 320px;
+    min-width: 0;
+    border-left: 1px solid rgba(0,0,0,0.15);
+    padding-left: 2rem;
+  }
+  #shopify-section-{{ id }} .ak-insiders__logo { max-width: 360px; margin: 0 auto 1.5rem; }
+  #shopify-section-{{ id }} .ak-insiders__logo img { max-width: 100%; height: auto; display: block; }
+  #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: Amiri, serif; font-size: 1.75rem; margin: 0 0 1rem; }
+  #shopify-section-{{ id }} .ak-insiders__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 0; }
+  #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ id }} .ak-insiders__headline {
+    font-family: Amiri, serif;
+    font-size: clamp(1.25rem, 2vw, 2.25rem);
+    line-height: 1.4;
+    margin: 0 0 1.5rem;
+  }
+  #shopify-section-{{ id }} .ak-insiders__benefits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2rem;
+    text-align: center;
+  }
+  #shopify-section-{{ id }} .ak-insiders__benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 180px;
+  }
+  #shopify-section-{{ id }} .ak-insiders__benefit-icon { width: 48px; height: 48px; flex-shrink: 0; }
+  #shopify-section-{{ id }} .ak-insiders__benefit-icon img { width: 100%; height: 100%; object-fit: contain; }
+  #shopify-section-{{ id }} .ak-insiders__benefit-text { font-size: 0.875rem; line-height: 1.3; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column; gap: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__right { border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-top: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__benefits { gap: 1rem; }
+    #shopify-section-{{ id }} .ak-insiders__benefit { max-width: 140px; }
+  }
+{% endstyle %}
+
+<section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
+  <div class="ak-insiders__two-col">
+    <div class="ak-insiders__left">
+      {% if bg_image != blank %}
+        <div class="ak-insiders__left-bg" aria-hidden="true">
+          {% include 'image-element', image: bg_image, alt: '', stretch_width: true, additional_classes: '' %}
+        </div>
+      {% endif %}
+      <div class="ak-insiders__left-inner">
+        <div class="ak-insiders__brand">
+          {% if image != blank %}
+            <div class="ak-insiders__logo">
+              {% if join_url != blank %}
+                <a href="{{ join_url }}">{% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}</a>
+              {% else %}
+                {% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}
+              {% endif %}
+            </div>
+          {% else %}
+            <h2 class="ak-insiders__logo-text">Anne Klein Insider's Club</h2>
+          {% endif %}
+        </div>
+        <div class="ak-insiders__buttons">
+          {% if join_text != blank %}
+            {% include 'button', label: join_text, href: join_url, type: 'link', style: 'button--primary' %}
+          {% endif %}
+          {% if login_text != blank %}
+            {% assign login_href = login_url | default: '/account/login' %}
+            {% include 'button', label: login_text, href: login_href, type: 'link', style: 'button--primary' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="ak-insiders__right">
+      {% if headline != blank %}
+        <p class="ak-insiders__headline">{{ headline }}</p>
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+        <div class="ak-insiders__benefits">
+          {% for block in section.blocks %}
+            {% if block.type == 'benefit' and block.settings.text != blank %}
+              {% assign icon_alt = block.settings.icon_alt_text | default: '' %}
+              <div class="ak-insiders__benefit" {{ block.shopify_attributes }}>
+                {% if block.settings.icon != blank %}
+                  <span class="ak-insiders__benefit-icon" {% if icon_alt == '' %}role="presentation"{% endif %}>
+                    {% include 'image-element', image: block.settings.icon, alt: icon_alt, stretch_width: true %}
+                  </span>
+                {% endif %}
+                <span class="ak-insiders__benefit-text">{{ block.settings.text }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Insider's Club",
+  "class": "ak-insiders-club-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Logo image",
+      "info": "Insider's Club logo. If blank, text is shown."
+    },
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Sign up today to gain access to exclusive deals!"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "join_text",
+      "label": "Join button text",
+      "default": "JOIN NOW"
+    },
+    {
+      "type": "url",
+      "id": "join_url",
+      "label": "Join button link"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "Login button text",
+      "default": "LOG IN"
+    },
+    {
+      "type": "url",
+      "id": "login_url",
+      "label": "Login button link",
+      "info": "e.g. /account/login"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (left column)",
+      "info": "Shown behind the left column (logo and buttons) only."
+    },
+    {
+      "type": "range",
+      "id": "background_image_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background image opacity",
+      "default": 25
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f0ede3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (for screen readers)",
+      "info": "Optional. Leave blank for default 'Insider's Club'."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_alt_text",
+          "label": "Icon alt text",
+          "info": "Optional. Leave blank if the icon is decorative. Add a short description if the icon adds meaning (e.g. 'Star icon for rewards')."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Insider's Club",
+      "blocks": [
+        { "type": "benefit", "settings": { "text": "Earn points on all purchases" } },
+        { "type": "benefit", "settings": { "text": "Birthday & Anniversary Rewards" } },
+        { "type": "benefit", "settings": { "text": "First sneak peak at new products" } },
+        { "type": "benefit", "settings": { "text": "Invitation to Exclusive Events" } },
+        { "type": "benefit", "settings": { "text": "And so much more!" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
