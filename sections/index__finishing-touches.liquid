@@ -13,8 +13,8 @@
 {% assign show_gutter = section.settings.show_gutter %}
 {% assign padding_top = section.settings.padding_top | default: 40 | plus: 0 %}
 {% assign padding_bottom = section.settings.padding_bottom | default: 40 | plus: 0 %}
-{% assign layout_style = section.settings.collection_style | default: 'slider' %}
 {% assign heading_alignment = section.settings.heading_alignment | default: 'center' %}
+{% assign heading_font_size = section.settings.heading_font_size | default: 24 %}
 
 {% assign products_count = 0 %}
 {% for block in section.blocks %}
@@ -23,21 +23,26 @@
   {% endif %}
 {% endfor %}
 
-{% if layout_style == 'slider' %}
-  {% assign use_slider = true %}
-{% else %}
-  {% assign use_slider = false %}
-{% endif %}
-
 {% style %}
   #shopify-section-{{ id }} {
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
     {% if width == 'wide' %}width: 100%;{% endif %}
   }
+  #shopify-section-{{ id }} .ak-finishing-touches__heading-wrap {
+    width: 100%;
+    flex: 0 0 100%;
+    display: block;
+    box-sizing: border-box;
+    min-height: 1px;
+  }
   #shopify-section-{{ id }} .ak-finishing-touches__heading {
     margin: 0 0 1.5rem;
+    font-size: {{ heading_font_size }}px;
     text-align: {{ heading_alignment }};
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -83,17 +88,23 @@
     cursor: default;
     pointer-events: none;
   }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .slider-gallery {
+    min-height: 200px;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
+    min-height: 200px;
+  }
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
-<section class="section is-width-{{ width }} ak-finishing-touches-section jsFeaturedCollection {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
+<section class="section is-width-{{ width }} ak-finishing-touches-section {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
   {% if title != blank %}
-    <div class="container">
+    <div class="container ak-finishing-touches__heading-wrap">
       <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}">{{ title }}</h2>
     </div>
   {% endif %}
   <div class="container">
-    <div class="one-whole column has-column-padding-bottom featured-collection layout--{% if use_slider %}slider{% else %}grid{% endif %} is-justify-center is-flex is-flex-wrap is-flex-row">
+    <div class="one-whole column has-column-padding-bottom featured-collection layout--slider is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
         <div class="ak-finishing-touches__carousel-wrap">
         <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
@@ -168,15 +179,13 @@
 
 <script type="application/json" data-section-id="{{ id }}" data-section-data>
   {
-    "collection_style": "{{ layout_style }}",
+    "collection_style": "slider",
     "products_per": {{ products_per_row }},
     "products_available": {{ products_count }},
     "products_limit": {{ products_count }},
     "align_height": {{ align_height | json }}
   }
 </script>
-<script data-theme-editor-load-script src="{{ 'z__jsFeaturedCollection-min.js' | asset_url }}" defer></script>
-{% if use_slider %}
 <script>
 (function() {
   var sectionId = '{{ id }}';
@@ -202,11 +211,12 @@
     var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
     var productsLimit = parseInt(data.products_limit, 10) || 0;
     var showNav = productsLimit > productsPer;
+    var groupSize = productsLimit > 0 ? Math.min(productsPer, productsLimit) : productsPer;
 
     $gallery.flickity({
       lazyLoad: 2,
       freeScroll: false,
-      groupCells: productsPer,
+      groupCells: groupSize,
       imagesLoaded: true,
       draggable: true,
       cellAlign: 'left',
@@ -351,7 +361,6 @@
   });
 })();
 </script>
-{% endif %}
 
 {% schema %}
 {
@@ -375,6 +384,16 @@
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
       ]
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
     },
     {
       "type": "header",
@@ -409,16 +428,6 @@
     {
       "type": "header",
       "content": "Layout"
-    },
-    {
-      "type": "radio",
-      "id": "collection_style",
-      "label": "Layout",
-      "default": "slider",
-      "options": [
-        { "value": "slider", "label": "Carousel (slider)" },
-        { "value": "grid", "label": "Grid" }
-      ]
     },
     {
       "type": "select",
