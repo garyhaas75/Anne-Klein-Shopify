@@ -23,7 +23,11 @@
   {% endif %}
 {% endfor %}
 
-{% assign use_slider = layout_style == 'slider' %}
+{% if layout_style == 'slider' %}
+  {% assign use_slider = true %}
+{% else %}
+  {% assign use_slider = false %}
+{% endif %}
 
 {% style %}
   #shopify-section-{{ id }} {
