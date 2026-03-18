@@ -154,7 +154,24 @@
       color: {% if mobile_subtitle_alpha != 0 %}{{ mobile_subtitle_color }}{% elsif subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     }
     #shopify-section-{{ id }} .caption {
-      text-align: {{ text_alignment }} !important;
+      text-align: {{ text_horizontal_position }} !important;
+      {% if mobile_text_below_media != true %}
+      position: absolute !important;
+      width: 100% !important;
+      {% if text_vertical_position == 'top' %}
+      top: 0 !important;
+      bottom: auto !important;
+      transform: none !important;
+      {% elsif text_vertical_position == 'bottom' %}
+      top: auto !important;
+      bottom: 0 !important;
+      transform: none !important;
+      {% else %}
+      top: 50% !important;
+      bottom: auto !important;
+      transform: translateY(-50%) !important;
+      {% endif %}
+      {% endif %}
     }
     #shopify-section-{{ id }} .caption-content {
       text-align: {{ text_alignment }} !important;
