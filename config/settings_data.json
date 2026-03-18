@@ -6106,6 +6106,12 @@
         "name": "AK Video",
         "settings": {
           "layout": "hero",
+          "section_max_width": 0,
+          "section_max_height": 650,
+          "video_max_width": 0,
+          "video_max_height": 0,
+          "video_fit": "cover",
+          "video_background_color": "#000000",
           "video": "shopify://files/videos/compressed-desktop.mp4",
           "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
           "title": "Video",
