@@ -45,6 +45,39 @@
   #shopify-section-{{ id }} .flickity-prev-next-button:focus-visible {
     outline: 2px solid currentColor; outline-offset: 3px;
   }
+  /* Nav under slider: wrap + flex layout */
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
+    width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-enabled {
+    display: flex;
+    flex-direction: column;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
+    order: 1;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav {
+    order: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
+    position: static;
+    margin: 0;
+    display: flex;
+  }
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
@@ -57,6 +90,7 @@
   <div class="container">
     <div class="one-whole column has-column-padding-bottom featured-collection layout--{% if use_slider %}slider{% else %}grid{% endif %} is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
+        <div class="ak-finishing-touches__carousel-wrap">
         <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
              data-products-per-slide="{{ products_per_row }}"
              data-products-limit="{{ products_count }}"
@@ -118,6 +152,7 @@
               </div>
             {% endif %}
           {% endfor %}
+        </div>
         </div>
       {% else %}
         <p class="text-align-center" style="margin: 0;">Add products using the "Product" blocks below.</p>
@@ -182,7 +217,9 @@
       on: {
         ready: function() {
           setTimeout(function() { $gallery.flickity('resize'); }, 500);
+          moveNavBelowSlider($section);
           setCarouselAccessibility($gallery, $section, carouselLabel, groupSize, totalPages);
+          bindWheelToCarousel($gallery);
         },
         change: function(index) {
           var page = groupSize > 0 ? Math.floor(index / groupSize) + 1 : 1;
@@ -197,6 +234,44 @@
         setCarouselButtonLabels($section);
       });
     }
+  }
+
+  function moveNavBelowSlider($section) {
+    var $wrap = $section.find('.ak-finishing-touches__carousel-wrap');
+    var $gallery = $wrap.find('.flickity-enabled');
+    if (!$gallery.length) return;
+    var $prev = $gallery.find('.flickity-prev-next-button.previous');
+    var $next = $gallery.find('.flickity-prev-next-button.next');
+    var $dots = $gallery.find('.flickity-page-dots');
+    if ($prev.length || $next.length || $dots.length) {
+      var $nav = jQuery('<div class="ak-finishing-touches__nav" aria-hidden="true"></div>');
+      if ($prev.length) $nav.append($prev);
+      if ($dots.length) $nav.append($dots);
+      if ($next.length) $nav.append($next);
+      $gallery.append($nav);
+    }
+  }
+
+  function bindWheelToCarousel($gallery) {
+    var flkty = $gallery.data('flickity');
+    if (!flkty) return;
+    var viewport = $gallery.find('.flickity-viewport')[0];
+    if (!viewport) return;
+    var deltaAccum = 0;
+    var threshold = 80;
+    viewport.addEventListener('wheel', function(e) {
+      if (e.ctrlKey || e.metaKey) return;
+      deltaAccum += e.deltaY;
+      if (deltaAccum >= threshold) {
+        deltaAccum = 0;
+        $gallery.flickity('next');
+        e.preventDefault();
+      } else if (deltaAccum <= -threshold) {
+        deltaAccum = 0;
+        $gallery.flickity('previous');
+        e.preventDefault();
+      }
+    }, { passive: false });
   }
 
   function setCarouselAccessibility($gallery, $section, label, groupSize, totalPages) {
