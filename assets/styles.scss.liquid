@@ -14468,14 +14468,9 @@ $banner-font-size: {{ settings.banner_text_size }}px;
   }
 }
 
-.image-with-text-overlay__preheading,
-.image-with-text-overlay__heading,
-.image-with-text-overlay__subheading {
-  
-  @include respond-to('medium-down') {
-    color: $black !important;
-  }
-}
+/* AK-FIX: removed blanket color: $black !important on mobile
+   that overrode section-level color settings for text overlays.
+   Section schema colors now apply correctly on all viewports. */
 .ak-closet-banner {
 
   .block__image-with-overlay,
