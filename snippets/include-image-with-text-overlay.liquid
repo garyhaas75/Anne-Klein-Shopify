@@ -13,6 +13,7 @@
 {% assign id = object.id %}
 {% assign image = object.settings.image %}
 {% assign mobile_image = object.settings.mobile_image %}
+{% assign image_alt_override = object.settings.image_alt %}
 {% assign link = object.settings.link %}
 {% assign label = object.settings.label %}
 {% assign open_in_new_tab = object.settings.open_in_new_tab %}
@@ -24,6 +25,8 @@
 {% assign heading_font_size = object.settings.heading_font_size | default: 32 %}
 {% assign heading_font_weight = object.settings.heading_font_weight | default: '400' %}
 {% assign heading_underline = object.settings.heading_underline %}
+{% assign pretext_underline = object.settings.pretext_underline %}
+{% assign subheading_underline = object.settings.subheading_underline %}
 {% assign subtitle = object.settings.subtitle %}
 {% assign subtitle_color = object.settings.subheading_color %}
 {% assign text_alignment = object.settings.text_alignment %}
@@ -47,6 +50,9 @@
 {% endif %}
 {% assign caption_border_width = object.settings.border_width %}
 {% assign caption_border_color = object.settings.border_color %}
+{% comment %} Accessibility contrast (ADA) {% endcomment %}
+{% assign text_shadow_contrast = object.settings.text_shadow_contrast | default: true %}
+{% assign scrim_overlay = object.settings.scrim_overlay | default: 'dark' %}
 {% comment %} Mobile {% endcomment %}
 {% assign mobile_text_below_media = object.settings.mobile_text_below_image %}
 {% assign mobile_text_crop = object.settings.mobile_image_crop %}
@@ -86,15 +92,38 @@
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.4);{% endif %}
   }
 
   .image-with-text-overlay__preheading {
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %};
+    {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);{% endif %}
   }
 
   .image-with-text-overlay__subheading {
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %};
+    {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);{% endif %}
   }
+
+  {% if scrim_overlay == 'dark' %}
+  .caption--scrim-dark::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 40%, transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .caption--scrim-dark .caption-content {
+    position: relative;
+    z-index: 1;
+  }
+  {% endif %}
 {%- endcapture -%}
 
 {% comment %}Section specific CSS{% endcomment %}
@@ -169,14 +198,32 @@
       {% endif %}
 
       {% if image != blank %}
-        {% include 'image-element', image: image, alt: image.alt, stretch_width: true, additional_classes: hide_mobile %}
+        {% if image_alt_override != blank %}
+          {% assign desktop_alt = image_alt_override %}
+        {% elsif image.alt != blank %}
+          {% assign desktop_alt = image.alt %}
+        {% elsif title != blank %}
+          {% assign desktop_alt = title %}
+        {% else %}
+          {% assign desktop_alt = "Promotional banner" %}
+        {% endif %}
+        {% include 'image-element', image: image, alt: desktop_alt, stretch_width: true, additional_classes: hide_mobile %}
       {% else %}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
       {% endif %}
 
       {% if mobile_image != blank %}
+        {% if image_alt_override != blank %}
+          {% assign mobile_alt = image_alt_override %}
+        {% elsif mobile_image.alt != blank %}
+          {% assign mobile_alt = mobile_image.alt %}
+        {% elsif title != blank %}
+          {% assign mobile_alt = title %}
+        {% else %}
+          {% assign mobile_alt = "Promotional banner" %}
+        {% endif %}
         <div class="is-hidden-desktop-only">
-          {% include 'image-element', image: mobile_image, alt: mobile_image.alt, stretch_width: true %}
+          {% include 'image-element', image: mobile_image, alt: mobile_alt, stretch_width: true %}
         </div>
       {% endif %}
 
@@ -189,7 +236,7 @@
   {% assign caption_click_through = true %}
 {% endif %}
       {% if pretext != blank or title != blank or subtitle != blank or button_1 != blank or button_2 != blank %}
-        <div class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}">
+        <div class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}">
           <div class="caption-content text-align-{{ text_alignment }}">
             {% if pretext != blank %}
               <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle">

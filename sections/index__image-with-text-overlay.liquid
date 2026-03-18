@@ -53,6 +53,12 @@
       "info": "900 x 1800px recommended"
     },
     {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "info": "Required for ADA (WCAG). Describe the image for screen readers. If blank, the image’s media alt or the heading is used."
+    },
+    {
       "type": "header",
       "content": "Text"
     },
@@ -79,6 +85,12 @@
       "id": "pretext_color",
       "label": "Preheading",
       "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "pretext_underline",
+      "label": "Preheading underline",
+      "default": false
     },
     {
       "type": "color",
@@ -118,6 +130,12 @@
       "id": "subheading_color",
       "label": "Subheading",
       "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "subheading_underline",
+      "label": "Subheading underline",
+      "default": false
     },
     {
       "type": "select",
@@ -181,13 +199,36 @@
     },
     {
       "type": "header",
+      "content": "Accessibility (contrast)"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_shadow_contrast",
+      "label": "Add text shadow for readability",
+      "default": true,
+      "info": "Recommended for text over image. Helps meet WCAG 1.4.3 (ADA). Works best with light-colored text."
+    },
+    {
+      "type": "select",
+      "id": "scrim_overlay",
+      "label": "Scrim overlay",
+      "default": "dark",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "dark", "label": "Dark gradient behind text" }
+      ],
+      "info": "Dark gradient behind the text area improves contrast when the image is busy or background opacity is low."
+    },
+    {
+      "type": "header",
       "content": "Text background"
     },
     {
       "type": "color",
       "id": "background_color",
       "label": "Background",
-      "default": "#FFFFFF"
+      "default": "#FFFFFF",
+      "info": "Use higher opacity below, or enable text shadow and scrim above, to meet ADA contrast (4.5:1 for normal text)."
     },
     {
       "type": "range",
