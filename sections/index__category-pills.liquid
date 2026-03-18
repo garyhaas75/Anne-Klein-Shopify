@@ -42,7 +42,11 @@
     background-color: {{ bg_color }};
   }
   #shopify-section-{{ id }} .ak-pills__heading { color: {{ heading_color }}; }
-  #shopify-section-{{ id }} .ak-category-pills .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  #shopify-section-{{ id }} .ak-category-pills .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; display: flex; flex-wrap: wrap; }
+  #shopify-section-{{ id }} .ak-category-pills .container.ak-pills__container--align-left { justify-content: flex-start; }
+  #shopify-section-{{ id }} .ak-category-pills .container.ak-pills__container--align-center { justify-content: center; }
+  #shopify-section-{{ id }} .ak-category-pills .container.ak-pills__container--align-right { justify-content: flex-end; }
+  #shopify-section-{{ id }} .ak-category-pills .container > .ak-pills__inner { flex: 0 0 auto; }
   #shopify-section-{{ id }} .ak-pills__inner {
     display: flex;
     flex-wrap: wrap;
@@ -121,7 +125,7 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-category-pills" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="container">
+  <div class="container ak-pills__container--align-{{ content_alignment }}">
     <div class="ak-pills__inner ak-pills__inner--align-{{ content_alignment }} {% if layout_mode == 'inline' %}ak-pills__inner--inline{% endif %}">
       {% if heading != blank %}
         <h2 class="ak-pills__heading" id="pills-heading-{{ id }}">{{ heading }}</h2>
