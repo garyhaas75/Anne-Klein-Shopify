@@ -5861,6 +5861,7 @@
       },
       "index_html_erAPCR": {
         "type": "index__html",
+        "disabled": true,
         "settings": {
           "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/50cba3c4-93d8-49bc-b9f4-d4e03905b009/init.js\"></script>",
           "width": "wide",
@@ -6318,10 +6319,13 @@
           "heading_color": "#000000",
           "heading_font_size": 20,
           "heading_letter_spacing": 2,
+          "heading_alignment": "right",
           "heading_underline": true,
           "background_color": "#ffffff",
           "label_font_size": 15,
           "label_font_weight": "600",
+          "label_icon_image": "shopify://shop_images/AK_Homepage_Arrow_Desktop.svg",
+          "label_icon_image_mobile": "shopify://shop_images/AK_Homepage_Arrow_Mobile.svg",
           "label_icon_style": "arrow",
           "label_icon_svg": "",
           "label_icon_style_mobile": "arrow",
