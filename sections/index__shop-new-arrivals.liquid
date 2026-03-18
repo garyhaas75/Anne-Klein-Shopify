@@ -10,12 +10,19 @@
 {% assign heading_color = section.settings.heading_color %}
 {% assign heading_font_size = section.settings.heading_font_size | default: 18 %}
 {% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 2 %}
+{% assign heading_underline = section.settings.heading_underline %}
 {% assign bg_color = section.settings.background_color %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
 {% assign container_padding = section.settings.container_padding | default: 0 %}
 {% assign grid_gap = section.settings.grid_gap | default: 24 %}
 {% assign section_aria_label = section.settings.section_aria_label %}
+{% assign label_font_weight = section.settings.label_font_weight | default: '700' %}
+{% assign label_font_size = section.settings.label_font_size | default: 18 %}
+{% assign label_icon_style = section.settings.label_icon_style | default: 'arrow' %}
+{% assign label_icon_svg = section.settings.label_icon_svg %}
+{% assign label_icon_style_mobile = section.settings.label_icon_style_mobile | default: 'arrow' %}
+{% assign label_icon_svg_mobile = section.settings.label_icon_svg_mobile %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -50,8 +57,9 @@
     text-align: center;
     margin: 0 0 1.5rem;
     letter-spacing: {% if heading_letter_spacing == 0 %}0{% else %}{{ heading_ls_str }}em{% endif %};
+    {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
   }
-  #shopify-section-{{ id }} .ak-new-arrivals__title-link { text-decoration: underline; color: inherit; }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link { color: inherit; {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %} }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:hover,
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible { opacity: 0.8; }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible {
@@ -95,13 +103,32 @@
     #shopify-section-{{ id }} .ak-new-arrivals__tile-media img,
     #shopify-section-{{ id }} .ak-new-arrivals__tile-media .placeholder-svg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
   }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-label-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-label {
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: {{ label_font_size }}px;
+    font-weight: {{ label_font_weight }};
     color: #000;
   }
-  #shopify-section-{{ id }} .ak-new-arrivals__tile-arrow { margin-left: 0.25rem; }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-icon svg {
+    width: 1em;
+    height: 1em;
+    font-size: {{ label_font_size }}px;
+  }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: none; }
+  #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: inline-flex; }
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
     #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
   }
 {% endstyle %}
@@ -120,29 +147,54 @@
     <div class="ak-new-arrivals__grid">
       {% for block in section.blocks %}
         {% if block.type == 'tile' and block.settings.label != blank %}
+          {% assign tile_alt = block.settings.image_alt %}
+          {% if tile_alt == blank %}
+            {% assign tile_alt = block.settings.label %}
+          {% endif %}
+          {% if tile_alt == blank and block.settings.image != blank and block.settings.image.alt != blank %}
+            {% assign tile_alt = block.settings.image.alt %}
+          {% endif %}
+          {% if tile_alt == blank %}
+            {% assign tile_alt = "Category image" %}
+          {% endif %}
           <div class="ak-new-arrivals__tile" {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
               <a href="{{ block.settings.link }}" class="ak-new-arrivals__tile-link">
                 <div class="ak-new-arrivals__tile-media">
                   {% if block.settings.image != blank %}
-                    {% include 'image-element', image: block.settings.image, alt: block.settings.label, stretch_width: true %}
+                    {% include 'image-element', image: block.settings.image, alt: tile_alt, stretch_width: true %}
                   {% else %}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
                 </div>
-                <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
-                <span class="ak-new-arrivals__tile-arrow" aria-hidden="true">→</span>
+                <span class="ak-new-arrivals__tile-label-wrap">
+                  {% if label_icon_svg != blank or label_icon_style == 'arrow' %}
+                    <span class="ak-new-arrivals__tile-icon ak-new-arrivals__tile-icon--desktop" aria-hidden="true">{% if label_icon_svg != blank %}{{ label_icon_svg }}{% else %}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>{% endif %}</span>
+                  {% endif %}
+                  {% if label_icon_svg_mobile != blank or label_icon_style_mobile == 'arrow' %}
+                    <span class="ak-new-arrivals__tile-icon ak-new-arrivals__tile-icon--mobile" aria-hidden="true">{% if label_icon_svg_mobile != blank %}{{ label_icon_svg_mobile }}{% else %}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>{% endif %}</span>
+                  {% endif %}
+                  <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
+                </span>
               </a>
             {% else %}
               <div class="ak-new-arrivals__tile-link">
                 <div class="ak-new-arrivals__tile-media">
                   {% if block.settings.image != blank %}
-                    {% include 'image-element', image: block.settings.image, alt: block.settings.label, stretch_width: true %}
+                    {% include 'image-element', image: block.settings.image, alt: tile_alt, stretch_width: true %}
                   {% else %}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
                 </div>
-                <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
+                <span class="ak-new-arrivals__tile-label-wrap">
+                  {% if label_icon_svg != blank or label_icon_style == 'arrow' %}
+                    <span class="ak-new-arrivals__tile-icon ak-new-arrivals__tile-icon--desktop" aria-hidden="true">{% if label_icon_svg != blank %}{{ label_icon_svg }}{% else %}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>{% endif %}</span>
+                  {% endif %}
+                  {% if label_icon_svg_mobile != blank or label_icon_style_mobile == 'arrow' %}
+                    <span class="ak-new-arrivals__tile-icon ak-new-arrivals__tile-icon--mobile" aria-hidden="true">{% if label_icon_svg_mobile != blank %}{{ label_icon_svg_mobile }}{% else %}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>{% endif %}</span>
+                  {% endif %}
+                  <span class="ak-new-arrivals__tile-label">{{ block.settings.label }}</span>
+                </span>
               </div>
             {% endif %}
           </div>
@@ -200,10 +252,77 @@
       "info": "0–10, as % of em (2 ≈ 0.02em)."
     },
     {
+      "type": "checkbox",
+      "id": "heading_underline",
+      "label": "Heading underline",
+      "default": false
+    },
+    {
       "type": "color",
       "id": "background_color",
       "label": "Background color",
       "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Tile label"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Label font weight",
+      "default": "700",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Label icon (before each label)"
+    },
+    {
+      "type": "select",
+      "id": "label_icon_style",
+      "label": "Icon (desktop)",
+      "default": "arrow",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "arrow", "label": "Arrow right" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "label_icon_svg",
+      "label": "Custom SVG (desktop)",
+      "info": "Paste SVG code to override the preset. Used only when Icon (desktop) is set."
+    },
+    {
+      "type": "select",
+      "id": "label_icon_style_mobile",
+      "label": "Icon (mobile)",
+      "default": "arrow",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "arrow", "label": "Arrow right" }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "label_icon_svg_mobile",
+      "label": "Custom SVG (mobile)",
+      "info": "Paste SVG code for mobile. If blank, uses same as desktop or preset."
     },
     {
       "type": "header",
@@ -270,6 +389,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "info": "Describe the image for screen readers (ADA). If blank, the tile label or the image’s media alt is used."
         },
         {
           "type": "text",
