@@ -5876,6 +5876,7 @@
       },
       "index_html_mXCmrC": {
         "type": "index__html",
+        "disabled": true,
         "name": "Custom HTML",
         "settings": {
           "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/f27435b3-505e-4242-a90e-49b518db2c4f/init.js\"></script>",
@@ -6018,6 +6019,7 @@
       },
       "index_html_r7tHWd": {
         "type": "index__html",
+        "disabled": true,
         "name": "Custom HTML",
         "settings": {
           "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/ce99b969-e078-49f8-810b-9365611fe66b/init.js\"></script>",
@@ -6541,7 +6543,7 @@
           "video_background_color": "#000000",
           "video": "shopify://files/videos/compressed-desktop.mp4",
           "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
-          "title": "Video",
+          "title": "Spring 2026 Campaign",
           "autoplay": true,
           "loop": true,
           "overlay_subheading": "Spring 2026 Campaign",
