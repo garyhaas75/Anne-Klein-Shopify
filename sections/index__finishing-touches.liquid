@@ -1,0 +1,163 @@
+{% comment %}
+  AK Homepage 2026 – Finishing Touches
+  Product carousel: title, collection picker, product image/title/price, links to product URL.
+  Uses theme's featured-collection snippet (slider layout). Products pulled from Shopify collection.
+{% endcomment %}
+
+{% include 'include-featured-collection' %}
+
+{% schema %}
+{
+  "name": "AK Finishing Touches",
+  "class": "ak-finishing-touches-section jsFeaturedCollection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "FINISHING TOUCHES",
+      "info": "Section title shown above the product carousel."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Products from this collection are shown in the carousel. Uses product image, title, price, and product URL."
+    },
+    {
+      "type": "header",
+      "content": "Product carousel"
+    },
+    {
+      "type": "range",
+      "id": "products_per",
+      "label": "Products per row (visible at once)",
+      "min": 2,
+      "max": 6,
+      "default": 4,
+      "info": "Number of product cards visible in the carousel."
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Limit products",
+      "min": 4,
+      "max": 24,
+      "default": 12,
+      "info": "Maximum number of products in the carousel."
+    },
+    {
+      "type": "checkbox",
+      "id": "align_height",
+      "label": "Align to height",
+      "default": false,
+      "info": "Use fixed height for product images."
+    },
+    {
+      "type": "range",
+      "id": "collection_height",
+      "label": "Product image height",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 320,
+      "unit": "px",
+      "info": "Applied when 'Align to height' is enabled."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "radio",
+      "id": "collection_style",
+      "label": "Layout",
+      "default": "slider",
+      "options": [
+        { "value": "slider", "label": "Carousel (slider)" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "info": "Carousel scrolls horizontally; grid shows all in rows."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter between products",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 80,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 80,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "animation",
+      "label": "Animation",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "fadeIn", "label": "Fade in" },
+        { "value": "fadeInDown", "label": "Fade in down" },
+        { "value": "fadeInLeft", "label": "Fade in left" },
+        { "value": "fadeInRight", "label": "Fade in right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_masonry_layout",
+      "label": "Enable masonry layout",
+      "default": false,
+      "info": "Only applies when layout is Grid."
+    },
+    {
+      "type": "text",
+      "id": "css_class",
+      "label": "CSS Class"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Finishing Touches",
+      "settings": {
+        "title": "FINISHING TOUCHES",
+        "collection_style": "slider",
+        "products_per": 4,
+        "products_limit": 12
+      }
+    }
+  ]
+}
+{% endschema %}

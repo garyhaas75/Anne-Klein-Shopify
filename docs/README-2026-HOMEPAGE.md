@@ -9,7 +9,7 @@ Sections built to match the Figma design. Add and order them in **Theme Editor �
 3. **AK Lifestyle Quad** – 2×2 grid: Dress with Intention, Business Leisure, Finishing Touches, Vacation Mindset
 4. **AK Shop New Arrivals** – SHOP NEW ARRIVALS + 4 category tiles (Clothing, Watches, Handbags, Opticals)
 5. **Image with text overlay** (existing) – e.g. Spring Botanicals / SHOP PRINTS full-width banner
-6. **Featured collection** (existing) – e.g. “Finishing Touches” product grid
+6. **AK Finishing Touches** – Product carousel: title, collection, product image/title/price, product URL
 7. **AK Insider's Club** – Logo, sign-up headline, JOIN NOW / LOG IN, benefit list
 
 ## Sections added
@@ -20,6 +20,7 @@ Sections built to match the Figma design. Add and order them in **Theme Editor �
 | AK Category Pills | `index__category-pills.liquid` | Blocks or menu for category pills |
 | AK Lifestyle Quad | `index__lifestyle-quad.liquid` | 4 panels, each: image, heading, CTA |
 | AK Shop New Arrivals | `index__shop-new-arrivals.liquid` | Heading + 4 tiles (image, label, link) |
+| AK Finishing Touches | `index__finishing-touches.liquid` | Product carousel from collection: title, image, price, product link; carousel or grid |
 | AK Insider's Club | `index__insiders-club.liquid` | Logo, headline, buttons, benefit blocks |
 
-Use existing **Image with text overlay** and **Featured collection** for the Spring Botanicals banner and product carousel. Typography uses Amiri where specified in Figma; other text uses theme settings.
+Use **Image with text overlay** for the Spring Botanicals banner. **AK Finishing Touches** pulls products from a Shopify collection (image, title, price, product URL) with configurable size and carousel layout.
