@@ -345,6 +345,21 @@
   #ak-video-{{ section.id }} .ak-video__pause .ak-video__play-icon[hidden] {
     display: none;
   }
+  #ak-video-{{ section.id }} .ak-video__pause .ak-video__pause-icon,
+  #ak-video-{{ section.id }} .ak-video__pause .ak-video__play-icon,
+  #ak-video-{{ section.id }} .ak-video__mute .ak-video__mute-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 0;
+  }
+  #ak-video-{{ section.id }} .ak-video__pause svg,
+  #ak-video-{{ section.id }} .ak-video__mute svg {
+    display: block;
+    flex-shrink: 0;
+  }
   #ak-video-{{ section.id }} .ak-video__controls,
   #ak-video-{{ section.id }} .ak-video__transcript {
     opacity: 0;
