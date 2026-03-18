@@ -296,33 +296,40 @@
     if (!flkty) return;
     var el = $gallery[0];
     if (!el) return;
-    var accum = 0;
-    var threshold = 30;
+    var accumX = 0;
+    var threshold = 20;
     var locked = false;
     var lockTimer;
+    var resetTimer;
 
     function handleWheel(e) {
       if (e.ctrlKey || e.metaKey) return;
-      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (delta === 0) return;
+
+      var absX = Math.abs(e.deltaX);
+      var absY = Math.abs(e.deltaY);
+
+      if (absX <= absY) return;
 
       e.preventDefault();
 
       if (locked) return;
-      accum += delta;
 
-      if (accum > threshold) {
-        accum = 0;
+      accumX += e.deltaX;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function() { accumX = 0; }, 150);
+
+      if (accumX > threshold) {
+        accumX = 0;
         locked = true;
         $gallery.flickity('next');
         clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accum = 0; }, 400);
-      } else if (accum < -threshold) {
-        accum = 0;
+        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 350);
+      } else if (accumX < -threshold) {
+        accumX = 0;
         locked = true;
         $gallery.flickity('previous');
         clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accum = 0; }, 400);
+        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 350);
       }
     }
 
