@@ -167,17 +167,28 @@
 
 <style>
   #ak-video-{{ section.id }} {
-    {% if is_hero %}max-height: 100vh;{% endif %}
-  }
-  #ak-video-{{ section.id }} .ak-video__player {
-    object-fit: cover;
-    width: 100%;
-    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+    {% if is_hero %}
+    height: 100vh;
+    max-height: 100vh;
+    {% endif %}
   }
   #ak-video-{{ section.id }} .ak-video__wrap {
     position: relative;
     width: 100%;
     height: 100%;
+    {% if is_hero %}overflow: hidden;{% endif %}
+  }
+  #ak-video-{{ section.id }} .ak-video__player {
+    object-fit: cover;
+    width: 100%;
+    {% if is_hero %}
+    height: 100%;
+    min-height: 100%;
+    {% else %}
+    min-height: 400px;
+    {% endif %}
   }
   #ak-video-{{ section.id }} .ak-video__start-card,
   #ak-video-{{ section.id }} .ak-video__end-card {
