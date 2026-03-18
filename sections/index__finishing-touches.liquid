@@ -14,6 +14,7 @@
 {% assign padding_top = section.settings.padding_top | default: 40 | plus: 0 %}
 {% assign padding_bottom = section.settings.padding_bottom | default: 40 | plus: 0 %}
 {% assign layout_style = section.settings.collection_style | default: 'slider' %}
+{% assign heading_alignment = section.settings.heading_alignment | default: 'center' %}
 
 {% assign products_count = 0 %}
 {% for block in section.blocks %}
@@ -35,7 +36,7 @@
   }
   #shopify-section-{{ id }} .ak-finishing-touches__heading {
     margin: 0 0 1.5rem;
-    text-align: center;
+    text-align: {{ heading_alignment }};
   }
 {% endstyle %}
 
@@ -43,7 +44,7 @@
 <section class="section is-width-{{ width }} ak-finishing-touches-section jsFeaturedCollection {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
   {% if title != blank %}
     <div class="container">
-      <h2 class="ak-finishing-touches__heading text-align-center" id="finishing-heading-{{ id }}">{{ title }}</h2>
+      <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}">{{ title }}</h2>
     </div>
   {% endif %}
   <div class="container">
@@ -53,6 +54,9 @@
              data-products-per-slide="{{ products_per_row }}"
              data-products-limit="{{ products_count }}"
              data-products-available="{{ products_count }}"
+             role="region"
+             aria-roledescription="carousel"
+             aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
              aria-live="polite">
           {% for block in section.blocks %}
             {% if block.type == 'product' and block.settings.product != blank %}
@@ -137,6 +141,17 @@
       "label": "Heading",
       "default": "FINISHING TOUCHES",
       "info": "Section title shown above the product carousel."
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

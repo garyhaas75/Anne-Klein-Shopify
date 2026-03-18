@@ -10,6 +10,7 @@
 {% assign heading_color = section.settings.heading_color %}
 {% assign heading_font_size = section.settings.heading_font_size | default: 30 %}
 {% assign layout_mode = section.settings.layout_mode | default: 'inline' %}
+{% assign content_alignment = section.settings.content_alignment | default: 'left' %}
 {% assign bg_color = section.settings.background_color %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
@@ -46,35 +47,41 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
     gap: 1rem 0.75rem;
   }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--align-left { justify-content: flex-start; }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--align-center { justify-content: center; }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--align-right { justify-content: flex-end; }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline {
     flex-direction: row;
-    justify-content: flex-start;
     flex-wrap: wrap;
   }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline.ak-pills__inner--align-left { justify-content: flex-start; }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline.ak-pills__inner--align-center { justify-content: center; }
+  #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline.ak-pills__inner--align-right { justify-content: flex-end; }
   #shopify-section-{{ id }} .ak-pills__heading {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: {{ heading_font_size }}px;
     font-weight: 400;
     margin: 0;
     flex: 0 0 100%;
-    text-align: center;
   }
+  #shopify-section-{{ id }} .ak-pills__inner--align-left .ak-pills__heading { text-align: left; }
+  #shopify-section-{{ id }} .ak-pills__inner--align-center .ak-pills__heading { text-align: center; }
+  #shopify-section-{{ id }} .ak-pills__inner--align-right .ak-pills__heading { text-align: right; }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline .ak-pills__heading {
     flex: 0 0 auto;
-    text-align: left;
     margin-right: 1rem;
   }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline .ak-pills__list {
     flex: 1 1 auto;
-    justify-content: flex-start;
   }
+  #shopify-section-{{ id }} .ak-pills__inner--align-left .ak-pills__list { justify-content: flex-start; }
+  #shopify-section-{{ id }} .ak-pills__inner--align-center .ak-pills__list { justify-content: center; }
+  #shopify-section-{{ id }} .ak-pills__inner--align-right .ak-pills__list { justify-content: flex-end; }
   #shopify-section-{{ id }} .ak-pills__list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 0.5rem;
     list-style: none;
     margin: 0;
@@ -113,7 +120,7 @@
 
 <section class="section is-width-wide ak-category-pills" id="shopify-section-{{ id }}" {{ section_aria }}>
   <div class="container">
-    <div class="ak-pills__inner {% if layout_mode == 'inline' %}ak-pills__inner--inline{% endif %}">
+    <div class="ak-pills__inner ak-pills__inner--align-{{ content_alignment }} {% if layout_mode == 'inline' %}ak-pills__inner--inline{% endif %}">
       {% if heading != blank %}
         <h2 class="ak-pills__heading" id="pills-heading-{{ id }}">{{ heading }}</h2>
       {% endif %}
@@ -187,6 +194,18 @@
         { "value": "stacked", "label": "Stacked (heading above pills)" }
       ],
       "info": "Inline matches Figma: heading and pills on the same row."
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "info": "Aligns the heading and pills as a group (left, center, or right on the page)."
     },
     {
       "type": "color",
