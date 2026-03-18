@@ -219,13 +219,15 @@
       accessibility: true,
       on: {
         ready: function() {
-          setTimeout(function() { $gallery.flickity('resize'); }, 500);
+          setTimeout(function() {
+            $gallery.flickity('resize');
+            bindTrackpadScroll($gallery);
+          }, 500);
           moveNavBelowSlider($section);
           labelCells($gallery);
           insertLiveRegion($gallery, $section);
           setButtonLabels($section);
           updateNavState($gallery, $section);
-          bindTrackpadScroll($gallery);
         },
         change: function() {
           updateNavState($gallery, $section);
@@ -292,36 +294,44 @@
   function bindTrackpadScroll($gallery) {
     var flkty = $gallery.data('flickity');
     if (!flkty) return;
-    var viewport = $gallery.find('.flickity-viewport')[0];
-    if (!viewport) return;
-    var accumX = 0;
-    var accumY = 0;
-    var threshold = 60;
-    var scrolling = false;
-    var resetTimer;
-    viewport.addEventListener('wheel', function(e) {
+    var el = $gallery[0];
+    if (!el) return;
+    var accum = 0;
+    var threshold = 30;
+    var locked = false;
+    var lockTimer;
+
+    function handleWheel(e) {
       if (e.ctrlKey || e.metaKey) return;
-      var dx = Math.abs(e.deltaX);
-      var dy = Math.abs(e.deltaY);
-      var isHorizontal = dx > dy;
-      if (isHorizontal) {
-        accumX += e.deltaX;
-      } else {
-        accumX += e.deltaY;
-      }
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(function() { accumX = 0; accumY = 0; scrolling = false; }, 200);
-      if (scrolling) { e.preventDefault(); return; }
-      if (accumX >= threshold) {
-        accumX = 0; scrolling = true;
+      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (delta === 0) return;
+
+      e.preventDefault();
+
+      if (locked) return;
+      accum += delta;
+
+      if (accum > threshold) {
+        accum = 0;
+        locked = true;
         $gallery.flickity('next');
-        e.preventDefault();
-      } else if (accumX <= -threshold) {
-        accumX = 0; scrolling = true;
+        clearTimeout(lockTimer);
+        lockTimer = setTimeout(function() { locked = false; accum = 0; }, 400);
+      } else if (accum < -threshold) {
+        accum = 0;
+        locked = true;
         $gallery.flickity('previous');
-        e.preventDefault();
+        clearTimeout(lockTimer);
+        lockTimer = setTimeout(function() { locked = false; accum = 0; }, 400);
       }
-    }, { passive: false });
+    }
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+
+    var viewport = $gallery.find('.flickity-viewport')[0];
+    if (viewport && viewport !== el) {
+      viewport.addEventListener('wheel', handleWheel, { passive: false });
+    }
   }
 
   if (document.readyState === 'loading') {
