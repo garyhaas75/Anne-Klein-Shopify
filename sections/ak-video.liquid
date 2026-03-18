@@ -234,12 +234,18 @@
     min-height: 0;
     {% endif %}
   }
-  {% unless section.settings.video_max_height != blank and section.settings.video_max_height > 0 %}
-  /* Remove subpixel gap below video (black line); wrap overflow clips the excess */
+  {% comment %} When fit is cover and no max-height, extend video past container to remove black line; wrap overflow clips. {% endcomment %}
+  {% if video_fit == 'cover' %}
   #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
-    min-height: calc(100% + 4px);
+    min-height: calc(100% + 10px);
+    margin-bottom: -6px;
   }
-  {% endunless %}
+  {% endif %}
+  {% if video_fit == 'cover' and section.settings.video_max_height != blank and section.settings.video_max_height > 0 %}
+  #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
+    margin-bottom: 0;
+  }
+  {% endif %}
   #ak-video-{{ section.id }} .ak-video__start-card,
   #ak-video-{{ section.id }} .ak-video__end-card {
     position: absolute;
