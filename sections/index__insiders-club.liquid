@@ -32,7 +32,7 @@
   {% assign benefit_icon_size_mobile_px = benefit_icon_size_mobile %}
 {% endif %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
-{% assign section_min_height = section.settings.section_min_height | default: 350 %}
+{% assign section_min_height = section.settings.section_min_height | default: 360 %}
 {% if section_min_height > 0 %}
   {% assign min_height_css = 'min-height:' | append: section_min_height | append: 'px;' %}
 {% else %}
@@ -345,7 +345,7 @@
       "step": 20,
       "unit": "px",
       "label": "Section min height (desktop)",
-      "default": 350,
+      "default": 360,
       "info": "Taller values give more room for vertical centering. 0 = auto height."
     },
     {
