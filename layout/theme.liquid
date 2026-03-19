@@ -11,7 +11,7 @@
   <meta http-equiv="Expires" content="30" />
   <meta http-equiv="cleartype" content="on">
   <meta name="robots" content="index,follow">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="theme-color" content="{{ settings.shop_bg_color }}">
   <link rel="canonical" href="{{ canonical_url }}" />
   <meta name="google-site-verification" content="h6K7ixn9Xzl6fKqoYVYVaCFtI08qSHFcnJ4Scv0X6b4" />
@@ -381,8 +381,9 @@
     <div class="is-beside-vertical-header">
   {% endif %}
 
-  <div id="main-content"></div>    
+  <main id="main-content">
   {{ content_for_layout }}
+  </main>
 
   {% if settings.footer_layout == "centered" %}
     {% section 'footer__icon-bar' %}
@@ -578,7 +579,7 @@ $('body').on('click', '.js-watch-video', function(e){
 <script data-cfasync="false">window.ju_num="BCB0A8F1-CAA9-4630-BBE9-60776ADF658D";window.asset_host='//cdn.jst.ai/';(function(i,s,o,g,r,a,m){i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)};a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script',asset_host+'vck.js','juapp');</script>
 {% endcomment %}
   
- {%- render 'audioeye-ada' -%}
+ {% unless template.name == 'index' %}{%- render 'audioeye-ada' -%}{% endunless %}
   
   {% render 'stylitics-klaviyo' %}
 

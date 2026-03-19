@@ -570,12 +570,20 @@
     #ak-video-{{ section.id }} .ak-video__transcript {
       max-width: 60%;
     }
-    #ak-video-{{ section.id }} .ak-video__controls,
-    #ak-video-{{ section.id }} .ak-video__transcript {
+    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__controls,
+    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__transcript {
+      opacity: 1;
+    }
+    #ak-video-{{ section.id }} .ak-video__controls:focus-within,
+    #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
       opacity: 1;
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    #ak-video-{{ section.id }} .ak-video__controls,
+    #ak-video-{{ section.id }} .ak-video__transcript {
+      opacity: 1 !important;
+    }
     #ak-video-{{ section.id }} .ak-video__player {
       animation: none !important;
     }
@@ -597,6 +605,23 @@
     video.removeAttribute('controls');
 
     var loop = {{ section.settings.loop | default: true }};
+
+    var controlsTimer = null;
+    var isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+    function showControlsBriefly() {
+      sectionEl.classList.add('ak-video--controls-visible');
+      clearTimeout(controlsTimer);
+      controlsTimer = setTimeout(function() {
+        sectionEl.classList.remove('ak-video--controls-visible');
+      }, 4000);
+    }
+    if (isMobile) {
+      sectionEl.addEventListener('click', function(e) {
+        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause')) return;
+        showControlsBriefly();
+      });
+      showControlsBriefly();
+    }
 
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reducedMotion && video.autoplay) {

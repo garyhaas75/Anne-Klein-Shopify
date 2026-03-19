@@ -86,6 +86,8 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-mobile-only { display: none !important; }
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-desktop-only { display: block !important; }
+    #shopify-section-{{ id }} .ak-quad__panel.ak-quad--controls-visible .ak-quad__pause-btn { opacity: 1; }
+    #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 1; }
   }
   #shopify-section-{{ id }} .ak-quad__gradient {
     position: absolute; left: 0; right: 0; bottom: 0;
@@ -322,6 +324,20 @@
       if (video.readyState >= 2) tryPlay(video);
       updateLabel();
     });
+    var isMobileQuad = window.matchMedia && window.matchMedia('(max-width: 798px)').matches;
+    if (isMobileQuad) {
+      section.querySelectorAll('.ak-quad__panel').forEach(function(panel) {
+        var timer = null;
+        panel.addEventListener('click', function(e) {
+          if (e.target.closest('.ak-quad__pause-btn')) return;
+          panel.classList.add('ak-quad--controls-visible');
+          clearTimeout(timer);
+          timer = setTimeout(function() {
+            panel.classList.remove('ak-quad--controls-visible');
+          }, 4000);
+        });
+      });
+    }
     if (typeof IntersectionObserver !== 'undefined' && videos.length) {
       var io = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {

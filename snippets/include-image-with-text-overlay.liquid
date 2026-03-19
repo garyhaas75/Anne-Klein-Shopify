@@ -249,7 +249,8 @@
                 "
                 {% if animation != "none" %}
                   data-scroll-class="{{ animation }}"
-                {% endif %}>
+                {% endif %}
+                {% if title != blank %}aria-label="{{ title | escape }}"{% elsif label != blank %}aria-label="{{ label | escape }}"{% else %}aria-label="Promotional banner"{% endif %}>
   <div class="container
               image-with-text-overlay__container
               {% if width == 'wide' or width == 'half' %}
@@ -292,7 +293,7 @@
       {% endif %}
 
       {% if link != blank %}
-        <a href="{{ link }}" {% if open_in_new_tab %}target="_blank"{% endif %} class="banner--full-link"{% if label != blank %} aria-label="{{ label }}"{% endif %}></a>
+        <a href="{{ link }}" {% if open_in_new_tab %}target="_blank"{% endif %} class="banner--full-link" aria-label="{% if label != blank %}{{ label | escape }}{% elsif title != blank %}{{ title | escape }}{% else %}Learn more{% endif %}"></a>
       {% endif %}
 
       {% assign caption_click_through = false %}
