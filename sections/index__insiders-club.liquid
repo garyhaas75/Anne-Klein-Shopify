@@ -178,10 +178,10 @@
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 1.5rem; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 100% !important; max-width: 100% !important; }
-    #shopify-section-{{ id }} .ak-insiders__right { flex: 0 0 100% !important; max-width: 100% !important; border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-right: 0; padding-top: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__right { flex: 0 0 100% !important; max-width: 100% !important; border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 1rem; padding-right: 1rem; padding-top: 1.5rem; }
     #shopify-section-{{ id }} .ak-insiders__right-inner { margin: 0 auto; }
-    #shopify-section-{{ id }} .ak-insiders__benefits { flex-wrap: wrap !important; gap: 1rem; }
-    #shopify-section-{{ id }} .ak-insiders__benefit { max-width: 140px; flex: 0 0 auto !important; }
+    #shopify-section-{{ id }} .ak-insiders__benefits { flex-direction: column !important; flex-wrap: nowrap !important; align-items: center; gap: 1rem; }
+    #shopify-section-{{ id }} .ak-insiders__benefit { max-width: none; flex: 0 0 auto !important; }
     /* Figma: mobile benefit icons ~99–101px; desktop ~48px. 0 = same as desktop. */
     #shopify-section-{{ id }} .ak-insiders__benefit-icon {
       width: {{ benefit_icon_size_mobile_px }}px;
