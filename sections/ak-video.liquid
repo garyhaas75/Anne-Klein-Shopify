@@ -849,10 +849,14 @@
         hide(startCard);
       } else {
         video.muted = true;
-        video.addEventListener('canplay', function() {
-          video.muted = true;
+        if (video.readyState >= 3) {
           video.play().catch(function() {});
-        }, { once: true });
+        } else {
+          video.addEventListener('canplay', function() {
+            video.muted = true;
+            video.play().catch(function() {});
+          }, { once: true });
+        }
       }
     }
 
