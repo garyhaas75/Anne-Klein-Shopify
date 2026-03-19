@@ -244,7 +244,7 @@
                 {% if use_video %}
                   <div class="ak-quad__video-wrap">
                     <video
-                      class="ak-quad__video is-hidden-mobile-only"
+                      class="ak-quad__video"
                       autoplay
                       muted
                       playsinline
@@ -252,17 +252,14 @@
                       preload="auto"
                       aria-label="{{ panel_heading | default: 'Panel video' | escape }}"
                       data-panel-video="{{ block.id }}"
+                      {% assign poster_image = panel_mobile_image | default: panel_image %}
+                      {% if poster_image != blank %}poster="{{ poster_image | image_url: width: 1200 }}"{% endif %}
                     >
                       {% for source in panel_video.sources %}
                         <source src="{{ source.url }}" type="{{ source.mime_type }}">
                       {% endfor %}
                     </video>
                   </div>
-                  {% if panel_image != blank %}
-                    <div class="is-hidden-desktop-only">
-                      {% include 'image-element', image: panel_image, alt: panel_alt, stretch_width: true, additional_classes: 'ak-quad__img' %}
-                    </div>
-                  {% endif %}
                 {% else %}
                   {% if panel_image != blank %}
                     {% include 'image-element', image: panel_image, alt: panel_alt, stretch_width: true, additional_classes: 'ak-quad__img is-hidden-mobile-only' %}
@@ -558,7 +555,7 @@
           "type": "video",
           "id": "video",
           "label": "Video",
-          "info": "Used when Media type is Video. Desktop only; use Image for mobile fallback."
+          "info": "Used when Media type is Video. Shown on desktop and mobile; poster uses Image/Mobile image when set."
         },
         {
           "type": "image_picker",
