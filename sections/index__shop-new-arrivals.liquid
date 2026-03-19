@@ -40,6 +40,14 @@
 {% assign label_icon_image_mobile = section.settings.label_icon_image_mobile %}
 {% assign tile_aspect_ratio = section.settings.tile_aspect_ratio | default: '3_4' %}
 {% assign section_max_width = section.settings.section_max_width | default: 1400 %}
+{% case section.settings.font_family %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -92,7 +100,7 @@
     display: block;
     width: 100%;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: {{ font_stack }};
     font-size: {{ heading_font_size }}px;
     font-weight: 700;
     text-align: {{ heading_alignment }};
@@ -162,6 +170,7 @@
     gap: 0.35rem;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-label {
+    font-family: {{ font_stack }};
     font-size: {{ label_font_size }}px;
     font-weight: {{ label_font_weight }};
     color: #000;
@@ -305,6 +314,21 @@
     {
       "type": "header",
       "content": "Heading typography"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
     },
     {
       "type": "range",

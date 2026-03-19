@@ -56,6 +56,14 @@
 {% comment %} Accessibility contrast (ADA) {% endcomment %}
 {% assign text_shadow_contrast = object.settings.text_shadow_contrast | default: true %}
 {% assign scrim_overlay = object.settings.scrim_overlay | default: 'dark' %}
+{% case object.settings.font_family | default: 'system' %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 {% comment %} Mobile {% endcomment %}
 {% assign mobile_text_below_media = object.settings.mobile_text_below_image %}
 {% assign mobile_text_crop = object.settings.mobile_image_crop %}
@@ -100,6 +108,7 @@
   }
 
   .image-with-text-overlay__heading {
+    font-family: {{ font_stack }};
     color: {% if heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     font-size: {{ heading_font_size }}px !important;
     font-weight: {{ heading_font_weight }} !important;
@@ -108,12 +117,14 @@
   }
 
   .image-with-text-overlay__preheading {
+    font-family: {{ font_stack }};
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
 
   .image-with-text-overlay__subheading {
+    font-family: {{ font_stack }};
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}

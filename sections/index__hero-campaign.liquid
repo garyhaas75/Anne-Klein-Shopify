@@ -18,6 +18,14 @@
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign hero_alt = image.alt | default: heading | default: preheading | default: "Campaign hero" %}
 {% assign mobile_alt = mobile_image.alt | default: heading | default: preheading | default: "Campaign hero" %}
+{% case section.settings.font_family %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -73,14 +81,14 @@
   #shopify-section-{{ id }} .ak-hero-campaign__caption-inner { position: relative; width: 100%; height: 100%; }
   #shopify-section-{{ id }} .ak-hero-campaign__content { text-align: center; width: 100%; max-width: 900px; }
   #shopify-section-{{ id }} .ak-hero-campaign__preheading {
-    font-family: Amiri, serif;
+    font-family: {{ font_stack }};
     font-size: clamp(1.125rem, 2vw, 2.25rem);
     line-height: 1.2;
     margin: 0 0 0.25em;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
   }
   #shopify-section-{{ id }} .ak-hero-campaign__heading {
-    font-family: Amiri, serif;
+    font-family: {{ font_stack }};
     font-size: clamp(2.5rem, 6vw, 5.5rem);
     line-height: 1.1;
     margin: 0 0 0.5em;
@@ -89,6 +97,7 @@
   }
   #shopify-section-{{ id }} .ak-hero-campaign__cta {
     margin: 0;
+    font-family: {{ font_stack }};
     font-size: 1.125rem;
     font-weight: 700;
     text-decoration: underline;
@@ -222,6 +231,21 @@
       "label": "Text color",
       "default": "#ffffff",
       "info": "Use white or light text. The section applies a gradient overlay and text shadow for contrast over images."
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
     },
     {
       "type": "header",

@@ -18,6 +18,14 @@
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign cta_font_size = section.settings.cta_font_size | default: 14 %}
 {% assign cta_font_weight = section.settings.cta_font_weight | default: '700' %}
+{% case section.settings.font_family %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -121,7 +129,7 @@
     z-index: 2;
   }
   #shopify-section-{{ id }} .ak-quad__heading {
-    font-family: Amiri, serif;
+    font-family: {{ font_stack }};
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     margin: 0 0 0.35em;
@@ -130,6 +138,7 @@
   }
   #shopify-section-{{ id }} .ak-quad__cta {
     margin: 0;
+    font-family: {{ font_stack }};
     font-size: {{ cta_font_size }}px;
     font-weight: {{ cta_font_weight }};
     text-decoration: underline;
@@ -386,6 +395,21 @@
     {
       "type": "header",
       "content": "Overlay typography"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
     },
     {
       "type": "range",

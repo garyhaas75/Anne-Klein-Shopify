@@ -13,6 +13,14 @@
   assign video_fit = section.settings.video_fit | default: 'cover'
   assign bg_color = section.settings.video_background_color | default: '#000000'
 %}
+{% case section.settings.font_family %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 <section
   class="ak-video ak-video--{{ layout }} relative w-full overflow-hidden"
   id="ak-video-{{ section.id }}"
@@ -319,10 +327,12 @@
   }
   #ak-video-{{ section.id }} .ak-video__start-card-heading,
   #ak-video-{{ section.id }} .ak-video__end-card-heading {
+    font-family: {{ font_stack }};
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
   }
   #ak-video-{{ section.id }} .ak-video__start-card-text {
+    font-family: {{ font_stack }};
     margin: 0;
     font-size: 1rem;
   }
@@ -394,6 +404,7 @@
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1,
   #ak-video-{{ section.id }} .ak-video__overlay-cta {
+    font-family: {{ font_stack }};
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -406,6 +417,7 @@
     text-transform: uppercase;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-heading {
+    font-family: {{ font_stack }};
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -429,6 +441,7 @@
     padding-bottom: 40px;
   }
   #ak-video-{{ section.id }} .ak-video__title {
+    font-family: {{ font_stack }};
     font-size: clamp(1.5rem, 5vw, 4rem);
     font-weight: 700;
     text-transform: uppercase;
@@ -442,6 +455,7 @@
     line-height: 1 !important;
   }
   #ak-video-{{ section.id }} .ak-video__hashtag {
+    font-family: {{ font_stack }};
     font-size: 1.5rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -949,6 +963,21 @@
       "id": "text_color",
       "label": "Overlay text color",
       "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
     },
     {
       "type": "select",
