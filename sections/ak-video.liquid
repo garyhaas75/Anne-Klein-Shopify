@@ -778,14 +778,16 @@
 
     /* --- 1. Mobile source swap --- */
     if (video.dataset.hasMobile === 'true' && isMobile) {
+      var mobileSrc = null;
       video.querySelectorAll('source[data-mobile-src]').forEach(function(s) {
+        if (!mobileSrc) mobileSrc = s.dataset.mobileSrc;
         s.src = s.dataset.mobileSrc;
       });
-      if (wantsAutoplay) {
-        video.muted = true;
-        video.autoplay = true;
+      if (mobileSrc) {
+        video.src = mobileSrc;
+      } else {
+        video.load();
       }
-      video.load();
     }
 
     /* --- 2. Reduced motion --- */
