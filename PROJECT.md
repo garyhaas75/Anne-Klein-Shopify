@@ -55,6 +55,28 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 - Prefer Shopify schema (video, image_picker, etc.) for content so merchants can edit in the theme editor.
 - **Always include `presets` in the schema** for any section that should be available via "Add section" in the theme editor. Without `presets`, the section will not appear in the editor UI.
 
+### Standard text controls (homepage sections)
+
+**Every homepage section** (all `index__*` and any section used on the home page) **must expose consistent typography controls** for each text level so merchants can control font size, weight, and underline across the site.
+
+For each distinct text level in the section (heading, subheading, body/CTA, etc.), provide:
+
+| Control | Schema pattern | Notes |
+|--------|-----------------|--------|
+| **Font size** | `range` (e.g. 14–48px headings, 12–24px subheading/CTA) or `select` | Per text level; sensible min/max and step. |
+| **Font weight** | `select` with 300, 400, 500, 600, 700 (as applicable) | Optional for body; expected for heading and CTA. |
+| **Underline** | `checkbox` or `select` (on/off) | Where underline is appropriate (e.g. headings, CTA links). |
+
+**Minimum per section:**
+
+- **Heading** (main title): font size, font weight, optional underline.
+- **Subheading / subtitle** (if present): font size, font weight, optional underline.
+- **Body / CTA / label** (links, buttons, tagline): font size, font weight, optional underline where it makes sense.
+
+**Font family:** If the theme supports multiple typefaces, expose a font (family) select per text level; otherwise use and document the section default (e.g. Amiri for headings, system for body) so it can be made consistent later.
+
+**Consistency:** When adding or auditing a section, ensure it follows this pattern so all homepage containers behave the same way and no section is missing these controls.
+
 ### Accessibility (WCAG 2.2 AA)
 
 - **Interactive controls:** Minimum ~44x44px touch/click target where possible; visible focus styles (e.g. `outline` / `:focus-visible`).
@@ -108,6 +130,7 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 | **Heading levels** | Use schema select for heading level in reusable sections (WCAG 1.3.1). |
 | **No-JS fallback** | Ship native `controls` on video; remove via JS when custom controls init. |
 | **Reduced motion** | Respect `prefers-reduced-motion`; skip autoplay when set. |
+| **Standard text controls** | Every homepage section: per text level (heading, subheading, CTA/body), expose font size, font weight, and underline where appropriate. |
 
 ---
 
@@ -137,3 +160,4 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 - **Initial:** WCAG 2.2 AA as hard rule; project guide created; key decisions and guidelines for AK Video section and theme.
 - **Video review pass:** Added 11 learnings from AK Video v1 code review; expanded accessibility, sections, and "what not to do" guidelines; added rules for presets, ARIA state, contrast scrims, mobile controls, heading levels, no-JS fallback, and reduced motion.
 - **Homepage 2026 audit:** Added references to `docs/HOMEPAGE-2026-AUDIT-PLAN.md` (audit plan) and `docs/BEST-PRACTICES-SECTIONS.md` (section best practices for links, focus, semantics, images, schema, and code).
+- **Standard text controls:** Added guideline and rules-summary entry: every homepage section must expose font size, font weight, and underline for each text level (heading, subheading, CTA/body) for consistency across sections.
