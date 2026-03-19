@@ -777,17 +777,13 @@
     video.removeAttribute('controls');
 
     /* --- 1. Mobile source swap --- */
+    var didSourceSwap = false;
     if (video.dataset.hasMobile === 'true' && isMobile) {
-      var mobileSrc = null;
       video.querySelectorAll('source[data-mobile-src]').forEach(function(s) {
-        if (!mobileSrc) mobileSrc = s.dataset.mobileSrc;
         s.src = s.dataset.mobileSrc;
       });
-      if (mobileSrc) {
-        video.src = mobileSrc;
-      } else {
-        video.load();
-      }
+      video.load();
+      didSourceSwap = true;
     }
 
     /* --- 2. Reduced motion --- */
@@ -847,13 +843,16 @@
       });
     }
 
-    /* --- 7. Autoplay: let the browser handle it via HTML autoplay attribute.
-       The play event (section 4) hides the start card when playback begins.
-       If the browser blocks autoplay, the start card stays visible as fallback.
-       We also check if the video is already playing (e.g. browser autoplayed
-       before this script ran). --- */
-    if (wantsAutoplay && !video.paused) {
-      hide(startCard);
+    /* --- 7. Autoplay --- */
+    if (wantsAutoplay) {
+      if (!video.paused) {
+        hide(startCard);
+      } else if (didSourceSwap) {
+        video.addEventListener('canplay', function() {
+          video.muted = true;
+          video.play().catch(function() {});
+        }, { once: true });
+      }
     }
 
     /* --- 8. Mute button --- */
