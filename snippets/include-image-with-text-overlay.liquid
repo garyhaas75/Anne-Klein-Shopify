@@ -34,6 +34,9 @@
 {% assign subtitle = object.settings.subtitle %}
 {% assign subtitle_color = object.settings.subheading_color %}
 {% assign text_spacing = object.settings.text_spacing | default: 12 %}
+{% assign padding_below_preheading = object.settings.padding_below_preheading | default: text_spacing %}
+{% assign padding_below_heading = object.settings.padding_below_heading | default: text_spacing %}
+{% assign padding_below_subheading = object.settings.padding_below_subheading | default: 0 %}
 {% assign text_alignment = object.settings.text_alignment %}
 {% assign text_horizontal_position = object.settings.text_horizontal_position %}
 {% assign text_vertical_position = object.settings.text_vertical_position %}
@@ -120,15 +123,19 @@
   .caption-content {
     display: flex;
     flex-direction: column;
-    gap: {{ text_spacing }}px;
+    gap: 0;
     background-color: {% if background_color_alpha != 100 %}{{ background_color | color_modify: 'alpha', background_color_alpha }}{% else %}{{ background_color }}{% endif %};
     border: {{ caption_border_width }}px solid {{ caption_border_color }};
   }
 
-  .caption-content .image-with-text-overlay__preheading,
-  .caption-content .image-with-text-overlay__heading,
+  .caption-content .image-with-text-overlay__preheading {
+    margin: 0 0 {{ padding_below_preheading }}px 0;
+  }
+  .caption-content .image-with-text-overlay__heading {
+    margin: 0 0 {{ padding_below_heading }}px 0;
+  }
   .caption-content .image-with-text-overlay__subheading {
-    margin: 0;
+    margin: 0 0 {{ padding_below_subheading }}px 0;
   }
 
   .caption {

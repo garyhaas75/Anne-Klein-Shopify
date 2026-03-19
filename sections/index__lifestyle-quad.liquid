@@ -32,6 +32,26 @@
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
+{% assign _heading_font = section.settings.font_heading | default: section.settings.font_family %}
+{% case _heading_font %}
+  {% when 'arial' %}{% assign font_stack_heading = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_heading = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+  {% else %}{% assign font_stack_heading = font_stack %}
+{% endcase %}
+{% assign _cta_font = section.settings.font_cta | default: section.settings.font_family %}
+{% case _cta_font %}
+  {% when 'arial' %}{% assign font_stack_cta = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_cta = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_cta = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_cta = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_cta = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_cta = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+  {% else %}{% assign font_stack_cta = font_stack %}
+{% endcase %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -151,7 +171,7 @@
     }
   }
   #shopify-section-{{ id }} .ak-quad__heading {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_heading }};
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     margin: 0 0 0.35em;
@@ -160,7 +180,7 @@
   }
   #shopify-section-{{ id }} .ak-quad__cta {
     margin: 0;
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_cta }};
     font-size: {{ cta_font_size }}px;
     font-weight: {{ cta_font_weight }};
     text-decoration: underline;
@@ -430,7 +450,37 @@
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
-      "info": "Safe fonts that work without loading a font package."
+      "info": "Used when heading or CTA font below is set to \"Same as default\"."
+    },
+    {
+      "type": "select",
+      "id": "font_heading",
+      "label": "Panel heading font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_cta",
+      "label": "CTA font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
     },
     {
       "type": "range",
