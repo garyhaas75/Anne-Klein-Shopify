@@ -6201,7 +6201,7 @@
             "type": "panel",
             "settings": {
               "media_type": "video",
-              "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO.mp4",
+              "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO_Low Res.mp4",
               "heading": "Dress with Intention",
               "cta_text": "SHOP DRESSES",
               "link": ""
@@ -6594,10 +6594,18 @@
           "title": "Spring 2026 Campaign",
           "autoplay": true,
           "loop": true,
+          "start_card_image": "shopify://shop_images/Start_Frame_Desktop.png",
           "start_card_heading": "",
           "start_card_text": "",
+          "start_card_image_mobile": "shopify://shop_images/Start_Frame_Mobile.png",
+          "start_card_heading_mobile": "",
+          "start_card_text_mobile": "",
+          "end_card_image": "shopify://shop_images/End_Frame_Desktop.png",
           "end_card_heading": "",
           "end_card_button_label": "Watch again",
+          "end_card_image_mobile": "shopify://shop_images/End_Frame_Mobile.png",
+          "end_card_heading_mobile": "",
+          "end_card_button_label_mobile": "",
           "transcript": "A man in a white tuxedo and black tie stands in front of a record player and places a vinyl record onto the turntable. The record is black with a white Anne Klein lion head logo in the center. As the record begins to spin, a woman with long dark hair wearing a floral tiered dress walks across a lawn using circular stone steps. A man in a white tuxedo pushes a bar cart as the woman picks up a drink and smiles. A second woman with blonde hair walks toward a swimming pool wearing a floral dress, sunglasses, and a white scarf. The scene transitions to the first woman wearing a black dress and a large white sun hat with black polka dots while holding a cocktail. The blonde woman appears in a black and white dress with a matching polka dot hat and adjusts her sunglasses, revealing a gold watch and chain necklace. The first woman walks along the edge of the pool in a white suit carrying a floral handbag. The blonde woman walks through a garden in a white vest and skirt. A man in a tuxedo carries a small white handbag with a gold lion logo clasp on a silver tray. The first woman is seen through a circular window holding the bag while the blonde woman walks past. A man in a tuxedo runs up a flight of stairs with a bouquet of flowers. Another man in a tuxedo carries a bottle of champagne on a tray along a white stone railing. The two women walk past each other on the balcony and then turn to face the camera. The name Anne Klein appears in white letters over a view of the swimming pool where two men hold white umbrellas. The record with the lion logo continues to rotate on the turntable."
         }
       }
