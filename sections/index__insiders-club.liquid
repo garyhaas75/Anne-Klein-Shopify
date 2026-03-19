@@ -89,18 +89,18 @@
     object-fit: cover;
     opacity: {{ bg_opacity_css }};
   }
-  #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+  #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; }
   #shopify-section-{{ id }} .ak-insiders__right {
     flex: 1 1 0%;
     min-width: 0;
     border-left: 1px solid rgba(0,0,0,0.15);
     padding-left: 2rem;
     display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    align-items: stretch !important;
     text-align: center;
   }
   #shopify-section-{{ id }} .ak-insiders__right-inner {
+    margin: auto 0;
     text-align: center;
     width: 100%;
   }
@@ -164,7 +164,8 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 1.5rem; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
-    #shopify-section-{{ id }} .ak-insiders__right { border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-top: 1.5rem; align-items: center !important; justify-content: center !important; }
+    #shopify-section-{{ id }} .ak-insiders__right { border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-top: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__right-inner { margin: 0 auto; }
     #shopify-section-{{ id }} .ak-insiders__benefits { gap: 1rem; }
     #shopify-section-{{ id }} .ak-insiders__benefit { max-width: 140px; }
     /* Figma: mobile benefit icons ~99–101px; desktop ~48px. 0 = same as desktop. */
@@ -184,14 +185,14 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="ak-insiders__two-col" style="display:flex;flex-wrap:nowrap;align-items:stretch;{{ min_height_css }}">
-    <div class="ak-insiders__left" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <div class="ak-insiders__two-col" style="display:flex !important;flex-wrap:nowrap !important;align-items:stretch !important;{{ min_height_css }}">
+    <div class="ak-insiders__left" style="display:flex !important;flex-direction:column !important;align-items:stretch !important;">
       {% if bg_image != blank %}
         <div class="ak-insiders__left-bg" aria-hidden="true">
           {% include 'image-element', image: bg_image, alt: '', stretch_width: true, additional_classes: '' %}
         </div>
       {% endif %}
-      <div class="ak-insiders__left-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;">
+      <div class="ak-insiders__left-inner" style="margin:auto 0;text-align:center;">
         <div class="ak-insiders__brand">
           {% if image != blank %}
             <div class="ak-insiders__logo">
@@ -216,8 +217,8 @@
         </div>
       </div>
     </div>
-    <div class="ak-insiders__right" style="display:flex;align-items:center;justify-content:center;">
-      <div class="ak-insiders__right-inner" style="text-align:center;">
+    <div class="ak-insiders__right" style="display:flex !important;align-items:stretch !important;">
+      <div class="ak-insiders__right-inner" style="margin:auto 0;text-align:center;width:100%;">
         {% if headline != blank %}
           <p class="ak-insiders__headline">{{ headline }}</p>
         {% endif %}
