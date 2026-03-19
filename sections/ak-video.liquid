@@ -752,15 +752,32 @@
     var loop = {{ section.settings.loop | default: true }};
 
     var isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+    function blurControlsIfFocused() {
+      var active = document.activeElement;
+      if (!active || !sectionEl.contains(active)) return;
+      var controlsEl = sectionEl.querySelector('.ak-video__controls');
+      var transcriptEl = sectionEl.querySelector('.ak-video__transcript');
+      if ((controlsEl && controlsEl.contains(active)) || (transcriptEl && transcriptEl.contains(active))) {
+        active.blur();
+      }
+    }
     function toggleControls(e) {
       if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript')) return;
+      var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
       sectionEl.classList.toggle('ak-video--controls-visible');
+      if (wasVisible) {
+        blurControlsIfFocused();
+      }
     }
     if (isMobile) {
       sectionEl.addEventListener('click', toggleControls);
       video.addEventListener('touchend', function(e) {
         if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript')) return;
+        var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
         sectionEl.classList.toggle('ak-video--controls-visible');
+        if (wasVisible) {
+          blurControlsIfFocused();
+        }
       }, { passive: true });
     }
 
