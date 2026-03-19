@@ -91,13 +91,13 @@
     #shopify-section-{{ id }} .ak-insiders__scroll-wrap { min-width: 0; overflow-x: hidden; }
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-wrap: nowrap !important; }
     {% if section_max_height_mobile > 0 %}
-    #shopify-section-{{ id }} .ak-insiders__scroll-wrap {
+    #shopify-section-{{ id }} .ak-insiders__scroll-wrap--max-mobile {
       max-height: {{ section_max_height_mobile }}px;
       overflow-y: auto;
       overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    }
+    #shopify-section-{{ id }} .ak-insiders__scroll-wrap--max-mobile .ak-insiders__two-col {
+      flex-shrink: 0 !important;
     }
     {% endif %}
   }
@@ -243,7 +243,7 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="ak-insiders__scroll-wrap">
+  <div class="ak-insiders__scroll-wrap{% if section_max_height_mobile > 0 %} ak-insiders__scroll-wrap--max-mobile{% endif %}">
   <div class="ak-insiders__two-col">
     <div class="ak-insiders__left">
       {% if bg_image != blank %}
