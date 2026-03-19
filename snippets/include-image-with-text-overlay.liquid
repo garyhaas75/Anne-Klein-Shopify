@@ -104,19 +104,19 @@
     font-size: {{ heading_font_size }}px !important;
     font-weight: {{ heading_font_weight }} !important;
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
-    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.4);{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
 
   .image-with-text-overlay__preheading {
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
-    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
 
   .image-with-text-overlay__subheading {
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
-    {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);{% endif %}
+    {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
 
   {% if scrim_overlay == 'dark' %}
@@ -304,17 +304,17 @@
         <div id="caption-pos-{{ id }}" class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}" style="{{ caption_pos_style }}">
           <div class="caption-content text-align-{{ text_alignment }}" style="pointer-events: all !important; text-align: {{ text_alignment }} !important; display: inline-block !important;">
             {% if pretext != blank %}
-              <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle" style="color: {{ resolved_preheading_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4) !important;{% endif %}">
+              <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle" style="color: {{ resolved_preheading_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 {{ pretext }}
               </div>
             {% endif %}
             {% if title != blank %}
-              <h2 class="image-with-text-overlay__heading banner__heading title" style="color: {{ resolved_heading_color }} !important; font-size: {{ heading_font_size }}px !important; font-weight: {{ heading_font_weight }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.4) !important;{% endif %}">
+              <h2 class="image-with-text-overlay__heading banner__heading title" style="color: {{ resolved_heading_color }} !important; font-size: {{ heading_font_size }}px !important; font-weight: {{ heading_font_weight }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 <span>{{ title }}</span>
               </h2>
             {% endif %}
             {% if subtitle != blank %}
-              <div class="image-with-text-overlay__subheading banner__subheading subtitle" style="color: {{ resolved_subtitle_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4) !important;{% endif %}">
+              <div class="image-with-text-overlay__subheading banner__subheading subtitle" style="color: {{ resolved_subtitle_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 {{ subtitle }}
               </div>
             {% endif %}

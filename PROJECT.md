@@ -86,7 +86,7 @@ For each distinct text level in the section (heading, subheading, body/CTA, etc.
 - **Color:** Do not rely on color alone to convey information; ensure contrast ratios meet AA (text and UI components).
 - **ARIA labels must reflect state:** Toggle buttons (mute/unmute, pause/play) must update `aria-label` on every state change so screen readers announce current state (WCAG 4.1.2).
 - **No duplicate `aria-describedby`:** Only place `aria-describedby` on the element it most directly describes (e.g. `<video>`, not its wrapper `<section>`). Duplicates cause screen readers to announce the description twice.
-- **Text over images needs a contrast scrim:** When placing text over a background image, always add a semi-transparent dark overlay (scrim) or `text-shadow` to guarantee WCAG 1.4.3 contrast regardless of image content.
+- **Text over images needs a contrast scrim or crisp shadow:** When placing text over a background image, use a semi-transparent dark overlay (scrim) and/or a **crisp** `text-shadow` (e.g. `0 1px 2px rgba(0,0,0,0.8)`) to guarantee WCAG 1.4.3 contrast. Avoid glow-style shadows (zero offset + large blur, e.g. `0 0 8px`) so text stays sharp; use 1–2px blur and sufficient opacity instead.
 - **Heading levels:** Use a schema `select` for heading level (`h1`-`h3` or `p`) when a section may appear at different positions on a page. Only one `<h1>` per page; default `h1` for hero usage, `h2` or lower elsewhere (WCAG 1.3.1).
 - **Clickable regions need visible affordance:** If a large area (e.g. start card) is clickable, include a visible icon/button so users know it is interactive. Do not rely on `cursor: pointer` alone.
 - **Controls must be visible on mobile:** `opacity: 0` + `:hover` show pattern does not work on touch devices. Always ensure controls are visible on mobile (e.g. `opacity: 1` in a mobile media query).
@@ -106,7 +106,7 @@ For each distinct text level in the section (heading, subheading, body/CTA, etc.
 - Do not copy Lotto contrast-mode or global-pause UI/scripts without a decision to support them on Anne Klein.
 - Do not leave video (or other media) without a way to pause and without a text alternative (transcript/captions) when it carries meaningful content.
 - Do not use `opacity: 0` hover-only patterns for controls without a mobile fallback.
-- Do not place text over images without a contrast scrim or text-shadow.
+- Do not place text over images without a contrast scrim or crisp text-shadow (no glow-style shadow).
 - Do not hard-code heading levels (`<h1>`) in reusable sections — use a schema setting.
 - Do not omit `presets` from section schemas intended to be added by merchants in the theme editor.
 - Do not ship sections without verifying no-JS fallback for critical controls (video pause, mute).
@@ -125,7 +125,7 @@ For each distinct text level in the section (heading, subheading, body/CTA, etc.
 | **Video accessibility** | Transcript option, per-video pause/play and mute; no autoplay with sound. |
 | **Schema presets** | Always include `presets` in section schemas so they appear in the theme editor. |
 | **ARIA reflects state** | Toggle buttons must update `aria-label` on every state change (WCAG 4.1.2). |
-| **Text over images** | Always use a scrim or text-shadow for contrast (WCAG 1.4.3). |
+| **Text over images** | Use scrim and/or crisp text-shadow (1–2px blur); avoid glow-style shadow (WCAG 1.4.3). |
 | **Mobile controls** | Never rely on hover-only visibility; ensure controls are visible on touch devices. |
 | **Heading levels** | Use schema select for heading level in reusable sections (WCAG 1.3.1). |
 | **No-JS fallback** | Ship native `controls` on video; remove via JS when custom controls init. |

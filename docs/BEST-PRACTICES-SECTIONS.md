@@ -58,7 +58,7 @@ Reusable guidelines for building and auditing theme sections. Aligns with WCAG 2
 
 ### Text over images
 
-- Ensure sufficient contrast (WCAG 1.4.3). Use a dark gradient overlay (e.g. `rgba(0,0,0,0.6)`) over the text area and/or `text-shadow` (e.g. `0 1px 4px rgba(0,0,0,0.4)`) so text remains readable on any image. Add schema **info** on “Text color” explaining that the section applies overlay and shadow for accessibility.
+- Ensure sufficient contrast (WCAG 1.4.3). Use a dark gradient overlay (e.g. `rgba(0,0,0,0.6)`) over the text area and/or `text-shadow` (e.g. `0 1px 2px rgba(0,0,0,0.8)`; use crisp 1–2px blur, avoid glow-style `0 0 8px`) so text remains readable on any image. Add schema **info** on “Text color” explaining that the section applies overlay and shadow for accessibility.
 
 ### Aspect ratio
 
