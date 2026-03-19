@@ -498,15 +498,15 @@
     display: block;
     flex-shrink: 0;
   }
-  #ak-video-{{ section.id }} .ak-video__controls,
-  #ak-video-{{ section.id }} .ak-video__transcript {
+  #ak-video-{{ section.id }} .ak-video__controls {
     opacity: 0;
     transition: opacity 0.2s ease;
   }
+  #ak-video-{{ section.id }} .ak-video__transcript {
+    opacity: 1;
+  }
   #ak-video-{{ section.id }}:hover .ak-video__controls,
-  #ak-video-{{ section.id }}:hover .ak-video__transcript,
-  #ak-video-{{ section.id }} .ak-video__controls:focus-within,
-  #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
+  #ak-video-{{ section.id }} .ak-video__controls:focus-within {
     opacity: 1;
   }
   #ak-video-{{ section.id }} .ak-video__controls {

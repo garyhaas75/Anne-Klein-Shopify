@@ -58,21 +58,27 @@
     z-index: 4;
     min-width: 44px;
     min-height: 44px;
-    width: 32px;
-    height: 32px;
-    padding: 6px;
+    padding: 0;
+    border: none;
     border-radius: 50%;
-    border: 2px solid currentColor;
     background: rgba(0,0,0,0.5);
     color: #fff;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 700;
     opacity: 0;
     transition: opacity 0.2s;
+  }
+  #shopify-section-{{ id }} .ak-quad__pause-btn svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    fill: currentColor;
+  }
+  #shopify-section-{{ id }} .ak-quad__pause-btn .ak-quad__play-icon[hidden],
+  #shopify-section-{{ id }} .ak-quad__pause-btn .ak-quad__pause-icon[hidden] {
+    display: none;
   }
   #shopify-section-{{ id }} .ak-quad__panel:hover .ak-quad__pause-btn,
   #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 1; }
@@ -281,7 +287,10 @@
             {% endif %}
 
             {% if use_video and panel_video.sources[0] != blank %}
-              <button type="button" class="ak-quad__pause-btn" aria-label="Pause video" data-pause-btn="{{ block.id }}">Pause</button>
+              <button type="button" class="ak-quad__pause-btn" aria-label="Pause video" data-pause-btn="{{ block.id }}">
+                <span class="ak-quad__pause-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></span>
+                <span class="ak-quad__play-icon" aria-hidden="true" hidden><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5z"/></svg></span>
+              </button>
             {% endif %}
           </div>
         </div>
@@ -307,7 +316,10 @@
       if (!video) return;
       function updateLabel() {
         btn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
-        btn.textContent = video.paused ? 'Play' : 'Pause';
+        var pauseIcon = btn.querySelector('.ak-quad__pause-icon');
+        var playIcon = btn.querySelector('.ak-quad__play-icon');
+        if (pauseIcon) pauseIcon.hidden = video.paused;
+        if (playIcon) playIcon.hidden = !video.paused;
       }
       btn.addEventListener('click', function() {
         if (video.paused) {
