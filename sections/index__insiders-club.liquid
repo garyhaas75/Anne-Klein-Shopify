@@ -25,9 +25,14 @@
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
 {% assign section_aria_label = section.settings.section_aria_label %}
+{% assign logo_font_size = section.settings.logo_font_size | default: 28 %}
+{% assign logo_font_size_mobile = section.settings.logo_font_size_mobile | default: 28 %}
+{% assign headline_font_size = section.settings.headline_font_size | default: 36 %}
+{% assign benefit_text_font_size = section.settings.benefit_text_font_size | default: 14 %}
+{% assign benefit_icon_size = section.settings.benefit_icon_size | default: 48 %}
 {% assign benefit_icon_size_mobile = section.settings.benefit_icon_size_mobile | default: 100 %}
 {% if benefit_icon_size_mobile == 0 %}
-  {% assign benefit_icon_size_mobile_px = 48 %}
+  {% assign benefit_icon_size_mobile_px = benefit_icon_size %}
 {% else %}
   {% assign benefit_icon_size_mobile_px = benefit_icon_size_mobile %}
 {% endif %}
@@ -121,7 +126,7 @@
   }
   #shopify-section-{{ id }} .ak-insiders__logo { max-width: 360px; margin: 0 auto 1.5rem; }
   #shopify-section-{{ id }} .ak-insiders__logo img { max-width: 100%; height: auto; display: block; }
-  #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-weight: {{ headline_font_weight }}; font-size: 1.75rem; margin: 0 0 1rem; }
+  #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-weight: {{ headline_font_weight }}; font-size: {{ logo_font_size }}px; margin: 0 0 1rem; }
   #shopify-section-{{ id }} .ak-insiders__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 0; }
   #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible {
     outline: 2px solid currentColor;
@@ -130,7 +135,7 @@
   #shopify-section-{{ id }} .ak-insiders__headline {
     font-family: {{ font_stack }};
     font-weight: {{ headline_font_weight }};
-    font-size: clamp(1.25rem, 2vw, 2.25rem);
+    font-size: {{ headline_font_size }}px;
     line-height: 1.4;
     margin: 0 0 1.5rem;
   }
@@ -150,20 +155,20 @@
     min-width: 0;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-icon {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    min-height: 48px;
+    width: {{ benefit_icon_size }}px;
+    height: {{ benefit_icon_size }}px;
+    min-width: {{ benefit_icon_size }}px;
+    min-height: {{ benefit_icon_size }}px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-icon .image-element__wrap {
-    width: 48px !important;
-    height: 48px !important;
-    max-width: 48px !important;
-    max-height: 48px !important;
+    width: {{ benefit_icon_size }}px !important;
+    height: {{ benefit_icon_size }}px !important;
+    max-width: {{ benefit_icon_size }}px !important;
+    max-height: {{ benefit_icon_size }}px !important;
     flex-shrink: 0;
     display: flex !important;
     align-items: center;
@@ -177,8 +182,9 @@
     object-fit: contain !important;
     display: block;
   }
-  #shopify-section-{{ id }} .ak-insiders__benefit-text { font-weight: {{ benefit_font_weight }}; font-size: 0.875rem; line-height: 1.3; }
+  #shopify-section-{{ id }} .ak-insiders__benefit-text { font-weight: {{ benefit_font_weight }}; font-size: {{ benefit_text_font_size }}px; line-height: 1.3; }
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-insiders__logo-text { font-size: {{ logo_font_size_mobile }}px; }
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 0; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 100% !important; max-width: 100% !important; }
@@ -361,6 +367,50 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Typography & icon sizes (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo text font size (desktop)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "headline_font_size",
+      "min": 18,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline font size (desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "benefit_text_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Benefit text font size (desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "benefit_icon_size",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Benefit icon size (desktop)",
+      "default": 48
+    },
+    {
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image (left column)",
@@ -390,7 +440,17 @@
     },
     {
       "type": "header",
-      "content": "Mobile sizing (Figma match)"
+      "content": "Typography & icon sizes (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_mobile",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo text font size (mobile)",
+      "default": 28
     },
     {
       "type": "range",
