@@ -119,7 +119,27 @@
     outline-offset: 3px;
   }
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-category-pills .container > .ak-pills__inner {
+      flex: 1 1 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+    #shopify-section-{{ id }} .ak-pills__list {
+      min-width: 0 !important;
+    }
     #shopify-section-{{ id }} .ak-pills__inner { gap: 0.75rem 0.5rem; }
+    #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline .ak-pills__heading {
+      flex: 0 0 auto !important;
+      margin-right: 0 !important;
+    }
+    #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline nav {
+      flex: 0 1 auto !important;
+      min-width: 0 !important;
+    }
     #shopify-section-{{ id }} .ak-pills__pill { padding: 0.65rem 1rem; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
   }
 {% endstyle %}
