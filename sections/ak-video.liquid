@@ -92,7 +92,7 @@
       {% assign start_m_image = section.settings.start_card_image_mobile | default: section.settings.start_card_image %}
       {% assign start_m_heading = section.settings.start_card_heading_mobile | default: section.settings.start_card_heading %}
       {% assign start_m_text = section.settings.start_card_text_mobile | default: section.settings.start_card_text %}
-      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" {% if section.settings.autoplay %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %} role="button" tabindex="0" aria-label="Play video">
+      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" role="button" tabindex="0" aria-label="Play video">
         <div class="ak-video__start-card-inner ak-video__start-card--desktop">
           {% if start_d_image != blank %}
             <div class="ak-video__start-card-bg" style="background-image: url({{ start_d_image | image_url: width: 1920 }});"></div>
@@ -1095,7 +1095,9 @@
         hideStartCard();
       }
     } else {
-      hideStartCard();
+      if (startCard && video.paused && video.currentTime === 0) {
+        showStartCard();
+      }
     }
     if (endCard) hideEndCard();
 
