@@ -46,6 +46,8 @@
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
+{% assign headline_font_weight = section.settings.headline_font_weight | default: '400' %}
+{% assign benefit_font_weight = section.settings.benefit_font_weight | default: '400' %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -115,7 +117,7 @@
   }
   #shopify-section-{{ id }} .ak-insiders__logo { max-width: 360px; margin: 0 auto 1.5rem; }
   #shopify-section-{{ id }} .ak-insiders__logo img { max-width: 100%; height: auto; display: block; }
-  #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-size: 1.75rem; margin: 0 0 1rem; }
+  #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-weight: {{ headline_font_weight }}; font-size: 1.75rem; margin: 0 0 1rem; }
   #shopify-section-{{ id }} .ak-insiders__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 0; }
   #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible {
     outline: 2px solid currentColor;
@@ -123,6 +125,7 @@
   }
   #shopify-section-{{ id }} .ak-insiders__headline {
     font-family: {{ font_stack }};
+    font-weight: {{ headline_font_weight }};
     font-size: clamp(1.25rem, 2vw, 2.25rem);
     line-height: 1.4;
     margin: 0 0 1.5rem;
@@ -170,7 +173,7 @@
     object-fit: contain !important;
     display: block;
   }
-  #shopify-section-{{ id }} .ak-insiders__benefit-text { font-size: 0.875rem; line-height: 1.3; }
+  #shopify-section-{{ id }} .ak-insiders__benefit-text { font-weight: {{ benefit_font_weight }}; font-size: 0.875rem; line-height: 1.3; }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 1.5rem; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
@@ -321,6 +324,32 @@
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
       "info": "Safe fonts that work without loading a font package."
+    },
+    {
+      "type": "select",
+      "id": "headline_font_weight",
+      "label": "Headline font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "benefit_font_weight",
+      "label": "Benefit text font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "image_picker",

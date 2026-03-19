@@ -26,6 +26,9 @@
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
+{% assign preheading_font_weight = section.settings.preheading_font_weight | default: '400' %}
+{% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
+{% assign cta_font_weight = section.settings.cta_font_weight | default: '700' %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -82,6 +85,7 @@
   #shopify-section-{{ id }} .ak-hero-campaign__content { text-align: center; width: 100%; max-width: 900px; }
   #shopify-section-{{ id }} .ak-hero-campaign__preheading {
     font-family: {{ font_stack }};
+    font-weight: {{ preheading_font_weight }};
     font-size: clamp(1.125rem, 2vw, 2.25rem);
     line-height: 1.2;
     margin: 0 0 0.25em;
@@ -89,17 +93,17 @@
   }
   #shopify-section-{{ id }} .ak-hero-campaign__heading {
     font-family: {{ font_stack }};
+    font-weight: {{ heading_font_weight }};
     font-size: clamp(2.5rem, 6vw, 5.5rem);
     line-height: 1.1;
     margin: 0 0 0.5em;
-    font-weight: 400;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
   }
   #shopify-section-{{ id }} .ak-hero-campaign__cta {
     margin: 0;
     font-family: {{ font_stack }};
     font-size: 1.125rem;
-    font-weight: 700;
+    font-weight: {{ cta_font_weight }};
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
@@ -246,6 +250,45 @@
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
       "info": "Safe fonts that work without loading a font package."
+    },
+    {
+      "type": "select",
+      "id": "preheading_font_weight",
+      "label": "Preheading font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "CTA font weight",
+      "default": "700",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "header",

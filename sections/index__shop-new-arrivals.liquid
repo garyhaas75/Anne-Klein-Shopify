@@ -9,6 +9,7 @@
 {% assign heading_link = section.settings.heading_link %}
 {% assign heading_color = section.settings.heading_color %}
 {% assign heading_font_size = section.settings.heading_font_size | default: 18 %}
+{% assign heading_font_weight = section.settings.heading_font_weight | default: '700' %}
 {% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 2 %}
 {% assign heading_underline = section.settings.heading_underline %}
 {% assign heading_alignment = section.settings.heading_alignment | default: 'center' %}
@@ -102,7 +103,7 @@
     box-sizing: border-box;
     font-family: {{ font_stack }};
     font-size: {{ heading_font_size }}px;
-    font-weight: 700;
+    font-weight: {{ heading_font_weight }};
     text-align: {{ heading_alignment }};
     margin: 0 0 1.5rem;
     color: {{ heading_color }};
@@ -331,6 +332,19 @@
       "info": "Safe fonts that work without loading a font package."
     },
     {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "700",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
       "type": "range",
       "id": "heading_font_size",
       "min": 14,
@@ -393,9 +407,11 @@
       "label": "Label font weight",
       "default": "700",
       "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semibold" },
-        { "value": "700", "label": "Bold" }
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
       ]
     },
     {

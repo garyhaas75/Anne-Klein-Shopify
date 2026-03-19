@@ -26,6 +26,8 @@
 {% assign title_color = object.settings.heading_color %}
 {% assign heading_font_size = object.settings.heading_font_size | default: 32 %}
 {% assign heading_font_weight = object.settings.heading_font_weight | default: '400' %}
+{% assign preheading_font_weight = object.settings.preheading_font_weight | default: '400' %}
+{% assign subheading_font_weight = object.settings.subheading_font_weight | default: '400' %}
 {% assign heading_underline = object.settings.heading_underline %}
 {% assign pretext_underline = object.settings.pretext_underline %}
 {% assign subheading_underline = object.settings.subheading_underline %}
@@ -118,6 +120,7 @@
 
   .image-with-text-overlay__preheading {
     font-family: {{ font_stack }};
+    font-weight: {{ preheading_font_weight }};
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
@@ -125,6 +128,7 @@
 
   .image-with-text-overlay__subheading {
     font-family: {{ font_stack }};
+    font-weight: {{ subheading_font_weight }};
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}

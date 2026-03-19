@@ -23,6 +23,8 @@
 {% assign pill_padding_v_mobile = section.settings.pill_padding_vertical_mobile | default: 10 %}
 {% assign pill_padding_h_mobile = section.settings.pill_padding_horizontal_mobile | default: 14 %}
 {% assign pill_spacing_mobile = section.settings.pill_spacing_mobile | default: 6 %}
+{% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
+{% assign pill_font_weight = section.settings.pill_font_weight | default: '400' %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -80,7 +82,7 @@
   #shopify-section-{{ id }} .ak-pills__heading {
     font-family: {{ font_stack }};
     font-size: {{ heading_font_size }}px;
-    font-weight: 400;
+    font-weight: {{ heading_font_weight }};
     margin: 0;
     flex: 0 0 100%;
   }
@@ -118,7 +120,7 @@
     color: #fff;
     font-family: {{ font_stack }};
     font-size: {{ pill_font_size }}px;
-    font-weight: 400;
+    font-weight: {{ pill_font_weight }};
     letter-spacing: {{ pill_letter_spacing_em }}em;
     text-decoration: none;
     border-radius: 7px;
@@ -227,6 +229,19 @@
     },
     {
       "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "layout_mode",
       "label": "Layout",
       "default": "inline",
@@ -272,6 +287,19 @@
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
       "info": "Safe, system-level fonts that work without loading a font package."
+    },
+    {
+      "type": "select",
+      "id": "pill_font_weight",
+      "label": "Pill font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "range",
