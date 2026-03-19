@@ -33,11 +33,6 @@
 {% endif %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
 {% assign section_min_height = section.settings.section_min_height | default: 360 %}
-{% if section_min_height > 0 %}
-  {% assign min_height_css = 'min-height:' | append: section_min_height | append: 'px;' %}
-{% else %}
-  {% assign min_height_css = '' %}
-{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -68,9 +63,9 @@
   #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; font-family: {{ font_stack }}; }
   #shopify-section-{{ id }} .ak-insiders-club { position: relative; }
   #shopify-section-{{ id }} .ak-insiders__two-col {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: stretch !important;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
     gap: 0;
     max-width: none;
     width: 100%;
@@ -78,6 +73,7 @@
     padding: 0;
     position: relative;
     z-index: 1;
+    {% if section_min_height > 0 %}min-height: {{ section_min_height }}px;{% endif %}
   }
   #shopify-section-{{ id }} .ak-insiders__left {
     flex: 0 0 33.333%;
@@ -85,6 +81,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
   }
   #shopify-section-{{ id }} .ak-insiders__left-bg {
     position: absolute;
@@ -99,15 +98,16 @@
     object-fit: cover;
     opacity: {{ bg_opacity_css }};
   }
-  #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; }
+  #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; margin: auto 0; }
   #shopify-section-{{ id }} .ak-insiders__right {
     flex: 0 0 66.667%;
     max-width: 66.667%;
     border-left: 1px solid rgba(0,0,0,0.15);
     padding-left: 2rem;
     padding-right: 2rem;
-    display: flex !important;
-    align-items: stretch !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
   #shopify-section-{{ id }} .ak-insiders__right-inner {
@@ -203,14 +203,14 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="ak-insiders__two-col" style="display:flex !important;flex-wrap:nowrap !important;align-items:stretch !important;{{ min_height_css }}">
-    <div class="ak-insiders__left" style="flex:0 0 33.333% !important;max-width:33.333% !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;padding:0 1.5rem;">
+  <div class="ak-insiders__two-col">
+    <div class="ak-insiders__left">
       {% if bg_image != blank %}
         <div class="ak-insiders__left-bg" aria-hidden="true">
           {% include 'image-element', image: bg_image, alt: '', stretch_width: true, additional_classes: '' %}
         </div>
       {% endif %}
-      <div class="ak-insiders__left-inner" style="margin:auto 0;text-align:center;">
+      <div class="ak-insiders__left-inner">
         <div class="ak-insiders__brand">
           {% if image != blank %}
             <div class="ak-insiders__logo">
@@ -235,8 +235,8 @@
         </div>
       </div>
     </div>
-    <div class="ak-insiders__right" style="flex:0 0 66.667% !important;max-width:66.667% !important;display:flex !important;align-items:center !important;justify-content:center !important;">
-      <div class="ak-insiders__right-inner" style="margin:auto 0;text-align:center;width:100%;">
+    <div class="ak-insiders__right">
+      <div class="ak-insiders__right-inner">
         {% if headline != blank %}
           <p class="ak-insiders__headline">{{ headline }}</p>
         {% endif %}
