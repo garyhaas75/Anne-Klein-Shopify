@@ -844,20 +844,41 @@
     }
 
     /* --- 7. Autoplay --- */
+    var dbg = document.createElement('div');
+    dbg.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);color:#0f0;font:12px/1.4 monospace;padding:8px;z-index:99999;max-height:40vh;overflow:auto;';
+    document.body.appendChild(dbg);
+    function log(msg) { dbg.textContent += msg + '\n'; }
+    log('autoplay=' + section.dataset.autoplay);
+    log('wantsAutoplay=' + wantsAutoplay);
+    log('reducedMotion=' + reducedMotion);
+    log('isMobile=' + isMobile);
+    log('didSwap=' + didSourceSwap);
+    log('paused=' + video.paused);
+    log('readyState=' + video.readyState);
+    log('muted=' + video.muted);
+    log('src=' + (video.currentSrc || video.src || 'none').slice(-40));
     if (wantsAutoplay) {
       if (!video.paused) {
         hide(startCard);
+        log('ALREADY PLAYING - hiding card');
       } else {
         video.muted = true;
         if (video.readyState >= 3) {
-          video.play().catch(function() {});
+          log('readyState>=3, calling play()');
+          var p = video.play();
+          if (p && p.then) p.then(function() { log('play() OK'); }).catch(function(e) { log('play() FAIL: ' + e.name + ' ' + e.message); });
         } else {
+          log('waiting for canplay...');
           video.addEventListener('canplay', function() {
+            log('canplay fired, readyState=' + video.readyState);
             video.muted = true;
-            video.play().catch(function() {});
+            var p = video.play();
+            if (p && p.then) p.then(function() { log('play() OK'); }).catch(function(e) { log('play() FAIL: ' + e.name + ' ' + e.message); });
           }, { once: true });
         }
       }
+    } else {
+      log('AUTOPLAY SKIPPED (wantsAutoplay=false)');
     }
 
     /* --- 8. Mute button --- */
