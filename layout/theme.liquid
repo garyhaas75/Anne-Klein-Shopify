@@ -273,6 +273,7 @@
   <!-- Extend -- Load Extend SDK Configuration script -->
   {% render 'extend-configuration' %}
   <!-- Extend -- End Extend code -->
+  <a href="#main-content" class="skip skip-link">Skip to main content</a>
 
   <style>
     div:not([data-yotpo-instance-id="680743"]) + [data-yotpo-instance-id="680743"] { display: block !important; }
@@ -318,8 +319,6 @@
       data-money-format="{{ shop.money_format }}"
       data-shop-url="{{ shop.url }}">
 
-  <a href="#main-content" class="skip skip-link">Skip to main content</a>
-
 <script>window.KlarnaThemeGlobals={};{%case template.name%} {%when"product"%} {% if product.first_available_variant.price %}window.KlarnaThemeGlobals.data_purchase_amount = {{ product.first_available_variant.price }};{% endif %}window.KlarnaThemeGlobals.productVariants={{product.variants|json}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%when"cart"%} window.KlarnaThemeGlobals.data_purchase_amount={{cart.total_price}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%endcase%}</script>
 
 
@@ -329,7 +328,6 @@
     {% section 'announcement-bar' %}
   {%- endif -%}
 
-  <header class="site-header" role="banner">
   {%- if settings.header_layout == "classic" -%}
     {% section 'header__top-bar' %}
     {% section 'header-classic' %}
@@ -342,7 +340,6 @@
     {% section 'header__top-bar' %}
     {% section 'header-search-focus' %}
   {%- endif -%}
-  </header>
 
   {%- if settings.cart_action == 'drawer' -%}
     {% include 'ajax-cart' %}
