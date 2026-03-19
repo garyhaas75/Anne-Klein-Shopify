@@ -21,6 +21,66 @@
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
+{% assign font_stack_line1 = font_stack %}
+{% assign font_stack_heading = font_stack %}
+{% assign font_stack_cta = font_stack %}
+{% assign font_stack_start_card = font_stack %}
+{% assign font_stack_end_card = font_stack %}
+{% assign font_stack_hashtag = font_stack %}
+{% assign f_l1 = section.settings.font_overlay_line1 %}
+{% if f_l1 != blank %}{% case f_l1 %}
+  {% when 'arial' %}{% assign font_stack_line1 = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_line1 = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_line1 = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_line1 = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_line1 = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_line1 = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
+{% assign f_h = section.settings.font_overlay_heading %}
+{% if f_h != blank %}{% case f_h %}
+  {% when 'arial' %}{% assign font_stack_heading = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_heading = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
+{% assign f_cta = section.settings.font_overlay_cta %}
+{% if f_cta != blank %}{% case f_cta %}
+  {% when 'arial' %}{% assign font_stack_cta = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_cta = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_cta = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_cta = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_cta = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_cta = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
+{% assign f_start = section.settings.font_start_card_heading %}
+{% if f_start != blank %}{% case f_start %}
+  {% when 'arial' %}{% assign font_stack_start_card = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_start_card = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_start_card = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_start_card = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_start_card = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_start_card = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
+{% assign f_end = section.settings.font_end_card_heading %}
+{% if f_end != blank %}{% case f_end %}
+  {% when 'arial' %}{% assign font_stack_end_card = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_end_card = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_end_card = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_end_card = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_end_card = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_end_card = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
+{% assign f_hashtag = section.settings.font_hashtag %}
+{% if f_hashtag != blank %}{% case f_hashtag %}
+  {% when 'arial' %}{% assign font_stack_hashtag = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_hashtag = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_hashtag = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_hashtag = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_hashtag = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_hashtag = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}{% endif %}
 {% assign overlay_line1_font_weight = section.settings.overlay_line1_font_weight | default: '400' %}
 {% assign overlay_heading_font_weight = section.settings.overlay_heading_font_weight | default: '700' %}
 {% assign overlay_cta_font_weight = section.settings.overlay_cta_font_weight | default: '700' %}
@@ -423,18 +483,26 @@
     margin: 0 auto 1rem;
     line-height: 0;
   }
-  #ak-video-{{ section.id }} .ak-video__start-card-heading,
-  #ak-video-{{ section.id }} .ak-video__end-card-heading {
-    font-family: {{ font_stack }};
+  #ak-video-{{ section.id }} .ak-video__start-card-heading {
+    font-family: {{ font_stack_start_card }};
     font-weight: {{ overlay_heading_font_weight }};
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
+    text-transform: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__end-card-heading {
+    font-family: {{ font_stack_end_card }};
+    font-weight: {{ overlay_heading_font_weight }};
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    text-transform: none;
   }
   #ak-video-{{ section.id }} .ak-video__start-card-text {
     font-family: {{ font_stack }};
     font-weight: {{ overlay_line1_font_weight }};
     margin: 0;
     font-size: 1rem;
+    text-transform: none;
   }
   #ak-video-{{ section.id }} .ak-video__replay {
     min-width: 44px;
@@ -503,30 +571,31 @@
     margin: 0 !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_line1 }};
     font-weight: {{ overlay_line1_font_weight }};
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding: 0 !important;
+    text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     letter-spacing: 0.05em;
     line-height: 1 !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-cta {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_cta }};
     font-weight: {{ overlay_cta_font_weight }};
-    text-transform: uppercase;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding: 0 !important;
+    text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     letter-spacing: 0.05em;
     line-height: 1 !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-heading {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_heading }};
     font-weight: {{ overlay_heading_font_weight }};
     margin: 0 !important;
     margin-top: 0 !important;
@@ -550,24 +619,23 @@
     padding-bottom: 40px;
   }
   #ak-video-{{ section.id }} .ak-video__title {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_heading }};
     font-size: clamp(1.5rem, 5vw, 4rem);
     font-weight: {{ overlay_heading_font_weight }};
-    text-transform: uppercase;
     letter-spacing: 0.05em;
     text-align: center;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
     padding: 0 !important;
+    text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     line-height: 1 !important;
   }
   #ak-video-{{ section.id }} .ak-video__hashtag {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_hashtag }};
     font-size: 1.5rem;
     font-weight: {{ overlay_heading_font_weight }};
-    text-transform: uppercase;
     letter-spacing: 0.1em;
     margin: 0;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
@@ -771,7 +839,8 @@
     var dismissOverlay = section.querySelector('.ak-video__dismiss-overlay');
     var loop = {{ section.settings.loop | default: true }};
     var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    var wantsAutoplay = section.dataset.autoplay === 'true';
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wantsAutoplay = section.dataset.autoplay === 'true' && !reducedMotion;
 
     video.removeAttribute('controls');
 
@@ -785,8 +854,11 @@
       didSourceSwap = true;
     }
 
-    /* --- 2. Reduced motion: respect preference for CSS animations only,
-       not for video autoplay (merchant explicitly enabled it) --- */
+    /* --- 2. Reduced motion: honor user preference — no autoplay, pause video --- */
+    if (reducedMotion) {
+      video.autoplay = false;
+      video.pause();
+    }
 
     /* --- 3. Card helpers --- */
     function show(el) {
@@ -978,7 +1050,97 @@
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
-      "info": "Safe fonts that work without loading a font package."
+      "info": "Default for all overlay and card text. Override per heading below."
+    },
+    {
+      "type": "select",
+      "id": "font_overlay_line1",
+      "label": "Overlay line 1 font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_overlay_heading",
+      "label": "Overlay line 2 (main heading) font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_overlay_cta",
+      "label": "Overlay line 3 (CTA) font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_start_card_heading",
+      "label": "Start card heading font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_end_card_heading",
+      "label": "End card heading font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_hashtag",
+      "label": "Bottom overlay / hashtag font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Section default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
     },
     {
       "type": "select",

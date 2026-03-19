@@ -33,6 +33,26 @@
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
+{% assign _heading_font = section.settings.font_heading | default: section.settings.font_family %}
+{% case _heading_font %}
+  {% when 'arial' %}{% assign font_stack_heading = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_heading = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+  {% else %}{% assign font_stack_heading = font_stack %}
+{% endcase %}
+{% assign _pill_font = section.settings.font_pills | default: section.settings.font_family %}
+{% case _pill_font %}
+  {% when 'arial' %}{% assign font_stack_pills = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack_pills = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack_pills = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack_pills = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack_pills = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'system' %}{% assign font_stack_pills = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+  {% else %}{% assign font_stack_pills = font_stack %}
+{% endcase %}
 {% if pill_ls >= 10 %}
   {% assign pill_letter_spacing_em = pill_ls | append: '' | prepend: '0.' %}
 {% elsif pill_ls >= 1 %}
@@ -80,11 +100,12 @@
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline.ak-pills__inner--align-center { justify-content: center; }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline.ak-pills__inner--align-right { justify-content: flex-end; }
   #shopify-section-{{ id }} .ak-pills__heading {
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_heading }};
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     margin: 0;
     flex: 0 0 100%;
+    text-transform: none;
   }
   #shopify-section-{{ id }} .ak-pills__inner--align-left .ak-pills__heading { text-align: left; }
   #shopify-section-{{ id }} .ak-pills__inner--align-center .ak-pills__heading { text-align: center; }
@@ -118,11 +139,12 @@
     padding: {{ pill_padding_v }}px {{ pill_padding_h }}px;
     background: #000;
     color: #fff;
-    font-family: {{ font_stack }};
+    font-family: {{ font_stack_pills }};
     font-size: {{ pill_font_size }}px;
     font-weight: {{ pill_font_weight }};
     letter-spacing: {{ pill_letter_spacing_em }}em;
     text-decoration: none;
+    text-transform: none;
     border-radius: 7px;
     border: none;
     cursor: pointer;
@@ -276,7 +298,7 @@
     {
       "type": "select",
       "id": "font_family",
-      "label": "Font family",
+      "label": "Font family (default)",
       "default": "system",
       "options": [
         { "value": "system", "label": "System (default)" },
@@ -286,7 +308,37 @@
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
-      "info": "Safe, system-level fonts that work without loading a font package."
+      "info": "Used when heading or pill font below is not set."
+    },
+    {
+      "type": "select",
+      "id": "font_heading",
+      "label": "Heading font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_pills",
+      "label": "Pill labels font",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as default" },
+        { "value": "system", "label": "System" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
     },
     {
       "type": "select",
