@@ -90,6 +90,10 @@ Reusable guidelines for building and auditing theme sections. Aligns with WCAG 2
 
 - Add **info** text to schema settings when the purpose or “when to use” is not obvious: e.g. icon alt text, section label for screen readers, overlay text color, aspect ratio, background opacity. Keep tooltips short and actionable.
 
+### Range settings: default must be a valid step
+
+- For every schema setting of type **range**, the **default** value must be a valid step in the range. Shopify validates this: `default` must equal `min + (n × step)` for some integer n. Example: if `min` is 0, `max` is 200, and `step` is 5, allowed values are 0, 5, 10, 15, 20, 25, … — so **default: 24 is invalid** (use 25 or 20). Always choose a default that lies on the step grid to avoid theme validation errors when syncing from GitHub.
+
 ### Optional section label
 
 - For each section, consider an optional “Section label (for screen readers)” (or “Accessibility label”) text field. Use it when the section has no visible heading; otherwise use `aria-labelledby` from the heading. Document: “Optional. Used when this section has no visible heading. Leave blank to use the section heading or a default.”
@@ -125,6 +129,7 @@ Reusable guidelines for building and auditing theme sections. Aligns with WCAG 2
 - [ ] Touch targets ≥ 44×44px where possible; whole control is clickable.
 - [ ] System font stack unless custom fonts are approved; schema for size/spacing where useful.
 - [ ] Schema **info** on non-obvious settings; optional section label and icon alt where applicable.
+- [ ] Every **range** setting: `default` is a valid step (default = min + n×step; e.g. step 5 → 0, 5, 10, 15, 20, 25, …).
 - [ ] All section CSS in `{% style %}` and scoped; no unscoped global `<style>`.
 - [ ] Liquid strings safe (e.g. double quotes for apostrophes).
 - [ ] Presets included so section appears in theme editor.
