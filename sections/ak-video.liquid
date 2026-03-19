@@ -760,367 +760,120 @@
 
 <script>
   (function() {
-    var _log = function(loc, msg, data, hyp) {
-      try {
-        fetch('http://127.0.0.1:7873/ingest/2b5f62f8-221d-40c6-90eb-7b0f2d3dbb8c', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'c14767' }, body: JSON.stringify({ sessionId: 'c14767', location: loc, message: msg, data: data || {}, hypothesisId: hyp || '', timestamp: Date.now() }) }).catch(function() {});
-      } catch (e) {}
-    };
-    var sectionEl = document.getElementById('ak-video-{{ section.id }}');
-    if (!sectionEl) return;
-    var video = sectionEl.querySelector('.ak-video__player');
-    var muteBtn = sectionEl.querySelector('.ak-video__mute');
-    var pauseBtn = sectionEl.querySelector('.ak-video__pause');
-    var startCard = sectionEl.querySelector('#ak-video-start-{{ section.id }}');
-    var endCard = sectionEl.querySelector('#ak-video-end-{{ section.id }}');
-    var replayBtn = sectionEl.querySelector('.ak-video__replay');
+    var section = document.getElementById('ak-video-{{ section.id }}');
+    if (!section) return;
+    var video = section.querySelector('.ak-video__player');
     if (!video) return;
+    var muteBtn = section.querySelector('.ak-video__mute');
+    var pauseBtn = section.querySelector('.ak-video__pause');
+    var startCard = section.querySelector('#ak-video-start-{{ section.id }}');
+    var endCard = section.querySelector('#ak-video-end-{{ section.id }}');
+    var dismissOverlay = section.querySelector('.ak-video__dismiss-overlay');
+    var loop = {{ section.settings.loop | default: true }};
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wantsAutoplay = section.dataset.autoplay === 'true' && !reducedMotion;
 
     video.removeAttribute('controls');
 
-    var loop = {{ section.settings.loop | default: true }};
-
-    var isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-    function blurControlsIfFocused() {
-      var active = document.activeElement;
-      if (!active || !sectionEl.contains(active)) return;
-      var controlsEl = sectionEl.querySelector('.ak-video__controls');
-      var transcriptEl = sectionEl.querySelector('.ak-video__transcript');
-      if ((controlsEl && controlsEl.contains(active)) || (transcriptEl && transcriptEl.contains(active))) {
-        active.blur();
-      }
-    }
-    var lastTapToggle = 0;
-    function toggleControls(e) {
-      if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__dismiss-overlay') || e.target.closest('.ak-video__start-card')) return;
-      if (e.type === 'click' && (Date.now() - lastTapToggle) < 400) return;
-      var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
-      sectionEl.classList.toggle('ak-video--controls-visible');
-      if (e.type === 'touchend' || e.type === 'touchstart') lastTapToggle = Date.now();
-      if (wasVisible) {
-        blurControlsIfFocused();
-      }
-    }
-    function hideControls() {
-      sectionEl.classList.remove('ak-video--controls-visible');
-      blurControlsIfFocused();
-    }
-    if (isMobile) {
-      var dismissOverlay = sectionEl.querySelector('.ak-video__dismiss-overlay');
-      if (dismissOverlay) {
-        dismissOverlay.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          hideControls();
-        });
-        dismissOverlay.addEventListener('touchend', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          hideControls();
-        }, { passive: false });
-      }
-      sectionEl.addEventListener('click', toggleControls);
-      video.addEventListener('touchend', function(e) {
-        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__start-card')) return;
-        if ((Date.now() - lastTapToggle) < 400) return;
-        var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
-        sectionEl.classList.toggle('ak-video--controls-visible');
-        lastTapToggle = Date.now();
-        if (wasVisible) {
-          blurControlsIfFocused();
-        }
-      }, { passive: true });
+    /* --- 1. Mobile source swap --- */
+    if (video.dataset.hasMobile === 'true' && isMobile) {
+      video.querySelectorAll('source[data-mobile-src]').forEach(function(s) {
+        s.src = s.dataset.mobileSrc;
+      });
+      video.load();
     }
 
-    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var wantsAutoplay = sectionEl.dataset.autoplay === 'true' && !reducedMotion;
-    var autoplayStarted = false;
-
-    if (reducedMotion && video.autoplay) {
+    /* --- 2. Reduced motion --- */
+    if (reducedMotion) {
       video.autoplay = false;
       video.pause();
     }
 
-    if (video.dataset.hasMobile === 'true' && window.innerWidth <= 768) {
-      var sources = video.querySelectorAll('source[data-mobile-src]');
-      sources.forEach(function(s) {
-        s.src = s.dataset.mobileSrc || s.src;
-      });
-      video.muted = true;
-      video.load();
+    /* --- 3. Card helpers --- */
+    function show(el) {
+      if (!el) return;
+      el.removeAttribute('hidden');
+      el.setAttribute('aria-hidden', 'false');
+    }
+    function hide(el) {
+      if (!el) return;
+      el.setAttribute('hidden', '');
+      el.setAttribute('aria-hidden', 'true');
     }
 
-    video.muted = true;
-    if (video.playsInline === undefined) video.setAttribute('playsinline', '');
-    if (video.playsInline === false) video.playsInline = true;
-
-    /* #region agent log */
-    _log('ak-video.liquid:init', 'autoplay init', { wantsAutoplay: wantsAutoplay, isMobile: isMobile, dataAutoplay: sectionEl.dataset.autoplay, reducedMotion: reducedMotion, readyState: video.readyState, innerWidth: window.innerWidth, hasMobile: video.dataset.hasMobile }, 'H1');
-    /* #endregion */
-
-    var autoplayAttempting = false;
-    var autoplayFirstPlayAttempted = false;
-    function isVideoInView() {
-      var r = video.getBoundingClientRect();
-      return r.top < window.innerHeight && r.bottom > 0;
-    }
-
-    function attemptAutoplay(source) {
-      source = source || '?';
-      var inView = isVideoInView();
-      var guardStarted = autoplayStarted;
-      var guardAttempting = autoplayAttempting;
-      var skipInViewCheck = isMobile && !autoplayFirstPlayAttempted;
-      var guardNotInView = isMobile && !skipInViewCheck && !inView;
-      var guardNotReady = video.readyState < 2;
-      if (guardStarted || guardAttempting) {
-        /* #region agent log */
-        _log('ak-video.liquid:attemptAutoplay', 'return early (started/attempting)', { source: source, autoplayStarted: guardStarted, autoplayAttempting: guardAttempting }, 'H2');
-        /* #endregion */
-        return;
-      }
-      if (guardNotInView) {
-        /* #region agent log */
-        _log('ak-video.liquid:attemptAutoplay', 'return early (not in view on mobile)', { source: source, inView: inView, isMobile: isMobile }, 'H3');
-        /* #endregion */
-        return;
-      }
-      if (guardNotReady) {
-        /* #region agent log */
-        _log('ak-video.liquid:attemptAutoplay', 'return early (readyState < 2)', { source: source, readyState: video.readyState }, 'H2');
-        /* #endregion */
-        return;
-      }
-      autoplayFirstPlayAttempted = true;
-      video.muted = true;
-      video.setAttribute('autoplay', '');
-      video.autoplay = true;
-      autoplayAttempting = true;
-      /* #region agent log */
-      _log('ak-video.liquid:play', 'calling video.play()', { source: source }, 'H4');
-      /* #endregion */
-      var p = video.play();
-      if (p && typeof p.then === 'function') {
-        p.then(function() {
-          autoplayAttempting = false;
-          autoplayStarted = true;
-          /* #region agent log */
-          _log('ak-video.liquid:playResolve', 'play() promise resolved', { source: source }, 'H4');
-          /* #endregion */
-        }).catch(function(err) {
-          autoplayAttempting = false;
-          /* #region agent log */
-          _log('ak-video.liquid:playReject', 'play() promise rejected', { source: source, errName: err && err.name, errMsg: err && err.message }, 'H4');
-          /* #endregion */
-          function retry(attempt) {
-            if (autoplayStarted) return;
-            var delays = [300, 800, 1500];
-            if (attempt >= delays.length) {
-              /* #region agent log */
-              _log('ak-video.liquid:giveUp', 'autoplay gave up, showing start card', { attempts: attempt }, 'H4');
-              /* #endregion */
-              if (startCard) showStartCard();
-              return;
-            }
-            setTimeout(function() {
-              if (autoplayStarted) return;
-              if (isMobile && !isVideoInView()) { retry(attempt + 1); return; }
-              video.muted = true;
-              var p2 = video.play();
-              if (p2 && typeof p2.then === 'function') {
-                p2.then(function() {
-                  autoplayStarted = true;
-                }).catch(function() {
-                  retry(attempt + 1);
-                });
-              } else {
-                retry(attempt + 1);
-              }
-            }, delays[attempt]);
-          }
-          retry(0);
-        });
-      } else {
-        autoplayAttempting = false;
-        /* #region agent log */
-        _log('ak-video.liquid:play', 'play() did not return a Promise', { source: source }, 'H4');
-        /* #endregion */
-      }
-    }
-
-    if (wantsAutoplay) {
-      video.addEventListener('playing', function onPlaying() {
-        autoplayStarted = true;
-        video.removeEventListener('playing', onPlaying);
-        /* #region agent log */
-        _log('ak-video.liquid:playingEvent', 'playing event fired', {}, 'H5');
-        /* #endregion */
-      }, { once: true });
-      function afterPaint(fn) {
-        var raf = window.requestAnimationFrame || function(cb) { setTimeout(cb, 16); };
-        raf(function() {
-          raf(function() { fn(); });
-        });
-      }
-      function tryAutoplayDeferred(source) {
-        afterPaint(function() {
-          attemptAutoplay(source);
-        });
-      }
-      video.addEventListener('canplay', function() {
-        tryAutoplayDeferred('canplay');
-      }, { once: true });
-      video.addEventListener('loadeddata', function() {
-        tryAutoplayDeferred('loadeddata');
-      }, { once: true });
-      if (video.readyState >= 2) tryAutoplayDeferred('readyState');
-      if (typeof IntersectionObserver !== 'undefined') {
-        var autoplayIO = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) tryAutoplayDeferred('observer');
-          });
-        }, { rootMargin: '15%', threshold: 0.1 });
-        autoplayIO.observe(video);
-      }
-      if (typeof document.visibilityState !== 'undefined') {
-        if (document.visibilityState === 'visible') {
-          tryAutoplayDeferred('visibilityInit');
-        }
-        document.addEventListener('visibilitychange', function() {
-          if (document.visibilityState === 'visible') tryAutoplayDeferred('visibilityChange');
-        });
-      }
-      setTimeout(function() {
-        if (!autoplayStarted) tryAutoplayDeferred('delayed1500');
-      }, 1500);
-    }
-
-    function showStartCard() {
-      if (startCard) {
-        startCard.removeAttribute('hidden');
-        startCard.setAttribute('aria-hidden', 'false');
-      }
-      if (endCard) {
-        endCard.setAttribute('hidden', '');
-        endCard.setAttribute('aria-hidden', 'true');
-      }
-    }
-    function hideStartCard() {
-      if (startCard) {
-        startCard.setAttribute('hidden', '');
-        startCard.setAttribute('aria-hidden', 'true');
-      }
-    }
-    function showEndCard() {
-      if (endCard) {
-        endCard.removeAttribute('hidden');
-        endCard.setAttribute('aria-hidden', 'false');
-      }
-      if (startCard) {
-        startCard.setAttribute('hidden', '');
-        startCard.setAttribute('aria-hidden', 'true');
-      }
-    }
-    function hideEndCard() {
-      if (endCard) {
-        endCard.setAttribute('hidden', '');
-        endCard.setAttribute('aria-hidden', 'true');
-      }
-    }
-
+    /* --- 4. Video events for cards --- */
     video.addEventListener('play', function() {
-      autoplayStarted = true;
-      hideStartCard();
-      hideEndCard();
+      hide(startCard);
+      hide(endCard);
+      updatePauseBtn();
     });
     video.addEventListener('pause', function() {
-      if (wantsAutoplay && !autoplayStarted) return;
-      if (video.currentTime === 0 && !wantsAutoplay) showStartCard();
+      updatePauseBtn();
     });
     video.addEventListener('ended', function() {
-      if (!loop && endCard) showEndCard();
+      if (!loop) show(endCard);
+      updatePauseBtn();
     });
 
-    if (endCard) {
-      var replayBtns = sectionEl.querySelectorAll('.ak-video__replay');
-      replayBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          video.currentTime = 0;
-          video.play();
-          hideEndCard();
-        });
-      });
-    }
+    /* --- 5. Start card: always visible initially, tap to play --- */
     if (startCard) {
-      startCard.addEventListener('click', function(e) {
-        if (!video.paused) return;
-        video.muted = true;
-        var p = video.play();
-        if (p && typeof p.then === 'function') {
-          p.then(function() {
-            hideStartCard();
-            if (typeof updatePauseButton === 'function') updatePauseButton();
-          }).catch(function() {
-            if (typeof updatePauseButton === 'function') updatePauseButton();
-          });
-        } else {
-          hideStartCard();
-          if (typeof updatePauseButton === 'function') updatePauseButton();
-        }
+      show(startCard);
+      startCard.addEventListener('click', function() {
+        video.play();
       });
       startCard.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (!video.paused) return;
-          video.muted = true;
-          var p = video.play();
-          if (p && typeof p.then === 'function') {
-            p.then(function() {
-              hideStartCard();
-              if (typeof updatePauseButton === 'function') updatePauseButton();
-            }).catch(function() {
-              if (typeof updatePauseButton === 'function') updatePauseButton();
-            });
-          } else {
-            hideStartCard();
-            if (typeof updatePauseButton === 'function') updatePauseButton();
-          }
+          video.play();
         }
       });
     }
 
-    if (!wantsAutoplay) {
-      if (startCard && video.paused && video.currentTime === 0) {
-        showStartCard();
-      } else {
-        hideStartCard();
-      }
-    } else {
-      if (startCard && video.paused && video.currentTime === 0) {
-        showStartCard();
-      }
-    }
-    if (endCard) hideEndCard();
-
-    function updateMuteButton() {
-      if (!muteBtn) return;
-      var muted = video.muted;
-      muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
-      muteBtn.setAttribute('data-playing', muted ? 'false' : 'true');
-      var xLines = muteBtn.querySelectorAll('.ak-video__mute-x');
-      xLines.forEach(function(line) {
-        line.style.display = muted ? '' : 'none';
+    /* --- 6. End card: replay --- */
+    if (endCard) {
+      hide(endCard);
+      section.querySelectorAll('.ak-video__replay').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          video.currentTime = 0;
+          video.play();
+        });
       });
     }
 
+    /* --- 7. Autoplay: one attempt when video is ready --- */
+    if (wantsAutoplay) {
+      function tryPlay() {
+        video.muted = true;
+        var p = video.play();
+        if (p && p.then) p.catch(function() {});
+      }
+      if (video.readyState >= 3) {
+        tryPlay();
+      } else {
+        video.addEventListener('canplay', function() { tryPlay(); }, { once: true });
+      }
+    }
+
+    /* --- 8. Mute button --- */
+    function updateMuteBtn() {
+      if (!muteBtn) return;
+      muteBtn.setAttribute('aria-label', video.muted ? 'Unmute' : 'Mute');
+      muteBtn.setAttribute('data-playing', video.muted ? 'false' : 'true');
+      muteBtn.querySelectorAll('.ak-video__mute-x').forEach(function(line) {
+        line.style.display = video.muted ? '' : 'none';
+      });
+    }
     if (muteBtn) {
-      updateMuteButton();
+      updateMuteBtn();
       muteBtn.addEventListener('click', function() {
         video.muted = !video.muted;
-        updateMuteButton();
+        updateMuteBtn();
       });
     }
 
-    function updatePauseButton() {
+    /* --- 9. Pause/play button --- */
+    function updatePauseBtn() {
       if (!pauseBtn) return;
       var paused = video.paused;
       pauseBtn.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
@@ -1132,30 +885,38 @@
         playIcon.hidden = !paused;
       }
     }
-
     if (pauseBtn) {
+      updatePauseBtn();
       pauseBtn.addEventListener('click', function() {
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
-        updatePauseButton();
+        if (video.paused) video.play(); else video.pause();
       });
-      video.addEventListener('play', updatePauseButton);
-      video.addEventListener('pause', updatePauseButton);
-      updatePauseButton();
     }
 
+    /* --- 10. Mobile controls toggle --- */
+    if (isMobile) {
+      section.addEventListener('click', function(e) {
+        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') ||
+            e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__start-card') ||
+            e.target.closest('.ak-video__end-card') || e.target.closest('.ak-video__dismiss-overlay')) return;
+        section.classList.toggle('ak-video--controls-visible');
+      });
+      if (dismissOverlay) {
+        dismissOverlay.addEventListener('click', function(e) {
+          e.stopPropagation();
+          section.classList.remove('ak-video--controls-visible');
+        });
+      }
+    }
+
+    /* --- 11. ADA GlobalPause --- */
     function registerGlobalPause() {
-      if (typeof window.ADA_GlobalPause === 'undefined' || !window.ADA_GlobalPause.registerCustom) return;
+      if (!window.ADA_GlobalPause || !window.ADA_GlobalPause.registerCustom) return;
       window.ADA_GlobalPause.registerCustom({
-        pause: function() { video.pause(); updatePauseButton(); },
-        resume: function() { video.play(); updatePauseButton(); }
+        pause: function() { video.pause(); },
+        resume: function() { video.play(); }
       });
       if (window.ADA_GlobalPause.isPaused && window.ADA_GlobalPause.isPaused()) {
         video.pause();
-        updatePauseButton();
       }
     }
     if (document.readyState === 'loading') {
@@ -1168,12 +929,8 @@
       else document.addEventListener('ada-global-pause:ready', registerGlobalPause);
     }
     document.addEventListener('ada-global-pause:changed', function(e) {
-      if (e.detail && e.detail.paused) {
-        if (!video.paused) { video.pause(); updatePauseButton(); }
-      } else {
-        video.play();
-        updatePauseButton();
-      }
+      if (e.detail && e.detail.paused) { video.pause(); }
+      else { video.play(); }
     });
   })();
 </script>
