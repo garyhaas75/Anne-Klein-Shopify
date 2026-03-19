@@ -834,6 +834,21 @@
     },
     {
       "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
+    },
+    {
+      "type": "select",
       "id": "overlay_vertical_position",
       "label": "Overlay vertical position",
       "options": [
@@ -963,21 +978,6 @@
       "id": "text_color",
       "label": "Overlay text color",
       "default": "#ffffff"
-    },
-    {
-      "type": "select",
-      "id": "font_family",
-      "label": "Font family",
-      "default": "system",
-      "options": [
-        { "value": "system", "label": "System (default)" },
-        { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" },
-        { "value": "times", "label": "Times New Roman" },
-        { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
-      ],
-      "info": "Safe fonts that work without loading a font package."
     },
     {
       "type": "select",
