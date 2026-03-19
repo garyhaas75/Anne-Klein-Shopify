@@ -194,6 +194,7 @@
     overflow: hidden;
     line-height: 0;
     margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
   .image-with-text-overlay__banner img,
   .image-with-text-overlay__banner .image-element__wrap {
@@ -202,6 +203,14 @@
   }
   .image-with-text-overlay__container {
     margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  #shopify-section-{{ id }} .image-with-text-overlay__container {
+    padding-bottom: 0 !important;
+  }
+  #shopify-section-{{ id }} .image-with-text-overlay__banner.columns {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 {%- endcapture -%}
 
@@ -218,10 +227,10 @@
 
   #shopify-section-{{ id }} {
     padding-top: {{ padding_top }}px;
-    padding-bottom: {{ padding_bottom }}px;
+    padding-bottom: {{ padding_bottom }}px !important;
     padding-left: {{ padding_left }}px;
     padding-right: {{ padding_right }}px;
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
     {% if width == 'wide' %}
       width: 100%;
     {% elsif width == 'half' %}
@@ -232,7 +241,7 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
-      padding-bottom: {{ padding_bottom_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px !important;
     }
     #shopify-section-{{ id }} .caption {
       padding-top: {{ overlay_padding_top_mobile }}px !important;
