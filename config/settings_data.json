@@ -6174,6 +6174,10 @@
           "background_color": "#ffffff",
           "pill_font_size": 18,
           "pill_letter_spacing": 2,
+          "pill_padding": 18,
+          "pill_spacing": 18,
+          "pill_padding_mobile": 10,
+          "pill_spacing_mobile": 6,
           "default_menu": "",
           "section_aria_label": "",
           "padding_top": 20,
@@ -6450,6 +6454,7 @@
           "background_color": "#f0ede3",
           "text_color": "#000000",
           "benefit_icon_size_mobile": 48,
+          "section_min_height": 360,
           "section_aria_label": "",
           "padding_top": 12,
           "padding_bottom": 0
