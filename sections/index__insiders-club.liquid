@@ -77,6 +77,7 @@
   #shopify-section-{{ id }} .ak-insiders__scroll-wrap {
     max-height: {{ section_max_height_desktop }}px;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -87,10 +88,13 @@
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px;
     }
+    #shopify-section-{{ id }} .ak-insiders__scroll-wrap { min-width: 0; overflow-x: hidden; }
+    #shopify-section-{{ id }} .ak-insiders__two-col { flex-wrap: nowrap !important; }
     {% if section_max_height_mobile > 0 %}
     #shopify-section-{{ id }} .ak-insiders__scroll-wrap {
       max-height: {{ section_max_height_mobile }}px;
       overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -223,7 +227,7 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} { --ak-insiders-icon-size: {{ benefit_icon_size_mobile_px }}px; }
     #shopify-section-{{ id }} .ak-insiders__logo-text { font-size: {{ logo_font_size_mobile }}px !important; }
-    #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 0; min-height: 0 !important; }
+    #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; gap: 0; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 100% !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left-inner { display: flex !important; flex-direction: column !important; align-items: center !important; width: 100%; text-align: center; }
