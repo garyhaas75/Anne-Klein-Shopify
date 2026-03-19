@@ -6168,11 +6168,11 @@
         "settings": {
           "heading": "New for the Season",
           "heading_color": "#000000",
-          "heading_font_size": 22,
+          "heading_font_size": 30,
           "layout_mode": "inline",
           "content_alignment": "center",
           "background_color": "#ffffff",
-          "pill_font_size": 16,
+          "pill_font_size": 18,
           "pill_letter_spacing": 2,
           "default_menu": "",
           "section_aria_label": "",
