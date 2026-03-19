@@ -37,7 +37,6 @@
       {% if section.settings.loop %}loop{% endif %}
       muted
       playsinline
-      controls
       title="{{ section.settings.title | default: 'Video' | escape }}"
       {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
       {% if use_mobile %}data-has-mobile="true"{% endif %}
@@ -76,25 +75,60 @@
       {% endif %}
     </video>
 
-    {% comment %} Start card: shown when video not yet playing {% endcomment %}
+    {% comment %} Start card: desktop and mobile variants {% endcomment %}
+    {% assign start_has_desktop = false %}
     {% if section.settings.start_card_image != blank or section.settings.start_card_heading != blank or section.settings.start_card_text != blank %}
+      {% assign start_has_desktop = true %}
+    {% endif %}
+    {% assign start_has_mobile = false %}
+    {% if section.settings.start_card_image_mobile != blank or section.settings.start_card_heading_mobile != blank or section.settings.start_card_text_mobile != blank %}
+      {% assign start_has_mobile = true %}
+    {% endif %}
+    {% if start_has_desktop or start_has_mobile %}
+      {% assign start_d_image = section.settings.start_card_image | default: section.settings.start_card_image_mobile %}
+      {% assign start_d_heading = section.settings.start_card_heading | default: section.settings.start_card_heading_mobile %}
+      {% assign start_d_text = section.settings.start_card_text | default: section.settings.start_card_text_mobile %}
+      {% assign start_m_image = section.settings.start_card_image_mobile | default: section.settings.start_card_image %}
+      {% assign start_m_heading = section.settings.start_card_heading_mobile | default: section.settings.start_card_heading %}
+      {% assign start_m_text = section.settings.start_card_text_mobile | default: section.settings.start_card_text %}
       <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" role="button" tabindex="0" aria-label="Play video">
-        {% if section.settings.start_card_image != blank %}
-          <div class="ak-video__start-card-bg" style="background-image: url({{ section.settings.start_card_image | image_url: width: 1920 }});"></div>
-        {% endif %}
-        <div class="ak-video__start-card-content">
-          <span class="ak-video__play-circle" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" fill="rgba(0,0,0,0.4)"/>
-              <polygon points="26,20 26,44 46,32" fill="white"/>
-            </svg>
-          </span>
-          {% if section.settings.start_card_heading != blank %}
-            <h2 class="ak-video__start-card-heading">{{ section.settings.start_card_heading }}</h2>
+        <div class="ak-video__start-card-inner ak-video__start-card--desktop">
+          {% if start_d_image != blank %}
+            <div class="ak-video__start-card-bg" style="background-image: url({{ start_d_image | image_url: width: 1920 }});"></div>
           {% endif %}
-          {% if section.settings.start_card_text != blank %}
-            <p class="ak-video__start-card-text">{{ section.settings.start_card_text }}</p>
+          <div class="ak-video__start-card-content">
+            <span class="ak-video__play-circle" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" fill="rgba(0,0,0,0.4)"/>
+                <polygon points="26,20 26,44 46,32" fill="white"/>
+              </svg>
+            </span>
+            {% if start_d_heading != blank %}
+              <h2 class="ak-video__start-card-heading">{{ start_d_heading }}</h2>
+            {% endif %}
+            {% if start_d_text != blank %}
+              <p class="ak-video__start-card-text">{{ start_d_text }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="ak-video__start-card-inner ak-video__start-card--mobile">
+          {% if start_m_image != blank %}
+            <div class="ak-video__start-card-bg" style="background-image: url({{ start_m_image | image_url: width: 1200 }});"></div>
           {% endif %}
+          <div class="ak-video__start-card-content">
+            <span class="ak-video__play-circle" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" fill="rgba(0,0,0,0.4)"/>
+                <polygon points="26,20 26,44 46,32" fill="white"/>
+              </svg>
+            </span>
+            {% if start_m_heading != blank %}
+              <h2 class="ak-video__start-card-heading">{{ start_m_heading }}</h2>
+            {% endif %}
+            {% if start_m_text != blank %}
+              <p class="ak-video__start-card-text">{{ start_m_text }}</p>
+            {% endif %}
+          </div>
         </div>
       </div>
     {% endif %}
@@ -166,21 +200,52 @@
       </div>
     {% endif %}
 
-    {% comment %} End card: shown when video ended and not looping {% endcomment %}
+    {% comment %} End card: desktop and mobile variants {% endcomment %}
+    {% assign end_has_desktop = false %}
     {% if section.settings.end_card_image != blank or section.settings.end_card_heading != blank or section.settings.end_card_button_label != blank %}
+      {% assign end_has_desktop = true %}
+    {% endif %}
+    {% assign end_has_mobile = false %}
+    {% if section.settings.end_card_image_mobile != blank or section.settings.end_card_heading_mobile != blank or section.settings.end_card_button_label_mobile != blank %}
+      {% assign end_has_mobile = true %}
+    {% endif %}
+    {% if end_has_desktop or end_has_mobile %}
+      {% assign end_d_image = section.settings.end_card_image | default: section.settings.end_card_image_mobile %}
+      {% assign end_d_heading = section.settings.end_card_heading | default: section.settings.end_card_heading_mobile %}
+      {% assign end_d_btn = section.settings.end_card_button_label | default: section.settings.end_card_button_label_mobile %}
+      {% assign end_m_image = section.settings.end_card_image_mobile | default: section.settings.end_card_image %}
+      {% assign end_m_heading = section.settings.end_card_heading_mobile | default: section.settings.end_card_heading %}
+      {% assign end_m_btn = section.settings.end_card_button_label_mobile | default: section.settings.end_card_button_label %}
       <div class="ak-video__end-card" id="ak-video-end-{{ section.id }}" aria-hidden="true" hidden>
-        {% if section.settings.end_card_image != blank %}
-          <div class="ak-video__end-card-bg" style="background-image: url({{ section.settings.end_card_image | image_url: width: 1920 }});"></div>
-        {% endif %}
-        <div class="ak-video__end-card-content">
-          {% if section.settings.end_card_heading != blank %}
-            <h2 class="ak-video__end-card-heading">{{ section.settings.end_card_heading }}</h2>
+        <div class="ak-video__end-card-inner ak-video__end-card--desktop">
+          {% if end_d_image != blank %}
+            <div class="ak-video__end-card-bg" style="background-image: url({{ end_d_image | image_url: width: 1920 }});"></div>
           {% endif %}
-          {% if section.settings.end_card_button_label != blank %}
-            <button type="button" class="ak-video__replay" aria-label="{{ section.settings.end_card_button_label | escape }}">
-              {{ section.settings.end_card_button_label }}
-            </button>
+          <div class="ak-video__end-card-content">
+            {% if end_d_heading != blank %}
+              <h2 class="ak-video__end-card-heading">{{ end_d_heading }}</h2>
+            {% endif %}
+            {% if end_d_btn != blank %}
+              <button type="button" class="ak-video__replay" aria-label="{{ end_d_btn | escape }}">
+                {{ end_d_btn }}
+              </button>
+            {% endif %}
+          </div>
+        </div>
+        <div class="ak-video__end-card-inner ak-video__end-card--mobile">
+          {% if end_m_image != blank %}
+            <div class="ak-video__end-card-bg" style="background-image: url({{ end_m_image | image_url: width: 1200 }});"></div>
           {% endif %}
+          <div class="ak-video__end-card-content">
+            {% if end_m_heading != blank %}
+              <h2 class="ak-video__end-card-heading">{{ end_m_heading }}</h2>
+            {% endif %}
+            {% if end_m_btn != blank %}
+              <button type="button" class="ak-video__replay" aria-label="{{ end_m_btn | escape }}">
+                {{ end_m_btn }}
+              </button>
+            {% endif %}
+          </div>
         </div>
       </div>
     {% endif %}
@@ -304,6 +369,33 @@
   #ak-video-{{ section.id }} .ak-video__start-card:focus-visible {
     outline: 3px solid #4A90D9;
     outline-offset: 2px;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-inner,
+  #ak-video-{{ section.id }} .ak-video__end-card-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card-inner .ak-video__start-card-content,
+  #ak-video-{{ section.id }} .ak-video__end-card-inner .ak-video__end-card-content {
+    pointer-events: auto;
+  }
+  #ak-video-{{ section.id }} .ak-video__start-card--mobile,
+  #ak-video-{{ section.id }} .ak-video__end-card--mobile {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    #ak-video-{{ section.id }} .ak-video__start-card--desktop,
+    #ak-video-{{ section.id }} .ak-video__end-card--desktop {
+      display: none;
+    }
+    #ak-video-{{ section.id }} .ak-video__start-card--mobile,
+    #ak-video-{{ section.id }} .ak-video__end-card--mobile {
+      display: flex;
+    }
   }
   #ak-video-{{ section.id }} .ak-video__start-card-bg,
   #ak-video-{{ section.id }} .ak-video__end-card-bg {
@@ -582,6 +674,22 @@
       max-height: {{ section.settings.section_max_height_mobile }}px;
     }
     {% endif %}
+    /* On mobile: controls and transcript hidden by default; only show on tap (or focus). */
+    #ak-video-{{ section.id }} .ak-video__controls,
+    #ak-video-{{ section.id }} .ak-video__transcript {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__controls,
+    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__transcript {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #ak-video-{{ section.id }} .ak-video__controls:focus-within,
+    #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
+      opacity: 1;
+      pointer-events: auto;
+    }
     #ak-video-{{ section.id }} .ak-video__player {
       min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
       {% if section.settings.video_max_height_mobile != blank and section.settings.video_max_height_mobile > 0 %}
@@ -597,14 +705,6 @@
     }
     #ak-video-{{ section.id }} .ak-video__transcript {
       max-width: 60%;
-    }
-    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__controls,
-    #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__transcript {
-      opacity: 1;
-    }
-    #ak-video-{{ section.id }} .ak-video__controls:focus-within,
-    #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
-      opacity: 1;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -644,10 +744,15 @@
       }, 4000);
     }
     if (isMobile) {
-      sectionEl.addEventListener('click', function(e) {
+      function showOnTap(e) {
         if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause')) return;
         showControlsBriefly();
-      });
+      }
+      sectionEl.addEventListener('click', showOnTap);
+      video.addEventListener('touchend', function(e) {
+        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause')) return;
+        showControlsBriefly();
+      }, { passive: true });
     }
 
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -708,11 +813,14 @@
       if (!loop && endCard) showEndCard();
     });
 
-    if (replayBtn && endCard) {
-      replayBtn.addEventListener('click', function() {
-        video.currentTime = 0;
-        video.play();
-        hideEndCard();
+    if (endCard) {
+      var replayBtns = sectionEl.querySelectorAll('.ak-video__replay');
+      replayBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          video.currentTime = 0;
+          video.play();
+          hideEndCard();
+        });
       });
     }
     if (startCard) {
@@ -1168,7 +1276,7 @@
     },
     {
       "type": "header",
-      "content": "Start card"
+      "content": "Start card (desktop)"
     },
     {
       "type": "image_picker",
@@ -1188,7 +1296,27 @@
     },
     {
       "type": "header",
-      "content": "End card"
+      "content": "Start card (mobile)"
+    },
+    {
+      "type": "image_picker",
+      "id": "start_card_image_mobile",
+      "label": "Start card image (mobile)",
+      "info": "Optional. If blank, desktop image is used on mobile."
+    },
+    {
+      "type": "text",
+      "id": "start_card_heading_mobile",
+      "label": "Start card heading (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "start_card_text_mobile",
+      "label": "Start card text (mobile)"
+    },
+    {
+      "type": "header",
+      "content": "End card (desktop)"
     },
     {
       "type": "image_picker",
@@ -1206,6 +1334,26 @@
       "id": "end_card_button_label",
       "label": "End card button label",
       "default": "Watch again"
+    },
+    {
+      "type": "header",
+      "content": "End card (mobile)"
+    },
+    {
+      "type": "image_picker",
+      "id": "end_card_image_mobile",
+      "label": "End card image (mobile)",
+      "info": "Optional. If blank, desktop image is used on mobile."
+    },
+    {
+      "type": "text",
+      "id": "end_card_heading_mobile",
+      "label": "End card heading (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "end_card_button_label_mobile",
+      "label": "End card button label (mobile)"
     },
     {
       "type": "header",
