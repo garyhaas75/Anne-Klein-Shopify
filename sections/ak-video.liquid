@@ -92,7 +92,7 @@
       {% assign start_m_image = section.settings.start_card_image_mobile | default: section.settings.start_card_image %}
       {% assign start_m_heading = section.settings.start_card_heading_mobile | default: section.settings.start_card_heading %}
       {% assign start_m_text = section.settings.start_card_text_mobile | default: section.settings.start_card_text %}
-      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" role="button" tabindex="0" aria-label="Play video">
+      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" {% if section.settings.autoplay %}hidden aria-hidden="true"{% else %}aria-hidden="false"{% endif %} role="button" tabindex="0" aria-label="Play video">
         <div class="ak-video__start-card-inner ak-video__start-card--desktop">
           {% if start_d_image != blank %}
             <div class="ak-video__start-card-bg" style="background-image: url({{ start_d_image | image_url: width: 1920 }});"></div>
@@ -827,6 +827,9 @@
     }
 
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wantsAutoplay = sectionEl.dataset.autoplay === 'true' && !reducedMotion;
+    var autoplayStarted = false;
+
     if (reducedMotion && video.autoplay) {
       video.autoplay = false;
       video.pause();
@@ -837,36 +840,55 @@
       sources.forEach(function(s) {
         s.src = s.dataset.mobileSrc || s.src;
       });
+      video.muted = true;
       video.load();
-      if (sectionEl.dataset.autoplay === 'true' && !reducedMotion) {
-        video.autoplay = true;
-        video.addEventListener('canplay', function onCanplay() {
-          video.removeEventListener('canplay', onCanplay);
-          video.muted = true;
-          video.play().catch(function() {});
-        }, { once: true });
+    }
+
+    function attemptAutoplay() {
+      if (autoplayStarted) return;
+      video.muted = true;
+      video.setAttribute('autoplay', '');
+      video.autoplay = true;
+      var p = video.play();
+      if (p && p.then) {
+        p.then(function() {
+          autoplayStarted = true;
+        }).catch(function() {
+          setTimeout(function() {
+            video.muted = true;
+            var p2 = video.play();
+            if (p2 && p2.then) {
+              p2.then(function() {
+                autoplayStarted = true;
+              }).catch(function() {
+                if (startCard) showStartCard();
+              });
+            }
+          }, 500);
+        });
       }
     }
 
-    if (isMobile && sectionEl.dataset.autoplay === 'true' && !reducedMotion) {
-      function tryAutoplayInView() {
-        var rect = video.getBoundingClientRect();
-        var inView = rect.top < window.innerHeight && rect.bottom > 0;
-        if (inView) {
-          video.muted = true;
-          video.play().catch(function() {});
-        }
+    if (wantsAutoplay) {
+      video.addEventListener('canplay', function() {
+        attemptAutoplay();
+      }, { once: true });
+      video.addEventListener('loadeddata', function() {
+        attemptAutoplay();
+      }, { once: true });
+      if (video.readyState >= 2) {
+        attemptAutoplay();
       }
       if (typeof IntersectionObserver !== 'undefined') {
         var autoplayIO = new IntersectionObserver(function(entries) {
           entries.forEach(function(entry) {
-            if (entry.isIntersecting) tryAutoplayInView();
+            if (entry.isIntersecting && video.readyState >= 2) {
+              attemptAutoplay();
+            }
           });
         }, { rootMargin: '10%', threshold: 0.25 });
         autoplayIO.observe(video);
       }
-      video.addEventListener('canplay', tryAutoplayInView, { once: true });
-      if (video.readyState >= 3) tryAutoplayInView();
     }
 
     function showStartCard() {
@@ -903,11 +925,13 @@
     }
 
     video.addEventListener('play', function() {
+      autoplayStarted = true;
       hideStartCard();
       hideEndCard();
     });
     video.addEventListener('pause', function() {
-      if (video.currentTime === 0) showStartCard();
+      if (wantsAutoplay && !autoplayStarted) return;
+      if (video.currentTime === 0 && !wantsAutoplay) showStartCard();
     });
     video.addEventListener('ended', function() {
       if (!loop && endCard) showEndCard();
@@ -941,8 +965,12 @@
       });
     }
 
-    if (startCard && video.paused && video.currentTime === 0) {
-      showStartCard();
+    if (!wantsAutoplay) {
+      if (startCard && video.paused && video.currentTime === 0) {
+        showStartCard();
+      } else {
+        hideStartCard();
+      }
     } else {
       hideStartCard();
     }
