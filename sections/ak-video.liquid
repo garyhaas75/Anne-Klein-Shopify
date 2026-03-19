@@ -41,7 +41,7 @@
       title="{{ section.settings.title | default: 'Video' | escape }}"
       {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
       {% if use_mobile %}data-has-mobile="true"{% endif %}
-      {% if section.settings.start_card_image != blank %}poster="{{ section.settings.start_card_image | image_url: width: 1920 }}"{% endif %}
+      {% if section.settings.start_card_image != blank and section.settings.autoplay != true %}poster="{{ section.settings.start_card_image | image_url: width: 1920 }}"{% endif %}
     >
       {% for source in section.settings.video.sources %}
         <source
@@ -781,6 +781,10 @@
       video.querySelectorAll('source[data-mobile-src]').forEach(function(s) {
         s.src = s.dataset.mobileSrc;
       });
+      if (wantsAutoplay) {
+        video.muted = true;
+        video.autoplay = true;
+      }
       video.load();
     }
 
@@ -841,18 +845,13 @@
       });
     }
 
-    /* --- 7. Autoplay: one attempt when video is ready --- */
-    if (wantsAutoplay) {
-      function tryPlay() {
-        video.muted = true;
-        var p = video.play();
-        if (p && p.then) p.catch(function() {});
-      }
-      if (video.readyState >= 3) {
-        tryPlay();
-      } else {
-        video.addEventListener('canplay', function() { tryPlay(); }, { once: true });
-      }
+    /* --- 7. Autoplay: let the browser handle it via HTML autoplay attribute.
+       The play event (section 4) hides the start card when playback begins.
+       If the browser blocks autoplay, the start card stays visible as fallback.
+       We also check if the video is already playing (e.g. browser autoplayed
+       before this script ran). --- */
+    if (wantsAutoplay && !video.paused) {
+      hide(startCard);
     }
 
     /* --- 8. Mute button --- */
