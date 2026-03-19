@@ -1,0 +1,31 @@
+---
+description: Shopify schema range validation - default must be a valid step
+globs: sections/**/*.liquid, **/sections/*.liquid
+alwaysApply: false
+---
+
+# Shopify Schema: Range Default Must Be a Valid Step
+
+When adding or editing schema settings of type **range**, the **default** must be a valid step in the range. Shopify rejects themes where `default` does not satisfy:
+
+```
+default = min + (n × step)   for some integer n
+```
+
+## Quick check
+
+- `step: 5` → allowed: 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, …
+- `step: 10` → allowed: 0, 10, 20, 30, 40, …
+- `step: 20` → allowed: 0, 20, 40, 60, 80, …
+
+**Invalid examples:** default 24 with step 5, default 48 with step 5, default 360 with step 20.
+
+**Valid fix:** round to nearest step (e.g. 48 → 50 for step 5; 360 → 360 is valid for step 20).
+
+## Before committing or pushing
+
+Scan the section schema for `"type": "range"` and verify each `"default"` is on the step grid. This avoids GitHub sync errors like:
+
+```
+Validation failed: Invalid schema: setting with id="..." default must be a step in the range
+```
