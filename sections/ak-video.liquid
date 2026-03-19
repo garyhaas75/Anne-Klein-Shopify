@@ -251,6 +251,8 @@
       </div>
     {% endif %}
 
+    {% comment %} Mobile: tap overlay to dismiss controls (sits over video, below controls) {% endcomment %}
+    <div class="ak-video__dismiss-overlay" id="ak-video-dismiss-{{ section.id }}" aria-hidden="true" tabindex="-1"></div>
     {% comment %} Controls: pause/play, mute (WCAG 2.2: 44px min, focus-visible) {% endcomment %}
     <div class="ak-video__controls">
       <button type="button" class="ak-video__pause" aria-label="Pause video" aria-pressed="false">
@@ -710,6 +712,21 @@
     #ak-video-{{ section.id }} .ak-video__hashtag {
       font-size: 1rem;
     }
+    #ak-video-{{ section.id }} .ak-video__dismiss-overlay {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      #ak-video-{{ section.id }} .ak-video__dismiss-overlay {
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+      #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__dismiss-overlay {
+        pointer-events: auto;
+      }
+    }
     #ak-video-{{ section.id }} .ak-video__transcript {
       max-width: 85%;
       max-height: 45vh;
@@ -762,14 +779,31 @@
       }
     }
     function toggleControls(e) {
-      if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript')) return;
+      if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__dismiss-overlay')) return;
       var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
       sectionEl.classList.toggle('ak-video--controls-visible');
       if (wasVisible) {
         blurControlsIfFocused();
       }
     }
+    function hideControls() {
+      sectionEl.classList.remove('ak-video--controls-visible');
+      blurControlsIfFocused();
+    }
     if (isMobile) {
+      var dismissOverlay = sectionEl.querySelector('.ak-video__dismiss-overlay');
+      if (dismissOverlay) {
+        dismissOverlay.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          hideControls();
+        });
+        dismissOverlay.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          hideControls();
+        }, { passive: false });
+      }
       sectionEl.addEventListener('click', toggleControls);
       video.addEventListener('touchend', function(e) {
         if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript')) return;
@@ -793,6 +827,14 @@
         s.src = s.dataset.mobileSrc || s.src;
       });
       video.load();
+      if (sectionEl.dataset.autoplay === 'true' && !reducedMotion) {
+        video.autoplay = true;
+        video.addEventListener('canplay', function onCanplay() {
+          video.removeEventListener('canplay', onCanplay);
+          video.muted = true;
+          video.play().catch(function() {});
+        }, { once: true });
+      }
     }
 
     if (isMobile && sectionEl.dataset.autoplay === 'true' && !reducedMotion && typeof IntersectionObserver !== 'undefined') {
