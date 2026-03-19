@@ -96,10 +96,13 @@
     border-left: 1px solid rgba(0,0,0,0.15);
     padding-left: 2rem;
     display: flex !important;
-    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center;
+  }
+  #shopify-section-{{ id }} .ak-insiders__right-inner {
+    text-align: center;
+    width: 100%;
   }
   #shopify-section-{{ id }} .ak-insiders__logo { max-width: 360px; margin: 0 auto 1.5rem; }
   #shopify-section-{{ id }} .ak-insiders__logo img { max-width: 100%; height: auto; display: block; }
@@ -213,27 +216,29 @@
         </div>
       </div>
     </div>
-    <div class="ak-insiders__right" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      {% if headline != blank %}
-        <p class="ak-insiders__headline">{{ headline }}</p>
-      {% endif %}
-      {% if section.blocks.size > 0 %}
-        <div class="ak-insiders__benefits">
-          {% for block in section.blocks %}
-            {% if block.type == 'benefit' and block.settings.text != blank %}
-              {% assign icon_alt = block.settings.icon_alt_text | default: '' %}
-              <div class="ak-insiders__benefit" {{ block.shopify_attributes }}>
-                {% if block.settings.icon != blank %}
-                  <span class="ak-insiders__benefit-icon" {% if icon_alt == '' %}role="presentation"{% endif %}>
-                    {% include 'image-element', image: block.settings.icon, alt: icon_alt, stretch_width: true %}
-                  </span>
-                {% endif %}
-                <span class="ak-insiders__benefit-text">{{ block.settings.text }}</span>
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endif %}
+    <div class="ak-insiders__right" style="display:flex;align-items:center;justify-content:center;">
+      <div class="ak-insiders__right-inner" style="text-align:center;">
+        {% if headline != blank %}
+          <p class="ak-insiders__headline">{{ headline }}</p>
+        {% endif %}
+        {% if section.blocks.size > 0 %}
+          <div class="ak-insiders__benefits">
+            {% for block in section.blocks %}
+              {% if block.type == 'benefit' and block.settings.text != blank %}
+                {% assign icon_alt = block.settings.icon_alt_text | default: '' %}
+                <div class="ak-insiders__benefit" {{ block.shopify_attributes }}>
+                  {% if block.settings.icon != blank %}
+                    <span class="ak-insiders__benefit-icon" {% if icon_alt == '' %}role="presentation"{% endif %}>
+                      {% include 'image-element', image: block.settings.icon, alt: icon_alt, stretch_width: true %}
+                    </span>
+                  {% endif %}
+                  <span class="ak-insiders__benefit-text">{{ block.settings.text }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </section>
