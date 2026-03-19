@@ -847,7 +847,8 @@
     if (wantsAutoplay) {
       if (!video.paused) {
         hide(startCard);
-      } else if (didSourceSwap) {
+      } else {
+        video.muted = true;
         video.addEventListener('canplay', function() {
           video.muted = true;
           video.play().catch(function() {});
