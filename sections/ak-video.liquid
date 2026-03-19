@@ -844,49 +844,79 @@
       video.load();
     }
 
+    video.muted = true;
+    if (video.playsInline === undefined) video.setAttribute('playsinline', '');
+    if (video.playsInline === false) video.playsInline = true;
+
+    var autoplayAttempting = false;
+    function isVideoInView() {
+      var r = video.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    }
+
     function attemptAutoplay() {
-      if (autoplayStarted) return;
+      if (autoplayStarted || autoplayAttempting) return;
+      if (isMobile && !isVideoInView()) return;
+      if (video.readyState < 2) return;
       video.muted = true;
       video.setAttribute('autoplay', '');
       video.autoplay = true;
+      autoplayAttempting = true;
       var p = video.play();
-      if (p && p.then) {
+      if (p && typeof p.then === 'function') {
         p.then(function() {
+          autoplayAttempting = false;
           autoplayStarted = true;
         }).catch(function() {
-          setTimeout(function() {
-            video.muted = true;
-            var p2 = video.play();
-            if (p2 && p2.then) {
-              p2.then(function() {
-                autoplayStarted = true;
-              }).catch(function() {
-                if (startCard) showStartCard();
-              });
+          autoplayAttempting = false;
+          function retry(attempt) {
+            if (autoplayStarted) return;
+            var delays = [300, 800, 1500];
+            if (attempt >= delays.length) {
+              if (startCard) showStartCard();
+              return;
             }
-          }, 500);
+            setTimeout(function() {
+              if (autoplayStarted) return;
+              if (isMobile && !isVideoInView()) { retry(attempt + 1); return; }
+              video.muted = true;
+              var p2 = video.play();
+              if (p2 && typeof p2.then === 'function') {
+                p2.then(function() {
+                  autoplayStarted = true;
+                }).catch(function() {
+                  retry(attempt + 1);
+                });
+              } else {
+                retry(attempt + 1);
+              }
+            }, delays[attempt]);
+          }
+          retry(0);
         });
+      } else {
+        autoplayAttempting = false;
       }
     }
 
     if (wantsAutoplay) {
+      video.addEventListener('playing', function onPlaying() {
+        autoplayStarted = true;
+        video.removeEventListener('playing', onPlaying);
+      }, { once: true });
       video.addEventListener('canplay', function() {
         attemptAutoplay();
       }, { once: true });
       video.addEventListener('loadeddata', function() {
         attemptAutoplay();
       }, { once: true });
-      if (video.readyState >= 2) {
-        attemptAutoplay();
-      }
+      if (video.readyState >= 2) attemptAutoplay();
       if (typeof IntersectionObserver !== 'undefined') {
         var autoplayIO = new IntersectionObserver(function(entries) {
           entries.forEach(function(entry) {
-            if (entry.isIntersecting && video.readyState >= 2) {
-              attemptAutoplay();
-            }
+            if (entry.isIntersecting) attemptAutoplay();
           });
-        }, { rootMargin: '10%', threshold: 0.25 });
+        }, { rootMargin: '15%', threshold: 0.1 });
         autoplayIO.observe(video);
       }
     }
