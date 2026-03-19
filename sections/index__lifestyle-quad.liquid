@@ -14,6 +14,8 @@
 {% assign container_width = section.settings.container_width | default: 'full' %}
 {% assign max_height_desktop = section.settings.max_height_desktop | default: 0 %}
 {% assign max_height_mobile = section.settings.max_height_mobile | default: 0 %}
+{% assign svg_size_desktop = section.settings.svg_size_desktop | default: 24 %}
+{% assign svg_size_mobile = section.settings.svg_size_mobile | default: 20 %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -71,8 +73,8 @@
     transition: opacity 0.2s;
   }
   #shopify-section-{{ id }} .ak-quad__pause-btn svg {
-    width: 24px;
-    height: 24px;
+    width: {{ svg_size_desktop }}px;
+    height: {{ svg_size_desktop }}px;
     display: block;
     fill: currentColor;
   }
@@ -94,6 +96,10 @@
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-desktop-only { display: block !important; }
     #shopify-section-{{ id }} .ak-quad__panel.ak-quad--controls-visible .ak-quad__pause-btn { opacity: 1; }
     #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 1; }
+    #shopify-section-{{ id }} .ak-quad__pause-btn svg {
+      width: {{ svg_size_mobile }}px;
+      height: {{ svg_size_mobile }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-quad__gradient {
     position: absolute; left: 0; right: 0; bottom: 0;
@@ -436,6 +442,32 @@
       "id": "section_aria_label",
       "label": "Section label (for screen readers)",
       "info": "Optional. Leave blank for default 'Campaign lifestyle grid'."
+    },
+    {
+      "type": "header",
+      "content": "Pause/play icon (SVG) size"
+    },
+    {
+      "type": "range",
+      "id": "svg_size_desktop",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size (desktop)",
+      "default": 24,
+      "info": "Size of the pause/play icon inside the video control button."
+    },
+    {
+      "type": "range",
+      "id": "svg_size_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size (mobile)",
+      "default": 20,
+      "info": "Size of the pause/play icon on mobile."
     },
     {
       "type": "range",
