@@ -228,6 +228,7 @@
                       muted
                       playsinline
                       loop
+                      preload="auto"
                       aria-label="{{ panel_heading | default: 'Panel video' | escape }}"
                       data-panel-video="{{ block.id }}"
                     >
@@ -292,6 +293,12 @@
   (function() {
     var section = document.getElementById('shopify-section-{{ id }}');
     if (!section) return;
+    var videos = section.querySelectorAll('.ak-quad__video[data-panel-video]');
+    function tryPlay(video) {
+      if (!video || video.readyState < 2) return;
+      video.muted = true;
+      video.play().catch(function() {});
+    }
     section.querySelectorAll('[data-pause-btn]').forEach(function(btn) {
       var blockId = btn.getAttribute('data-pause-btn');
       var video = section.querySelector('.ak-quad__video[data-panel-video="' + blockId + '"]');
@@ -310,8 +317,25 @@
       });
       video.addEventListener('play', updateLabel);
       video.addEventListener('pause', updateLabel);
+      video.addEventListener('loadeddata', function() { tryPlay(video); });
+      video.addEventListener('canplay', function() { tryPlay(video); });
+      if (video.readyState >= 2) tryPlay(video);
       updateLabel();
     });
+    if (typeof IntersectionObserver !== 'undefined' && videos.length) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          var v = entry.target;
+          if (entry.isIntersecting) {
+            v.muted = true;
+            v.play().catch(function() {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { rootMargin: '10%', threshold: 0.1 });
+      videos.forEach(function(v) { io.observe(v); });
+    }
   })();
 </script>
 
