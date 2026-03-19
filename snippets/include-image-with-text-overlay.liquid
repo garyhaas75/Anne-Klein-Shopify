@@ -188,6 +188,17 @@
     z-index: 1;
   }
   {% endif %}
+
+  .image-with-text-overlay__banner {
+    position: relative;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .image-with-text-overlay__banner img,
+  .image-with-text-overlay__banner .image-element__wrap {
+    display: block;
+    vertical-align: middle;
+  }
 {%- endcapture -%}
 
 {% comment %}Section specific CSS{% endcomment %}
