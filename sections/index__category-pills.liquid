@@ -17,11 +17,11 @@
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign pill_font_size = section.settings.pill_font_size | default: 18 %}
 {% assign pill_ls = section.settings.pill_letter_spacing | default: 2 %}
-{% assign pill_padding = section.settings.pill_padding | default: 12 %}
-{% assign pill_padding_h = pill_padding | times: 1.25 | round %}
+{% assign pill_padding_v = section.settings.pill_padding_vertical | default: 12 %}
+{% assign pill_padding_h = section.settings.pill_padding_horizontal | default: 20 %}
 {% assign pill_spacing = section.settings.pill_spacing | default: 8 %}
-{% assign pill_padding_mobile = section.settings.pill_padding_mobile | default: 10 %}
-{% assign pill_padding_h_mobile = pill_padding_mobile | times: 1.25 | round %}
+{% assign pill_padding_v_mobile = section.settings.pill_padding_vertical_mobile | default: 10 %}
+{% assign pill_padding_h_mobile = section.settings.pill_padding_horizontal_mobile | default: 14 %}
 {% assign pill_spacing_mobile = section.settings.pill_spacing_mobile | default: 6 %}
 {% if pill_ls >= 10 %}
   {% assign pill_letter_spacing_em = pill_ls | append: '' | prepend: '0.' %}
@@ -105,7 +105,7 @@
     align-items: center;
     justify-content: center;
     min-height: 44px;
-    padding: {{ pill_padding }}px {{ pill_padding_h }}px;
+    padding: {{ pill_padding_v }}px {{ pill_padding_h }}px;
     background: #000;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -147,7 +147,7 @@
       flex: 0 1 auto !important;
       min-width: 0 !important;
     }
-    #shopify-section-{{ id }} .ak-pills__pill { padding: {{ pill_padding_mobile }}px {{ pill_padding_h_mobile }}px; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
+    #shopify-section-{{ id }} .ak-pills__pill { padding: {{ pill_padding_v_mobile }}px {{ pill_padding_h_mobile }}px; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
   }
 {% endstyle %}
 
@@ -273,14 +273,25 @@
     },
     {
       "type": "range",
-      "id": "pill_padding",
-      "min": 8,
-      "max": 24,
+      "id": "pill_padding_vertical",
+      "min": 6,
+      "max": 32,
       "step": 2,
       "unit": "px",
-      "label": "Pill size (desktop)",
+      "label": "Pill height (desktop)",
       "default": 12,
-      "info": "Vertical padding on desktop; horizontal is proportional."
+      "info": "Vertical padding per pill on desktop."
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_horizontal",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill width (desktop)",
+      "default": 20,
+      "info": "Horizontal padding per pill on desktop."
     },
     {
       "type": "range",
@@ -299,14 +310,25 @@
     },
     {
       "type": "range",
-      "id": "pill_padding_mobile",
+      "id": "pill_padding_vertical_mobile",
       "min": 6,
-      "max": 24,
+      "max": 28,
       "step": 2,
       "unit": "px",
-      "label": "Pill size (mobile)",
+      "label": "Pill height (mobile)",
       "default": 10,
-      "info": "Vertical padding on mobile; horizontal is proportional."
+      "info": "Vertical padding per pill on mobile."
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_horizontal_mobile",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill width (mobile)",
+      "default": 14,
+      "info": "Horizontal padding per pill on mobile."
     },
     {
       "type": "range",
