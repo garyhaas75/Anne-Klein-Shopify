@@ -818,18 +818,9 @@
       updatePauseBtn();
     });
 
-    /* --- 5. Start card: always visible initially, tap to play --- */
+    /* --- 5. Start card: DISABLED FOR TESTING --- */
     if (startCard) {
-      show(startCard);
-      startCard.addEventListener('click', function() {
-        video.play();
-      });
-      startCard.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          video.play();
-        }
-      });
+      hide(startCard);
     }
 
     /* --- 6. End card: replay --- */
