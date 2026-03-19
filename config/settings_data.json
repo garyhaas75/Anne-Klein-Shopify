@@ -5829,216 +5829,6 @@
           "custom_css": ""
         }
       },
-      "index_html_iVbjHj": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/008add90-c388-4107-8618-5f640baee860/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_knKheU": {
-        "type": "index__html",
-        "custom_css": [],
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/4970c41b-eaf5-4e0a-a3a9-a7233b442809/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_erAPCR": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/50cba3c4-93d8-49bc-b9f4-d4e03905b009/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_mXCmrC": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/f27435b3-505e-4242-a90e-49b518db2c4f/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": "section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_6XDKmQ": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/0843fedc-8ba5-41e9-a976-9721ac4cec77/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_image_with_text_overlay_6aaRey": {
-        "type": "index__image-with-text-overlay",
-        "disabled": true,
-        "name": "Image with text overlay",
-        "settings": {
-          "link": "https://anneklein.com/pages/streams",
-          "label": "",
-          "open_in_new_tab": true,
-          "enable_shop_similar": false,
-          "image": "shopify://shop_images/AK_-_Show_6_-_Desktop-REPLAY.jpg",
-          "mobile_image": "shopify://shop_images/AK_-_Show_6_-_Mobile_REPLAY.jpg",
-          "image_alt": "",
-          "max_height_desktop": 0,
-          "max_height_mobile": 0,
-          "pretext": "",
-          "title": "",
-          "subtitle": "",
-          "pretext_color": "#000000",
-          "pretext_underline": false,
-          "preheading_font_family": "system",
-          "heading_color": "#000000",
-          "font_family": "system",
-          "heading_font_size": 32,
-          "heading_font_weight": "400",
-          "heading_underline": false,
-          "subheading_color": "#000000",
-          "subheading_font_family": "system",
-          "preheading_font_weight": "400",
-          "subheading_font_weight": "400",
-          "subheading_underline": false,
-          "text_spacing": 12,
-          "text_alignment": "center",
-          "text_horizontal_position": "center",
-          "text_vertical_position": "middle",
-          "text_shadow_contrast": true,
-          "scrim_overlay": "dark",
-          "background_color": "#ffffff",
-          "background_opacity": 77,
-          "border_color": "#ffffff",
-          "border_width": 0,
-          "text_width": 40,
-          "button_1": "",
-          "button_1_link": "",
-          "button_1_style": "button--secondary",
-          "button_2": "",
-          "button_2_link": "",
-          "button_2_style": "button--secondary",
-          "mobile_image_crop": "none",
-          "mobile_text_below_image": true,
-          "pretext_color_mobile": "rgba(0,0,0,0)",
-          "heading_color_mobile": "rgba(0,0,0,0)",
-          "subheading_color_mobile": "rgba(0,0,0,0)",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ""
-        }
-      },
-      "index_html_UP4kQU": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/e44809e3-29fb-4ff4-9290-198d725b5dd5/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_J4FpUA": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/c8f67135-e833-4ea8-8764-ff1f8ceeeca8/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_jVHAMD": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/853097bf-e8cc-4c7d-b5a5-57278c8026a1/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "stylitics_gallery_widget_eLpGBt": {
-        "type": "stylitics-gallery-widget",
-        "disabled": true,
-        "name": "Stylitics Gallery Widget",
-        "settings": {
-          "tag": "newarrivals_homepage_gallery"
-        }
-      },
-      "index_html_r7tHWd": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/ce99b969-e078-49f8-810b-9365611fe66b/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
       "creator-program": {
         "type": "creator-program",
         "blocks": {
@@ -6070,7 +5860,7 @@
           "a {text-decoration: underline;}"
         ],
         "settings": {
-          "heading": "",
+          "heading": "The Anne Klein Creators Collective",
           "intro_text": "<p>We love connecting with creators who share our passion for style, confidence, and self-expression.<br/><br/>If you love our brand and are interested in potential collaborations, gifting opportunities, or future campaigns, we'd love to learn more about you:</p>",
           "disclaimer_text": "<p>Please Note: Submitting this form does not guarantee a partnership. Our team reviews all submissions and will reach out if there’s a natural alignment for upcoming opportunities.</p>",
           "submit_text": "Submit",
@@ -6517,7 +6307,7 @@
           "open_in_new_tab": false,
           "enable_shop_similar": false,
           "image": "shopify://shop_images/053d51096fa1cc0c96af8da859ecdc6d14079961.jpg",
-          "mobile_image": "shopify://shop_images/ME_273_ANNE_KLEIN_FW25_SHOT_08_0069_3.png",
+          "mobile_image": "shopify://shop_images/Group_185.jpg",
           "image_alt": "",
           "max_height_desktop": 900,
           "max_height_mobile": 620,
@@ -6633,24 +6423,13 @@
       }
     },
     "content_for_index": [
-      "index_html_mXCmrC",
       "ak_video_JDTPRV",
-      "index_html_r7tHWd",
       "index_category_pills_QCdmYD",
-      "index_html_UP4kQU",
       "index_lifestyle_quad_P3Phpq",
-      "index_html_erAPCR",
       "index_shop_new_arrivals_JiGV4g",
-      "index_html_knKheU",
-      "index_html_jVHAMD",
       "index_image_with_text_overlay_zyb4jV",
-      "stylitics_gallery_widget_eLpGBt",
       "index_finishing_touches_TLVBqV",
-      "index_insiders_club_Y4N9di",
-      "index_image_with_text_overlay_6aaRey",
-      "index_html_iVbjHj",
-      "index_html_J4FpUA",
-      "index_html_6XDKmQ"
+      "index_insiders_club_Y4N9di"
     ],
     "blocks": {
       "855628211100114053": {
