@@ -188,7 +188,7 @@
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
   <div class="ak-insiders__two-col" style="display:flex !important;flex-wrap:nowrap !important;align-items:stretch !important;{{ min_height_css }}">
-    <div class="ak-insiders__left" style="flex:0 0 33.333% !important;max-width:33.333% !important;display:flex !important;flex-direction:column !important;align-items:stretch !important;">
+    <div class="ak-insiders__left" style="flex:0 0 33.333% !important;max-width:33.333% !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;padding:0 1.5rem;">
       {% if bg_image != blank %}
         <div class="ak-insiders__left-bg" aria-hidden="true">
           {% include 'image-element', image: bg_image, alt: '', stretch_width: true, additional_classes: '' %}
@@ -219,7 +219,7 @@
         </div>
       </div>
     </div>
-    <div class="ak-insiders__right" style="flex:0 0 66.667% !important;max-width:66.667% !important;display:flex !important;align-items:stretch !important;">
+    <div class="ak-insiders__right" style="flex:0 0 66.667% !important;max-width:66.667% !important;display:flex !important;align-items:center !important;justify-content:center !important;">
       <div class="ak-insiders__right-inner" style="margin:auto 0;text-align:center;width:100%;">
         {% if headline != blank %}
           <p class="ak-insiders__headline">{{ headline }}</p>
