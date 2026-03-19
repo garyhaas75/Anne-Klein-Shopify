@@ -14,8 +14,8 @@
 {% assign container_width = section.settings.container_width | default: 'full' %}
 {% assign max_height_desktop = section.settings.max_height_desktop | default: 0 %}
 {% assign max_height_mobile = section.settings.max_height_mobile | default: 0 %}
-{% assign svg_size_desktop = section.settings.svg_size_desktop | default: 24 %}
-{% assign svg_size_mobile = section.settings.svg_size_mobile | default: 20 %}
+{% assign arrow_size_desktop = section.settings.arrow_size_desktop | default: 20 %}
+{% assign arrow_size_mobile = section.settings.arrow_size_mobile | default: 16 %}
 
 {% capture section_aria %}
   {% if section_aria_label != blank %}
@@ -73,8 +73,8 @@
     transition: opacity 0.2s;
   }
   #shopify-section-{{ id }} .ak-quad__pause-btn svg {
-    width: {{ svg_size_desktop }}px;
-    height: {{ svg_size_desktop }}px;
+    width: 24px;
+    height: 24px;
     display: block;
     fill: currentColor;
   }
@@ -88,6 +88,19 @@
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-quad__cta-arrow {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.35em;
+    flex-shrink: 0;
+  }
+  #shopify-section-{{ id }} .ak-quad__cta-arrow svg {
+    width: {{ arrow_size_desktop }}px;
+    height: {{ arrow_size_desktop }}px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+  }
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ id }} .ak-quad__pause-btn { opacity: 1; transition: none; }
   }
@@ -96,9 +109,9 @@
     #shopify-section-{{ id }} .ak-quad__media .is-hidden-desktop-only { display: block !important; }
     #shopify-section-{{ id }} .ak-quad__panel.ak-quad--controls-visible .ak-quad__pause-btn { opacity: 1; }
     #shopify-section-{{ id }} .ak-quad__pause-btn:focus-visible { opacity: 1; }
-    #shopify-section-{{ id }} .ak-quad__pause-btn svg {
-      width: {{ svg_size_mobile }}px;
-      height: {{ svg_size_mobile }}px;
+    #shopify-section-{{ id }} .ak-quad__cta-arrow svg {
+      width: {{ arrow_size_mobile }}px;
+      height: {{ arrow_size_mobile }}px;
     }
   }
   #shopify-section-{{ id }} .ak-quad__gradient {
@@ -278,7 +291,7 @@
                   <h2 class="ak-quad__heading">{{ panel_heading }}</h2>
                 {% endif %}
                 {% if panel_cta_text != blank %}
-                  <p class="ak-quad__cta">{{ panel_cta_text }}</p>
+                  <p class="ak-quad__cta">{{ panel_cta_text }}<span class="ak-quad__cta-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></p>
                 {% endif %}
               </a>
             {% else %}
@@ -287,7 +300,7 @@
                   <h2 class="ak-quad__heading">{{ panel_heading }}</h2>
                 {% endif %}
                 {% if panel_cta_text != blank %}
-                  <p class="ak-quad__cta">{{ panel_cta_text }}</p>
+                  <p class="ak-quad__cta">{{ panel_cta_text }}<span class="ak-quad__cta-arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></p>
                 {% endif %}
               </div>
             {% endif %}
@@ -445,29 +458,29 @@
     },
     {
       "type": "header",
-      "content": "Pause/play icon (SVG) size"
+      "content": "Arrow icon (SVG) size"
     },
     {
       "type": "range",
-      "id": "svg_size_desktop",
-      "min": 16,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Icon size (desktop)",
-      "default": 24,
-      "info": "Size of the pause/play icon inside the video control button."
-    },
-    {
-      "type": "range",
-      "id": "svg_size_mobile",
-      "min": 16,
+      "id": "arrow_size_desktop",
+      "min": 12,
       "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Icon size (mobile)",
+      "label": "Arrow size (desktop)",
       "default": 20,
-      "info": "Size of the pause/play icon on mobile."
+      "info": "Size of the arrow next to the CTA (e.g. SHOP DRESSES)."
+    },
+    {
+      "type": "range",
+      "id": "arrow_size_mobile",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Arrow size (mobile)",
+      "default": 16,
+      "info": "Size of the arrow on mobile."
     },
     {
       "type": "range",
