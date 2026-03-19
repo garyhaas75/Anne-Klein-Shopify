@@ -67,6 +67,7 @@
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
     color: {{ text_color }};
+    --ak-insiders-icon-size: {{ benefit_icon_size }}px;
   }
   #shopify-section-{{ id }} .ak-insiders__headline,
   #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; font-family: {{ font_stack }}; }
@@ -155,35 +156,44 @@
     min-width: 0;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-icon {
-    width: {{ benefit_icon_size }}px !important;
-    height: {{ benefit_icon_size }}px !important;
-    min-width: {{ benefit_icon_size }}px !important;
-    min-height: {{ benefit_icon_size }}px !important;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #shopify-section-{{ id }} .ak-insiders__benefit-icon .image-element__wrap {
-    width: {{ benefit_icon_size }}px !important;
-    height: {{ benefit_icon_size }}px !important;
-    max-width: {{ benefit_icon_size }}px !important;
-    max-height: {{ benefit_icon_size }}px !important;
+    width: var(--ak-insiders-icon-size) !important;
+    height: var(--ak-insiders-icon-size) !important;
+    min-width: var(--ak-insiders-icon-size) !important;
+    min-height: var(--ak-insiders-icon-size) !important;
     flex-shrink: 0;
     display: flex !important;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box !important;
+  }
+  #shopify-section-{{ id }} .ak-insiders__benefit-icon .image-element__wrap {
+    width: var(--ak-insiders-icon-size) !important;
+    height: var(--ak-insiders-icon-size) !important;
+    min-width: var(--ak-insiders-icon-size) !important;
+    min-height: var(--ak-insiders-icon-size) !important;
+    max-width: var(--ak-insiders-icon-size) !important;
+    max-height: var(--ak-insiders-icon-size) !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-icon img {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    width: auto !important;
-    height: auto !important;
+    width: var(--ak-insiders-icon-size) !important;
+    height: var(--ak-insiders-icon-size) !important;
+    min-width: var(--ak-insiders-icon-size) !important;
+    min-height: var(--ak-insiders-icon-size) !important;
+    max-width: var(--ak-insiders-icon-size) !important;
+    max-height: var(--ak-insiders-icon-size) !important;
     object-fit: contain !important;
-    display: block;
+    display: block !important;
+    box-sizing: border-box !important;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-text { font-weight: {{ benefit_font_weight }}; font-size: {{ benefit_text_font_size }}px !important; line-height: 1.3; }
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} { --ak-insiders-icon-size: {{ benefit_icon_size_mobile_px }}px; }
     #shopify-section-{{ id }} .ak-insiders__logo-text { font-size: {{ logo_font_size_mobile }}px !important; }
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 0; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
@@ -197,19 +207,6 @@
     #shopify-section-{{ id }} .ak-insiders__benefits { flex-direction: column !important; flex-wrap: nowrap !important; align-items: stretch; gap: {{ benefit_row_gap_mobile }}px; }
     #shopify-section-{{ id }} .ak-insiders__benefit { flex-direction: row !important; max-width: none; flex: 0 0 auto !important; justify-content: flex-start; align-items: center; gap: {{ benefit_icon_text_gap_mobile }}px; }
     #shopify-section-{{ id }} .ak-insiders__benefit-text { text-align: left; font-size: {{ benefit_text_font_size_mobile }}px !important; line-height: 1.2; }
-    /* Figma: mobile benefit icons ~99–101px; desktop ~48px. 0 = same as desktop. */
-    #shopify-section-{{ id }} .ak-insiders__benefit-icon {
-      width: {{ benefit_icon_size_mobile_px }}px !important;
-      height: {{ benefit_icon_size_mobile_px }}px !important;
-      min-width: {{ benefit_icon_size_mobile_px }}px !important;
-      min-height: {{ benefit_icon_size_mobile_px }}px !important;
-    }
-    #shopify-section-{{ id }} .ak-insiders__benefit-icon .image-element__wrap {
-      width: {{ benefit_icon_size_mobile_px }}px !important;
-      height: {{ benefit_icon_size_mobile_px }}px !important;
-      max-width: {{ benefit_icon_size_mobile_px }}px !important;
-      max-height: {{ benefit_icon_size_mobile_px }}px !important;
-    }
   }
 {% endstyle %}
 
@@ -368,11 +365,80 @@
     },
     {
       "type": "header",
+      "content": "Typography & icon sizes (mobile)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Use these when the preview is set to Mobile. They control what you see in the mobile preview."
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_mobile",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo text font size (mobile)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "benefit_icon_size_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Benefit icon size (mobile)",
+      "default": 100,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "headline_font_size_mobile",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline font size (mobile)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "benefit_text_font_size_mobile",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Benefit text font size (mobile)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "benefit_row_gap_mobile",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between benefit rows (mobile)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "benefit_icon_text_gap_mobile",
+      "min": 12,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between icon and text (mobile)",
+      "default": 40
+    },
+    {
+      "type": "header",
       "content": "Typography & icon sizes (desktop)"
     },
     {
       "type": "paragraph",
-      "content": "Apply when the preview is wide (desktop). For mobile preview, scroll down to \"Typography & icon sizes (mobile)\"."
+      "content": "Use these when the preview is set to Desktop."
     },
     {
       "type": "range",
@@ -441,79 +507,6 @@
       "id": "text_color",
       "label": "Text color",
       "default": "#000000"
-    },
-    {
-      "type": "header",
-      "content": "Typography & icon sizes (mobile)"
-    },
-    {
-      "type": "paragraph",
-      "content": "Apply when the preview is narrow (mobile). Use these to see changes in the mobile preview."
-    },
-    {
-      "type": "range",
-      "id": "logo_font_size_mobile",
-      "min": 14,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Logo text font size (mobile)",
-      "default": 28
-    },
-    {
-      "type": "range",
-      "id": "benefit_icon_size_mobile",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Benefit icon size (mobile)",
-      "default": 100,
-      "info": "0 = same as desktop (48px). Figma mobile ~99–101px."
-    },
-    {
-      "type": "range",
-      "id": "headline_font_size_mobile",
-      "min": 18,
-      "max": 72,
-      "step": 2,
-      "unit": "px",
-      "label": "Headline font size (mobile)",
-      "default": 60,
-      "info": "Figma: 60px (Amiri), centered."
-    },
-    {
-      "type": "range",
-      "id": "benefit_text_font_size_mobile",
-      "min": 14,
-      "max": 36,
-      "step": 1,
-      "unit": "px",
-      "label": "Benefit text font size (mobile)",
-      "default": 30,
-      "info": "Figma: 30px Helvetica Neue, line-height 1.2."
-    },
-    {
-      "type": "range",
-      "id": "benefit_row_gap_mobile",
-      "min": 16,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "Space between benefit rows (mobile)",
-      "default": 100,
-      "info": "Figma: ~99px between rows."
-    },
-    {
-      "type": "range",
-      "id": "benefit_icon_text_gap_mobile",
-      "min": 12,
-      "max": 56,
-      "step": 2,
-      "unit": "px",
-      "label": "Space between icon and text (mobile)",
-      "default": 40,
-      "info": "Figma: 40px gap in each benefit row."
     },
     {
       "type": "range",
