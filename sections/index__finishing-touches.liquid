@@ -15,6 +15,16 @@
 {% assign padding_bottom = section.settings.padding_bottom | default: 40 | plus: 0 %}
 {% assign heading_alignment = section.settings.heading_alignment | default: 'center' %}
 {% assign heading_font_size = section.settings.heading_font_size | default: 24 %}
+{% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
+{% assign heading_underline = section.settings.heading_underline %}
+{% case section.settings.font_family %}
+  {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 
 {% assign products_count = 0 %}
 {% for block in section.blocks %}
@@ -38,11 +48,14 @@
   }
   #shopify-section-{{ id }} .ak-finishing-touches__heading {
     margin: 0 0 1.5rem;
+    font-family: {{ font_stack }};
     font-size: {{ heading_font_size }}px;
+    font-weight: {{ heading_font_weight }};
     text-align: {{ heading_alignment }};
     display: block;
     width: 100%;
     box-sizing: border-box;
+    {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
   }
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -386,6 +399,21 @@
       ]
     },
     {
+      "type": "select",
+      "id": "font_family",
+      "label": "Heading font family",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ],
+      "info": "Safe fonts that work without loading a font package."
+    },
+    {
       "type": "range",
       "id": "heading_font_size",
       "label": "Heading font size",
@@ -394,6 +422,25 @@
       "step": 2,
       "unit": "px",
       "default": 24
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_underline",
+      "label": "Heading underline",
+      "default": false
     },
     {
       "type": "header",
