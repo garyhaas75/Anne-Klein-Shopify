@@ -25,7 +25,7 @@
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
 {% assign section_aria_label = section.settings.section_aria_label %}
-{% assign benefit_icon_size_mobile = section.settings.benefit_icon_size_mobile | default: 99 %}
+{% assign benefit_icon_size_mobile = section.settings.benefit_icon_size_mobile | default: 100 %}
 {% if benefit_icon_size_mobile == 0 %}
   {% assign benefit_icon_size_mobile_px = 48 %}
 {% else %}
@@ -33,7 +33,7 @@
 {% endif %}
 {% assign headline_font_size_mobile = section.settings.headline_font_size_mobile | default: 60 %}
 {% assign benefit_text_font_size_mobile = section.settings.benefit_text_font_size_mobile | default: 30 %}
-{% assign benefit_row_gap_mobile = section.settings.benefit_row_gap_mobile | default: 99 %}
+{% assign benefit_row_gap_mobile = section.settings.benefit_row_gap_mobile | default: 100 %}
 {% assign benefit_icon_text_gap_mobile = section.settings.benefit_icon_text_gap_mobile | default: 40 %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
 {% assign section_min_height = section.settings.section_min_height | default: 360 %}
@@ -400,7 +400,7 @@
       "step": 4,
       "unit": "px",
       "label": "Benefit icon size (mobile)",
-      "default": 99,
+      "default": 100,
       "info": "0 = same as desktop (48px). Figma mobile ~99–101px."
     },
     {
@@ -433,7 +433,7 @@
       "step": 4,
       "unit": "px",
       "label": "Space between benefit rows (mobile)",
-      "default": 99,
+      "default": 100,
       "info": "Figma: ~99px between rows."
     },
     {
