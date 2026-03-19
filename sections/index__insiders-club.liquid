@@ -72,14 +72,30 @@
     background-color: {{ bg_color }};
     color: {{ text_color }};
     --ak-insiders-icon-size: {{ benefit_icon_size }}px;
-    {% if section_max_height_desktop > 0 %}max-height: {{ section_max_height_desktop }}px; overflow-y: auto;{% endif %}
   }
+  {% if section_max_height_desktop > 0 %}
+  #shopify-section-{{ id }} .ak-insiders__scroll-wrap {
+    max-height: {{ section_max_height_desktop }}px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  {% endif %}
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px;
-      {% if section_max_height_mobile > 0 %}max-height: {{ section_max_height_mobile }}px; overflow-y: auto;{% endif %}
     }
+    {% if section_max_height_mobile > 0 %}
+    #shopify-section-{{ id }} .ak-insiders__scroll-wrap {
+      max-height: {{ section_max_height_mobile }}px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-insiders__headline,
   #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; font-family: {{ font_stack }}; text-transform: none; }
@@ -223,6 +239,7 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
+  <div class="ak-insiders__scroll-wrap">
   <div class="ak-insiders__two-col">
     <div class="ak-insiders__left">
       {% if bg_image != blank %}
@@ -279,6 +296,7 @@
         {% endif %}
       </div>
     </div>
+  </div>
   </div>
 </section>
 
