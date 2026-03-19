@@ -6,16 +6,6 @@
     
     <div class="influencer-contact__form-column">
       
-      {%- if section.settings.heading != blank -%}
-        <h1 class="page__title title">{{ section.settings.heading }}</h1>
-      {%- endif -%}
-
-      {%- if section.settings.intro_text != blank -%}
-        <div class="influencer-contact__intro rte">
-          {{ section.settings.intro_text }}
-        </div>
-      {%- endif -%}
-
       {%- if section.settings.image != blank -%}
         <div class="influencer-contact__image-wrapper">
           {{ section.settings.image | image_url: width: 1200 | image_tag:
@@ -29,6 +19,17 @@
           {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
         </div>
       {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="page__title title">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.intro_text != blank -%}
+        <div class="influencer-contact__intro rte">
+          {{ section.settings.intro_text }}
+        </div>
+      {%- endif -%}
+
 
       {% form 'contact', class: 'influencer-contact__form' %}
         <input type="hidden" name="contact[form_source]" value="Creator Program">
@@ -91,23 +92,6 @@
             required aria-required="true"
           >
         </div>
-
-        {% comment %}
-        <div class="influencer-contact__field">
-          <label for="ContactForm-location-{{ section.id }}" class="influencer-contact__label">
-            {{ section.settings.label_location }}{% if section.settings.require_location %} <span aria-hidden="true">*</span>{% endif %}
-          </label>
-          <input 
-            type="text" 
-            id="ContactForm-location-{{ section.id }}" 
-            name="contact[{{ section.settings.label_location }}]"
-            class="influencer-contact__input"
-            autocomplete="address-level2"
-            {% if section.settings.require_location %}required aria-required="true"{% endif %}
-            placeholder="{{ section.settings.placeholder_location }}"
-          >
-        </div>
-        {% endcomment %}
 
         <div class="influencer-contact__field">
           <label for="ContactForm-platform-{{ section.id }}" class="influencer-contact__label">
