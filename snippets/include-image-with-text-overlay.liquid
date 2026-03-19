@@ -193,11 +193,15 @@
     position: relative;
     overflow: hidden;
     line-height: 0;
+    margin-bottom: 0 !important;
   }
   .image-with-text-overlay__banner img,
   .image-with-text-overlay__banner .image-element__wrap {
     display: block;
     vertical-align: middle;
+  }
+  .image-with-text-overlay__container {
+    margin-bottom: 0 !important;
   }
 {%- endcapture -%}
 
@@ -217,6 +221,7 @@
     padding-bottom: {{ padding_bottom }}px;
     padding-left: {{ padding_left }}px;
     padding-right: {{ padding_right }}px;
+    margin-bottom: 0;
     {% if width == 'wide' %}
       width: 100%;
     {% elsif width == 'half' %}
