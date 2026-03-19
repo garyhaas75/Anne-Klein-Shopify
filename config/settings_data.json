@@ -6449,7 +6449,7 @@
           "background_image_opacity": 25,
           "background_color": "#f0ede3",
           "text_color": "#000000",
-          "benefit_icon_size_mobile": 76,
+          "benefit_icon_size_mobile": 48,
           "section_aria_label": "",
           "padding_top": 12,
           "padding_bottom": 0
