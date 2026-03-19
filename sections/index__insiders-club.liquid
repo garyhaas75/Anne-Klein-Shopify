@@ -25,12 +25,16 @@
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
 {% assign section_aria_label = section.settings.section_aria_label %}
-{% assign benefit_icon_size_mobile = section.settings.benefit_icon_size_mobile | default: 80 %}
+{% assign benefit_icon_size_mobile = section.settings.benefit_icon_size_mobile | default: 99 %}
 {% if benefit_icon_size_mobile == 0 %}
   {% assign benefit_icon_size_mobile_px = 48 %}
 {% else %}
   {% assign benefit_icon_size_mobile_px = benefit_icon_size_mobile %}
 {% endif %}
+{% assign headline_font_size_mobile = section.settings.headline_font_size_mobile | default: 60 %}
+{% assign benefit_text_font_size_mobile = section.settings.benefit_text_font_size_mobile | default: 30 %}
+{% assign benefit_row_gap_mobile = section.settings.benefit_row_gap_mobile | default: 99 %}
+{% assign benefit_icon_text_gap_mobile = section.settings.benefit_icon_text_gap_mobile | default: 40 %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
 {% assign section_min_height = section.settings.section_min_height | default: 360 %}
 {% case section.settings.font_family %}
@@ -179,13 +183,14 @@
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 100% !important; max-width: 100% !important; }
     #shopify-section-{{ id }} .ak-insiders__left-inner { display: flex !important; flex-direction: column !important; align-items: center !important; width: 100%; text-align: center; }
-    #shopify-section-{{ id }} .ak-insiders__buttons { flex-direction: column !important; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; }
+    #shopify-section-{{ id }} .ak-insiders__buttons { flex-direction: column !important; width: 100%; max-width: 598px; margin-left: auto; margin-right: auto; }
     #shopify-section-{{ id }} .ak-insiders__buttons .button { width: 100%; box-sizing: border-box; }
-    #shopify-section-{{ id }} .ak-insiders__right { flex: 0 0 100% !important; max-width: 100% !important; border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__right { flex: 0 0 100% !important; max-width: 100% !important; border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 40px; padding-right: 40px; padding-top: 1.5rem; }
     #shopify-section-{{ id }} .ak-insiders__right-inner { margin: 0 auto; text-align: center; max-width: 360px; }
-    #shopify-section-{{ id }} .ak-insiders__benefits { flex-direction: column !important; flex-wrap: nowrap !important; align-items: stretch; gap: 1.25rem; }
-    #shopify-section-{{ id }} .ak-insiders__benefit { flex-direction: row !important; max-width: none; flex: 0 0 auto !important; justify-content: flex-start; align-items: center; gap: 1rem; }
-    #shopify-section-{{ id }} .ak-insiders__benefit-text { text-align: left; }
+    #shopify-section-{{ id }} .ak-insiders__headline { font-size: {{ headline_font_size_mobile }}px; line-height: 1.13; }
+    #shopify-section-{{ id }} .ak-insiders__benefits { flex-direction: column !important; flex-wrap: nowrap !important; align-items: stretch; gap: {{ benefit_row_gap_mobile }}px; }
+    #shopify-section-{{ id }} .ak-insiders__benefit { flex-direction: row !important; max-width: none; flex: 0 0 auto !important; justify-content: flex-start; align-items: center; gap: {{ benefit_icon_text_gap_mobile }}px; }
+    #shopify-section-{{ id }} .ak-insiders__benefit-text { text-align: left; font-size: {{ benefit_text_font_size_mobile }}px; line-height: 1.2; }
     /* Figma: mobile benefit icons ~99–101px; desktop ~48px. 0 = same as desktop. */
     #shopify-section-{{ id }} .ak-insiders__benefit-icon {
       width: {{ benefit_icon_size_mobile_px }}px;
@@ -384,6 +389,10 @@
       "default": "#000000"
     },
     {
+      "type": "header",
+      "content": "Mobile sizing (Figma match)"
+    },
+    {
       "type": "range",
       "id": "benefit_icon_size_mobile",
       "min": 0,
@@ -391,8 +400,52 @@
       "step": 4,
       "unit": "px",
       "label": "Benefit icon size (mobile)",
-      "default": 80,
-      "info": "0 = same as desktop (48px). Figma mobile ~99–101px; use 80–100 to match."
+      "default": 99,
+      "info": "0 = same as desktop (48px). Figma mobile ~99–101px."
+    },
+    {
+      "type": "range",
+      "id": "headline_font_size_mobile",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline font size (mobile)",
+      "default": 60,
+      "info": "Figma: 60px (Amiri), centered."
+    },
+    {
+      "type": "range",
+      "id": "benefit_text_font_size_mobile",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Benefit text font size (mobile)",
+      "default": 30,
+      "info": "Figma: 30px Helvetica Neue, line-height 1.2."
+    },
+    {
+      "type": "range",
+      "id": "benefit_row_gap_mobile",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between benefit rows (mobile)",
+      "default": 99,
+      "info": "Figma: ~99px between rows."
+    },
+    {
+      "type": "range",
+      "id": "benefit_icon_text_gap_mobile",
+      "min": 12,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between icon and text (mobile)",
+      "default": 40,
+      "info": "Figma: 40px gap in each benefit row."
     },
     {
       "type": "range",
