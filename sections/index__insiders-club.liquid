@@ -64,7 +64,7 @@
     gap: 0;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0;
     position: relative;
     z-index: 1;
   }
@@ -244,6 +244,47 @@
       </div>
     </div>
   </div>
+  <!-- #region agent log -->
+  <script>
+  (function(){
+    var sec = document.querySelector('.ak-insiders-club');
+    if (!sec) return;
+    var twoCol = sec.querySelector('.ak-insiders__two-col');
+    var left = sec.querySelector('.ak-insiders__left');
+    var leftInner = sec.querySelector('.ak-insiders__left-inner');
+    var logo = sec.querySelector('.ak-insiders__logo');
+    var right = sec.querySelector('.ak-insiders__right');
+    function m(el, label) {
+      if (!el) return {label: label, exists: false};
+      var r = el.getBoundingClientRect();
+      var cs = getComputedStyle(el);
+      return {
+        label: label,
+        left: r.left, right: r.right, width: r.width, top: r.top,
+        pL: cs.paddingLeft, pR: cs.paddingRight,
+        mL: cs.marginLeft, mR: cs.marginRight,
+        maxW: cs.maxWidth, w: cs.width, boxSizing: cs.boxSizing
+      };
+    }
+    var shopifyWrap = sec.parentElement;
+    var data = {
+      viewport: window.innerWidth,
+      shopifyWrap: m(shopifyWrap, 'shopify-section-wrap'),
+      section: m(sec, 'section.ak-insiders-club'),
+      twoCol: m(twoCol, 'two-col'),
+      left: m(left, 'left-col'),
+      leftInner: m(leftInner, 'left-inner'),
+      logo: m(logo, 'logo'),
+      right: m(right, 'right-col')
+    };
+    twoCol.style.outline = '2px solid red';
+    left.style.outline = '2px solid lime';
+    if (right) right.style.outline = '2px solid blue';
+    if (logo) logo.style.outline = '2px solid orange';
+    fetch('http://127.0.0.1:7873/ingest/2b5f62f8-221d-40c6-90eb-7b0f2d3dbb8c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'c14767'},body:JSON.stringify({sessionId:'c14767',location:'index__insiders-club.liquid:debug',message:'element-dimensions',data:data,timestamp:Date.now()})}).catch(function(){});
+  })();
+  </script>
+  <!-- #endregion -->
 </section>
 
 {% schema %}
