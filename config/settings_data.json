@@ -6399,9 +6399,9 @@
         "settings": {
           "title": "FINISHING TOUCHES",
           "heading_alignment": "center",
-          "font_family": "georgia",
+          "font_family": "system",
           "heading_font_size": 20,
-          "heading_font_weight": "400",
+          "heading_font_weight": "300",
           "heading_underline": false,
           "products_per": 6,
           "align_height": false,
