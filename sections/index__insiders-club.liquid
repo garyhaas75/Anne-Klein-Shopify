@@ -32,7 +32,7 @@
   {% assign benefit_icon_size_mobile_px = benefit_icon_size_mobile %}
 {% endif %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
-{% assign section_min_height = section.settings.section_min_height | default: 380 %}
+{% assign section_min_height = section.settings.section_min_height | default: 350 %}
 {% if section_min_height > 0 %}
   {% assign min_height_css = 'min-height:' | append: section_min_height | append: 'px;' %}
 {% else %}
@@ -61,17 +61,16 @@
     display: flex !important;
     flex-wrap: nowrap !important;
     align-items: stretch !important;
-    justify-content: center;
-    gap: 2rem;
+    gap: 0;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 20px;
+    padding: 0 20px;
     position: relative;
     z-index: 1;
   }
   #shopify-section-{{ id }} .ak-insiders__left {
-    flex: 1 1 0%;
-    min-width: 0;
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -91,18 +90,14 @@
   }
   #shopify-section-{{ id }} .ak-insiders__left-inner { position: relative; z-index: 1; padding: 1.5rem 0; text-align: center; }
   #shopify-section-{{ id }} .ak-insiders__right {
-    flex: 1 1 0%;
-    min-width: 0;
+    flex: 0 0 66.667%;
+    max-width: 66.667%;
     border-left: 1px solid rgba(0,0,0,0.15);
     padding-left: 2rem;
     padding-right: 2rem;
     display: flex !important;
     align-items: stretch !important;
     text-align: center;
-  }
-  #shopify-section-{{ id }} .ak-insiders__left {
-    padding-left: 2rem;
-    padding-right: 2rem;
   }
   #shopify-section-{{ id }} .ak-insiders__right-inner {
     margin: auto 0;
@@ -125,9 +120,9 @@
   }
   #shopify-section-{{ id }} .ak-insiders__benefits {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: 1.5rem 2rem;
+    gap: 1rem;
     text-align: center;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit {
@@ -135,7 +130,8 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    max-width: 180px;
+    flex: 1 1 0%;
+    min-width: 0;
   }
   #shopify-section-{{ id }} .ak-insiders__benefit-icon {
     width: 48px;
@@ -169,10 +165,11 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-insiders__two-col { flex-direction: column !important; flex-wrap: wrap !important; gap: 1.5rem; min-height: 0 !important; }
     #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 auto !important; max-width: 100% !important; }
-    #shopify-section-{{ id }} .ak-insiders__right { border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-top: 1.5rem; }
+    #shopify-section-{{ id }} .ak-insiders__left { flex: 0 0 100% !important; max-width: 100% !important; }
+    #shopify-section-{{ id }} .ak-insiders__right { flex: 0 0 100% !important; max-width: 100% !important; border-left: none; border-top: 1px solid rgba(0,0,0,0.15); padding-left: 0; padding-right: 0; padding-top: 1.5rem; }
     #shopify-section-{{ id }} .ak-insiders__right-inner { margin: 0 auto; }
-    #shopify-section-{{ id }} .ak-insiders__benefits { gap: 1rem; }
-    #shopify-section-{{ id }} .ak-insiders__benefit { max-width: 140px; }
+    #shopify-section-{{ id }} .ak-insiders__benefits { flex-wrap: wrap !important; gap: 1rem; }
+    #shopify-section-{{ id }} .ak-insiders__benefit { max-width: 140px; flex: 0 0 auto !important; }
     /* Figma: mobile benefit icons ~99–101px; desktop ~48px. 0 = same as desktop. */
     #shopify-section-{{ id }} .ak-insiders__benefit-icon {
       width: {{ benefit_icon_size_mobile_px }}px;
@@ -348,7 +345,7 @@
       "step": 20,
       "unit": "px",
       "label": "Section min height (desktop)",
-      "default": 380,
+      "default": 350,
       "info": "Taller values give more room for vertical centering. 0 = auto height."
     },
     {
