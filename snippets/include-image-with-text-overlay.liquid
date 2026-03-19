@@ -58,6 +58,14 @@
 {% comment %} Accessibility contrast (ADA) {% endcomment %}
 {% assign text_shadow_contrast = object.settings.text_shadow_contrast | default: true %}
 {% assign scrim_overlay = object.settings.scrim_overlay | default: 'dark' %}
+{% case object.settings.preheading_font_family | default: 'system' %}
+  {% when 'arial' %}{% assign preheading_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign preheading_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign preheading_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign preheading_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign preheading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign preheading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 {% case object.settings.font_family | default: 'system' %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -65,6 +73,14 @@
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% case object.settings.subheading_font_family | default: 'system' %}
+  {% when 'arial' %}{% assign subheading_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign subheading_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign subheading_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign subheading_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign subheading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign subheading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% comment %} Mobile {% endcomment %}
 {% assign mobile_text_below_media = object.settings.mobile_text_below_image %}
@@ -119,7 +135,7 @@
   }
 
   .image-with-text-overlay__preheading {
-    font-family: {{ font_stack }};
+    font-family: {{ preheading_font_stack }};
     font-weight: {{ preheading_font_weight }};
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
@@ -127,7 +143,7 @@
   }
 
   .image-with-text-overlay__subheading {
-    font-family: {{ font_stack }};
+    font-family: {{ subheading_font_stack }};
     font-weight: {{ subheading_font_weight }};
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
