@@ -771,8 +771,7 @@
     var dismissOverlay = section.querySelector('.ak-video__dismiss-overlay');
     var loop = {{ section.settings.loop | default: true }};
     var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var wantsAutoplay = section.dataset.autoplay === 'true' && !reducedMotion;
+    var wantsAutoplay = section.dataset.autoplay === 'true';
 
     video.removeAttribute('controls');
 
@@ -786,11 +785,8 @@
       didSourceSwap = true;
     }
 
-    /* --- 2. Reduced motion --- */
-    if (reducedMotion) {
-      video.autoplay = false;
-      video.pause();
-    }
+    /* --- 2. Reduced motion: respect preference for CSS animations only,
+       not for video autoplay (merchant explicitly enabled it) --- */
 
     /* --- 3. Card helpers --- */
     function show(el) {
@@ -818,9 +814,18 @@
       updatePauseBtn();
     });
 
-    /* --- 5. Start card: DISABLED FOR TESTING --- */
+    /* --- 5. Start card: visible initially, tap to play --- */
     if (startCard) {
-      hide(startCard);
+      show(startCard);
+      startCard.addEventListener('click', function() {
+        video.play();
+      });
+      startCard.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          video.play();
+        }
+      });
     }
 
     /* --- 6. End card: replay --- */
@@ -835,41 +840,21 @@
     }
 
     /* --- 7. Autoplay --- */
-    var dbg = document.createElement('div');
-    dbg.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);color:#0f0;font:12px/1.4 monospace;padding:8px;z-index:99999;max-height:40vh;overflow:auto;';
-    document.body.appendChild(dbg);
-    function log(msg) { dbg.textContent += msg + '\n'; }
-    log('autoplay=' + section.dataset.autoplay);
-    log('wantsAutoplay=' + wantsAutoplay);
-    log('reducedMotion=' + reducedMotion);
-    log('isMobile=' + isMobile);
-    log('didSwap=' + didSourceSwap);
-    log('paused=' + video.paused);
-    log('readyState=' + video.readyState);
-    log('muted=' + video.muted);
-    log('src=' + (video.currentSrc || video.src || 'none').slice(-40));
+    /* --- 7. Autoplay --- */
     if (wantsAutoplay) {
       if (!video.paused) {
         hide(startCard);
-        log('ALREADY PLAYING - hiding card');
       } else {
         video.muted = true;
         if (video.readyState >= 3) {
-          log('readyState>=3, calling play()');
-          var p = video.play();
-          if (p && p.then) p.then(function() { log('play() OK'); }).catch(function(e) { log('play() FAIL: ' + e.name + ' ' + e.message); });
+          video.play().catch(function() {});
         } else {
-          log('waiting for canplay...');
           video.addEventListener('canplay', function() {
-            log('canplay fired, readyState=' + video.readyState);
             video.muted = true;
-            var p = video.play();
-            if (p && p.then) p.then(function() { log('play() OK'); }).catch(function(e) { log('play() FAIL: ' + e.name + ' ' + e.message); });
+            video.play().catch(function() {});
           }, { once: true });
         }
       }
-    } else {
-      log('AUTOPLAY SKIPPED (wantsAutoplay=false)');
     }
 
     /* --- 8. Mute button --- */
