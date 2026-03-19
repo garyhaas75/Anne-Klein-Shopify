@@ -13,6 +13,8 @@
 {% assign show_gutter = section.settings.show_gutter %}
 {% assign padding_top = section.settings.padding_top | default: 40 | plus: 0 %}
 {% assign padding_bottom = section.settings.padding_bottom | default: 40 | plus: 0 %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
 {% assign heading_alignment = section.settings.heading_alignment | default: 'center' %}
 {% assign heading_font_size = section.settings.heading_font_size | default: 24 %}
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
@@ -39,6 +41,12 @@
     padding-bottom: {{ padding_bottom }}px;
     {% if width == 'wide' %}width: 100%;{% endif %}
   }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+  }
   #shopify-section-{{ id }} .ak-finishing-touches__heading-wrap {
     width: 100%;
     flex: 0 0 100%;
@@ -52,6 +60,7 @@
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     text-align: {{ heading_alignment }};
+    text-transform: none;
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -399,9 +408,13 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Fonts"
+    },
+    {
       "type": "select",
       "id": "font_family",
-      "label": "Heading font family",
+      "label": "Heading font",
       "default": "system",
       "options": [
         { "value": "system", "label": "System (default)" },
@@ -495,18 +508,40 @@
     {
       "type": "range",
       "id": "padding_top",
-      "label": "Top spacing",
+      "label": "Top spacing (desktop)",
       "min": 0,
-      "max": 80,
+      "max": 200,
+      "step": 5,
       "default": 40,
       "unit": "px"
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "label": "Bottom spacing",
+      "label": "Bottom spacing (desktop)",
       "min": 0,
-      "max": 80,
+      "max": 200,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top spacing (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom spacing (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
       "default": 40,
       "unit": "px"
     },

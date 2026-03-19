@@ -1038,9 +1038,13 @@
       "content": "Overlay"
     },
     {
+      "type": "header",
+      "content": "Fonts (video & cards)"
+    },
+    {
       "type": "select",
       "id": "font_family",
-      "label": "Font family",
+      "label": "Default font",
       "default": "system",
       "options": [
         { "value": "system", "label": "System (default)" },
@@ -1050,12 +1054,12 @@
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
-      "info": "Default for all overlay and card text. Override per heading below."
+      "info": "Used when a specific font below is set to \"Section default\"."
     },
     {
       "type": "select",
       "id": "font_overlay_line1",
-      "label": "Overlay line 1 font",
+      "label": "Overlay line 1 (subheading) font",
       "default": "",
       "options": [
         { "value": "", "label": "Section default" },

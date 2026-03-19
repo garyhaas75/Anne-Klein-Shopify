@@ -78,6 +78,24 @@
       },
       {
         "type": "header",
+        "content": "Fonts"
+      },
+      {
+        "type": "select",
+        "id": "font_family",
+        "label": "Font family",
+        "default": "system",
+        "options": [
+          { "value": "system", "label": "System (default)" },
+          { "value": "arial", "label": "Arial" },
+          { "value": "georgia", "label": "Georgia" },
+          { "value": "times", "label": "Times New Roman" },
+          { "value": "verdana", "label": "Verdana" },
+          { "value": "trebuchet", "label": "Trebuchet MS" }
+        ]
+      },
+      {
+        "type": "header",
         "content": "Layout"
       },
       {
@@ -143,18 +161,40 @@
       {
         "type": "range",
         "id": "padding_top",
-        "label": "Top spacing",
+        "label": "Top spacing (desktop)",
         "min": 0,
-        "max": 80,
+        "max": 200,
+        "step": 5,
         "default": 20,
         "unit": "px"
       },
       {
         "type": "range",
         "id": "padding_bottom",
-        "label": "Bottom spacing",
+        "label": "Bottom spacing (desktop)",
         "min": 0,
-        "max": 80,
+        "max": 200,
+        "step": 5,
+        "default": 20,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_top_mobile",
+        "label": "Top spacing (mobile)",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "default": 20,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom_mobile",
+        "label": "Bottom spacing (mobile)",
+        "min": 0,
+        "max": 200,
+        "step": 5,
         "default": 20,
         "unit": "px"
       },

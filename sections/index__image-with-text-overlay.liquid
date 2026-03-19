@@ -82,7 +82,7 @@
     },
     {
       "type": "header",
-      "content": "Text"
+      "content": "Fonts"
     },
     {
       "type": "richtext",
@@ -235,13 +235,57 @@
     {
       "type": "range",
       "id": "text_spacing",
-      "label": "Spacing between text",
+      "label": "Spacing between text (px)",
       "min": 0,
       "max": 48,
       "step": 2,
       "default": 12,
       "unit": "px",
-      "info": "Vertical space between preheading, heading, and subheading."
+      "info": "Vertical space between preheading, heading, and subheading (like AK Video)."
+    },
+    {
+      "type": "header",
+      "content": "Text overlay container"
+    },
+    {
+      "type": "range",
+      "id": "overlay_container_padding_top",
+      "label": "Overlay padding top (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "overlay_container_padding_bottom",
+      "label": "Overlay padding bottom (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "overlay_container_padding_top_mobile",
+      "label": "Overlay padding top (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "overlay_container_padding_bottom_mobile",
+      "label": "Overlay padding bottom (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
     },
     {
       "type": "select",
@@ -532,21 +576,47 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
       "type": "range",
       "id": "padding_top",
-      "label": "Top spacing",
+      "label": "Top spacing (desktop)",
       "min": 0,
-      "max": 80,
+      "max": 200,
+      "step": 5,
       "default": 0,
       "unit": "px"
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "label": "Bottom spacing",
+      "label": "Bottom spacing (desktop)",
       "default": 0,
       "min": 0,
-      "max": 80,
+      "max": 200,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top spacing (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom spacing (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
       "unit": "px"
     },
     {

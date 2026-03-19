@@ -94,6 +94,12 @@
 {% assign padding_bottom = object.settings.padding_bottom %}
 {% assign padding_left = object.settings.padding_left %}
 {% assign padding_right = object.settings.padding_right %}
+{% assign padding_top_mobile = object.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = object.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign overlay_padding_top = object.settings.overlay_container_padding_top | default: 24 %}
+{% assign overlay_padding_bottom = object.settings.overlay_container_padding_bottom | default: 24 %}
+{% assign overlay_padding_top_mobile = object.settings.overlay_container_padding_top_mobile | default: overlay_padding_top %}
+{% assign overlay_padding_bottom_mobile = object.settings.overlay_container_padding_bottom_mobile | default: overlay_padding_bottom %}
 {% assign animation = object.settings.animation | default: 'none' %}
 
 {% comment %}Is the color set to transparent?{% endcomment %}
@@ -125,11 +131,17 @@
     margin: 0;
   }
 
+  .caption {
+    padding-top: {{ overlay_padding_top }}px !important;
+    padding-bottom: {{ overlay_padding_bottom }}px !important;
+  }
+
   .image-with-text-overlay__heading {
     font-family: {{ font_stack }};
     color: {% if heading_alpha != 0 %}{{ title_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     font-size: {{ heading_font_size }}px !important;
     font-weight: {{ heading_font_weight }} !important;
+    text-transform: none;
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
@@ -138,6 +150,7 @@
     font-family: {{ preheading_font_stack }};
     font-weight: {{ preheading_font_weight }};
     color: {% if preheading_alpha != 0 %}{{ pretext_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
+    text-transform: none;
     {% if pretext_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
@@ -146,6 +159,7 @@
     font-family: {{ subheading_font_stack }};
     font-weight: {{ subheading_font_weight }};
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
+    text-transform: none;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
     {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85);{% endif %}
   }
@@ -190,6 +204,17 @@
     {% elsif width == 'half' %}
       width: 50%;
     {% endif %}
+  }
+
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ id }} .caption {
+      padding-top: {{ overlay_padding_top_mobile }}px !important;
+      padding-bottom: {{ overlay_padding_bottom_mobile }}px !important;
+    }
   }
 
   #shopify-section-{{ id }} .caption--click-through {

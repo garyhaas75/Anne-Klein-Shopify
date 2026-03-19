@@ -24,6 +24,8 @@
 {% assign text_color = section.settings.text_color %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign logo_font_size = section.settings.logo_font_size | default: 28 %}
 {% assign logo_font_size_mobile = section.settings.logo_font_size_mobile | default: 28 %}
@@ -69,8 +71,14 @@
     color: {{ text_color }};
     --ak-insiders-icon-size: {{ benefit_icon_size }}px;
   }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+  }
   #shopify-section-{{ id }} .ak-insiders__headline,
-  #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; font-family: {{ font_stack }}; }
+  #shopify-section-{{ id }} .ak-insiders__benefit-text { color: {{ text_color }}; font-family: {{ font_stack }}; text-transform: none; }
   #shopify-section-{{ id }} .ak-insiders-club { position: relative; }
   #shopify-section-{{ id }} .ak-insiders__two-col {
     display: flex;
@@ -323,9 +331,13 @@
       "content": "Appearance"
     },
     {
+      "type": "header",
+      "content": "Fonts"
+    },
+    {
       "type": "select",
       "id": "font_family",
-      "label": "Font family",
+      "label": "Default font",
       "default": "system",
       "options": [
         { "value": "system", "label": "System (default)" },
@@ -546,7 +558,27 @@
       "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "Bottom padding (desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
       "default": 48
     }
   ],

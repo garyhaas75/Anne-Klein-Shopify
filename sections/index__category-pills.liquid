@@ -14,6 +14,8 @@
 {% assign bg_color = section.settings.background_color %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign pill_font_size = section.settings.pill_font_size | default: 18 %}
 {% assign pill_ls = section.settings.pill_letter_spacing | default: 2 %}
@@ -76,6 +78,12 @@
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-pills__heading { color: {{ heading_color }}; }
   #shopify-section-{{ id }} .ak-category-pills .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; display: flex; flex-wrap: wrap; }
@@ -293,12 +301,12 @@
     },
     {
       "type": "header",
-      "content": "Pill typography"
+      "content": "Fonts"
     },
     {
       "type": "select",
       "id": "font_family",
-      "label": "Font family (default)",
+      "label": "Default font",
       "default": "system",
       "options": [
         { "value": "system", "label": "System (default)" },
@@ -308,12 +316,12 @@
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
       ],
-      "info": "Used when heading or pill font below is not set."
+      "info": "Used when \"Same as default\" is selected for heading or pills below."
     },
     {
       "type": "select",
       "id": "font_heading",
-      "label": "Heading font",
+      "label": "Section heading font",
       "default": "",
       "options": [
         { "value": "", "label": "Same as default" },
@@ -323,12 +331,13 @@
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
-      ]
+      ],
+      "info": "Font for the section heading (e.g. \"New for the Season\"). Can be different from pill labels."
     },
     {
       "type": "select",
       "id": "font_pills",
-      "label": "Pill labels font",
+      "label": "Pill button labels font",
       "default": "",
       "options": [
         { "value": "", "label": "Same as default" },
@@ -338,7 +347,8 @@
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
         { "value": "trebuchet", "label": "Trebuchet MS" }
-      ]
+      ],
+      "info": "Font for the category pill buttons. Can be different from the section heading."
     },
     {
       "type": "select",
@@ -481,7 +491,27 @@
       "max": 80,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "Bottom padding (desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
       "default": 24
     }
   ],
