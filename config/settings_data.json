@@ -6193,7 +6193,9 @@
           "default_menu": "",
           "section_aria_label": "",
           "padding_top": 20,
-          "padding_bottom": 24
+          "padding_bottom": 24,
+          "padding_top_mobile": 24,
+          "padding_bottom_mobile": 24
         }
       },
       "index_lifestyle_quad_P3Phpq": {
@@ -6250,6 +6252,8 @@
         "settings": {
           "text_color": "#ffffff",
           "font_family": "georgia",
+          "font_heading": "",
+          "font_cta": "arial",
           "heading_font_size": 42,
           "heading_font_weight": "400",
           "cta_font_size": 16,
@@ -6260,7 +6264,13 @@
           "max_height_mobile": 0,
           "section_aria_label": "",
           "padding_top": 0,
-          "padding_bottom": 0
+          "padding_bottom": 0,
+          "padding_top_mobile": 0,
+          "padding_bottom_mobile": 0,
+          "overlay_caption_padding_top": 24,
+          "overlay_caption_padding_bottom": 32,
+          "overlay_caption_padding_top_mobile": 24,
+          "overlay_caption_padding_bottom_mobile": 24
         }
       },
       "index_shop_new_arrivals_JiGV4g": {
@@ -6337,7 +6347,9 @@
           "grid_gap": 8,
           "section_aria_label": "",
           "padding_top": 24,
-          "padding_bottom": 60
+          "padding_bottom": 60,
+          "padding_top_mobile": 40,
+          "padding_bottom_mobile": 40
         }
       },
       "index_finishing_touches_TLVBqV": {
@@ -6410,6 +6422,8 @@
           "show_gutter": true,
           "padding_top": 20,
           "padding_bottom": 20,
+          "padding_top_mobile": 40,
+          "padding_bottom_mobile": 40,
           "section_aria_label": ""
         }
       },
@@ -6563,7 +6577,7 @@
           "font_family": "georgia",
           "font_overlay_line1": "",
           "font_overlay_heading": "",
-          "font_overlay_cta": "",
+          "font_overlay_cta": "arial",
           "font_start_card_heading": "",
           "font_end_card_heading": "",
           "font_hashtag": "",
@@ -6583,7 +6597,7 @@
           "overlay_heading_underline": false,
           "overlay_cta": "Discover",
           "overlay_cta_font_size": 18,
-          "overlay_cta_font_weight": "400",
+          "overlay_cta_font_weight": "700",
           "overlay_cta_underline": true,
           "overlay_text": "",
           "text_color": "#ffffff",
