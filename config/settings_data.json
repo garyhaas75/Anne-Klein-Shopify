@@ -6301,7 +6301,7 @@
           "label_font_size": 15,
           "label_font_weight": "600",
           "label_icon_size": 0,
-          "label_icon_size_mobile": 14,
+          "label_icon_size_mobile": 8,
           "label_icon_image": "shopify://shop_images/AK_Homepage_Arrow_Short_Desktop.svg",
           "label_icon_image_mobile": "shopify://shop_images/AK_Homepage_Arrow_Mobile.svg",
           "label_icon_style": "arrow",
