@@ -760,6 +760,11 @@
 
 <script>
   (function() {
+    var _log = function(loc, msg, data, hyp) {
+      try {
+        fetch('http://127.0.0.1:7873/ingest/2b5f62f8-221d-40c6-90eb-7b0f2d3dbb8c', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'c14767' }, body: JSON.stringify({ sessionId: 'c14767', location: loc, message: msg, data: data || {}, hypothesisId: hyp || '', timestamp: Date.now() }) }).catch(function() {});
+      } catch (e) {}
+    };
     var sectionEl = document.getElementById('ak-video-{{ section.id }}');
     if (!sectionEl) return;
     var video = sectionEl.querySelector('.ak-video__player');
@@ -848,31 +853,71 @@
     if (video.playsInline === undefined) video.setAttribute('playsinline', '');
     if (video.playsInline === false) video.playsInline = true;
 
+    /* #region agent log */
+    _log('ak-video.liquid:init', 'autoplay init', { wantsAutoplay: wantsAutoplay, isMobile: isMobile, dataAutoplay: sectionEl.dataset.autoplay, reducedMotion: reducedMotion, readyState: video.readyState, innerWidth: window.innerWidth, hasMobile: video.dataset.hasMobile }, 'H1');
+    /* #endregion */
+
     var autoplayAttempting = false;
+    var autoplayFirstPlayAttempted = false;
     function isVideoInView() {
       var r = video.getBoundingClientRect();
       return r.top < window.innerHeight && r.bottom > 0;
     }
 
-    function attemptAutoplay() {
-      if (autoplayStarted || autoplayAttempting) return;
-      if (isMobile && !isVideoInView()) return;
-      if (video.readyState < 2) return;
+    function attemptAutoplay(source) {
+      source = source || '?';
+      var inView = isVideoInView();
+      var guardStarted = autoplayStarted;
+      var guardAttempting = autoplayAttempting;
+      var skipInViewCheck = isMobile && !autoplayFirstPlayAttempted;
+      var guardNotInView = isMobile && !skipInViewCheck && !inView;
+      var guardNotReady = video.readyState < 2;
+      if (guardStarted || guardAttempting) {
+        /* #region agent log */
+        _log('ak-video.liquid:attemptAutoplay', 'return early (started/attempting)', { source: source, autoplayStarted: guardStarted, autoplayAttempting: guardAttempting }, 'H2');
+        /* #endregion */
+        return;
+      }
+      if (guardNotInView) {
+        /* #region agent log */
+        _log('ak-video.liquid:attemptAutoplay', 'return early (not in view on mobile)', { source: source, inView: inView, isMobile: isMobile }, 'H3');
+        /* #endregion */
+        return;
+      }
+      if (guardNotReady) {
+        /* #region agent log */
+        _log('ak-video.liquid:attemptAutoplay', 'return early (readyState < 2)', { source: source, readyState: video.readyState }, 'H2');
+        /* #endregion */
+        return;
+      }
+      autoplayFirstPlayAttempted = true;
       video.muted = true;
       video.setAttribute('autoplay', '');
       video.autoplay = true;
       autoplayAttempting = true;
+      /* #region agent log */
+      _log('ak-video.liquid:play', 'calling video.play()', { source: source }, 'H4');
+      /* #endregion */
       var p = video.play();
       if (p && typeof p.then === 'function') {
         p.then(function() {
           autoplayAttempting = false;
           autoplayStarted = true;
-        }).catch(function() {
+          /* #region agent log */
+          _log('ak-video.liquid:playResolve', 'play() promise resolved', { source: source }, 'H4');
+          /* #endregion */
+        }).catch(function(err) {
           autoplayAttempting = false;
+          /* #region agent log */
+          _log('ak-video.liquid:playReject', 'play() promise rejected', { source: source, errName: err && err.name, errMsg: err && err.message }, 'H4');
+          /* #endregion */
           function retry(attempt) {
             if (autoplayStarted) return;
             var delays = [300, 800, 1500];
             if (attempt >= delays.length) {
+              /* #region agent log */
+              _log('ak-video.liquid:giveUp', 'autoplay gave up, showing start card', { attempts: attempt }, 'H4');
+              /* #endregion */
               if (startCard) showStartCard();
               return;
             }
@@ -896,6 +941,9 @@
         });
       } else {
         autoplayAttempting = false;
+        /* #region agent log */
+        _log('ak-video.liquid:play', 'play() did not return a Promise', { source: source }, 'H4');
+        /* #endregion */
       }
     }
 
@@ -903,22 +951,47 @@
       video.addEventListener('playing', function onPlaying() {
         autoplayStarted = true;
         video.removeEventListener('playing', onPlaying);
+        /* #region agent log */
+        _log('ak-video.liquid:playingEvent', 'playing event fired', {}, 'H5');
+        /* #endregion */
       }, { once: true });
+      function afterPaint(fn) {
+        var raf = window.requestAnimationFrame || function(cb) { setTimeout(cb, 16); };
+        raf(function() {
+          raf(function() { fn(); });
+        });
+      }
+      function tryAutoplayDeferred(source) {
+        afterPaint(function() {
+          attemptAutoplay(source);
+        });
+      }
       video.addEventListener('canplay', function() {
-        attemptAutoplay();
+        tryAutoplayDeferred('canplay');
       }, { once: true });
       video.addEventListener('loadeddata', function() {
-        attemptAutoplay();
+        tryAutoplayDeferred('loadeddata');
       }, { once: true });
-      if (video.readyState >= 2) attemptAutoplay();
+      if (video.readyState >= 2) tryAutoplayDeferred('readyState');
       if (typeof IntersectionObserver !== 'undefined') {
         var autoplayIO = new IntersectionObserver(function(entries) {
           entries.forEach(function(entry) {
-            if (entry.isIntersecting) attemptAutoplay();
+            if (entry.isIntersecting) tryAutoplayDeferred('observer');
           });
         }, { rootMargin: '15%', threshold: 0.1 });
         autoplayIO.observe(video);
       }
+      if (typeof document.visibilityState !== 'undefined') {
+        if (document.visibilityState === 'visible') {
+          tryAutoplayDeferred('visibilityInit');
+        }
+        document.addEventListener('visibilitychange', function() {
+          if (document.visibilityState === 'visible') tryAutoplayDeferred('visibilityChange');
+        });
+      }
+      setTimeout(function() {
+        if (!autoplayStarted) tryAutoplayDeferred('delayed1500');
+      }, 1500);
     }
 
     function showStartCard() {
