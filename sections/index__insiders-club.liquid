@@ -44,6 +44,8 @@
 {% assign benefit_icon_text_gap_mobile = section.settings.benefit_icon_text_gap_mobile | default: 40 %}
 {% assign logo_alt = "Anne Klein Insider's Club" %}
 {% assign section_min_height = section.settings.section_min_height | default: 360 %}
+{% assign section_max_height_desktop = section.settings.section_max_height_desktop | default: 0 %}
+{% assign section_max_height_mobile = section.settings.section_max_height_mobile | default: 0 %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -70,11 +72,13 @@
     background-color: {{ bg_color }};
     color: {{ text_color }};
     --ak-insiders-icon-size: {{ benefit_icon_size }}px;
+    {% if section_max_height_desktop > 0 %}max-height: {{ section_max_height_desktop }}px; overflow-y: auto;{% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px;
+      {% if section_max_height_mobile > 0 %}max-height: {{ section_max_height_mobile }}px; overflow-y: auto;{% endif %}
     }
   }
   #shopify-section-{{ id }} .ak-insiders__headline,
@@ -530,6 +534,28 @@
       "label": "Section min height (desktop)",
       "default": 360,
       "info": "Taller values give more room for vertical centering. 0 = auto height."
+    },
+    {
+      "type": "range",
+      "id": "section_max_height_desktop",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Section max height (desktop)",
+      "default": 0,
+      "info": "Caps the section height. 0 = no limit. Content scrolls if taller."
+    },
+    {
+      "type": "range",
+      "id": "section_max_height_mobile",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Section max height (mobile)",
+      "default": 0,
+      "info": "Caps the section height on mobile. 0 = no limit. Content scrolls if taller."
     },
     {
       "type": "header",
