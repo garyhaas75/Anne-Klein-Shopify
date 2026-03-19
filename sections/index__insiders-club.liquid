@@ -70,8 +70,8 @@
     z-index: 1;
   }
   #shopify-section-{{ id }} .ak-insiders__left {
-    flex: 0 0 400px;
-    max-width: 400px;
+    flex: 1 1 0%;
+    min-width: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -99,6 +99,10 @@
     display: flex !important;
     align-items: stretch !important;
     text-align: center;
+  }
+  #shopify-section-{{ id }} .ak-insiders__left {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   #shopify-section-{{ id }} .ak-insiders__right-inner {
     margin: auto 0;
