@@ -17,6 +17,12 @@
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign pill_font_size = section.settings.pill_font_size | default: 18 %}
 {% assign pill_ls = section.settings.pill_letter_spacing | default: 2 %}
+{% assign pill_padding = section.settings.pill_padding | default: 12 %}
+{% assign pill_padding_h = pill_padding | times: 1.25 | round %}
+{% assign pill_spacing = section.settings.pill_spacing | default: 8 %}
+{% assign pill_padding_mobile = section.settings.pill_padding_mobile | default: 10 %}
+{% assign pill_padding_h_mobile = pill_padding_mobile | times: 1.25 | round %}
+{% assign pill_spacing_mobile = section.settings.pill_spacing_mobile | default: 6 %}
 {% if pill_ls >= 10 %}
   {% assign pill_letter_spacing_em = pill_ls | append: '' | prepend: '0.' %}
 {% elsif pill_ls >= 1 %}
@@ -51,7 +57,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem 0.75rem;
+    gap: 1rem {{ pill_spacing }}px;
   }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--align-left { justify-content: flex-start; }
   #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--align-center { justify-content: center; }
@@ -88,7 +94,7 @@
   #shopify-section-{{ id }} .ak-pills__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: {{ pill_spacing }}px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -99,7 +105,7 @@
     align-items: center;
     justify-content: center;
     min-height: 44px;
-    padding: 0.75rem 1.25rem;
+    padding: {{ pill_padding }}px {{ pill_padding_h }}px;
     background: #000;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -127,7 +133,8 @@
     #shopify-section-{{ id }} .ak-pills__list {
       min-width: 0 !important;
     }
-    #shopify-section-{{ id }} .ak-pills__inner { gap: 0.75rem 0.5rem; }
+    #shopify-section-{{ id }} .ak-pills__inner { gap: 0.75rem {{ pill_spacing_mobile }}px; }
+    #shopify-section-{{ id }} .ak-pills__list { gap: {{ pill_spacing_mobile }}px; }
     #shopify-section-{{ id }} .ak-pills__inner.ak-pills__inner--inline {
       flex-direction: column !important;
       align-items: stretch !important;
@@ -140,7 +147,7 @@
       flex: 0 1 auto !important;
       min-width: 0 !important;
     }
-    #shopify-section-{{ id }} .ak-pills__pill { padding: 0.65rem 1rem; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
+    #shopify-section-{{ id }} .ak-pills__pill { padding: {{ pill_padding_mobile }}px {{ pill_padding_h_mobile }}px; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
   }
 {% endstyle %}
 
@@ -263,6 +270,54 @@
       "label": "Pill letter spacing",
       "default": 2,
       "info": "Letter spacing (0–10, stored as % of em; 2 ≈ 0.02em)."
+    },
+    {
+      "type": "range",
+      "id": "pill_padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill size (desktop)",
+      "default": 12,
+      "info": "Vertical padding on desktop; horizontal is proportional."
+    },
+    {
+      "type": "range",
+      "id": "pill_spacing",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill spacing (desktop)",
+      "default": 8,
+      "info": "Gap between pills on desktop."
+    },
+    {
+      "type": "header",
+      "content": "Pill size & spacing (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "pill_padding_mobile",
+      "min": 6,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill size (mobile)",
+      "default": 10,
+      "info": "Vertical padding on mobile; horizontal is proportional."
+    },
+    {
+      "type": "range",
+      "id": "pill_spacing_mobile",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Pill spacing (mobile)",
+      "default": 6,
+      "info": "Gap between pills on mobile."
     },
     {
       "type": "link_list",
