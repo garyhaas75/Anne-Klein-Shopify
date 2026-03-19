@@ -21,10 +21,16 @@
 {% assign label_font_weight = section.settings.label_font_weight | default: '700' %}
 {% assign label_font_size = section.settings.label_font_size | default: 18 %}
 {% assign label_icon_size = section.settings.label_icon_size | default: 0 %}
+{% assign label_icon_size_mobile = section.settings.label_icon_size_mobile | default: 0 %}
 {% if label_icon_size == 0 %}
   {% assign icon_size_px = label_font_size %}
 {% else %}
   {% assign icon_size_px = label_icon_size %}
+{% endif %}
+{% if label_icon_size_mobile == 0 %}
+  {% assign icon_size_mobile_px = icon_size_px %}
+{% else %}
+  {% assign icon_size_mobile_px = label_icon_size_mobile %}
 {% endif %}
 {% assign label_icon_style = section.settings.label_icon_style | default: 'arrow' %}
 {% assign label_icon_svg = section.settings.label_icon_svg %}
@@ -167,12 +173,12 @@
     line-height: 1;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon svg {
-    width: {{ icon_size_px }}px;
-    height: {{ icon_size_px }}px;
-    min-width: {{ icon_size_px }}px;
-    min-height: {{ icon_size_px }}px;
-    max-width: {{ icon_size_px }}px;
-    max-height: {{ icon_size_px }}px;
+    width: {{ icon_size_px }}px !important;
+    height: {{ icon_size_px }}px !important;
+    min-width: {{ icon_size_px }}px !important;
+    min-height: {{ icon_size_px }}px !important;
+    max-width: {{ icon_size_px }}px !important;
+    max-height: {{ icon_size_px }}px !important;
     flex-shrink: 0;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
@@ -187,6 +193,17 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-icon svg {
+      width: {{ icon_size_mobile_px }}px !important;
+      height: {{ icon_size_mobile_px }}px !important;
+      min-width: {{ icon_size_mobile_px }}px !important;
+      min-height: {{ icon_size_mobile_px }}px !important;
+      max-width: {{ icon_size_mobile_px }}px !important;
+      max-height: {{ icon_size_mobile_px }}px !important;
+    }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
+      height: {{ icon_size_mobile_px }}px !important;
+    }
     #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
   }
 {% endstyle %}
@@ -370,6 +387,16 @@
       "step": 2,
       "default": 0,
       "info": "0 = same as label font size. Use to shorten or enlarge the arrow."
+    },
+    {
+      "type": "range",
+      "id": "label_icon_size_mobile",
+      "label": "Icon size mobile (px)",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "default": 14,
+      "info": "0 = same as desktop. Set smaller (e.g. 12–14) to shorten arrows on mobile."
     },
     {
       "type": "image_picker",
