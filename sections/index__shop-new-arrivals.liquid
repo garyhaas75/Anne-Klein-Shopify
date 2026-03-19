@@ -20,6 +20,12 @@
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign label_font_weight = section.settings.label_font_weight | default: '700' %}
 {% assign label_font_size = section.settings.label_font_size | default: 18 %}
+{% assign label_icon_size = section.settings.label_icon_size | default: 0 %}
+{% if label_icon_size == 0 %}
+  {% assign icon_size_px = label_font_size %}
+{% else %}
+  {% assign icon_size_px = label_icon_size %}
+{% endif %}
 {% assign label_icon_style = section.settings.label_icon_style | default: 'arrow' %}
 {% assign label_icon_svg = section.settings.label_icon_svg %}
 {% assign label_icon_style_mobile = section.settings.label_icon_style_mobile | default: 'arrow' %}
@@ -161,12 +167,16 @@
     line-height: 1;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon svg {
-    width: 1em;
-    height: 1em;
-    font-size: {{ label_font_size }}px;
+    width: {{ icon_size_px }}px;
+    height: {{ icon_size_px }}px;
+    min-width: {{ icon_size_px }}px;
+    min-height: {{ icon_size_px }}px;
+    max-width: {{ icon_size_px }}px;
+    max-height: {{ icon_size_px }}px;
+    flex-shrink: 0;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
-    height: {{ label_font_size }}px !important;
+    height: {{ icon_size_px }}px !important;
     width: auto !important;
     object-fit: contain !important;
     position: static !important;
@@ -350,6 +360,16 @@
     {
       "type": "header",
       "content": "Label icon (before each label)"
+    },
+    {
+      "type": "range",
+      "id": "label_icon_size",
+      "label": "Icon size (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as label font size. Use to shorten or enlarge the arrow."
     },
     {
       "type": "image_picker",
