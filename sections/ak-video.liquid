@@ -791,7 +791,7 @@
     }
     var lastTapToggle = 0;
     function toggleControls(e) {
-      if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__dismiss-overlay')) return;
+      if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__dismiss-overlay') || e.target.closest('.ak-video__start-card')) return;
       if (e.type === 'click' && (Date.now() - lastTapToggle) < 400) return;
       var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
       sectionEl.classList.toggle('ak-video--controls-visible');
@@ -820,7 +820,7 @@
       }
       sectionEl.addEventListener('click', toggleControls);
       video.addEventListener('touchend', function(e) {
-        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript')) return;
+        if (e.target.closest('.ak-video__mute') || e.target.closest('.ak-video__pause') || e.target.closest('.ak-video__transcript') || e.target.closest('.ak-video__start-card')) return;
         if ((Date.now() - lastTapToggle) < 400) return;
         var wasVisible = sectionEl.classList.contains('ak-video--controls-visible');
         sectionEl.classList.toggle('ak-video--controls-visible');
@@ -1051,18 +1051,38 @@
       });
     }
     if (startCard) {
-      startCard.addEventListener('click', function() {
-        if (video.paused) {
-          video.play();
-          updatePauseButton();
+      startCard.addEventListener('click', function(e) {
+        if (!video.paused) return;
+        video.muted = true;
+        var p = video.play();
+        if (p && typeof p.then === 'function') {
+          p.then(function() {
+            hideStartCard();
+            if (typeof updatePauseButton === 'function') updatePauseButton();
+          }).catch(function() {
+            if (typeof updatePauseButton === 'function') updatePauseButton();
+          });
+        } else {
+          hideStartCard();
+          if (typeof updatePauseButton === 'function') updatePauseButton();
         }
       });
       startCard.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (video.paused) {
-            video.play();
-            updatePauseButton();
+          if (!video.paused) return;
+          video.muted = true;
+          var p = video.play();
+          if (p && typeof p.then === 'function') {
+            p.then(function() {
+              hideStartCard();
+              if (typeof updatePauseButton === 'function') updatePauseButton();
+            }).catch(function() {
+              if (typeof updatePauseButton === 'function') updatePauseButton();
+            });
+          } else {
+            hideStartCard();
+            if (typeof updatePauseButton === 'function') updatePauseButton();
           }
         }
       });
