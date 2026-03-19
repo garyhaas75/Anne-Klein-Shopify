@@ -418,12 +418,8 @@
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
     margin-bottom: {{ section.settings.overlay_line1_padding_bottom | default: 0 }}px !important;
   }
-  #ak-video-{{ section.id }} .ak-video__overlay-heading,
-  #ak-video-{{ section.id }} .ak-video__title {
+  #ak-video-{{ section.id }} .ak-video__overlay-heading {
     margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
-  }
-  #ak-video-{{ section.id }} .ak-video__overlay-cta {
-    margin-bottom: {{ section.settings.overlay_cta_padding_bottom | default: 0 }}px !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay--bottom {
     display: flex;
@@ -440,7 +436,7 @@
     text-align: center;
     margin: 0 !important;
     margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
     padding: 0 !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     line-height: 1 !important;
@@ -831,15 +827,6 @@
       "type": "range",
       "id": "overlay_heading_padding_bottom",
       "label": "Padding below line 2 (px)",
-      "min": 0,
-      "max": 80,
-      "step": 2,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "overlay_cta_padding_bottom",
-      "label": "Padding below line 3 (px)",
       "min": 0,
       "max": 80,
       "step": 2,
