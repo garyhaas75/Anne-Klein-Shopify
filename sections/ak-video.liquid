@@ -387,7 +387,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: {{ section.settings.overlay_line_spacing | default: 12 }}px;
     text-align: center;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1,
@@ -771,6 +771,126 @@
     },
     {
       "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "select",
+      "id": "overlay_vertical_position",
+      "label": "Overlay vertical position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "middle"
+    },
+    {
+      "type": "range",
+      "id": "overlay_line_spacing",
+      "label": "Spacing between overlay lines (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 12,
+      "info": "Gap between subheading, heading, and CTA."
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_top",
+      "label": "Overlay padding top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_bottom",
+      "label": "Overlay padding bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "overlay_subheading",
+      "label": "Overlay line 1 (subheading)",
+      "info": "e.g. Spring 2026 Campaign. Hero layout only."
+    },
+    {
+      "type": "range",
+      "id": "overlay_subheading_font_size",
+      "label": "Line 1 font size (px)",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "overlay_heading",
+      "label": "Overlay line 2 (main heading)",
+      "info": "e.g. The Invisible Thread. Falls back to Overlay text if blank."
+    },
+    {
+      "type": "range",
+      "id": "overlay_heading_font_size",
+      "label": "Line 2 font size (px)",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "type": "text",
+      "id": "overlay_cta",
+      "label": "Overlay line 3 (CTA)",
+      "info": "e.g. DISCOVER. Hero layout only."
+    },
+    {
+      "type": "range",
+      "id": "overlay_cta_font_size",
+      "label": "Line 3 font size (px)",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "overlay_text",
+      "label": "Overlay text (fallback)",
+      "info": "Single line; used when line 2 is blank, or for Feature layout."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Overlay text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Overlay heading level (line 2)",
+      "options": [
+        { "value": "h1", "label": "H1 (use when this is the page hero)" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "Paragraph (no heading)" }
+      ],
+      "default": "h1",
+      "info": "Choose H1 only if this section is the primary hero. Use H2 or lower when the page already has an H1."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo_overlay",
+      "label": "Show logo overlay",
+      "default": false,
+      "info": "Hero layout only. Shows a cutout overlay over the video."
+    },
+    {
+      "type": "header",
       "content": "Size & fit"
     },
     {
@@ -883,116 +1003,6 @@
       "label": "Loop video",
       "default": true,
       "info": "If unchecked, end card will show when video finishes."
-    },
-    {
-      "type": "header",
-      "content": "Overlay"
-    },
-    {
-      "type": "select",
-      "id": "overlay_vertical_position",
-      "label": "Overlay vertical position",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "middle", "label": "Middle" },
-        { "value": "bottom", "label": "Bottom" }
-      ],
-      "default": "middle"
-    },
-    {
-      "type": "range",
-      "id": "overlay_padding_top",
-      "label": "Overlay padding top (px)",
-      "min": 0,
-      "max": 200,
-      "step": 5,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "overlay_padding_bottom",
-      "label": "Overlay padding bottom (px)",
-      "min": 0,
-      "max": 200,
-      "step": 5,
-      "default": 0
-    },
-    {
-      "type": "text",
-      "id": "overlay_subheading",
-      "label": "Overlay line 1 (subheading)",
-      "info": "e.g. Spring 2026 Campaign. Hero layout only."
-    },
-    {
-      "type": "range",
-      "id": "overlay_subheading_font_size",
-      "label": "Line 1 font size (px)",
-      "min": 12,
-      "max": 48,
-      "step": 2,
-      "default": 16
-    },
-    {
-      "type": "text",
-      "id": "overlay_heading",
-      "label": "Overlay line 2 (main heading)",
-      "info": "e.g. The Invisible Thread. Falls back to Overlay text if blank."
-    },
-    {
-      "type": "range",
-      "id": "overlay_heading_font_size",
-      "label": "Line 2 font size (px)",
-      "min": 20,
-      "max": 72,
-      "step": 2,
-      "default": 48
-    },
-    {
-      "type": "text",
-      "id": "overlay_cta",
-      "label": "Overlay line 3 (CTA)",
-      "info": "e.g. DISCOVER. Hero layout only."
-    },
-    {
-      "type": "range",
-      "id": "overlay_cta_font_size",
-      "label": "Line 3 font size (px)",
-      "min": 12,
-      "max": 32,
-      "step": 2,
-      "default": 14
-    },
-    {
-      "type": "text",
-      "id": "overlay_text",
-      "label": "Overlay text (fallback)",
-      "info": "Single line; used when line 2 is blank, or for Feature layout."
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Overlay text color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "select",
-      "id": "heading_level",
-      "label": "Overlay heading level (line 2)",
-      "options": [
-        { "value": "h1", "label": "H1 (use when this is the page hero)" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "p", "label": "Paragraph (no heading)" }
-      ],
-      "default": "h1",
-      "info": "Choose H1 only if this section is the primary hero. Use H2 or lower when the page already has an H1."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_logo_overlay",
-      "label": "Show logo overlay",
-      "default": false,
-      "info": "Hero layout only. Shows a cutout overlay over the video."
     },
     {
       "type": "header",
