@@ -175,6 +175,7 @@
   .caption--scrim-dark::before {
     content: '';
     position: absolute;
+    inset: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -182,6 +183,7 @@
     background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 40%, transparent);
     pointer-events: none;
     z-index: 0;
+    box-sizing: border-box;
   }
   .caption--scrim-dark .caption-content {
     position: relative;
@@ -253,6 +255,44 @@
     pointer-events: none;
   }
 
+  /* Override theme global .caption rules so full-height caption and scrim work (no shifted shading) */
+  #shopify-section-{{ id }} .caption.align-bottom {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    -ms-transform: none !important;
+  }
+  #shopify-section-{{ id }} .caption.align-bottom .caption-content {
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }}.mobile-text--over-media .caption.align-bottom,
+    #shopify-section-{{ id }} .mobile-text--over-media .caption.align-bottom {
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: auto !important;
+      min-height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-end !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+      -ms-transform: none !important;
+    }
+  }
+
   {% if max_height_desktop > 0 %}
   #shopify-section-{{ id }} .image-with-text-overlay__banner {
     height: {{ max_height_desktop }}px;
@@ -282,11 +322,13 @@
   {% endif %}
 
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .image-with-text-overlay__banner {
+      overflow: hidden !important;
+    }
     {% if max_height_mobile > 0 %}
     #shopify-section-{{ id }} .image-with-text-overlay__banner {
       height: {{ max_height_mobile }}px;
       max-height: {{ max_height_mobile }}px;
-      overflow: hidden;
     }
     {% endif %}
   }
