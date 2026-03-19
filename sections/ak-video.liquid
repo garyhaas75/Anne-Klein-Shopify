@@ -626,9 +626,11 @@
   #ak-video-{{ section.id }} .ak-video__transcript {
     opacity: 1;
   }
-  #ak-video-{{ section.id }}:hover .ak-video__controls,
-  #ak-video-{{ section.id }} .ak-video__controls:focus-within {
-    opacity: 1;
+  @media (min-width: 769px) {
+    #ak-video-{{ section.id }}:hover .ak-video__controls,
+    #ak-video-{{ section.id }} .ak-video__controls:focus-within {
+      opacity: 1;
+    }
   }
   #ak-video-{{ section.id }} .ak-video__controls {
     position: absolute;
@@ -675,21 +677,25 @@
       max-height: {{ section.settings.section_max_height_mobile }}px;
     }
     {% endif %}
-    /* On mobile: controls and transcript hidden by default; only show on tap (or focus). */
-    #ak-video-{{ section.id }} .ak-video__controls,
-    #ak-video-{{ section.id }} .ak-video__transcript {
-      opacity: 0;
-      pointer-events: none;
+    /* On mobile: force controls and transcript hidden unless tap-to-show class or focus-within.
+       !important overrides desktop :hover rule which has higher specificity and sticks on touch. */
+    #ak-video-{{ section.id }}:not(.ak-video--controls-visible) .ak-video__controls,
+    #ak-video-{{ section.id }}:not(.ak-video--controls-visible) .ak-video__transcript {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
     }
     #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__controls,
     #ak-video-{{ section.id }}.ak-video--controls-visible .ak-video__transcript {
-      opacity: 1;
-      pointer-events: auto;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
     }
     #ak-video-{{ section.id }} .ak-video__controls:focus-within,
     #ak-video-{{ section.id }} .ak-video__transcript:focus-within {
-      opacity: 1;
-      pointer-events: auto;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
     }
     #ak-video-{{ section.id }} .ak-video__player {
       min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
