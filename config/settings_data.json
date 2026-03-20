@@ -5940,6 +5940,7 @@
           },
           "pill_dQhzEA": {
             "type": "pill",
+            "disabled": true,
             "settings": {
               "label": "Watches",
               "link": "shopify://collections/watches-1"
@@ -6080,6 +6081,7 @@
           },
           "tile_CgzwBd": {
             "type": "tile",
+            "disabled": true,
             "settings": {
               "image": "shopify://shop_images/e677998387bcaac2b61c8cd517917bc94da1c2d3.jpg",
               "image_alt": "",
