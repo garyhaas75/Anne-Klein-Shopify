@@ -246,13 +246,13 @@
         <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
           <div class="ak-video__overlay-inner">
             {% if has_line1 %}
-              <p class="ak-video__overlay-line1" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
+              <p class="ak-video__overlay-line1" tabindex="0" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
             {% endif %}
             {% if has_heading %}
-              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
+              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" tabindex="0" style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
             {% endif %}
             {% if has_cta %}
-              <p class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
+              <p class="ak-video__overlay-cta" tabindex="0" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
             {% endif %}
           </div>
         </div>
@@ -612,6 +612,12 @@
   }
   #ak-video-{{ section.id }} .ak-video__overlay-heading {
     margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay-line1:focus-visible,
+  #ak-video-{{ section.id }} .ak-video__overlay-heading:focus-visible,
+  #ak-video-{{ section.id }} .ak-video__overlay-cta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
   }
   #ak-video-{{ section.id }} .ak-video__overlay--bottom {
     display: flex;

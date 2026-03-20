@@ -169,6 +169,10 @@
     outline: 2px solid {{ pill_bg_color }};
     outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-pills__heading:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-category-pills .container > .ak-pills__inner {
       flex: 1 1 100% !important;
@@ -200,7 +204,7 @@
   <div class="container ak-pills__container--align-{{ content_alignment }}">
     <div class="ak-pills__inner ak-pills__inner--align-{{ content_alignment }} {% if layout_mode == 'inline' %}ak-pills__inner--inline{% endif %}">
       {% if heading != blank %}
-        <h2 class="ak-pills__heading" id="pills-heading-{{ id }}">{{ heading }}</h2>
+        <h2 class="ak-pills__heading" id="pills-heading-{{ id }}" tabindex="0">{{ heading }}</h2>
       {% endif %}
       <nav aria-label="{{ heading | default: section_aria_label | default: 'Shop by category' | escape }}">
         <ul class="ak-pills__list">

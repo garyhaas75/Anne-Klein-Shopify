@@ -153,6 +153,10 @@
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-new-arrivals__title:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-media {
     position: relative;
     width: 100%;
@@ -236,7 +240,7 @@
 <section class="ak-new-arrivals" {{ section_aria }}>
   <div class="ak-new-arrivals__inner">
     {% if heading != blank %}
-      <h2 class="ak-new-arrivals__title" id="new-arrivals-heading-{{ id }}">
+      <h2 class="ak-new-arrivals__title" id="new-arrivals-heading-{{ id }}" {% if heading_link == blank %}tabindex="0"{% endif %}>
         {% if heading_link != blank %}
           <a href="{{ heading_link }}" class="ak-new-arrivals__title-link">{{ heading }}</a>
         {% else %}

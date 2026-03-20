@@ -75,6 +75,9 @@
   #shopify-section-{{ id }} .flickity-page-dots .dot:focus-visible {
     outline: 2px solid currentColor; outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-finishing-touches__heading:focus-visible {
+    outline: 2px solid currentColor; outline-offset: 4px;
+  }
   #shopify-section-{{ id }} .ak-ft__product-link { text-decoration: none; color: inherit; display: block; }
   #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }
   /* Nav under slider: wrap + flex layout */
@@ -127,7 +130,7 @@
 <section class="section is-width-{{ width }} ak-finishing-touches-section {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
   {% if title != blank %}
     <div class="container ak-finishing-touches__heading-wrap">
-      <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}">{{ title }}</h2>
+      <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}" tabindex="0">{{ title }}</h2>
     </div>
   {% endif %}
   <div class="container">

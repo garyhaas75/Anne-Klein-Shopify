@@ -193,6 +193,11 @@
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-quad__caption .ak-quad__heading:focus-visible,
+  #shopify-section-{{ id }} .ak-quad__caption .ak-quad__cta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-lifestyle-quad .ak-quad__grid { grid-template-columns: 1fr; }
   }
@@ -332,10 +337,10 @@
             {% else %}
               <div class="ak-quad__caption">
                 {% if panel_heading != blank %}
-                  <h2 class="ak-quad__heading">{{ panel_heading }}</h2>
+                  <h2 class="ak-quad__heading" tabindex="0">{{ panel_heading }}</h2>
                 {% endif %}
                 {% if panel_cta_text != blank %}
-                  <p class="ak-quad__cta">{{ panel_cta_text }}</p>
+                  <p class="ak-quad__cta" tabindex="0">{{ panel_cta_text }}</p>
                 {% endif %}
               </div>
             {% endif %}

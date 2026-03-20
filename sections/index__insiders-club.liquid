@@ -162,7 +162,9 @@
   #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-weight: {{ headline_font_weight }}; font-size: {{ logo_font_size }}px !important; margin: 0 0 1rem; }
   #shopify-section-{{ id }} .ak-insiders__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 0; }
   #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible,
-  #shopify-section-{{ id }} .ak-insiders__logo a:focus-visible {
+  #shopify-section-{{ id }} .ak-insiders__logo a:focus-visible,
+  #shopify-section-{{ id }} .ak-insiders__headline:focus-visible,
+  #shopify-section-{{ id }} .ak-insiders__logo-text:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
@@ -259,7 +261,7 @@
               {% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}
             </div>
           {% else %}
-            <h2 class="ak-insiders__logo-text">Anne Klein Insider's Club</h2>
+            <h2 class="ak-insiders__logo-text" tabindex="0">Anne Klein Insider's Club</h2>
           {% endif %}
         </div>
         <div class="ak-insiders__buttons">
@@ -276,7 +278,7 @@
     <div class="ak-insiders__right">
       <div class="ak-insiders__right-inner">
         {% if headline != blank %}
-          <h2 class="ak-insiders__headline">{{ headline }}</h2>
+          <h2 class="ak-insiders__headline" tabindex="0">{{ headline }}</h2>
         {% endif %}
         {% if section.blocks.size > 0 %}
           <div class="ak-insiders__benefits">

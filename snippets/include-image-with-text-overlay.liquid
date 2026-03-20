@@ -334,7 +334,8 @@
   }
 
   #shopify-section-{{ id }} .banner--full-link:focus-visible,
-  #shopify-section-{{ id }} .image-with-text-overlay__buttons .button:focus-visible {
+  #shopify-section-{{ id }} .image-with-text-overlay__buttons .button:focus-visible,
+  #shopify-section-{{ id }} .image-with-text-overlay__heading:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
@@ -448,7 +449,7 @@
               </div>
             {% endif %}
             {% if title != blank %}
-              <h2 class="image-with-text-overlay__heading banner__heading title" style="color: {{ resolved_heading_color }} !important; font-size: {{ heading_font_size }}px !important; font-weight: {{ heading_font_weight }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
+              <h2 class="image-with-text-overlay__heading banner__heading title" tabindex="0" style="color: {{ resolved_heading_color }} !important; font-size: {{ heading_font_size }}px !important; font-weight: {{ heading_font_weight }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 <span>{{ title }}</span>
               </h2>
             {% endif %}
