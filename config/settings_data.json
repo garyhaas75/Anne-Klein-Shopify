@@ -6076,7 +6076,7 @@
               "image": "shopify://shop_images/f22820a8318c1ea73ef15bb774aaca2273a0fe6a.jpg",
               "image_alt": "",
               "label": "Clothing",
-              "link": ""
+              "link": "shopify://collections/clothing"
             }
           },
           "tile_CgzwBd": {
@@ -6085,7 +6085,7 @@
               "image": "shopify://shop_images/e677998387bcaac2b61c8cd517917bc94da1c2d3.jpg",
               "image_alt": "",
               "label": "Watches",
-              "link": ""
+              "link": "shopify://collections/watches"
             }
           },
           "tile_7NN4Hz": {
@@ -6103,7 +6103,7 @@
               "image": "shopify://shop_images/44ed6fe5d0b7007fc4bdc500a46e21d4cb80f41a.jpg",
               "image_alt": "",
               "label": "Opticals",
-              "link": ""
+              "link": "shopify://collections/sunglasses"
             }
           }
         },
