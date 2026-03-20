@@ -5969,6 +5969,8 @@
           "layout_mode": "inline",
           "content_alignment": "center",
           "background_color": "#ffffff",
+          "pill_background_color": "#000000",
+          "pill_text_color": "#ffffff",
           "font_family": "georgia",
           "font_heading": "",
           "font_pills": "arial",
@@ -6434,246 +6436,16 @@
           "end_card_button_label_mobile": "",
           "transcript": "A man in a white tuxedo and black tie stands in front of a record player and places a vinyl record onto the turntable. The record is black with a white Anne Klein lion head logo in the center. As the record begins to spin, a woman with long dark hair wearing a floral tiered dress walks across a lawn using circular stone steps. A man in a white tuxedo pushes a bar cart as the woman picks up a drink and smiles. A second woman with blonde hair walks toward a swimming pool wearing a floral dress, sunglasses, and a white scarf. The scene transitions to the first woman wearing a black dress and a large white sun hat with black polka dots while holding a cocktail. The blonde woman appears in a black and white dress with a matching polka dot hat and adjusts her sunglasses, revealing a gold watch and chain necklace. The first woman walks along the edge of the pool in a white suit carrying a floral handbag. The blonde woman walks through a garden in a white vest and skirt. A man in a tuxedo carries a small white handbag with a gold lion logo clasp on a silver tray. The first woman is seen through a circular window holding the bag while the blonde woman walks past. A man in a tuxedo runs up a flight of stairs with a bouquet of flowers. Another man in a tuxedo carries a bottle of champagne on a tray along a white stone railing. The two women walk past each other on the balcony and then turn to face the camera. The name Anne Klein appears in white letters over a view of the swimming pool where two men hold white umbrellas. The record with the lion logo continues to rotate on the turntable."
         }
-      },
-      "index_html_mXCmrC": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/f27435b3-505e-4242-a90e-49b518db2c4f/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": "section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_r7tHWd": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/ce99b969-e078-49f8-810b-9365611fe66b/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_UP4kQU": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/e44809e3-29fb-4ff4-9290-198d725b5dd5/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_erAPCR": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/50cba3c4-93d8-49bc-b9f4-d4e03905b009/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_knKheU": {
-        "type": "index__html",
-        "custom_css": [],
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/4970c41b-eaf5-4e0a-a3a9-a7233b442809/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_jVHAMD": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/853097bf-e8cc-4c7d-b5a5-57278c8026a1/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "stylitics_gallery_widget_eLpGBt": {
-        "type": "stylitics-gallery-widget",
-        "disabled": true,
-        "name": "Stylitics Gallery Widget",
-        "settings": {
-          "tag": "newarrivals_homepage_gallery"
-        }
-      },
-      "index_image_with_text_overlay_6aaRey": {
-        "type": "index__image-with-text-overlay",
-        "disabled": true,
-        "name": "Image with text overlay",
-        "settings": {
-          "link": "https://anneklein.com/pages/streams",
-          "label": "",
-          "open_in_new_tab": true,
-          "enable_shop_similar": false,
-          "image": "shopify://shop_images/AK_-_Show_6_-_Desktop-REPLAY.jpg",
-          "mobile_image": "shopify://shop_images/AK_-_Show_6_-_Mobile_REPLAY.jpg",
-          "image_alt": "",
-          "max_height_desktop": 0,
-          "max_height_mobile": 0,
-          "overlay_container_padding_top": 25,
-          "overlay_container_padding_bottom": 25,
-          "overlay_container_padding_top_mobile": 25,
-          "overlay_container_padding_bottom_mobile": 25,
-          "pretext": "",
-          "title": "",
-          "subtitle": "",
-          "pretext_color": "#000000",
-          "pretext_underline": false,
-          "preheading_font_family": "system",
-          "heading_color": "#000000",
-          "font_family": "system",
-          "heading_font_size": 32,
-          "heading_font_weight": "400",
-          "heading_underline": false,
-          "subheading_color": "#000000",
-          "subheading_font_family": "system",
-          "preheading_font_weight": "400",
-          "subheading_font_weight": "400",
-          "subheading_underline": false,
-          "text_alignment": "center",
-          "text_horizontal_position": "center",
-          "text_vertical_position": "middle",
-          "text_shadow_contrast": true,
-          "scrim_overlay": "dark",
-          "background_color": "#ffffff",
-          "background_opacity": 77,
-          "border_color": "#ffffff",
-          "border_width": 0,
-          "text_width": 40,
-          "button_1": "",
-          "button_1_link": "",
-          "button_1_style": "button--secondary",
-          "button_2": "",
-          "button_2_link": "",
-          "button_2_style": "button--secondary",
-          "mobile_image_crop": "none",
-          "mobile_text_below_image": true,
-          "pretext_color_mobile": "rgba(0,0,0,0)",
-          "heading_color_mobile": "rgba(0,0,0,0)",
-          "subheading_color_mobile": "rgba(0,0,0,0)",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_top_mobile": 0,
-          "padding_bottom_mobile": 0,
-          "text_spacing": 12,
-          "padding_below_preheading": 12,
-          "padding_below_heading": 12,
-          "padding_below_subheading": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ""
-        }
-      },
-      "index_html_iVbjHj": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/008add90-c388-4107-8618-5f640baee860/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_J4FpUA": {
-        "type": "index__html",
-        "disabled": true,
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/c8f67135-e833-4ea8-8764-ff1f8ceeeca8/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
-      },
-      "index_html_6XDKmQ": {
-        "type": "index__html",
-        "disabled": true,
-        "name": "Custom HTML",
-        "settings": {
-          "html_content": "<script src=\"https://cas.zma.gs/63472c9c-fd70-4bdf-9c37-f3f6d5a259ba/ssr/containers/0843fedc-8ba5-41e9-a976-9721ac4cec77/init.js\"></script>",
-          "width": "wide",
-          "padding_top": 0,
-          "padding_bottom": 0,
-          "padding_left": 0,
-          "padding_right": 0,
-          "animation": "none",
-          "css_class": "",
-          "custom_css": ".section.has-background {\npadding-left: 0;\npadding-right: 0;\n}"
-        }
       }
     },
     "content_for_index": [
-      "index_html_mXCmrC",
       "ak_video_JDTPRV",
-      "index_html_r7tHWd",
       "index_category_pills_QCdmYD",
-      "index_html_UP4kQU",
       "index_lifestyle_quad_P3Phpq",
-      "index_html_erAPCR",
       "index_shop_new_arrivals_JiGV4g",
-      "index_html_knKheU",
-      "index_html_jVHAMD",
       "index_image_with_text_overlay_zyb4jV",
-      "stylitics_gallery_widget_eLpGBt",
       "index_finishing_touches_TLVBqV",
-      "index_insiders_club_Y4N9di",
-      "index_image_with_text_overlay_6aaRey",
-      "index_html_iVbjHj",
-      "index_html_J4FpUA",
-      "index_html_6XDKmQ"
+      "index_insiders_club_Y4N9di"
     ],
     "blocks": {
       "855628211100114053": {
