@@ -6002,7 +6002,7 @@
               "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO_Low Res.mp4",
               "heading": "Dress with Intention",
               "cta_text": "SHOP DRESSES",
-              "link": ""
+              "link": "shopify://collections/dresses"
             }
           },
           "panel_3PGkkV": {
@@ -6012,7 +6012,7 @@
               "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_01_0032.png",
               "heading": "Business Leisure",
               "cta_text": "SHOP WORKWEAR",
-              "link": ""
+              "link": "shopify://collections/workwear"
             }
           },
           "panel_RWrxm7": {
@@ -6022,7 +6022,7 @@
               "image": "shopify://shop_images/cb48eab5448188900bfe091a063bf7b604c0f0f7.jpg",
               "heading": "Finishing Touches",
               "cta_text": "SHOP ACCESSORIES",
-              "link": ""
+              "link": "shopify://collections/accessories"
             }
           },
           "panel_8gJmX4": {
@@ -6032,7 +6032,7 @@
               "video": "shopify://files/videos/AK_SS26_12_16x9_NO LOGO.mp4",
               "heading": "Vacation Mindset",
               "cta_text": "SHOP RESORT",
-              "link": ""
+              "link": "shopify://collections/new"
             }
           }
         },
