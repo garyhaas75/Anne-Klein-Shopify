@@ -243,19 +243,31 @@
       {% endif %}
       {% if has_line1 or has_heading or has_cta %}
         {% assign ov_pos = section.settings.overlay_vertical_position | default: 'middle' %}
-        <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
+        {% assign overlay_has_link = false %}
+        {% if section.settings.overlay_link != blank %}
+          {% assign overlay_has_link = true %}
+        {% endif %}
+        <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack{% if overlay_has_link %} ak-video__overlay--has-link{% endif %}" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
           <div class="ak-video__overlay-inner">
             {% if has_line1 %}
-              <p class="ak-video__overlay-line1" tabindex="0" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
+              <p class="ak-video__overlay-line1" {% unless overlay_has_link %}tabindex="0"{% endunless %} style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
             {% endif %}
             {% if has_heading %}
-              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" tabindex="0" style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
+              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" {% unless overlay_has_link %}tabindex="0"{% endunless %} style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
             {% endif %}
             {% if has_cta %}
-              <p class="ak-video__overlay-cta" tabindex="0" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
+              {% if overlay_has_link %}
+                <span class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</span>
+              {% else %}
+                <p class="ak-video__overlay-cta" tabindex="0" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
+              {% endif %}
             {% endif %}
           </div>
         </div>
+      {% endif %}
+      {% comment %} Full-bleed link: click on video or overlay (outside controls) opens overlay link {% endcomment %}
+      {% if is_hero and section.settings.overlay_link != blank %}
+        <a href="{{ section.settings.overlay_link }}" class="ak-video__overlay-link" {% if section.settings.overlay_link_new_tab %}target="_blank" rel="noopener"{% endif %} aria-label="{{ section.settings.overlay_cta | default: 'Learn more' | escape }}{% if section.settings.overlay_link_new_tab %} (opens in new tab){% endif %}"></a>
       {% endif %}
     {% elsif section.settings.overlay_text != blank %}
       <div class="ak-video__overlay ak-video__overlay--bottom">
@@ -616,6 +628,20 @@
   #ak-video-{{ section.id }} .ak-video__overlay-line1:focus-visible,
   #ak-video-{{ section.id }} .ak-video__overlay-heading:focus-visible,
   #ak-video-{{ section.id }} .ak-video__overlay-cta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay-cta-link {
+    cursor: pointer;
+    display: inline-block;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay-link:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 4px;
   }
@@ -1315,6 +1341,18 @@
       "type": "checkbox",
       "id": "overlay_cta_underline",
       "label": "Underline line 3",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "overlay_link",
+      "label": "Overlay link (CTA destination)",
+      "info": "When set, the overlay CTA (line 3) becomes a link to this URL."
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_link_new_tab",
+      "label": "Open overlay link in new tab",
       "default": false
     },
     {
