@@ -12,6 +12,8 @@
 {% assign layout_mode = section.settings.layout_mode | default: 'inline' %}
 {% assign content_alignment = section.settings.content_alignment | default: 'left' %}
 {% assign bg_color = section.settings.background_color %}
+{% assign pill_bg_color = section.settings.pill_background_color | default: '#000000' %}
+{% assign pill_text_color = section.settings.pill_text_color | default: '#ffffff' %}
 {% assign padding_top = section.settings.padding_top %}
 {% assign padding_bottom = section.settings.padding_bottom %}
 {% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
@@ -144,24 +146,27 @@
     align-items: center;
     justify-content: center;
     min-height: 44px;
+    min-width: 44px;
     padding: {{ pill_padding_v }}px {{ pill_padding_h }}px;
-    background: #000;
-    color: #fff;
+    background: {{ pill_bg_color }} !important;
+    background-color: {{ pill_bg_color }} !important;
+    color: {{ pill_text_color }} !important;
     font-family: {{ font_stack_pills }};
     font-size: {{ pill_font_size }}px;
     font-weight: {{ pill_font_weight }};
     letter-spacing: {{ pill_letter_spacing_em }}em;
-    text-decoration: none;
+    text-decoration: none !important;
     text-transform: none;
     border-radius: 7px;
-    border: none;
+    border: none !important;
     cursor: pointer;
     transition: opacity 0.2s;
+    box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-pills__pill:hover,
-  #shopify-section-{{ id }} .ak-pills__pill:focus-visible { opacity: 0.85; color: #fff; }
+  #shopify-section-{{ id }} .ak-pills__pill:focus-visible { opacity: 0.85; color: {{ pill_text_color }} !important; }
   #shopify-section-{{ id }} .ak-pills__pill:focus-visible {
-    outline: 2px solid #000;
+    outline: 2px solid {{ pill_bg_color }};
     outline-offset: 3px;
   }
   @media only screen and (max-width: 798px) {
@@ -297,6 +302,18 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "pill_background_color",
+      "label": "Pill background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "pill_text_color",
+      "label": "Pill text color",
       "default": "#ffffff"
     },
     {
