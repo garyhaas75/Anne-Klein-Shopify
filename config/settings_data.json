@@ -5921,35 +5921,36 @@
             "type": "pill",
             "settings": {
               "label": "Clothing",
-              "link": ""
+              "link": "shopify://collections/clothing"
             }
           },
           "pill_fLLfEr": {
             "type": "pill",
             "settings": {
               "label": "Shoes",
-              "link": ""
+              "link": "shopify://collections/shoes"
             }
           },
           "pill_byRCig": {
             "type": "pill",
             "settings": {
               "label": "Handbags",
-              "link": ""
+              "link": "shopify://collections/handbags-1"
             }
           },
           "pill_dQhzEA": {
             "type": "pill",
+            "disabled": true,
             "settings": {
               "label": "Watches",
-              "link": ""
+              "link": "shopify://collections/watches-1"
             }
           },
           "pill_37QK6E": {
             "type": "pill",
             "settings": {
               "label": "Jewelry",
-              "link": ""
+              "link": "shopify://collections/jewelry"
             }
           }
         },
