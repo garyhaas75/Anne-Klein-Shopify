@@ -1,0 +1,50 @@
+---
+description: Validate Shopify section changes by inspecting rendered output on the live preview site
+globs: sections/**/*.liquid, **/sections/*.liquid
+alwaysApply: false
+---
+
+# Shopify Section: Rendered Output Validation
+
+After modifying any section's CSS, HTML structure, or inline styles, you MUST validate the rendered output on the live Shopify preview site before declaring the change complete. Do NOT rely solely on reading the Liquid source.
+
+## Why
+
+Liquid templates produce CSS/HTML that may behave differently than expected due to:
+- **Inline styles on child elements** (e.g. `opacity`, `display`) overriding or layering on scoped CSS.
+- **Empty or missing block settings** in the live theme (e.g. `block.settings.link` is blank for all blocks, causing every item to take the `{% else %}` branch).
+- **Global theme SCSS** compiled into `styles.scss` overriding section-scoped rules.
+- **Third-party app scripts** injecting styles or modifying DOM.
+- **Schema defaults not applying** to section instances created before the setting existed.
+
+## Validation steps (required after every visual change)
+
+1. **Push the change** to GitHub and wait for Shopify sync confirmation.
+2. **Fetch the rendered page source** with `curl -s <preview-url> | grep -o '<pattern>'` to inspect the ACTUAL HTML/CSS Shopify outputs. Check:
+   - Which branch of `{% if %}` / `{% else %}` each block is taking.
+   - Whether inline `style=""` attributes are present that conflict with scoped CSS.
+   - Whether `!important` declarations are actually in the rendered `<style>` block.
+3. **Open the preview in a browser** and take a screenshot of the affected section.
+4. **If the visual result doesn't match expectations**, inspect the rendered source (step 2) for:
+   - Inline `style` attributes (opacity, display, color, background) on the element or ancestors.
+   - Missing or empty Liquid variables producing blank CSS values.
+   - `{% else %}` branches applying unexpectedly because a setting is blank in the live theme.
+
+## Common pitfalls this catches
+
+| Symptom | Root cause | How curl reveals it |
+|---------|-----------|-------------------|
+| Element appears faded/gray | Inline `opacity` from an else branch | `grep -o 'class-name.*style[^"]*"' source` shows `opacity: 0.7` |
+| Color not applied | Setting is blank; CSS outputs empty value | `grep -o 'background:.*important' source` shows `background:  !important` (empty) |
+| Layout broken on mobile only | Media query overrides not scoped correctly | `grep -o '@media.*class-name' source` |
+| Style has no effect | Global theme CSS has higher specificity | Compare section `<style>` selector vs global stylesheet selectors |
+
+## Example: the pill opacity bug
+
+The WCAG fix added `style="cursor: default; opacity: 0.7;"` to pills where `block.settings.link` is blank. In the live theme, ALL 5 pill blocks had blank link URLs, so every pill rendered as a `<span>` at 70% opacity -- making `#000` appear as dark gray. This was invisible in code review but immediately obvious from:
+
+```bash
+curl -s "<preview-url>" | grep -o 'ak-pills__pill[^<]*' | head -10
+```
+
+Output showed every pill had `style="cursor: default; opacity: 0.7;"` -- confirming the else branch was hit for all blocks.

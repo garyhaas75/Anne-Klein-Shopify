@@ -116,8 +116,33 @@ Reusable guidelines for building and auditing theme sections. Aligns with WCAG 2
 
 ---
 
-## 9. Checklist for new or updated sections
+## 9. Rendered output validation (required)
 
+After every CSS, HTML, or inline-style change to a section, validate the **actual rendered output** on the Shopify preview site. Do not rely on reading the Liquid source alone.
+
+### Steps
+
+1. Push the change and wait for Shopify sync.
+2. Fetch the rendered page source: `curl -s <preview-url> | grep -o '<selector-pattern>[^<]*'` to inspect what HTML/CSS Shopify actually outputs.
+3. Check which `{% if %}` / `{% else %}` branch each block is taking in the live theme -- block settings may be empty even when schema defaults exist.
+4. Check for inline `style=""` attributes that conflict with or override scoped CSS (e.g. `opacity`, `display`, `color`).
+5. Open the preview in a browser and screenshot the section to confirm the visual result.
+
+### Why this matters
+
+Code that looks correct in the Liquid source can produce unexpected results when:
+- Block settings are blank in the live theme (every block takes the `{% else %}` branch).
+- Inline styles (opacity, display) layer on top of scoped CSS.
+- Global theme SCSS overrides section-scoped rules.
+- Schema defaults don't apply to section instances created before the setting existed.
+
+**Example:** An accessibility fix added `opacity: 0.7` to pills without link URLs. In the live theme all pill blocks had blank links, so every pill was grayed out. This was invisible in code review but immediately caught by `curl | grep`.
+
+---
+
+## 10. Checklist for new or updated sections
+
+- [ ] **Rendered output validated**: fetched page source with `curl` and confirmed actual HTML/CSS matches intent; screenshot verified.
 - [ ] No duplicate links to the same URL; use stretched link if whole area must be clickable.
 - [ ] Links only when URL is set; no `href="#"` fallback.
 - [ ] Visible `:focus-visible` and matching hover/focus styles on all interactive elements.
