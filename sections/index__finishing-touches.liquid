@@ -143,12 +143,13 @@
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
     min-height: 200px;
   }
-  /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px) */
+  /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px). !important overrides theme global .flickity-page-dots { display: block !important } on medium-down. */
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
-      display: none;
+      display: none !important;
     }
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button {
+      display: flex !important;
       width: 36px;
       height: 36px;
       min-width: 36px;
