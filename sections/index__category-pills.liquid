@@ -161,7 +161,7 @@
   #shopify-section-{{ id }} .ak-pills__pill:hover,
   #shopify-section-{{ id }} .ak-pills__pill:focus-visible { opacity: 0.85; color: #fff; }
   #shopify-section-{{ id }} .ak-pills__pill:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid #000;
     outline-offset: 3px;
   }
   @media only screen and (max-width: 798px) {
@@ -197,7 +197,7 @@
       {% if heading != blank %}
         <h2 class="ak-pills__heading" id="pills-heading-{{ id }}">{{ heading }}</h2>
       {% endif %}
-      <nav aria-label="Shop by category">
+      <nav aria-label="{{ heading | default: section_aria_label | default: 'Shop by category' | escape }}">
         <ul class="ak-pills__list">
           {% if section.blocks.size > 0 %}
             {% for block in section.blocks %}
@@ -208,7 +208,7 @@
                       {{ block.settings.label }}
                     </a>
                   {% else %}
-                    <span class="ak-pills__pill">{{ block.settings.label }}</span>
+                    <span class="ak-pills__pill" style="cursor: default; opacity: 0.7;">{{ block.settings.label }}</span>
                   {% endif %}
                 </li>
               {% endif %}

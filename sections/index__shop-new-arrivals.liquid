@@ -121,6 +121,11 @@
   #shopify-section-{{ id }} .ak-new-arrivals__title-link { color: inherit; text-decoration: {% if heading_underline %}underline{% else %}none{% endif %}; }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:hover,
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible { opacity: 0.8; }
+  #shopify-section-{{ id }} .ak-new-arrivals__title-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
   #shopify-section-{{ id }} .ak-new-arrivals__title-link:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
@@ -132,6 +137,8 @@
     padding: {{ container_padding }}px;
     width: 100%;
     box-sizing: border-box;
+    list-style: none;
+    margin: 0;
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-link {
     display: flex;
@@ -237,20 +244,17 @@
         {% endif %}
       </h2>
     {% endif %}
-    <div class="ak-new-arrivals__grid">
+    <ul class="ak-new-arrivals__grid" role="list">
       {% for block in section.blocks %}
         {% if block.type == 'tile' and block.settings.label != blank %}
           {% assign tile_alt = block.settings.image_alt %}
-          {% if tile_alt == blank %}
-            {% assign tile_alt = block.settings.label %}
-          {% endif %}
           {% if tile_alt == blank and block.settings.image != blank and block.settings.image.alt != blank %}
             {% assign tile_alt = block.settings.image.alt %}
           {% endif %}
           {% if tile_alt == blank %}
-            {% assign tile_alt = "Category image" %}
+            {% assign tile_alt = '' %}
           {% endif %}
-          <div class="ak-new-arrivals__tile" {{ block.shopify_attributes }}>
+          <li class="ak-new-arrivals__tile" {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
               <a href="{{ block.settings.link }}" class="ak-new-arrivals__tile-link">
                 <div class="ak-new-arrivals__tile-media">
@@ -290,10 +294,10 @@
                 </span>
               </div>
             {% endif %}
-          </div>
+          </li>
         {% endif %}
       {% endfor %}
-    </div>
+    </ul>
   </div>
 </section>
 

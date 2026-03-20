@@ -333,6 +333,15 @@
     {% endif %}
   }
 
+  #shopify-section-{{ id }} .banner--full-link:focus-visible,
+  #shopify-section-{{ id }} .image-with-text-overlay__buttons .button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} [data-scroll-class] { animation: none !important; transition: none !important; }
+  }
+
   {% include 'css-loop', css: custom_css, id: id %}
 
 {% endstyle %}
@@ -423,7 +432,7 @@
       {% endif %}
 
       {% if link != blank %}
-        <a href="{{ link }}" {% if open_in_new_tab %}target="_blank"{% endif %} class="banner--full-link" aria-label="{% if label != blank %}{{ label | escape }}{% elsif title != blank %}{{ title | escape }}{% else %}Learn more{% endif %}"></a>
+        <a href="{{ link }}" {% if open_in_new_tab %}target="_blank" rel="noopener"{% endif %} class="banner--full-link" {% if button_1 != blank or button_2 != blank %}tabindex="-1" aria-hidden="true"{% else %}aria-label="{% if label != blank %}{{ label | escape }}{% elsif title != blank %}{{ title | escape }}{% else %}Learn more{% endif %}{% if open_in_new_tab %} (opens in new tab){% endif %}"{% endif %}></a>
       {% endif %}
 
       {% assign caption_click_through = false %}

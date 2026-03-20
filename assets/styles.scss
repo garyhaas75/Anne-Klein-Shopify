@@ -8544,7 +8544,9 @@ span._ks_text {
 .products-slider,
 .product__grid-item {
   .more_color {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
    font-family: Figtree, "Helvetica", sans-serif;
    font-weight: $weight-medium;
    font-size: .625rem;

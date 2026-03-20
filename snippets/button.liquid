@@ -12,8 +12,9 @@ attribute: <string>
 
 {% if label != blank %}
   {% if type == "link" %}
-    <a {% if href != blank %}href="{{ href }}"{% endif %} class="button {{ style }} {{ class }}" {{ attribute }}
-       aria-label="{% if extra_link_desc %}{{ extra_link_desc }}{% endif %} {{ label | downcase }} link">{{ label }}</a>
+    {% if href != blank %}
+      <a href="{{ href }}" class="button {{ style }} {{ class }}" {{ attribute }}>{{ label }}</a>
+    {% endif %}
   {% elsif type == "label" %}
     <p class="button {{ style }} {{ class }}" {{ attribute }}>{{ label }}</p>
   {% else %}

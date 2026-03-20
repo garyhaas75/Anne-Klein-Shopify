@@ -161,7 +161,8 @@
   #shopify-section-{{ id }} .ak-insiders__logo img { max-width: 100%; height: auto; display: block; }
   #shopify-section-{{ id }} .ak-insiders__logo-text { font-family: {{ font_stack }}; font-weight: {{ headline_font_weight }}; font-size: {{ logo_font_size }}px !important; margin: 0 0 1rem; }
   #shopify-section-{{ id }} .ak-insiders__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 0; }
-  #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible {
+  #shopify-section-{{ id }} .ak-insiders__buttons .button:focus-visible,
+  #shopify-section-{{ id }} .ak-insiders__logo a:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
   }
@@ -243,7 +244,7 @@
 {% endstyle %}
 
 <section class="section is-width-wide ak-insiders-club" id="shopify-section-{{ id }}" {{ section_aria }}>
-  <div class="ak-insiders__scroll-wrap{% if section_max_height_mobile > 0 %} ak-insiders__scroll-wrap--max-mobile{% endif %}">
+  <div class="ak-insiders__scroll-wrap{% if section_max_height_mobile > 0 %} ak-insiders__scroll-wrap--max-mobile{% endif %}"{% if section_max_height_desktop > 0 or section_max_height_mobile > 0 %} tabindex="0" role="region" aria-label="Insider's Club content"{% endif %}>
   <div class="ak-insiders__two-col">
     <div class="ak-insiders__left">
       {% if bg_image != blank %}
@@ -255,11 +256,7 @@
         <div class="ak-insiders__brand">
           {% if image != blank %}
             <div class="ak-insiders__logo">
-              {% if join_url != blank %}
-                <a href="{{ join_url }}">{% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}</a>
-              {% else %}
-                {% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}
-              {% endif %}
+              {% include 'image-element', image: image, alt: logo_alt, stretch_width: true %}
             </div>
           {% else %}
             <h2 class="ak-insiders__logo-text">Anne Klein Insider's Club</h2>
@@ -279,7 +276,7 @@
     <div class="ak-insiders__right">
       <div class="ak-insiders__right-inner">
         {% if headline != blank %}
-          <p class="ak-insiders__headline">{{ headline }}</p>
+          <h2 class="ak-insiders__headline">{{ headline }}</h2>
         {% endif %}
         {% if section.blocks.size > 0 %}
           <div class="ak-insiders__benefits">
@@ -288,7 +285,7 @@
                 {% assign icon_alt = block.settings.icon_alt_text | default: '' %}
                 <div class="ak-insiders__benefit" {{ block.shopify_attributes }}>
                   {% if block.settings.icon != blank %}
-                    <span class="ak-insiders__benefit-icon" {% if icon_alt == '' %}role="presentation"{% endif %}>
+                    <span class="ak-insiders__benefit-icon" {% if icon_alt == '' %}aria-hidden="true"{% endif %}>
                       {% include 'image-element', image: block.settings.icon, alt: icon_alt, stretch_width: true %}
                     </span>
                   {% endif %}

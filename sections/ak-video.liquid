@@ -98,6 +98,7 @@
       {% if section.settings.loop %}loop{% endif %}
       muted
       playsinline
+      controls
       title="{{ section.settings.title | default: 'Video' | escape }}"
       {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
       {% if use_mobile %}data-has-mobile="true"{% endif %}
@@ -135,6 +136,7 @@
         {% endfor %}
       {% endif %}
     </video>
+    <div class="ak-video__sr-status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"></div>
 
     {% comment %} Start card: desktop and mobile variants {% endcomment %}
     {% assign start_has_desktop = false %}
@@ -315,7 +317,7 @@
     <div class="ak-video__dismiss-overlay" id="ak-video-dismiss-{{ section.id }}" aria-hidden="true" tabindex="-1"></div>
     {% comment %} Controls: pause/play, mute (WCAG 2.2: 44px min, focus-visible) {% endcomment %}
     <div class="ak-video__controls">
-      <button type="button" class="ak-video__pause" aria-label="Pause video" aria-pressed="false">
+      <button type="button" class="ak-video__pause" aria-label="Pause video">
         <span class="ak-video__pause-icon" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
         </span>
@@ -337,7 +339,7 @@
     {% if section.settings.transcript != blank %}
       <div id="ak-video-transcript-{{ section.id }}" class="ak-video__transcript">
         <details class="ak-video__transcript-details">
-          <summary class="ak-video__transcript-summary">Transcript</summary>
+          <summary class="ak-video__transcript-summary" style="min-height:44px;display:inline-flex;align-items:center;cursor:pointer;">Transcript</summary>
           <div class="ak-video__transcript-body">{{ section.settings.transcript | newline_to_br }}</div>
         </details>
       </div>
@@ -837,6 +839,7 @@
     var startCard = section.querySelector('#ak-video-start-{{ section.id }}');
     var endCard = section.querySelector('#ak-video-end-{{ section.id }}');
     var dismissOverlay = section.querySelector('.ak-video__dismiss-overlay');
+    var srStatus = section.querySelector('.ak-video__sr-status');
     var loop = {{ section.settings.loop | default: true }};
     var isMobile = window.matchMedia('(max-width: 768px)').matches;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -932,11 +935,13 @@
     /* --- 8. Mute button --- */
     function updateMuteBtn() {
       if (!muteBtn) return;
-      muteBtn.setAttribute('aria-label', video.muted ? 'Unmute' : 'Mute');
+      var label = video.muted ? 'Unmute' : 'Mute';
+      muteBtn.setAttribute('aria-label', label);
       muteBtn.setAttribute('data-playing', video.muted ? 'false' : 'true');
       muteBtn.querySelectorAll('.ak-video__mute-x').forEach(function(line) {
         line.style.display = video.muted ? '' : 'none';
       });
+      if (srStatus) srStatus.textContent = label;
     }
     if (muteBtn) {
       updateMuteBtn();
@@ -950,14 +955,15 @@
     function updatePauseBtn() {
       if (!pauseBtn) return;
       var paused = video.paused;
-      pauseBtn.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
-      pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      var label = paused ? 'Play video' : 'Pause video';
+      pauseBtn.setAttribute('aria-label', label);
       var pauseIcon = pauseBtn.querySelector('.ak-video__pause-icon');
       var playIcon = pauseBtn.querySelector('.ak-video__play-icon');
       if (pauseIcon && playIcon) {
         pauseIcon.hidden = paused;
         playIcon.hidden = !paused;
       }
+      if (srStatus) srStatus.textContent = label;
     }
     if (pauseBtn) {
       updatePauseBtn();

@@ -69,9 +69,14 @@
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
-  #shopify-section-{{ id }} .flickity-prev-next-button:focus-visible {
+  #shopify-section-{{ id }} .flickity-prev-next-button:focus-visible,
+  #shopify-section-{{ id }} .ak-ft__product-link:focus-visible,
+  #shopify-section-{{ id }} .more_color:focus-visible,
+  #shopify-section-{{ id }} .flickity-page-dots .dot:focus-visible {
     outline: 2px solid currentColor; outline-offset: 3px;
   }
+  #shopify-section-{{ id }} .ak-ft__product-link { text-decoration: none; color: inherit; display: block; }
+  #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }
   /* Nav under slider: wrap + flex layout */
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
     width: 100%;
@@ -136,7 +141,7 @@
              role="region"
              aria-roledescription="carousel"
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
-             aria-live="polite">
+             >
           {% for block in section.blocks %}
             {% if block.type == 'product' and block.settings.product != blank %}
               {% assign product = block.settings.product %}
@@ -147,7 +152,7 @@
                 {% assign alt_text = product.title %}
               {% endif %}
               <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
-                <a href="{{ product.url }}">
+                <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                   <div class="product-wrap">
                     <div class="product-image__wrapper">
                       <div class="image__container product__imageContainer">
@@ -156,7 +161,7 @@
                         {% endif %}
                         {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
                         {% if product.media[1] != blank and settings.show_secondary_image %}
-                          {% include 'image-element', image: product.media[1], alt: alt_text, object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                          {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                         {% endif %}
                       </div>
                       {% if hover_enabled or settings.enable_quickshop %}
@@ -185,8 +190,8 @@
                       </div>
                     {% endif %}
                   </div>
-                  {% include 'product-thumbnail__swatch' %}
                 </a>
+                {% include 'product-thumbnail__swatch' %}
               </div>
             {% endif %}
           {% endfor %}

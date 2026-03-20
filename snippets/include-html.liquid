@@ -46,6 +46,11 @@
           data-section-id="{{ section.id }}"
           {% if animation != "none" and animation != blank %}
             data-scroll-class="{{ animation }}"
+          {% endif %}
+          {% if object.settings.section_aria_label != blank %}
+            aria-label="{{ object.settings.section_aria_label | escape }}"
+          {% else %}
+            aria-label="Custom content"
           {% endif %}>
   {{ object.settings.html_content }}
 </section>
