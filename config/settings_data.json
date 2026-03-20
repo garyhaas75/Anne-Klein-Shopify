@@ -6089,6 +6089,15 @@
               "link": "shopify://collections/watches"
             }
           },
+          "tile_RE4KaW": {
+            "type": "tile",
+            "settings": {
+              "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_17_2103_crop_6.png",
+              "image_alt": "",
+              "label": "Jewelry",
+              "link": "shopify://collections/jewelry"
+            }
+          },
           "tile_7NN4Hz": {
             "type": "tile",
             "settings": {
@@ -6111,6 +6120,7 @@
         "block_order": [
           "tile_EGk7by",
           "tile_CgzwBd",
+          "tile_RE4KaW",
           "tile_7NN4Hz",
           "tile_9qUTDp"
         ],
