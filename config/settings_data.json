@@ -5940,7 +5940,6 @@
           },
           "pill_dQhzEA": {
             "type": "pill",
-            "disabled": true,
             "settings": {
               "label": "Watches",
               "link": "shopify://collections/watches-1"
