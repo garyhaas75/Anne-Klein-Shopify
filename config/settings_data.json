@@ -6116,7 +6116,7 @@
         "name": "AK Shop New Arrivals",
         "settings": {
           "heading": "SHOP NEW ARRIVALS",
-          "heading_link": "",
+          "heading_link": "shopify://collections/new",
           "heading_color": "#000000",
           "font_family": "system",
           "heading_font_weight": "700",
