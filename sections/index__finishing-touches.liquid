@@ -28,12 +28,31 @@
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 
+{% assign product_source = section.settings.product_source | default: 'blocks' %}
+{% assign product_limit_setting = section.settings.products_limit | default: 12 | plus: 0 %}
+{% assign collection_ref = section.settings.collection %}
 {% assign products_count = 0 %}
-{% for block in section.blocks %}
-  {% if block.type == 'product' and block.settings.product != blank %}
-    {% assign products_count = products_count | plus: 1 %}
+
+{% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
+  {% assign collection_size = collections[collection_ref].products.size | plus: 0 %}
+  {% assign products_count = product_limit_setting %}
+  {% if collection_size < product_limit_setting %}
+    {% assign products_count = collection_size %}
   {% endif %}
-{% endfor %}
+  {% assign product_limit = products_count %}
+{% else %}
+  {% assign block_product_count = 0 %}
+  {% for block in section.blocks %}
+    {% if block.type == 'product' and block.settings.product != blank %}
+      {% assign block_product_count = block_product_count | plus: 1 %}
+    {% endif %}
+  {% endfor %}
+  {% assign product_limit = product_limit_setting %}
+  {% if block_product_count < product_limit_setting %}
+    {% assign product_limit = block_product_count %}
+  {% endif %}
+  {% assign products_count = product_limit %}
+{% endif %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -124,6 +143,22 @@
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
     min-height: 200px;
   }
+  /* Mobile: simpler, smaller nav arrows (touch target ≥ 24px) */
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+    }
+    #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button .flickity-button-icon {
+      width: 14px;
+      height: 14px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
@@ -145,16 +180,15 @@
              aria-roledescription="carousel"
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
              >
-          {% for block in section.blocks %}
-            {% if block.type == 'product' and block.settings.product != blank %}
-              {% assign product = block.settings.product %}
+          {% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
+            {% for product in collections[collection_ref].products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
               {% if product.featured_media.preview_image.alt != blank %}
                 {% assign alt_text = product.featured_media.preview_image.alt %}
               {% else %}
                 {% assign alt_text = product.title %}
               {% endif %}
-              <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+              <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}">
                 <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                   <div class="product-wrap">
                     <div class="product-image__wrapper">
@@ -196,12 +230,70 @@
                 </a>
                 {% include 'product-thumbnail__swatch' %}
               </div>
-            {% endif %}
-          {% endfor %}
+            {% endfor %}
+          {% else %}
+            {% assign output_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'product' and block.settings.product != blank %}
+                {% if output_index < product_limit %}
+                  {% assign product = block.settings.product %}
+                  {% assign hover_enabled = settings.thumbnail_hover_enabled %}
+                  {% if product.featured_media.preview_image.alt != blank %}
+                    {% assign alt_text = product.featured_media.preview_image.alt %}
+                  {% else %}
+                    {% assign alt_text = product.title %}
+                  {% endif %}
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+                    <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
+                      <div class="product-wrap">
+                        <div class="product-image__wrapper">
+                          <div class="image__container product__imageContainer">
+                            {% if settings.stickers_enabled %}
+                              {% include 'product-thumbnail__sticker' %}
+                            {% endif %}
+                            {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if product.media[1] != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% endif %}
+                          </div>
+                          {% if hover_enabled or settings.enable_quickshop %}
+                            <div class="thumbnail-overlay__container">
+                              {% if hover_enabled %}
+                                <div class="quick-shop__info animated fadeInDown">
+                                  <div class="thumbnail-overlay">
+                                    <div class="info text-align-{{ settings.thumbnail_text_alignment }}">
+                                      {% include 'product-thumbnail__product-info' %}
+                                    </div>
+                                  </div>
+                                </div>
+                              {% endif %}
+                              {% if settings.enable_quickshop %}
+                                {% include 'product-thumbnail__quick-shop-button' %}
+                              {% endif %}
+                              {% if hover_enabled and settings.enable_shopify_collection_badges and settings.enable_shopify_review_comments %}
+                                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                        </div>
+                        {% if hover_enabled == false %}
+                          <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">
+                            {% include 'product-thumbnail__product-info' %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </a>
+                    {% include 'product-thumbnail__swatch' %}
+                  </div>
+                  {% assign output_index = output_index | plus: 1 %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </div>
         </div>
       {% else %}
-        <p class="text-align-center" style="margin: 0;">Add products using the "Product" blocks below.</p>
+        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}Select a collection above, or switch to "Hand-picked products" and add Product blocks below.{% else %}Add products using the "Product" blocks below.{% endif %}</p>
       {% endif %}
     </div>
   </div>
@@ -466,6 +558,33 @@
     {
       "type": "header",
       "content": "Carousel"
+    },
+    {
+      "type": "select",
+      "id": "product_source",
+      "label": "Product source",
+      "default": "blocks",
+      "options": [
+        { "value": "blocks", "label": "Hand-picked products" },
+        { "value": "collection", "label": "From collection" }
+      ],
+      "info": "Hand-picked: use Product blocks below. From collection: choose a collection and limit."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Used when Product source is \"From collection\". Products use this collection's sort order. Set the collection to Best selling in Admin to show top sellers first."
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Product limit",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 12,
+      "info": "Maximum number of products in the carousel. With Hand-picked products this caps how many blocks are shown; with From collection it limits how many are taken from the collection."
     },
     {
       "type": "range",
