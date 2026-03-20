@@ -143,8 +143,11 @@
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
     min-height: 200px;
   }
-  /* Mobile: simpler, smaller nav arrows (touch target ≥ 24px) */
+  /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px) */
   @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
+      display: none;
+    }
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button {
       width: 36px;
       height: 36px;
