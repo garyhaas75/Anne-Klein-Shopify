@@ -50,8 +50,6 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
-      {% assign _smw = section.settings.stage_max_width | default: 100 | plus: 0 %}
-      max-width: min({{ _smw }}%, 798px);
       {% if stage_ar != blank and stage_ar != 'none' %}
         aspect-ratio: {{ stage_ar }};
       {% endif %}
@@ -363,8 +361,7 @@
       "max": 100,
       "step": 1,
       "default": 100,
-      "unit": "%",
-      "info": "Desktop: stage is capped at min(this %, 798px) so tile positions match the Figma 798×1545 artboard."
+      "unit": "%"
     },
     {
       "type": "range",
@@ -670,15 +667,15 @@
           "info": "Layout uses this section’s block order (drag to reorder). Only Custom uses manual %. Preset 1–9 values are legacy and do not pin position.",
           "options": [
             { "value": "auto", "label": "Follow block order (slots 1–9)" },
-            { "value": "p1", "label": "Legacy p1 (same as order slot 1)" },
-            { "value": "p2", "label": "Legacy p2" },
-            { "value": "p3", "label": "Legacy p3" },
-            { "value": "p4", "label": "Legacy p4" },
-            { "value": "p5", "label": "Legacy p5" },
-            { "value": "p6", "label": "Legacy p6" },
-            { "value": "p7", "label": "Legacy p7" },
-            { "value": "p8", "label": "Legacy p8" },
-            { "value": "p9", "label": "Legacy p9" },
+            { "value": "p1", "label": "Slot 1 — top-left, small" },
+            { "value": "p2", "label": "Slot 2 — left, mid band" },
+            { "value": "p3", "label": "Slot 3 — left / center, large" },
+            { "value": "p4", "label": "Slot 4 — top-right, large" },
+            { "value": "p5", "label": "Slot 5 — center-right, large" },
+            { "value": "p6", "label": "Slot 6 — right, small lower" },
+            { "value": "p7", "label": "Slot 7 — bottom center, large" },
+            { "value": "p8", "label": "Slot 8 — bottom-right" },
+            { "value": "p9", "label": "Slot 9 — bottom-left" },
             { "value": "custom", "label": "Custom (%)" }
           ]
         },
@@ -751,15 +748,15 @@
       "name": "AK Campaign BTS collage",
       "category": "Custom",
       "blocks": [
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } },
-        { "type": "collage_tile", "settings": { "placement": "auto" } }
+        { "type": "collage_tile", "settings": { "placement": "p1" } },
+        { "type": "collage_tile", "settings": { "placement": "p2" } },
+        { "type": "collage_tile", "settings": { "placement": "p3" } },
+        { "type": "collage_tile", "settings": { "placement": "p4" } },
+        { "type": "collage_tile", "settings": { "placement": "p5" } },
+        { "type": "collage_tile", "settings": { "placement": "p6" } },
+        { "type": "collage_tile", "settings": { "placement": "p7" } },
+        { "type": "collage_tile", "settings": { "placement": "p8" } },
+        { "type": "collage_tile", "settings": { "placement": "p9" } }
       ]
     }
   ]

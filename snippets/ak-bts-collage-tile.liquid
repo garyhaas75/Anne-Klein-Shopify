@@ -1,6 +1,6 @@
 {% comment %}
-  One collage tile. slot_index = 1-based order among collage tiles (from theme editor block order).
-  Only raw_placement "custom" uses manual %; all other saved values use slot geometry so reorder works.
+  slot_index = 1-based order among collage tiles (for "Follow block order" mode).
+  custom = manual %; auto = map order to p1..p9; p1–p9 = pin to that Figma slot.
 {% endcomment %}
 {% assign img = block.settings.image %}
 {% if block.settings.image_alt != blank %}
@@ -22,12 +22,14 @@
   {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
   {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
   {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
-{% else %}
+{% elsif raw_placement == 'auto' %}
   {% assign slot_n = slot_index %}
   {% if slot_n > 9 %}
     {% assign slot_n = 9 %}
   {% endif %}
   {% assign pl = 'p' | append: slot_n %}
+{% else %}
+  {% assign pl = raw_placement %}
 {% endif %}
 <div
   class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
