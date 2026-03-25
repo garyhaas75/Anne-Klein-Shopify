@@ -87,27 +87,27 @@
     object-position: {{ pos }};
     display: block;
   }
-  /* Natural: intrinsic width/height, centered, capped by .ak-inset__inner max-width */
+  /* Natural: fill inset column width; height follows file aspect ratio (no pillarboxing from flex center) */
   #shopify-section-{{ id }} .ak-inset__frame--natural {
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-    background-color: {{ letterbox }};
+    background-color: {{ section.settings.background_color | default: '#ffffff' }};
     overflow: visible;
   }
   #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only,
   #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-mobile-only {
     position: static;
-    width: auto;
+    width: 100%;
     max-width: 100%;
     flex-shrink: 0;
   }
   #shopify-section-{{ id }} .ak-inset__frame--natural .image-element__wrap {
     position: static !important;
-    width: auto !important;
+    width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
     margin-left: auto;
@@ -115,7 +115,7 @@
   }
   #shopify-section-{{ id }} .ak-inset__frame--natural img,
   #shopify-section-{{ id }} .ak-inset__frame--natural .placeholder-svg {
-    width: auto !important;
+    width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
     object-fit: unset;
@@ -333,7 +333,7 @@
       "id": "aspect_ratio",
       "label": "Aspect ratio",
       "default": "111 / 170",
-      "info": "111:170 = 666×1020 Figma frame. None = intrinsic image height inside max width.",
+      "info": "111:170 = fixed crop box. None = image scales to full inset column width; height follows the file (no side gutters inside the frame).",
       "options": [
         { "value": "111 / 170", "label": "Figma inset (666×1020)" },
         { "value": "9 / 16", "label": "9:16" },
