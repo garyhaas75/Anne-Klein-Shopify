@@ -35,6 +35,16 @@ Follow these rules **exactly**. Do not skip them.
 - Do **not** sound sure because the **local file** looks right.
 - Prefer: **what you checked**, **what you found**, and **what’s still unknown**.
 
+## Figma before every new or revised campaign section
+
+- **File:** `agnYrbiuU2Ory43nJYA4Nk` (see [docs/CAMPAIGN-LANDING-PLAN.md](docs/CAMPAIGN-LANDING-PLAN.md)).
+- **MCP server id:** `user-Figma` (not `figma`).
+- **Before implementing or changing** a `page__ak-campaign-*` band (or adding one to [templates/page.campaign.json](templates/page.campaign.json)):
+  1. Call **`get_metadata`** with `fileKey` + the **node id** for the **desktop** and/or **mobile** campaign frame (e.g. mobile `35:616`, desktop `102:586`).
+  2. For the **specific layer(s)** you are matching, call **`get_design_context`** on those **node id(s)**.
+  3. Put **file key + node id(s)** in a **Liquid comment** at the top of the section file, and add/update the **plan table** row in `CAMPAIGN-LANDING-PLAN.md` with the same ids.
+- Do **not** invent layout from a one-line plan step if Figma MCP is available—**use it** for that section.
+
 ## WCAG / code quality
 
 - Continue to follow [.cursorrules](.cursorrules) for accessibility and implementation quality on all UI work.

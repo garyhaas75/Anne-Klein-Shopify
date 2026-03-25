@@ -1,13 +1,16 @@
 {% comment %}
-  AK Campaign — narrow centered media (e.g. 9:16-style inset). Image optional; shows placeholder until set.
+  AK Campaign — tall inset column (Figma-driven).
+  Figma file: agnYrbiuU2Ory43nJYA4Nk | Mobile frame: 35:616 (AK_Campaign Landing Page 2026_Mobile)
+  Primary ref for this band: 189:47 "AK_SS26_4_9x16_NO LOGO 1" — 666×1020px, x=66 on 798px artboard (centered inset).
+  Desktop frame: 102:586 — same asset may appear in a wider composition; match width/aspect per layer if different.
   WCAG 2.2 AA: region, alt text, optional link focus-visible, min touch target on links.
 {% endcomment %}
 
 {% assign id = section.id %}
 {% assign img = section.settings.image %}
 {% assign mimg = section.settings.mobile_image | default: img %}
-{% assign max_w = section.settings.media_max_width | default: 420 %}
-{% assign ar = section.settings.aspect_ratio | default: '9 / 16' %}
+{% assign max_w = section.settings.media_max_width | default: 666 %}
+{% assign ar = section.settings.aspect_ratio | default: '111 / 170' %}
 {% assign fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign pos = section.settings.image_object_position | default: 'center' %}
 {% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
@@ -244,7 +247,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Centered column image; default aspect 9:16. For video use AK Video."
+      "content": "Matches Figma mobile inset 189:47 (666px max width, 111:170). For motion use AK Video."
     },
     {
       "type": "header",
@@ -321,17 +324,19 @@
       "min": 240,
       "max": 900,
       "step": 10,
-      "default": 420,
-      "unit": "px"
+      "default": 666,
+      "unit": "px",
+      "info": "Figma 189:47 uses 666px on a 798px-wide mobile artboard."
     },
     {
       "type": "select",
       "id": "aspect_ratio",
       "label": "Aspect ratio",
-      "default": "9 / 16",
-      "info": "Locks frame height from width. None = image natural height (still capped by max width).",
+      "default": "111 / 170",
+      "info": "111:170 = 666×1020 Figma frame. None = intrinsic image height inside max width.",
       "options": [
-        { "value": "9 / 16", "label": "9:16 (tall)" },
+        { "value": "111 / 170", "label": "Figma inset (666×1020)" },
+        { "value": "9 / 16", "label": "9:16" },
         { "value": "4 / 5", "label": "4:5" },
         { "value": "3 / 4", "label": "3:4" },
         { "value": "2 / 3", "label": "2:3" },
