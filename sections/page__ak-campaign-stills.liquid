@@ -1,0 +1,406 @@
+{% comment %}
+  AK Campaign — full-width editorial stills, no copy (Figma Step 5).
+  WCAG 2.2 AA: region label, image alt, optional single link per still, focus-visible.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign padding_top = section.settings.padding_top | default: 0 %}
+{% assign padding_bottom = section.settings.padding_bottom | default: 0 %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign still_gap = section.settings.still_gap | default: 0 %}
+{% assign img_behavior = section.settings.image_behavior | default: 'natural' %}
+{% assign img_pos = section.settings.image_object_position | default: 'center' %}
+{% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
+{% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
+{% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
+{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__grid {
+    width: 100%;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: {{ still_gap }}px;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__item {
+    width: 100%;
+    min-width: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ letterbox }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__link:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+  }
+  {% if img_behavior == 'natural' %}
+  #shopify-section-{{ id }} .ak-campaign-stills__media {
+    line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media .image-element__wrap {
+    max-width: 100%;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media img,
+  #shopify-section-{{ id }} .ak-campaign-stills__media .placeholder-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: middle;
+  }
+  {% else %}
+  #shopify-section-{{ id }} .ak-campaign-stills__media {
+    position: relative;
+    width: 100%;
+    min-height: {{ crop_min_d }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-stills__media {
+      min-height: {{ crop_min_m }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media .is-hidden-desktop-only {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media .is-hidden-desktop-only .image-element__wrap {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media > .placeholder-svg {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media img,
+  #shopify-section-{{ id }} .ak-campaign-stills__media .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ img_fit }};
+    object-position: {{ img_pos }};
+    display: block;
+  }
+  {% endif %}
+  #shopify-section-{{ id }} .ak-campaign-stills__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-stills__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-campaign-stills__media .is-hidden-desktop-only { display: block !important; }
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-stills-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {% if section.settings.section_aria_label != blank %}
+    aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign images"
+  {% endif %}
+>
+  <div class="container equal-columns--outside-trim">
+    <div class="ak-campaign-stills__grid columns one-whole">
+      <ul class="ak-campaign-stills__list">
+        {% for block in section.blocks %}
+          {% if block.type == 'still' %}
+            {% assign bimg = block.settings.image %}
+            {% assign bm = block.settings.mobile_image | default: bimg %}
+            {% assign lnk = block.settings.link_url %}
+            {% assign img_alt = block.settings.image_alt | default: bimg.alt | default: 'Campaign photograph' %}
+
+            <li class="ak-campaign-stills__item" {{ block.shopify_attributes }}>
+              {% if lnk != blank %}
+                <a
+                  href="{{ lnk }}"
+                  class="ak-campaign-stills__frame ak-campaign-stills__link"
+                  {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                  aria-label="{{ img_alt | escape }}"
+                >
+                  <div class="ak-campaign-stills__media" aria-hidden="true">
+                    {% if bimg != blank %}
+                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                    {% else %}
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                    {% endif %}
+                    {% if bm != blank %}
+                      <div class="is-hidden-desktop-only">
+                        {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                      </div>
+                    {% elsif bimg != blank %}
+                      <div class="is-hidden-desktop-only">
+                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                      </div>
+                    {% else %}
+                      <div class="is-hidden-desktop-only">
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </a>
+              {% else %}
+                <div class="ak-campaign-stills__frame">
+                  <div class="ak-campaign-stills__media">
+                    {% if bimg != blank %}
+                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                    {% else %}
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                    {% endif %}
+                    {% if bm != blank %}
+                      <div class="is-hidden-desktop-only">
+                        {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                      </div>
+                    {% elsif bimg != blank %}
+                      <div class="is-hidden-desktop-only">
+                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                      </div>
+                    {% else %}
+                      <div class="is-hidden-desktop-only">
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Campaign stills",
+  "class": "ak-campaign-stills-section",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Full-width images with no text—stack as many blocks as you need (Figma: extra editorial stills)."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "still_gap",
+      "label": "Gap between stills",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_behavior",
+      "label": "Image height",
+      "default": "natural",
+      "info": "Natural = full width, height from the photo (no forced crop). Fixed frame = min height + fit below.",
+      "options": [
+        { "value": "natural", "label": "Natural (intrinsic height)" },
+        { "value": "fixed_frame", "label": "Fixed min height (crop or letterbox)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit (fixed frame only)",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Focal point (fixed frame only)",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "crop_min_height_desktop",
+      "label": "Min height desktop (fixed frame)",
+      "min": 200,
+      "max": 1200,
+      "step": 20,
+      "default": 480,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "crop_min_height_mobile",
+      "label": "Min height mobile (fixed frame)",
+      "min": 200,
+      "max": 1000,
+      "step": 20,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "letterbox_color",
+      "label": "Background (letterbox / loading)",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "still",
+      "name": "Still",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image (mobile)",
+          "info": "Optional; uses desktop image if blank."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "info": "Describe the photo for accessibility."
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign stills",
+      "category": "Custom",
+      "blocks": [
+        { "type": "still" },
+        { "type": "still" }
+      ]
+    }
+  ]
+}
+{% endschema %}

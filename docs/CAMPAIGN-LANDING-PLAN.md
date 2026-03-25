@@ -10,7 +10,7 @@ Work **one section per iteration**; update the **Status** row when something shi
 | **2b** | **Main campaign film** (immediately below “The Film” copy) | **`ak-video`** — on `campaign` template as **`campaign_film`** after **`film_copy`**. Assign video in editor; section outputs nothing until a file is set. Default layout **Feature**. | **In template** (add video in admin) |
 | 3 | “Anne Klein Spring-Summer 2026” + paragraph + “SHOP THE COLLECTION” | **`page__ak-campaign-cta`** — **`collection_cta`** on template. Set **Button link** to the campaign collection. | **In template** (set URL in admin) |
 | 4 | Two full-bleed model portraits (name + role on image) | **`page__ak-campaign-portrait`** — **`model_portraits`** on template (repeatable blocks; **desktop two-column** default per Figma; wrapper uses **`columns one-whole`** so the theme flex `.container` does not collapse width). | **In template** (add images + alt in admin) |
-| 5 | Extra full-width stills (no copy) | Image-only: `index__image-with-text` / overlay with empty text, gutter off | Not started |
+| 5 | Extra full-width stills (no copy) | **`page__ak-campaign-stills`** — **`campaign_stills`** on template; repeatable **Still** blocks; **Natural** height default (no forced letterbox); optional fixed min-height + cover/contain. | **In template** (add images + alt in admin) |
 | 6 | Narrow tall inset (e.g. 9:16-style) | `ak-video` or image with max-width **or** small `page__ak-campaign-inset-media` | Not started |
 | 7 | 2×2 BTS grid | `index__gallery` (e.g. 2 per row, 4 images) | Not started |
 | 8 | Large pull quotes (Amiri-style + attribution), repeats | New `page__ak-campaign-quote` (blockquote + blocks or duplicate instances) | Not started |
@@ -24,5 +24,5 @@ Work **one section per iteration**; update the **Status** row when something shi
 
 ## Current position
 
-- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign portrait** (two model blocks).  
-- **You still do in admin:** pick the **video** for AK Video; set the CTA **button link** (collection); upload **portrait images** and **image alt** text on each block.
+- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign portrait** → **AK Campaign stills**.  
+- **You still do in admin:** pick the **video** for AK Video; set the CTA **button link** (collection); upload **portrait** and **stills** images with **alt** text.
