@@ -253,8 +253,10 @@
       {% endif %}
 
       <div class="ak-bts-collage__tiles">
+        {% assign collage_slot = 0 %}
         {% for block in section.blocks %}
           {% if block.type == 'collage_tile' %}
+            {% assign collage_slot = collage_slot | plus: 1 %}
             {% assign img = block.settings.image %}
             {% if block.settings.image_alt != blank %}
               {% assign alt = block.settings.image_alt %}
@@ -263,17 +265,28 @@
             {% else %}
               {% assign alt = 'Behind the scenes photograph' %}
             {% endif %}
-            {% assign pl = block.settings.placement | default: 'p1' %}
-            {% if pl == 'custom' %}
+            {% assign raw_placement = block.settings.placement | default: 'auto' | strip %}
+            {% if raw_placement == blank %}{% assign raw_placement = 'auto' %}{% endif %}
+            {% assign use_custom_tile = false %}
+            {% if raw_placement == 'custom' %}
+              {% assign use_custom_tile = true %}
               {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
               {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
               {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
               {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
               {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
+            {% elsif raw_placement == 'auto' %}
+              {% assign slot_n = collage_slot %}
+              {% if slot_n > 9 %}
+                {% assign slot_n = 9 %}
+              {% endif %}
+              {% assign pl = 'p' | append: slot_n %}
+            {% else %}
+              {% assign pl = raw_placement %}
             {% endif %}
             <div
-              class="ak-bts-collage__tile {% if pl != 'custom' %}ak-bts-collage__tile--{{ pl }}{% endif %}"
-              {% if pl == 'custom' %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
+              class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
+              {% if use_custom_tile %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
               {{ block.shopify_attributes }}
             >
               <div class="ak-bts-collage__tile-inner">
@@ -312,7 +325,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: centered headline + subcopy over an optional backdrop; nine collage tiles use Figma-based presets (p1–p9) or custom % placement. Mobile: backdrop, text, then a 2-column tile stack."
+      "content": "Desktop: centered headline + subcopy over an optional backdrop. Default tile layout follows Collage tile block order (drag to reorder). Or pin a tile to a fixed preset (p1–p9) or Custom %. Mobile: backdrop, text, then a 2-column tile stack."
     },
     {
       "type": "header",
@@ -696,9 +709,10 @@
           "type": "select",
           "id": "placement",
           "label": "Desktop placement",
-          "default": "p1",
-          "info": "Preset positions match Figma collage (798×1545 stage). Use Custom for manual %.",
+          "default": "auto",
+          "info": "Follow block order: 1st tile → slot 1, 2nd → slot 2, … (reorder blocks in this section). Choose a preset to pin this tile to one Figma slot regardless of order. Custom = manual %.",
           "options": [
+            { "value": "auto", "label": "Follow block order (slots 1–9)" },
             { "value": "p1", "label": "Preset 1 (top left small)" },
             { "value": "p2", "label": "Preset 2" },
             { "value": "p3", "label": "Preset 3 (tall left)" },
@@ -780,15 +794,15 @@
       "name": "AK Campaign BTS collage",
       "category": "Custom",
       "blocks": [
-        { "type": "collage_tile", "settings": { "placement": "p1" } },
-        { "type": "collage_tile", "settings": { "placement": "p2" } },
-        { "type": "collage_tile", "settings": { "placement": "p3" } },
-        { "type": "collage_tile", "settings": { "placement": "p4" } },
-        { "type": "collage_tile", "settings": { "placement": "p5" } },
-        { "type": "collage_tile", "settings": { "placement": "p6" } },
-        { "type": "collage_tile", "settings": { "placement": "p7" } },
-        { "type": "collage_tile", "settings": { "placement": "p8" } },
-        { "type": "collage_tile", "settings": { "placement": "p9" } }
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } },
+        { "type": "collage_tile", "settings": { "placement": "auto" } }
       ]
     }
   ]
