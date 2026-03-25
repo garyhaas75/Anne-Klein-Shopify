@@ -1,10 +1,10 @@
 {% comment %}
-  AK Campaign landing – intro block (Figma: image first, optional vertical rule, eyebrow + display heading below).
-  For campaign pages only; does not replace AK Hero Campaign (homepage overlay hero).
-  WCAG 2.2 AA: landmark, heading level choice, focus-visible on optional link, alt text.
+  AK Campaign landing – intro: stacked or desktop split (image | text). Mobile is always stacked.
+  WCAG 2.2 AA: landmark, heading level, focus-visible, alt text.
 {% endcomment %}
 
 {% assign id = section.id %}
+{% assign layout_desktop = section.settings.layout_desktop | default: 'split' %}
 {% assign image = section.settings.image %}
 {% assign mobile_image = section.settings.mobile_image | default: image %}
 {% assign eyebrow = section.settings.eyebrow %}
@@ -40,6 +40,7 @@
 {% assign eyebrow_weight = section.settings.eyebrow_font_weight | default: '400' %}
 {% assign heading_size = section.settings.heading_font_size | default: 72 %}
 {% assign heading_weight = section.settings.heading_font_weight | default: '400' %}
+{% assign split_image_pct = section.settings.split_image_width | default: 50 %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -136,17 +137,59 @@
     outline: 2px solid currentColor;
     outline-offset: 4px;
   }
+  #shopify-section-{{ id }} .ak-campaign-intro__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #shopify-section-{{ id }} .ak-campaign-intro__divider-between {
+    display: none;
+    flex-shrink: 0;
+    width: {{ divider_width }}px;
+    height: {{ divider_height }}px;
+    background-color: {{ divider_color }};
+    align-self: center;
+    margin: 0.5rem 0;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__inner {
+      flex-direction: row;
+      align-items: center;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__media {
+      flex: 0 0 {{ split_image_pct }}%;
+      max-width: {{ split_image_pct }}%;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__copy {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 2rem 2rem 1.5rem;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-wrap {
+      display: none;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-between {
+      display: block;
+      margin: 0 1.25rem;
+      align-self: center;
+    }
+  }
 {% endstyle %}
 
 <section
-  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-intro-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-intro-section ak-campaign-intro--{{ layout_desktop }} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {{ section_aria }}
 >
   <div class="container equal-columns--outside-trim">
     <div class="ak-campaign-intro columns one-whole">
-      <div class="ak-campaign-intro__media">
+      <div class="ak-campaign-intro__inner">
+        <div class="ak-campaign-intro__media">
         {% if image != blank %}
           {% include 'image-element', image: image, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
         {% else %}
@@ -165,9 +208,13 @@
             {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
-      </div>
+        </div>
 
-      <div class="ak-campaign-intro__copy">
+        {% if show_divider and layout_desktop == 'split' %}
+          <div class="ak-campaign-intro__divider-between" aria-hidden="true"></div>
+        {% endif %}
+
+        <div class="ak-campaign-intro__copy">
         {% if link_url != blank %}
           <a href="{{ link_url }}" class="ak-campaign-intro__link" aria-label="{{ heading | default: eyebrow | default: 'Campaign' | escape }}">
         {% endif %}
@@ -191,6 +238,7 @@
         {% if link_url != blank %}
           </a>
         {% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -204,7 +252,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Campaign landing intro: full-width image, then optional vertical rule, eyebrow, and heading below the image (not overlaid). For homepage overlay hero use AK Hero Campaign."
+      "content": "Campaign intro: image + text. Desktop can be split (side by side) or stacked; mobile is always stacked. Add Rich text or other sections below for page body (campaign template has no default Page section)."
     },
     {
       "type": "header",
@@ -383,6 +431,28 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_desktop",
+      "label": "Desktop layout",
+      "default": "split",
+      "info": "Split = image left, text right (Figma desktop). Stacked = image above text on all breakpoints.",
+      "options": [
+        { "value": "split", "label": "Split (image left, text right)" },
+        { "value": "stacked", "label": "Stacked (image above text)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "split_image_width",
+      "label": "Split layout: image column width",
+      "min": 35,
+      "max": 65,
+      "step": 1,
+      "default": 50,
+      "unit": "%",
+      "info": "Desktop only when Split is selected."
     },
     {
       "type": "select",
