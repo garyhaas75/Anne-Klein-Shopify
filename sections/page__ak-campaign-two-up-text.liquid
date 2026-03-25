@@ -1,0 +1,638 @@
+{% comment %}
+  AK Campaign — two images side by side (desktop), stacked (mobile), then heading + rich text + optional attribution.
+  Figma ref (mobile frame 35:616): e.g. BTS pair + quote band — compare cells `189:70`/`189:73` + text `189:79`–`189:81` (file agnYrbiuU2Ory43nJYA4Nk).
+  WCAG 2.2 AA: region, image alts, heading order, link focus-visible in RTE, min 44px tap targets on links.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign img1 = section.settings.image_1 %}
+{% assign img2 = section.settings.image_2 %}
+{% assign alt1 = section.settings.image_1_alt | default: img1.alt | default: 'Campaign photograph' %}
+{% assign alt2 = section.settings.image_2_alt | default: img2.alt | default: 'Campaign photograph' %}
+{% assign heading = section.settings.heading %}
+{% assign hl = section.settings.heading_level | default: 'h2' %}
+{% assign body_rt = section.settings.body %}
+{% assign attr = section.settings.attribution %}
+{% assign text_align = section.settings.text_alignment | default: 'center' %}
+{% assign bg = section.settings.background_color | default: '#ffffff' %}
+{% assign text_color = section.settings.text_color | default: '#000000' %}
+{% assign attr_color = section.settings.attribution_color | default: '#000000' %}
+{% assign gap_d = section.settings.image_gap_desktop | default: 12 %}
+{% assign gap_m = section.settings.image_gap_mobile | default: 8 %}
+{% assign min_h_d = section.settings.image_min_height_desktop | default: 480 %}
+{% assign min_h_m = section.settings.image_min_height_mobile | default: 280 %}
+{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign img_pos = section.settings.image_object_position | default: 'center' %}
+{% assign max_w_text = section.settings.content_max_width | default: 48 %}
+{% assign lnk1 = section.settings.image_1_link %}
+{% assign lnk2 = section.settings.image_2_link %}
+
+{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
+{% assign body_font_key = section.settings.body_font_family | default: 'amiri' %}
+{% case heading_font_key %}
+  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign heading_font_stack = '"Times New Roman", Times, serif' %}
+  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% case body_font_key %}
+  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign body_font_stack = '"Times New Roman", Times, serif' %}
+  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% assign attr_font_key = section.settings.attribution_font_family | default: 'amiri' %}
+{% case attr_font_key %}
+  {% when 'amiri' %}{% assign attr_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign attr_font_stack = 'Georgia, serif' %}
+  {% else %}{% assign attr_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ section.settings.padding_top | default: 48 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 48 }}px;
+    background-color: {{ bg }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top | default: 40 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom | default: 40 }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-two-up__grid {
+    width: 100%;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-two-up__images {
+    display: flex;
+    flex-direction: column;
+    gap: {{ gap_m }}px;
+    width: 100%;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-two-up__images {
+      flex-direction: row;
+      gap: {{ gap_d }}px;
+      align-items: stretch;
+    }
+  }
+  #shopify-section-{{ id }} .ak-two-up__cell {
+    flex: 1 1 100%;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    background-color: {{ section.settings.image_placeholder_bg | default: '#e8e8e8' }};
+    min-height: {{ min_h_m }}px;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-two-up__cell {
+      flex: 1 1 50%;
+      max-width: 50%;
+      min-height: {{ min_h_d }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-two-up__cell .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-two-up__cell img,
+  #shopify-section-{{ id }} .ak-two-up__cell .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ img_fit }};
+    object-position: {{ img_pos }};
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-two-up__link {
+    display: block;
+    height: 100%;
+    min-height: inherit;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-two-up__link:focus-visible {
+    outline: 3px solid {{ text_color }};
+    outline-offset: 2px;
+  }
+  #shopify-section-{{ id }} .ak-two-up__text {
+    margin-top: {{ section.settings.text_block_margin_top | default: 32 }}px;
+    max-width: {{ max_w_text }}rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: {{ text_align }};
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-two-up__heading {
+    font-family: {{ heading_font_stack }};
+    font-size: clamp(1.25rem, 3vw, {{ section.settings.heading_font_size | default: 32 }}px);
+    font-weight: {{ section.settings.heading_font_weight | default: '400' }};
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-two-up__rte {
+    font-family: {{ body_font_stack }};
+    font-size: {{ section.settings.body_font_size | default: 20 }}px;
+    font-weight: {{ section.settings.body_font_weight | default: '400' }};
+    line-height: {{ section.settings.body_line_height | default: 150 }}%;
+  }
+  #shopify-section-{{ id }} .ak-two-up__rte p {
+    margin: 0 0 0.75em;
+  }
+  #shopify-section-{{ id }} .ak-two-up__rte p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-two-up__rte a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  #shopify-section-{{ id }} .ak-two-up__rte a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+  }
+  #shopify-section-{{ id }} .ak-two-up__attr {
+    display: block;
+    margin-top: 1.25rem;
+    font-family: {{ attr_font_stack }};
+    font-size: {{ section.settings.attribution_font_size | default: 16 }}px;
+    font-weight: {{ section.settings.attribution_font_weight | default: '400' }};
+    color: {{ attr_color }};
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-two-up-text-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {% if heading != blank %}
+    aria-labelledby="ak-two-up-heading-{{ id }}"
+  {% elsif section.settings.section_aria_label != blank %}
+    aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign images and story"
+  {% endif %}
+>
+  <div class="container equal-columns--outside-trim">
+    <div class="ak-two-up__grid columns one-whole">
+      <div class="ak-two-up__images">
+        <div class="ak-two-up__cell">
+          {% if lnk1 != blank %}
+            <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
+          {% endif %}
+          {% if img1 != blank %}
+            {% include 'image-element', image: img1, alt: alt1, stretch_width: true %}
+          {% else %}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+          {% if lnk1 != blank %}
+            </a>
+          {% endif %}
+        </div>
+        <div class="ak-two-up__cell">
+          {% if lnk2 != blank %}
+            <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
+          {% endif %}
+          {% if img2 != blank %}
+            {% include 'image-element', image: img2, alt: alt2, stretch_width: true %}
+          {% else %}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+          {% if lnk2 != blank %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if heading != blank or body_rt != blank or attr != blank %}
+        <div class="ak-two-up__text">
+          {% if heading != blank %}
+            {% if hl == 'h1' %}
+              <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h1>
+            {% elsif hl == 'h3' %}
+              <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h3>
+            {% else %}
+              <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h2>
+            {% endif %}
+          {% endif %}
+          {% if body_rt != blank %}
+            <div class="ak-two-up__rte rte">{{ body_rt }}</div>
+          {% endif %}
+          {% if attr != blank %}
+            <footer class="ak-two-up__attr">— {{ attr }}</footer>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Campaign two-up + text",
+  "class": "ak-campaign-two-up-text-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Two images in one row (stacked on mobile), then optional heading, rich text, and attribution. Use instead of zigzag when you only need a pair of photos + copy below."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 (left / top)"
+    },
+    {
+      "type": "text",
+      "id": "image_1_alt",
+      "label": "Image 1 alt text",
+      "info": "Required for accessibility if image 1 is set."
+    },
+    {
+      "type": "url",
+      "id": "image_1_link",
+      "label": "Image 1 link (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_1_new_tab",
+      "label": "Image 1 link opens new tab",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 (right / bottom)"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Image 2 alt text"
+    },
+    {
+      "type": "url",
+      "id": "image_2_link",
+      "label": "Image 2 link (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_2_new_tab",
+      "label": "Image 2 link opens new tab",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "image_gap_desktop",
+      "label": "Gap between images (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_gap_mobile",
+      "label": "Gap between images (mobile)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_min_height_desktop",
+      "label": "Min height per image (desktop)",
+      "min": 200,
+      "max": 900,
+      "step": 20,
+      "default": 480,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_min_height_mobile",
+      "label": "Min height per image (mobile)",
+      "min": 160,
+      "max": 600,
+      "step": 20,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "image_placeholder_bg",
+      "label": "Placeholder background",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "header",
+      "content": "Text block"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading (optional)"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body"
+    },
+    {
+      "type": "text",
+      "id": "attribution",
+      "label": "Attribution (optional)",
+      "info": "e.g. Name; appears below body with an em dash."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "text_block_margin_top",
+      "label": "Space above text block",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Text max width",
+      "min": 28,
+      "max": 72,
+      "step": 1,
+      "default": 48,
+      "unit": "rem",
+      "info": "Only constrains the text block; images use full section width."
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "system", "label": "System" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading size (max)",
+      "min": 18,
+      "max": 56,
+      "step": 1,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_font_family",
+      "label": "Body font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "system", "label": "System" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "body_font_weight",
+      "label": "Body weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body line height",
+      "min": 120,
+      "max": 200,
+      "step": 5,
+      "default": 150,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "attribution_font_family",
+      "label": "Attribution font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "system", "label": "System" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "attribution_font_size",
+      "label": "Attribution size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "attribution_font_weight",
+      "label": "Attribution weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors & layout"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "attribution_color",
+      "label": "Attribution color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign two-up + text",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
