@@ -91,6 +91,51 @@
       }
     {% endif %}
   {% endif %}
+
+  {% assign _campaign_bts_class = section.settings.css_class | default: '' | strip %}
+  {% if _campaign_bts_class == 'ak-campaign-bts-grid' and section.settings.gallery_type == 'classic' %}
+    {% comment %}
+      Campaign BTS 2×2 — Figma mobile frame 35:616, cells 189:70–189:73 on 798-wide artboard:
+      ~33px side inset, 12px gap, two ~360px-wide columns (inner row width 732px).
+    {% endcomment %}
+    @media only screen and (min-width: 799px) {
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery__wrapper.gallery-type--classic.container {
+        max-width: 798px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 33px;
+        padding-right: 33px;
+        box-sizing: border-box;
+      }
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery-type--classic.gallery__wrapper {
+        gap: 12px;
+      }
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery-type--classic .gallery__item.column.one-half {
+        width: calc((100% - 12px) / 2) !important;
+        flex: 0 0 calc((100% - 12px) / 2);
+        max-width: calc((100% - 12px) / 2) !important;
+        margin-bottom: 0 !important;
+      }
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid.has-multirow-blocks .gallery__item.has-gutter {
+        margin-bottom: 0 !important;
+      }
+    }
+    @media only screen and (max-width: 798px) {
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery__wrapper.gallery-type--classic.container {
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        box-sizing: border-box;
+      }
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery-type--classic.gallery__wrapper {
+        gap: 12px;
+      }
+      #shopify-section-{{ _gid }} .ak-campaign-bts-grid .gallery-type--classic .gallery__item.column.one-half.medium-down--one-half {
+        width: calc((100% - 12px) / 2) !important;
+        flex: 0 0 calc((100% - 12px) / 2);
+        max-width: calc((100% - 12px) / 2) !important;
+      }
+    }
+  {% endif %}
 {% endstyle %}
 
 {% include 'include-gallery' %}
@@ -341,7 +386,8 @@
       {
         "type": "text",
         "id": "css_class",
-        "label": "CSS Class"
+        "label": "CSS Class",
+        "info": "Campaign BTS 2×2: set to ak-campaign-bts-grid to match Figma frame (798px max width, 33px side inset, 12px cell gap)."
       },
       {
         "type": "textarea",

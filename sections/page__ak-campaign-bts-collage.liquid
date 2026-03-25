@@ -50,6 +50,8 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
+      {% assign _smw = section.settings.stage_max_width | default: 100 | plus: 0 %}
+      max-width: min({{ _smw }}%, 798px);
       {% if stage_ar != blank and stage_ar != 'none' %}
         aspect-ratio: {{ stage_ar }};
       {% endif %}
@@ -361,7 +363,8 @@
       "max": 100,
       "step": 1,
       "default": 100,
-      "unit": "%"
+      "unit": "%",
+      "info": "Desktop: stage is capped at min(this %, 798px) so tile positions match the Figma 798×1545 artboard."
     },
     {
       "type": "range",
