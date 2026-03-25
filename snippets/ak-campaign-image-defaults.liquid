@@ -1,0 +1,6 @@
+{% comment %}
+  Sets `campaign_image_object_fit` and `campaign_image_object_position` from Theme settings → AK Campaign images.
+  Use {% include 'ak-campaign-image-defaults' %} (not render) so assigns apply in the parent section.
+{% endcomment %}
+{% assign campaign_image_object_fit = settings.ak_campaign_image_object_fit | default: 'cover' %}
+{% assign campaign_image_object_position = settings.ak_campaign_image_object_position | default: 'center' %}

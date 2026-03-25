@@ -4,6 +4,7 @@
 {% endcomment %}
 
 {% assign id = section.id %}
+{% include 'ak-campaign-image-defaults' %}
 {% assign layout_desktop = section.settings.layout_desktop | default: 'split' %}
 {% assign image = section.settings.image %}
 {% assign mobile_image = section.settings.mobile_image | default: image %}
@@ -218,7 +219,8 @@
       height: 100%;
       min-height: min(88vh, 920px);
       width: 100%;
-      object-fit: cover;
+      object-fit: {{ campaign_image_object_fit }};
+      object-position: {{ campaign_image_object_position }};
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__copy {
       flex: 1 1 auto;
@@ -328,6 +330,10 @@
       "id": "mobile_image",
       "label": "Mobile image",
       "info": "Optional. Falls back to desktop image if blank."
+    },
+    {
+      "type": "paragraph",
+      "content": "Desktop split layout crops the image to the column height. Object fit and focal point are set in Theme settings → AK Campaign images."
     },
     {
       "type": "url",

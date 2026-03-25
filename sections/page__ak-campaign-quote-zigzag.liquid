@@ -4,6 +4,7 @@
 {% endcomment %}
 
 {% assign id = section.id %}
+{% include 'ak-campaign-image-defaults' %}
 {% assign split_pct = section.settings.text_column_width | default: 50 %}
 {% assign img_pct = 100 | minus: split_pct %}
 {% assign row_min = section.settings.row_min_height_desktop | default: 560 %}
@@ -149,7 +150,8 @@
   #shopify-section-{{ id }} .ak-quote-zigzag__media .placeholder-svg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: {{ campaign_image_object_fit }};
+    object-position: {{ campaign_image_object_position }};
     display: block;
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only { display: none; }
@@ -441,6 +443,10 @@
       "id": "image_placeholder_bg",
       "label": "Image area background (loading)",
       "default": "#e8e8e8"
+    },
+    {
+      "type": "paragraph",
+      "content": "How photos crop in the image column: Theme settings → AK Campaign images (object fit + focal point)."
     },
     {
       "type": "text",
