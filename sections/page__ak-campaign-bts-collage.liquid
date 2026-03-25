@@ -254,62 +254,23 @@
 
       <div class="ak-bts-collage__tiles">
         {% assign collage_slot = 0 %}
-        {% for block in section.blocks %}
-          {% if block.type == 'collage_tile' %}
-            {% assign collage_slot = collage_slot | plus: 1 %}
-            {% assign img = block.settings.image %}
-            {% if block.settings.image_alt != blank %}
-              {% assign alt = block.settings.image_alt %}
-            {% elsif img != blank and img.alt != blank %}
-              {% assign alt = img.alt %}
-            {% else %}
-              {% assign alt = 'Behind the scenes photograph' %}
-            {% endif %}
-            {% assign raw_placement = block.settings.placement | default: 'auto' | strip %}
-            {% if raw_placement == blank %}{% assign raw_placement = 'auto' %}{% endif %}
-            {% assign use_custom_tile = false %}
-            {% if raw_placement == 'custom' %}
-              {% assign use_custom_tile = true %}
-              {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
-              {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
-              {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
-              {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
-              {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
-            {% elsif raw_placement == 'auto' %}
-              {% assign slot_n = collage_slot %}
-              {% if slot_n > 9 %}
-                {% assign slot_n = 9 %}
+        {% if section.block_order != blank and section.block_order.size > 0 %}
+          {% for block_id in section.block_order %}
+            {% for b in section.blocks %}
+              {% if b.id == block_id and b.type == 'collage_tile' %}
+                {% assign collage_slot = collage_slot | plus: 1 %}
+                {% render 'ak-bts-collage-tile', block: b, slot_index: collage_slot %}
               {% endif %}
-              {% assign pl = 'p' | append: slot_n %}
-            {% else %}
-              {% assign pl = raw_placement %}
+            {% endfor %}
+          {% endfor %}
+        {% else %}
+          {% for block in section.blocks %}
+            {% if block.type == 'collage_tile' %}
+              {% assign collage_slot = collage_slot | plus: 1 %}
+              {% render 'ak-bts-collage-tile', block: block, slot_index: collage_slot %}
             {% endif %}
-            <div
-              class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
-              {% if use_custom_tile %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
-              {{ block.shopify_attributes }}
-            >
-              <div class="ak-bts-collage__tile-inner">
-                {% if block.settings.link_url != blank %}
-                  <a
-                    href="{{ block.settings.link_url }}"
-                    class="ak-bts-collage__tile-link"
-                    {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
-                    aria-label="{{ alt | escape }}"
-                  >
-                {% endif %}
-                {% if img != blank %}
-                  {% include 'image-element', image: img, alt: alt, stretch_width: true %}
-                {% else %}
-                  {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
-                {% if block.settings.link_url != blank %}
-                  </a>
-                {% endif %}
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+          {% endfor %}
+        {% endif %}
       </div>
     </div>
   </div>
@@ -325,7 +286,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: centered headline + subcopy over an optional backdrop. Default tile layout follows Collage tile block order (drag to reorder). Or pin a tile to a fixed preset (p1–p9) or Custom %. Mobile: backdrop, text, then a 2-column tile stack."
+      "content": "Desktop: centered headline + subcopy over an optional backdrop. Collage positions follow Collage tile block order (drag blocks in this section to reorder). Only Custom (%) overrides position. Legacy Preset 1–9 in the dropdown are ignored for layout. Mobile: backdrop, text, then a 2-column tile stack."
     },
     {
       "type": "header",
@@ -710,18 +671,18 @@
           "id": "placement",
           "label": "Desktop placement",
           "default": "auto",
-          "info": "Follow block order: 1st tile → slot 1, 2nd → slot 2, … (reorder blocks in this section). Choose a preset to pin this tile to one Figma slot regardless of order. Custom = manual %.",
+          "info": "Layout uses this section’s block order (drag to reorder). Only Custom uses manual %. Preset 1–9 values are legacy and do not pin position.",
           "options": [
             { "value": "auto", "label": "Follow block order (slots 1–9)" },
-            { "value": "p1", "label": "Preset 1 (top left small)" },
-            { "value": "p2", "label": "Preset 2" },
-            { "value": "p3", "label": "Preset 3 (tall left)" },
-            { "value": "p4", "label": "Preset 4 (top right tall)" },
-            { "value": "p5", "label": "Preset 5 (upper center-right)" },
-            { "value": "p6", "label": "Preset 6" },
-            { "value": "p7", "label": "Preset 7 (large lower center)" },
-            { "value": "p8", "label": "Preset 8" },
-            { "value": "p9", "label": "Preset 9 (lower left)" },
+            { "value": "p1", "label": "Legacy p1 (same as order slot 1)" },
+            { "value": "p2", "label": "Legacy p2" },
+            { "value": "p3", "label": "Legacy p3" },
+            { "value": "p4", "label": "Legacy p4" },
+            { "value": "p5", "label": "Legacy p5" },
+            { "value": "p6", "label": "Legacy p6" },
+            { "value": "p7", "label": "Legacy p7" },
+            { "value": "p8", "label": "Legacy p8" },
+            { "value": "p9", "label": "Legacy p9" },
             { "value": "custom", "label": "Custom (%)" }
           ]
         },

@@ -1,0 +1,55 @@
+{% comment %}
+  One collage tile. slot_index = 1-based order among collage tiles (from theme editor block order).
+  Only raw_placement "custom" uses manual %; all other saved values use slot geometry so reorder works.
+{% endcomment %}
+{% assign img = block.settings.image %}
+{% if block.settings.image_alt != blank %}
+  {% assign alt = block.settings.image_alt %}
+{% elsif img != blank and img.alt != blank %}
+  {% assign alt = img.alt %}
+{% else %}
+  {% assign alt = 'Behind the scenes photograph' %}
+{% endif %}
+{% assign raw_placement = block.settings.placement | default: 'auto' | strip %}
+{% if raw_placement == blank %}
+  {% assign raw_placement = 'auto' %}
+{% endif %}
+{% assign use_custom_tile = false %}
+{% if raw_placement == 'custom' %}
+  {% assign use_custom_tile = true %}
+  {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
+  {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
+  {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
+  {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
+  {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
+{% else %}
+  {% assign slot_n = slot_index %}
+  {% if slot_n > 9 %}
+    {% assign slot_n = 9 %}
+  {% endif %}
+  {% assign pl = 'p' | append: slot_n %}
+{% endif %}
+<div
+  class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
+  {% if use_custom_tile %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
+  {{ block.shopify_attributes }}
+>
+  <div class="ak-bts-collage__tile-inner">
+    {% if block.settings.link_url != blank %}
+      <a
+        href="{{ block.settings.link_url }}"
+        class="ak-bts-collage__tile-link"
+        {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+        aria-label="{{ alt | escape }}"
+      >
+    {% endif %}
+    {% if img != blank %}
+      {% include 'image-element', image: img, alt: alt, stretch_width: true %}
+    {% else %}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+    {% if block.settings.link_url != blank %}
+      </a>
+    {% endif %}
+  </div>
+</div>
