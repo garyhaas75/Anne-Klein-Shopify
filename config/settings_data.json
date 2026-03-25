@@ -264,7 +264,7 @@
     "og_image_fallback": "shopify://shop_images/0020_BROWN_LOOK_ACCESSORIES_Editorial_2.jpg",
     "favicon": "shopify://shop_images/favicon.jpg",
     "store_locator_banner": "shopify://shop_images/AK-HERO-MODULE-1-SHOP-THE-CLOTHING-DESKTOP_bff3d308-e758-485e-9312-1af21922f199.jpg",
-    "ak_campaign_image_object_fit": "cover",
+    "ak_campaign_image_object_fit": "contain",
     "ak_campaign_image_object_position": "center",
     "wizzy_is_lazy_init": "true",
     "wizzy_is_lazy_init_enabled": "true",

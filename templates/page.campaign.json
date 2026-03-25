@@ -226,48 +226,6 @@
         "padding_bottom_mobile": 0
       }
     },
-    "page_ak_campaign_stills_DGCVEj": {
-      "type": "page__ak-campaign-stills",
-      "blocks": {
-        "still_HtWxii": {
-          "type": "still",
-          "settings": {
-            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_20_2442_1.png",
-            "image_alt": "",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "still_MFWYah": {
-          "type": "still",
-          "settings": {
-            "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
-            "image_alt": "",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        }
-      },
-      "block_order": [
-        "still_HtWxii",
-        "still_MFWYah"
-      ],
-      "name": "AK Campaign stills",
-      "settings": {
-        "width": "wide",
-        "show_gutter": false,
-        "still_gap": 0,
-        "image_behavior": "natural",
-        "crop_min_height_desktop": 480,
-        "crop_min_height_mobile": 400,
-        "letterbox_color": "#1a1a1a",
-        "section_aria_label": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0
-      }
-    },
     "campaign_quote_zigzag": {
       "type": "page__ak-campaign-quote-zigzag",
       "blocks": {
@@ -296,7 +254,10 @@
           }
         }
       },
-      "block_order": ["zigzag_1", "zigzag_2"],
+      "block_order": [
+        "zigzag_1",
+        "zigzag_2"
+      ],
       "settings": {
         "width": "wide",
         "show_gutter": false,
@@ -329,7 +290,6 @@
     "campaign_film",
     "collection_cta",
     "model_portraits",
-    "page_ak_campaign_stills_DGCVEj",
     "campaign_quote_zigzag"
   ]
 }
