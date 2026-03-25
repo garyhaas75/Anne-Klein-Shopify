@@ -269,24 +269,28 @@
         "bts_1": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/grid1_cbc2c9a2-36b5-42ba-a722-0952c09fcb02.png",
             "link": ""
           }
         },
         "bts_2": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/grid2_059bdf6a-d4d8-46d3-9644-5ac815cbc477.png",
             "link": ""
           }
         },
         "bts_3": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/grid3_0ec15921-692a-403e-a0c0-65495bd23dcf.png",
             "link": ""
           }
         },
         "bts_4": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/grid4_1994897a-d806-4c29-ab03-def43308cd76.png",
             "link": ""
           }
         }
@@ -303,7 +307,7 @@
         "images_per_row": 2,
         "enable_lightbox": true,
         "overlay_color": "#000000",
-        "link_color": "#FFFFFF",
+        "link_color": "#ffffff",
         "width": "wide",
         "show_gutter": true,
         "padding_top": 32,
