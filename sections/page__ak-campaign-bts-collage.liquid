@@ -1,0 +1,796 @@
+{% comment %}
+  AK Campaign — “Behind the Scenes” editorial collage (center copy + absolutely positioned tiles).
+  Figma file: agnYrbiuU2Ory43nJYA4Nk | Mobile frame: 35:616
+  Backdrop plate: 191:89 (798×1545). Tiles approx from nodes 191:97,191:96,191:90,191:91,191:92,191:98,191:94,191:95,191:93.
+  Headline 196:120, subcopy 196:119 — centered over stage.
+  WCAG 2.2 AA: region, image alts, heading order, visible link focus, reduced-motion friendly layout stack on small screens.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign heading = section.settings.heading %}
+{% assign hl = section.settings.heading_level | default: 'h2' %}
+{% assign sub = section.settings.subtext %}
+{% assign backdrop = section.settings.backdrop_image %}
+{% assign bg = section.settings.background_color | default: '#ffffff' %}
+{% assign stage_ar = section.settings.stage_aspect_ratio | default: '798 / 1545' %}
+
+{% assign hf = section.settings.heading_font_family | default: 'amiri' %}
+{% case hf %}
+  {% when 'amiri' %}{% assign hstack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign hstack = 'Georgia, serif' %}
+  {% else %}{% assign hstack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' %}
+{% endcase %}
+{% assign sf = section.settings.subtext_font_family | default: 'system' %}
+{% case sf %}
+  {% when 'amiri' %}{% assign sstack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign sstack = 'Georgia, serif' %}
+  {% else %}{% assign sstack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' %}
+{% endcase %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ section.settings.padding_top | default: 48 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 48 }}px;
+    background-color: {{ bg }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top | default: 40 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom | default: 40 }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__stage {
+    position: relative;
+    width: 100%;
+    max-width: {{ section.settings.stage_max_width | default: 100 }}%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: {{ section.settings.stage_background_color | default: '#ffffff' }};
+    overflow: hidden;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-bts-collage__stage {
+      {% if stage_ar != blank and stage_ar != 'none' %}
+        aspect-ratio: {{ stage_ar }};
+      {% endif %}
+      {% assign _mh = section.settings.stage_min_height_desktop | default: 0 | plus: 0 %}
+      {% if _mh > 0 %}
+        min-height: {{ _mh }}px;
+      {% endif %}
+    }
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__backdrop .image-element__wrap,
+  #shopify-section-{{ id }} .ak-bts-collage__backdrop img {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.backdrop_object_fit | default: 'cover' }};
+    object-position: {{ section.settings.backdrop_object_position | default: 'center' }};
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__backdrop .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__text {
+    position: absolute;
+    left: 50%;
+    top: {{ section.settings.text_vertical_position | default: 52 }}%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    text-align: {{ section.settings.text_alignment | default: 'center' }};
+    max-width: min(92%, {{ section.settings.text_max_width | default: 36 }}rem);
+    width: 100%;
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__text a {
+    pointer-events: auto;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__text a:focus-visible {
+    outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__heading {
+    margin: 0 0 0.5rem;
+    font-family: {{ hstack }};
+    font-size: clamp(1.5rem, 4vw, {{ section.settings.heading_font_size | default: 40 }}px);
+    font-weight: {{ section.settings.heading_font_weight | default: '400' }};
+    line-height: 1.15;
+    color: {{ section.settings.heading_color | default: '#000000' }};
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__sub {
+    margin: 0;
+    font-family: {{ sstack }};
+    font-size: {{ section.settings.subtext_font_size | default: 17 }}px;
+    font-weight: {{ section.settings.subtext_font_weight | default: '400' }};
+    line-height: 1.45;
+    color: {{ section.settings.subtext_color | default: '#333333' }};
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__sub p {
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile {
+    position: absolute;
+    z-index: 2;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile-inner {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile-inner .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile-inner img,
+  #shopify-section-{{ id }} .ak-bts-collage__tile-inner .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.tile_object_fit | default: 'cover' }};
+    object-position: {{ section.settings.tile_object_position | default: 'center' }};
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile-link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile-link:focus-visible {
+    outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
+    outline-offset: 2px;
+  }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 15.66%; height: 10.74%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 38.44%; width: 15.66%; height: 11.26%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 10.78%; top: 5.44%; width: 34.84%; height: 25.18%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 65.16%; top: 0%; width: 34.84%; height: 25.11%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 52.63%; top: 22.52%; width: 34.71%; height: 25.11%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 67.29%; top: 58.64%; width: 15.54%; height: 11.26%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 23.93%; top: 63.95%; width: 34.96%; height: 25.24%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 72.68%; top: 81.23%; width: 27.44%; height: 18.9%; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 79.16%; width: 27.82%; height: 21.88%; }
+
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-bts-collage__stage {
+      aspect-ratio: unset;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: {{ section.settings.mobile_stack_gap | default: 16 }}px;
+      overflow: visible;
+    }
+    #shopify-section-{{ id }} .ak-bts-collage__backdrop {
+      position: relative;
+      inset: auto;
+      order: 0;
+      aspect-ratio: {{ section.settings.mobile_backdrop_aspect | default: '3 / 4' }};
+      max-height: 70vh;
+    }
+    #shopify-section-{{ id }} .ak-bts-collage__text {
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: none;
+      order: 1;
+      max-width: 100%;
+      pointer-events: auto;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    #shopify-section-{{ id }} .ak-bts-collage__tiles {
+      order: 2;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: {{ section.settings.mobile_tile_gap | default: 8 }}px;
+    }
+    #shopify-section-{{ id }} .ak-bts-collage__tile {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: {{ section.settings.mobile_tile_aspect | default: '3 / 4' }};
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .ak-bts-collage__tile-link:focus-visible {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-bts-collage-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {% if heading != blank %}
+    aria-labelledby="ak-bts-collage-h-{{ id }}"
+  {% elsif section.settings.section_aria_label != blank %}
+    aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% else %}
+    aria-label="Behind the scenes"
+  {% endif %}
+>
+  <div class="container equal-columns--outside-trim">
+    <div class="ak-bts-collage__stage">
+      {% if backdrop != blank %}
+        <div class="ak-bts-collage__backdrop" aria-hidden="true">
+          {% include 'image-element', image: backdrop, alt: '', stretch_width: true %}
+        </div>
+      {% endif %}
+
+      {% if heading != blank or sub != blank %}
+        <div class="ak-bts-collage__text">
+          {% if heading != blank %}
+            {% if hl == 'h1' %}
+              <h1 class="ak-bts-collage__heading" id="ak-bts-collage-h-{{ id }}">{{ heading }}</h1>
+            {% elsif hl == 'h3' %}
+              <h3 class="ak-bts-collage__heading" id="ak-bts-collage-h-{{ id }}">{{ heading }}</h3>
+            {% else %}
+              <h2 class="ak-bts-collage__heading" id="ak-bts-collage-h-{{ id }}">{{ heading }}</h2>
+            {% endif %}
+          {% endif %}
+          {% if sub != blank %}
+            <div class="ak-bts-collage__sub rte">{{ sub }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="ak-bts-collage__tiles">
+        {% for block in section.blocks %}
+          {% if block.type == 'collage_tile' %}
+            {% assign img = block.settings.image %}
+            {% if block.settings.image_alt != blank %}
+              {% assign alt = block.settings.image_alt %}
+            {% elsif img != blank and img.alt != blank %}
+              {% assign alt = img.alt %}
+            {% else %}
+              {% assign alt = 'Behind the scenes photograph' %}
+            {% endif %}
+            {% assign pl = block.settings.placement | default: 'p1' %}
+            {% if pl == 'custom' %}
+              {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
+              {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
+              {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
+              {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
+              {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
+            {% endif %}
+            <div
+              class="ak-bts-collage__tile {% if pl != 'custom' %}ak-bts-collage__tile--{{ pl }}{% endif %}"
+              {% if pl == 'custom' %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <div class="ak-bts-collage__tile-inner">
+                {% if block.settings.link_url != blank %}
+                  <a
+                    href="{{ block.settings.link_url }}"
+                    class="ak-bts-collage__tile-link"
+                    {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                    aria-label="{{ alt | escape }}"
+                  >
+                {% endif %}
+                {% if img != blank %}
+                  {% include 'image-element', image: img, alt: alt, stretch_width: true %}
+                {% else %}
+                  {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                {% if block.settings.link_url != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "AK Campaign BTS collage",
+  "class": "ak-bts-collage-section",
+  "tag": "section",
+  "max_blocks": 18,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Desktop: centered headline + subcopy over an optional backdrop; nine collage tiles use Figma-based presets (p1–p9) or custom % placement. Mobile: backdrop, text, then a 2-column tile stack."
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Behind the Scenes"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1 (one per page)" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Follow our journey on Instagram <a href=\"https://www.instagram.com/annekleinofficial/\" target=\"_blank\" rel=\"noopener noreferrer\">@AnneKleinOfficial</a></p>"
+    },
+    {
+      "type": "header",
+      "content": "Backdrop (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "backdrop_image",
+      "label": "Backdrop image",
+      "info": "Decorative plate behind collage; hidden from assistive tech. Omit for flat background only."
+    },
+    {
+      "type": "select",
+      "id": "backdrop_object_fit",
+      "label": "Backdrop fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "backdrop_object_position",
+      "label": "Backdrop focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Stage (desktop)"
+    },
+    {
+      "type": "text",
+      "id": "stage_aspect_ratio",
+      "label": "Stage aspect ratio",
+      "default": "798 / 1545",
+      "info": "CSS aspect-ratio value, e.g. 798 / 1545. Set blank or \"none\" to disable ratio (min-height still applies)."
+    },
+    {
+      "type": "range",
+      "id": "stage_max_width",
+      "label": "Stage max width",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "stage_min_height_desktop",
+      "label": "Min height (desktop)",
+      "min": 0,
+      "max": 2400,
+      "step": 20,
+      "default": 0,
+      "unit": "px",
+      "info": "Optional floor when aspect ratio is off or images load late."
+    },
+    {
+      "type": "color",
+      "id": "stage_background_color",
+      "label": "Stage background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Center text position"
+    },
+    {
+      "type": "range",
+      "id": "text_vertical_position",
+      "label": "Text vertical position",
+      "min": 5,
+      "max": 95,
+      "step": 1,
+      "default": 52,
+      "unit": "%",
+      "info": "Distance from top of stage (desktop)."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "label": "Text max width",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 36,
+      "unit": "rem"
+    },
+    {
+      "type": "header",
+      "content": "Heading typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "system", "label": "System" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading size (max)",
+      "min": 24,
+      "max": 72,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Subtext typography"
+    },
+    {
+      "type": "select",
+      "id": "subtext_font_family",
+      "label": "Subtext font",
+      "default": "system",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "system", "label": "System" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "subtext_font_size",
+      "label": "Subtext size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 17,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "subtext_font_weight",
+      "label": "Subtext weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Tiles (desktop)"
+    },
+    {
+      "type": "select",
+      "id": "tile_object_fit",
+      "label": "Tile image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "tile_object_position",
+      "label": "Tile focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Mobile stack"
+    },
+    {
+      "type": "range",
+      "id": "mobile_stack_gap",
+      "label": "Stack gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "mobile_backdrop_aspect",
+      "label": "Backdrop aspect (mobile)",
+      "default": "3 / 4"
+    },
+    {
+      "type": "range",
+      "id": "mobile_tile_gap",
+      "label": "Tile grid gap",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "mobile_tile_aspect",
+      "label": "Tile aspect (mobile)",
+      "default": "3 / 4"
+    },
+    {
+      "type": "header",
+      "content": "Section layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)",
+      "info": "Used when heading is empty."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collage_tile",
+      "name": "Collage tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "info": "Describe the photo for screen readers. Falls back to media library alt."
+        },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Desktop placement",
+          "default": "p1",
+          "info": "Preset positions match Figma collage (798×1545 stage). Use Custom for manual %.",
+          "options": [
+            { "value": "p1", "label": "Preset 1 (top left small)" },
+            { "value": "p2", "label": "Preset 2" },
+            { "value": "p3", "label": "Preset 3 (tall left)" },
+            { "value": "p4", "label": "Preset 4 (top right tall)" },
+            { "value": "p5", "label": "Preset 5 (upper center-right)" },
+            { "value": "p6", "label": "Preset 6" },
+            { "value": "p7", "label": "Preset 7 (large lower center)" },
+            { "value": "p8", "label": "Preset 8" },
+            { "value": "p9", "label": "Preset 9 (lower left)" },
+            { "value": "custom", "label": "Custom (%)" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "custom_left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0,
+          "unit": "%",
+          "label": "Custom left"
+        },
+        {
+          "type": "range",
+          "id": "custom_top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0,
+          "unit": "%",
+          "label": "Custom top"
+        },
+        {
+          "type": "range",
+          "id": "custom_width",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "default": 25,
+          "unit": "%",
+          "label": "Custom width"
+        },
+        {
+          "type": "range",
+          "id": "custom_height",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "default": 25,
+          "unit": "%",
+          "label": "Custom height"
+        },
+        {
+          "type": "range",
+          "id": "tile_z_index",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "default": 2,
+          "label": "Stack order (custom only)",
+          "info": "Higher draws above other tiles."
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Tile link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign BTS collage",
+      "category": "Custom",
+      "blocks": [
+        { "type": "collage_tile", "settings": { "placement": "p1" } },
+        { "type": "collage_tile", "settings": { "placement": "p2" } },
+        { "type": "collage_tile", "settings": { "placement": "p3" } },
+        { "type": "collage_tile", "settings": { "placement": "p4" } },
+        { "type": "collage_tile", "settings": { "placement": "p5" } },
+        { "type": "collage_tile", "settings": { "placement": "p6" } },
+        { "type": "collage_tile", "settings": { "placement": "p7" } },
+        { "type": "collage_tile", "settings": { "placement": "p8" } },
+        { "type": "collage_tile", "settings": { "placement": "p9" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

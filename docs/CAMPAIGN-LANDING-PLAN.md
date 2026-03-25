@@ -46,8 +46,8 @@ Work **one section per iteration**; update the **Status** row when something shi
 | 7 | 2×2 BTS grid — Figma mobile cells **`189:70`–`189:73`** (~360×553, 12px gap, 33px side inset on 798 frame) | **`index__gallery`** — **`campaign_bts_grid`**: classic, **2** per row, **crop** on, **wide** + gutter. Section **Image sizing (classic)**: crop focal, object fit/position, **Cell aspect ratio** (e.g. **360 / 553**), min heights. `css_class` **`ak-campaign-bts-grid`**. | **In template** (add 4 images + alt; tune sizing in section settings) |
 | 7b | **Two images + text below** (not zigzag): pair of stills, then quote/RT | **`page__ak-campaign-two-up-text`** — **`campaign_two_up_text`** (after BTS or wherever Figma places it). Two pickers, RTE, attribution, image + text typography. | **In template** (images, alts, copy) |
 | 8 | **Only if Figma has quote-only bands** (no paired half-image) | New `page__ak-campaign-quote` **or** reuse/duplicate **quote zigzag** text column styling — **confirm in Figma** vs Step 5b | Confirm in Figma |
-| 9 | “Behind the Scenes” + Instagram line | `index__rich-text` or heading + RTE with link on `@handle` | Not started |
-| 10 | Asymmetric editorial collage | New custom section (many positioned blocks) or simplified grid—confirm in Figma before build | Not started |
+| 9 | “Behind the Scenes” + Instagram line (Figma **196:119**–**196:120**, mobile frame **35:616**) | **`page__ak-campaign-bts-collage`** — heading + **richtext** subcopy (default Instagram link). Same section as Step 10. | **In template** (`campaign_bts_collage` after BTS grid) |
+| 10 | Asymmetric editorial collage (backdrop **191:89**; tiles **191:97**, **191:96**, **191:90**, **191:91**, **191:92**, **191:98**, **191:94**, **191:95**, **191:93** on **798×1545** stage) | **`page__ak-campaign-bts-collage`** — optional backdrop; **nine** `collage_tile` blocks with presets **p1–p9** (% positions from Figma) or **Custom** %; mobile = backdrop → text → **2-col** tile stack. | **In template** (add backdrop + tile images + **alt** in admin) |
 
 ## Template
 
@@ -56,5 +56,5 @@ Work **one section per iteration**; update the **Status** row when something shi
 
 ## Current position
 
-- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign quote zigzag** → **AK Campaign inset media** → **Gallery** (`campaign_bts_grid`) → **AK Campaign two-up + text** (`campaign_two_up_text`). *Re-add **AK Campaign stills** / **portraits** in the theme editor if your Figma scroll includes them but they dropped out of JSON (Shopify merges).*  
-- **You still do in admin:** assign **video**; CTA **button link**; **zigzag** + **inset** + **BTS** + **two-up** images and **alt** text; restore stills/portraits if needed.
+- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign quote zigzag** → **AK Campaign inset media** → **AK Campaign two-up + text** (`campaign_two_up_text`) → **Gallery** (`campaign_bts_grid`) → **BTS collage** (`campaign_bts_collage`, `page__ak-campaign-bts-collage`) → **AK Campaign two-up + text** (duplicate block). *Re-add **AK Campaign stills** / **portraits** in the theme editor if your Figma scroll includes them but they dropped out of JSON (Shopify merges).*  
+- **You still do in admin:** assign **video**; CTA **button link**; **zigzag** + **inset** + **BTS grid** + **BTS collage** (backdrop, nine tiles, alts) + **two-up** images and **alt** text; restore stills/portraits if needed.
