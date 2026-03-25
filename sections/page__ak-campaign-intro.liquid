@@ -53,6 +53,21 @@
 {% assign heading_size = section.settings.heading_font_size | default: 72 %}
 {% assign heading_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign split_image_pct = section.settings.split_image_width | default: 50 %}
+{% assign text_rule_align = section.settings.text_rule_alignment | default: 'center' %}
+{% case text_rule_align %}
+  {% when 'left' %}
+    {% assign tra_css_text = 'left' %}
+    {% assign tra_css_justify = 'flex-start' %}
+    {% assign tra_css_items = 'flex-start' %}
+  {% when 'right' %}
+    {% assign tra_css_text = 'right' %}
+    {% assign tra_css_justify = 'flex-end' %}
+    {% assign tra_css_items = 'flex-end' %}
+  {% else %}
+    {% assign tra_css_text = 'center' %}
+    {% assign tra_css_justify = 'center' %}
+    {% assign tra_css_items = 'center' %}
+{% endcase %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -99,10 +114,9 @@
     background-color: {{ bg_color }};
     color: {{ text_color }};
     padding: {{ copy_padding_top }}px 1.5rem 2rem;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: {{ tra_css_items }};
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-campaign-intro__copy {
@@ -114,22 +128,23 @@
   #shopify-section-{{ id }} .ak-campaign-intro__body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: {{ tra_css_items }};
     width: 100%;
   }
   #shopify-section-{{ id }} .ak-campaign-intro__text-stack {
     display: inline-flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     max-width: min(36rem, 100%);
   }
   #shopify-section-{{ id }} .ak-campaign-intro__titles {
-    text-align: center;
-    width: 100%;
+    text-align: {{ tra_css_text }};
+    width: max-content;
+    max-width: 100%;
   }
   #shopify-section-{{ id }} .ak-campaign-intro__divider-slot {
     display: flex;
-    justify-content: center;
+    justify-content: {{ tra_css_justify }};
     width: 100%;
     margin: 1.25rem 0 0;
     flex-shrink: 0;
@@ -170,7 +185,7 @@
     text-decoration: none;
     color: inherit;
     display: block;
-    width: 100%;
+    max-width: 100%;
   }
   #shopify-section-{{ id }} .ak-campaign-intro__link:hover .ak-campaign-intro__heading,
   #shopify-section-{{ id }} .ak-campaign-intro__link:hover .ak-campaign-intro__eyebrow {
@@ -208,28 +223,16 @@
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__copy {
       flex: 1 1 auto;
       min-width: 0;
-      align-items: flex-start;
       justify-content: center;
-      text-align: left;
       padding: 2rem clamp(1.5rem, 4vw, 4rem);
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__body {
       flex-direction: column;
-      align-items: flex-start;
       max-width: none;
       width: 100%;
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__text-stack {
       max-width: 100%;
-      align-items: stretch;
-    }
-    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__titles {
-      text-align: left;
-      width: max-content;
-      max-width: 100%;
-    }
-    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-slot {
-      justify-content: center;
     }
   }
 {% endstyle %}
@@ -381,7 +384,7 @@
       "id": "show_divider",
       "label": "Show vertical rule",
       "default": true,
-      "info": "Below the eyebrow and heading. On split desktop the rule is centered under the headline block; text stays left-aligned."
+      "info": "Below the eyebrow and heading. Position matches “Text & vertical rule alignment.”"
     },
     {
       "type": "range",
@@ -515,6 +518,18 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_rule_alignment",
+      "label": "Text & vertical rule alignment",
+      "default": "center",
+      "info": "Aligns eyebrow, heading, and rule together in the text area (left, center, or right).",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "select",
