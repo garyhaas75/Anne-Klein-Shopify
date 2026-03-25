@@ -14,6 +14,18 @@
 
 {% assign layout_desktop = section.settings.layout_desktop | default: 'two_columns' %}
 {% assign portrait_gap = section.settings.stack_gap | default: 0 %}
+{% assign cap_v = section.settings.caption_vertical | default: 'bottom' %}
+{% case cap_v %}
+  {% when 'top' %}{% assign cap_justify = 'flex-start' %}
+  {% when 'center' %}{% assign cap_justify = 'center' %}
+  {% else %}{% assign cap_justify = 'flex-end' %}
+{% endcase %}
+{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign img_pos = section.settings.image_object_position | default: 'center' %}
+{% assign ar_d = section.settings.portrait_aspect_desktop | default: 'none' %}
+{% assign ar_m = section.settings.portrait_aspect_mobile | default: 'none' %}
+{% assign scrim_h_pct = section.settings.scrim_height_percent | default: 45 %}
+{% assign scrim_op_f = scrim_opacity | divided_by: 100.0 %}
 {% assign name_font_key = section.settings.name_font_family | default: 'amiri' %}
 {% assign role_font_key = section.settings.role_font_family | default: 'system' %}
 {% case name_font_key %}
@@ -84,12 +96,24 @@
     overflow: hidden;
     width: 100%;
     min-height: {{ min_h }}px;
-    background-color: #1a1a1a;
+    background-color: {{ section.settings.image_letterbox_color | default: '#1a1a1a' }};
+  }
+  @media only screen and (min-width: 799px) {
+    {% if ar_d != blank and ar_d != 'none' %}
+    #shopify-section-{{ id }} .ak-campaign-portrait__card {
+      aspect-ratio: {{ ar_d }};
+    }
+    {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-campaign-portrait__card {
       min-height: {{ section.settings.portrait_min_height_mobile | default: min_h }}px;
     }
+    {% if ar_m != blank and ar_m != 'none' %}
+    #shopify-section-{{ id }} .ak-campaign-portrait__card {
+      aspect-ratio: {{ ar_m }};
+    }
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__media {
     position: absolute;
@@ -124,7 +148,8 @@
   #shopify-section-{{ id }} .ak-campaign-portrait__media .placeholder-svg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: {{ img_fit }};
+    object-position: {{ img_pos }};
     display: block;
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only { display: none; }
@@ -136,12 +161,27 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
-    height: 45%;
-    min-height: 140px;
-    background: linear-gradient(to top, rgba(0,0,0,{{ scrim_opacity | divided_by: 100.0 }}), transparent);
     z-index: 1;
     pointer-events: none;
+    height: {{ scrim_h_pct }}%;
+    min-height: 120px;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--text-bottom .ak-campaign-portrait__scrim {
+    bottom: 0;
+    top: auto;
+    background: linear-gradient(to top, rgba(0,0,0,{{ scrim_op_f }}), transparent);
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--text-top .ak-campaign-portrait__scrim {
+    top: 0;
+    bottom: auto;
+    background: linear-gradient(to bottom, rgba(0,0,0,{{ scrim_op_f }}), transparent);
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--text-center .ak-campaign-portrait__scrim {
+    top: 0;
+    bottom: 0;
+    height: auto;
+    min-height: 0;
+    background: radial-gradient(ellipse 85% 70% at 50% 50%, rgba(0,0,0,{{ scrim_op_f | times: 0.85 }}), rgba(0,0,0,0) 70%);
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__caption {
     position: relative;
@@ -149,17 +189,29 @@
     min-height: {{ min_h }}px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: {{ cap_justify }};
     align-items: {% if section.settings.caption_align == 'left' %}flex-start{% elsif section.settings.caption_align == 'right' %}flex-end{% else %}center{% endif %};
     text-align: {% if section.settings.caption_align == 'left' %}left{% elsif section.settings.caption_align == 'right' %}right{% else %}center{% endif %};
-    padding: 2rem 1.5rem 2.5rem;
+    padding: 2rem 1.5rem;
     color: {{ text_color }};
     text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--text-bottom .ak-campaign-portrait__caption {
+    padding-bottom: 2.5rem;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--text-top .ak-campaign-portrait__caption {
+    padding-top: 2.5rem;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-campaign-portrait__caption {
       min-height: {{ section.settings.portrait_min_height_mobile | default: min_h }}px;
-      padding: 1.5rem 1rem 2rem;
+      padding: 1.5rem 1rem;
+    }
+    #shopify-section-{{ id }}.ak-campaign-portrait-section--text-bottom .ak-campaign-portrait__caption {
+      padding-bottom: 2rem;
+    }
+    #shopify-section-{{ id }}.ak-campaign-portrait-section--text-top .ak-campaign-portrait__caption {
+      padding-top: 2rem;
     }
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__name {
@@ -198,7 +250,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section {% if layout_desktop == 'two_columns' %}ak-campaign-portrait-section--two-columns{% endif %} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section ak-campaign-portrait-section--text-{{ cap_v }} {% if layout_desktop == 'two_columns' %}ak-campaign-portrait-section--two-columns{% endif %} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {% if section.settings.section_aria_label != blank %}
@@ -360,7 +412,7 @@
     {
       "type": "select",
       "id": "caption_align",
-      "label": "Name & role alignment",
+      "label": "Name & role horizontal alignment",
       "default": "center",
       "options": [
         { "value": "left", "label": "Left" },
@@ -369,11 +421,104 @@
       ]
     },
     {
+      "type": "select",
+      "id": "caption_vertical",
+      "label": "Name & role vertical position",
+      "default": "bottom",
+      "info": "Scrim moves with text (top, bottom, or soft center overlay) for contrast.",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "scrim_height_percent",
+      "label": "Scrim height (top or bottom text)",
+      "min": 25,
+      "max": 70,
+      "step": 1,
+      "default": 45,
+      "unit": "%",
+      "info": "Height of the dark gradient band when text is top or bottom. Ignored for center text."
+    },
+    {
+      "type": "header",
+      "content": "Image fit & height"
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "info": "Cover fills the frame (may crop). Contain shows the full image (letterbox). Fill stretches.",
+      "options": [
+        { "value": "cover", "label": "Cover (fill frame)" },
+        { "value": "contain", "label": "Contain (show full image)" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "portrait_aspect_desktop",
+      "label": "Aspect ratio (desktop)",
+      "default": "none",
+      "info": "Locks height from width. Use with min height for a floor. None = min height only.",
+      "options": [
+        { "value": "none", "label": "None (min height only)" },
+        { "value": "3 / 4", "label": "3:4 (portrait)" },
+        { "value": "2 / 3", "label": "2:3" },
+        { "value": "4 / 5", "label": "4:5" },
+        { "value": "9 / 16", "label": "9:16" },
+        { "value": "1 / 1", "label": "1:1" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "16 / 9", "label": "16:9" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "portrait_aspect_mobile",
+      "label": "Aspect ratio (mobile)",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "None (min height only)" },
+        { "value": "3 / 4", "label": "3:4 (portrait)" },
+        { "value": "2 / 3", "label": "2:3" },
+        { "value": "4 / 5", "label": "4:5" },
+        { "value": "9 / 16", "label": "9:16" },
+        { "value": "1 / 1", "label": "1:1" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "16 / 9", "label": "16:9" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "image_letterbox_color",
+      "label": "Letterbox / background (contain mode)",
+      "default": "#1a1a1a"
+    },
+    {
       "type": "range",
       "id": "portrait_min_height",
       "label": "Min height (desktop)",
       "min": 320,
-      "max": 900,
+      "max": 1200,
       "step": 20,
       "default": 520,
       "unit": "px"
@@ -383,7 +528,7 @@
       "id": "portrait_min_height_mobile",
       "label": "Min height (mobile)",
       "min": 280,
-      "max": 800,
+      "max": 1000,
       "step": 20,
       "default": 480,
       "unit": "px"
