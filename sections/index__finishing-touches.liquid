@@ -176,10 +176,12 @@
     <div class="one-whole column has-column-padding-bottom featured-collection layout--slider is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
         <div class="ak-finishing-touches__carousel-wrap">
+        {% comment %} data-mobile-columns must match gallery-cell medium-down--one-half (2 cols ≤798px). {% endcomment %}
         <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
              data-products-per-slide="{{ products_per_row }}"
              data-products-limit="{{ products_count }}"
              data-products-available="{{ products_count }}"
+             data-mobile-columns="2"
              role="region"
              aria-roledescription="carousel"
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
@@ -317,6 +319,18 @@
   var sectionId = '{{ id }}';
   var arrowShape = 'M95.04 46 21.68 46 48.18 22.8 42.91 16.78 4.96 50 42.91 83.22 48.18 77.2 21.68 54 95.04 54 95.04 46z';
   var carouselLabel = {{ title | default: 'Finishing touches' | json }};
+  var MOBILE_MQ = window.matchMedia('(max-width: 798px)');
+
+  function getMobileColumns($gallery) {
+    var n = parseInt($gallery.attr('data-mobile-columns'), 10);
+    return !isNaN(n) && n > 0 ? n : 2;
+  }
+
+  function getEffectiveGroupSize(productsPer, productsLimit, isMobile, mobileColumns) {
+    var perRow = isMobile ? mobileColumns : productsPer;
+    var cap = productsLimit > 0 ? Math.min(perRow, productsLimit) : perRow;
+    return Math.max(1, cap);
+  }
 
   function initFinishingTouchesCarousel() {
     if (typeof jQuery === 'undefined') return;
@@ -332,12 +346,28 @@
     if (data.collection_style !== 'slider') return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
-    if ($gallery.hasClass('flickity-enabled')) $gallery.flickity('destroy');
+    if ($gallery.hasClass('flickity-enabled')) {
+      unbindTrackpadScroll($gallery);
+      $gallery.flickity('destroy');
+    }
+    $section.find('.ak-finishing-touches__nav').remove();
 
     var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
     var productsLimit = parseInt(data.products_limit, 10) || 0;
-    var showNav = productsLimit > productsPer;
-    var groupSize = productsLimit > 0 ? Math.min(productsPer, productsLimit) : productsPer;
+    var mobileColumns = getMobileColumns($gallery);
+    var isMobile = MOBILE_MQ.matches;
+    var groupSize = getEffectiveGroupSize(productsPer, productsLimit, isMobile, mobileColumns);
+    var showNav = productsLimit > groupSize;
+
+    var resumeRaw = $gallery.data('akFtResumeCellIndex');
+    var initialIndex = 0;
+    if (resumeRaw != null && resumeRaw !== '') {
+      var cellIdx = parseInt(resumeRaw, 10);
+      if (!isNaN(cellIdx) && cellIdx >= 0) {
+        initialIndex = Math.max(0, Math.floor(cellIdx / groupSize));
+      }
+      $gallery.removeData('akFtResumeCellIndex');
+    }
 
     $gallery.flickity({
       lazyLoad: 2,
@@ -350,7 +380,7 @@
       contain: true,
       pageDots: showNav,
       prevNextButtons: showNav,
-      initialIndex: 0,
+      initialIndex: initialIndex,
       arrowShape: typeof window.arrowShape !== 'undefined' ? window.arrowShape : arrowShape,
       accessibility: true,
       on: {
@@ -370,6 +400,39 @@
         }
       }
     });
+  }
+
+  function onFinishingTouchesViewportChange() {
+    if (typeof jQuery === 'undefined') return;
+    var $section = jQuery('#shopify-section-' + sectionId);
+    if (!$section.length) return;
+    var $gallery = $section.find('.slider-gallery');
+    if (!$gallery.length || !$gallery.hasClass('flickity-enabled')) return;
+    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
+    if (!$dataEl.length) return;
+    var data = {};
+    try {
+      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
+      data = typeof raw === 'object' ? raw : JSON.parse(raw);
+    } catch (e) { return; }
+    if (data.collection_style !== 'slider') return;
+    var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
+    var productsLimit = parseInt(data.products_limit, 10) || 0;
+    var mobileColumns = getMobileColumns($gallery);
+    var gNow = getEffectiveGroupSize(productsPer, productsLimit, MOBILE_MQ.matches, mobileColumns);
+    var gPrev = getEffectiveGroupSize(productsPer, productsLimit, !MOBILE_MQ.matches, mobileColumns);
+    if (gNow === gPrev) return;
+
+    var flkty = $gallery.data('flickity');
+    if (!flkty) return;
+    var cellIndex = 0;
+    var slide = flkty.selectedSlide;
+    if (slide && slide.cells && slide.cells.length && slide.cells[0].element) {
+      var idx = $gallery.find('.gallery-cell').index(slide.cells[0].element);
+      if (idx >= 0) cellIndex = idx;
+    }
+    $gallery.data('akFtResumeCellIndex', cellIndex);
+    initFinishingTouchesCarousel();
   }
 
   function moveNavBelowSlider($section) {
@@ -427,11 +490,26 @@
     }
   }
 
+  var wheelListenerOpts = { passive: false };
+
+  function unbindTrackpadScroll($gallery) {
+    var wheel = $gallery.data('akFtWheel');
+    if (!wheel || !wheel.handler) return;
+    var el = $gallery[0];
+    if (el) el.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
+    if (wheel.viewportEl && wheel.viewportEl !== el) {
+      wheel.viewportEl.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
+    }
+    $gallery.removeData('akFtWheel');
+  }
+
   function bindTrackpadScroll($gallery) {
     var flkty = $gallery.data('flickity');
     if (!flkty) return;
     var el = $gallery[0];
     if (!el) return;
+    unbindTrackpadScroll($gallery);
+
     var accumX = 0;
     var threshold = 20;
     var locked = false;
@@ -469,12 +547,20 @@
       }
     }
 
-    el.addEventListener('wheel', handleWheel, { passive: false });
+    el.addEventListener('wheel', handleWheel, wheelListenerOpts);
 
     var viewport = $gallery.find('.flickity-viewport')[0];
-    if (viewport && viewport !== el) {
-      viewport.addEventListener('wheel', handleWheel, { passive: false });
+    var viewportEl = viewport && viewport !== el ? viewport : null;
+    if (viewportEl) {
+      viewportEl.addEventListener('wheel', handleWheel, wheelListenerOpts);
     }
+    $gallery.data('akFtWheel', { handler: handleWheel, viewportEl: viewportEl });
+  }
+
+  if (MOBILE_MQ.addEventListener) {
+    MOBILE_MQ.addEventListener('change', onFinishingTouchesViewportChange);
+  } else if (MOBILE_MQ.addListener) {
+    MOBILE_MQ.addListener(onFinishingTouchesViewportChange);
   }
 
   if (document.readyState === 'loading') {
