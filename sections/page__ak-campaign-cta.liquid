@@ -1,6 +1,6 @@
 {% comment %}
-  AK Campaign landing — collection / editorial CTA: heading, richtext, primary button.
-  WCAG 2.2 AA: region, heading level, visible focus on links and button, min touch target on CTA.
+  AK Campaign landing — collection / editorial CTA: title line, richtext, primary button.
+  WCAG 2.2 AA: region, correct heading semantics (or paragraph for quotes), visible focus, min touch target on CTA.
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -45,6 +45,14 @@
 {% assign heading_weight = section.settings.heading_font_weight | default: '700' %}
 {% assign body_size = section.settings.body_font_size | default: 18 %}
 {% assign body_weight = section.settings.body_font_weight | default: '400' %}
+{% assign heading_size_mobile = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if heading_size_mobile < 1 %}
+  {% assign heading_size_mobile = heading_size %}
+{% endif %}
+{% assign body_size_mobile = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
+{% if body_size_mobile < 1 %}
+  {% assign body_size_mobile = body_size %}
+{% endif %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -91,6 +99,14 @@
     line-height: {{ section.settings.body_line_height | default: 165 }}%;
     color: {{ text_color }};
     margin: 0;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-cta__heading {
+      font-size: clamp(1.25rem, 5.5vw, {{ heading_size_mobile }}px);
+    }
+    #shopify-section-{{ id }} .ak-campaign-cta__rte {
+      font-size: {{ body_size_mobile }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-campaign-cta__rte p {
     margin: 0 0 1em;
@@ -141,7 +157,9 @@
   <div class="container">
     <div class="ak-campaign-cta__inner">
       {% if heading != blank %}
-        {% if heading_level == 'h1' %}
+        {% if heading_level == 'p' %}
+          <p class="ak-campaign-cta__heading" id="ak-campaign-cta-heading-{{ id }}">{{ heading }}</p>
+        {% elsif heading_level == 'h1' %}
           <h1 class="ak-campaign-cta__heading" id="ak-campaign-cta-heading-{{ id }}">{{ heading }}</h1>
         {% elsif heading_level == 'h3' %}
           <h3 class="ak-campaign-cta__heading" id="ak-campaign-cta-heading-{{ id }}">{{ heading }}</h3>
@@ -191,12 +209,14 @@
     {
       "type": "select",
       "id": "heading_level",
-      "label": "Heading level",
+      "label": "Title element",
       "default": "h2",
+      "info": "Use Paragraph for pull quotes or lines that should not be a document heading (better for accessibility).",
       "options": [
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        { "value": "h1", "label": "Heading 1" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "p", "label": "Paragraph (quote / not a heading)" }
       ]
     },
     {
@@ -319,12 +339,24 @@
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading font size",
+      "label": "Title / heading size (desktop max)",
       "min": 20,
       "max": 72,
       "step": 1,
       "default": 36,
-      "unit": "px"
+      "unit": "px",
+      "info": "Uses clamp on small viewports; this caps the largest size on desktop."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Title / heading size (mobile max)",
+      "min": 0,
+      "max": 72,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop max above. Otherwise caps the title on screens ≤798px."
     },
     {
       "type": "select",
@@ -367,12 +399,23 @@
     {
       "type": "range",
       "id": "body_font_size",
-      "label": "Body font size",
+      "label": "Body copy size (desktop)",
       "min": 14,
-      "max": 28,
+      "max": 36,
       "step": 1,
       "default": 18,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body copy size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop body size. Applied at ≤798px."
     },
     {
       "type": "select",
