@@ -154,7 +154,7 @@
       {% assign start_m_image = section.settings.start_card_image_mobile | default: section.settings.start_card_image %}
       {% assign start_m_heading = section.settings.start_card_heading_mobile | default: section.settings.start_card_heading %}
       {% assign start_m_text = section.settings.start_card_text_mobile | default: section.settings.start_card_text %}
-      <div class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" role="button" tabindex="0" aria-label="Play video">
+      <button type="button" class="ak-video__start-card" id="ak-video-start-{{ section.id }}" aria-hidden="false" aria-label="Play video">
         <div class="ak-video__start-card-inner ak-video__start-card--desktop">
           {% if start_d_image != blank %}
             <div class="ak-video__start-card-bg" style="background-image: url({{ start_d_image | image_url: width: 1920 }});"></div>
@@ -193,7 +193,7 @@
             {% endif %}
           </div>
         </div>
-      </div>
+      </button>
     {% endif %}
 
     {% comment %} Logo overlay: uploaded image, size/placement/padding (desktop + mobile, mobile can be off) {% endcomment %}
@@ -250,16 +250,16 @@
         <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack{% if overlay_has_link %} ak-video__overlay--has-link{% endif %}" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
           <div class="ak-video__overlay-inner">
             {% if has_line1 %}
-              <p class="ak-video__overlay-line1" {% unless overlay_has_link %}tabindex="0"{% endunless %} style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
+              <p class="ak-video__overlay-line1" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
             {% endif %}
             {% if has_heading %}
-              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" {% unless overlay_has_link %}tabindex="0"{% endunless %} style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
+              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
             {% endif %}
             {% if has_cta %}
               {% if overlay_has_link %}
                 <span class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</span>
               {% else %}
-                <p class="ak-video__overlay-cta" tabindex="0" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
+                <p class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
               {% endif %}
             {% endif %}
           </div>
@@ -442,6 +442,15 @@
   }
   #ak-video-{{ section.id }} .ak-video__start-card {
     cursor: pointer;
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    width: 100%;
   }
   #ak-video-{{ section.id }} .ak-video__start-card:focus-visible {
     outline: 3px solid #4A90D9;
@@ -464,7 +473,7 @@
   #ak-video-{{ section.id }} .ak-video__end-card--mobile {
     display: none;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 798px) {
     #ak-video-{{ section.id }} .ak-video__start-card--desktop,
     #ak-video-{{ section.id }} .ak-video__end-card--desktop {
       display: none;
@@ -774,7 +783,7 @@
     padding: 8px 0 0;
     border-top: 1px solid rgba(255,255,255,0.3);
   }
-  @media (max-width: 768px) {
+  @media (max-width: 798px) {
     {% if section.settings.section_max_height_mobile != blank and section.settings.section_max_height_mobile > 0 %}
     #ak-video-{{ section.id }} {
       height: {{ section.settings.section_max_height_mobile }}px;
@@ -817,7 +826,7 @@
     #ak-video-{{ section.id }} .ak-video__dismiss-overlay {
       display: none;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 798px) {
       #ak-video-{{ section.id }} .ak-video__dismiss-overlay {
         display: block;
         position: absolute;
@@ -873,7 +882,7 @@
     var dismissOverlay = section.querySelector('.ak-video__dismiss-overlay');
     var srStatus = section.querySelector('.ak-video__sr-status');
     var loop = {{ section.settings.loop | default: true }};
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    var isMobile = window.matchMedia('(max-width: 798px)').matches;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var wantsAutoplay = section.dataset.autoplay === 'true' && !reducedMotion;
 
@@ -926,12 +935,6 @@
       show(startCard);
       startCard.addEventListener('click', function() {
         video.play();
-      });
-      startCard.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          video.play();
-        }
       });
     }
 
@@ -1419,7 +1422,7 @@
       "max": 1200,
       "step": 25,
       "default": 0,
-      "info": "0 = no limit. Applied below 768px."
+      "info": "0 = no limit. Applied below 798px."
     },
     {
       "type": "range",
@@ -1449,7 +1452,7 @@
       "max": 1200,
       "step": 25,
       "default": 0,
-      "info": "0 = no limit. Applied below 768px."
+      "info": "0 = no limit. Applied below 798px."
     },
     {
       "type": "select",

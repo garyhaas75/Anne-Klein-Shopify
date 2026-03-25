@@ -55,6 +55,14 @@
       width: 100%;
     {% endif %}
   }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .animated {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 
   {% include 'css-loop', css: section_css, id: id %}
   {% include 'css-loop', css: custom_css, id: id %}
@@ -78,6 +86,8 @@
                   equal-columns--outside-trim
                 {% endif %}
                 "
+          role="region"
+          aria-label="{{ object.settings.section_aria_label | default: 'Image gallery' | escape }}"
           {% if animation != "none" %}
             data-scroll-class="{{ animation }}"
           {% endif %}>
@@ -128,12 +138,13 @@
             {% if block.settings[image_index] %}
 
               <div class="gallery__item-wrap is-relative">
+                {% assign _gallery_alt = block.settings.image_alt | default: block.settings[image_index].alt | default: '' %}
                 {% if object.settings.gallery_type == 'horizontal-masonry' %}
-                  {% include 'image-element', image: block.settings[image_index], alt: block.settings[image_index].alt, back_to_basics: true %}
+                  {% include 'image-element', image: block.settings[image_index], alt: _gallery_alt, back_to_basics: true %}
                 {% elsif object.settings.gallery_type == 'masonry' %}
-                  {% include 'image-element', image: block.settings[image_index], alt: block.settings[image_index].alt %}
+                  {% include 'image-element', image: block.settings[image_index], alt: _gallery_alt %}
                 {% else %}
-                  {% include 'image-element', image: block.settings[image_index], alt: block.settings[image_index].alt, stretch_width: object.settings.crop_images %}
+                  {% include 'image-element', image: block.settings[image_index], alt: _gallery_alt, stretch_width: object.settings.crop_images %}
                 {% endif %}
 
                 {% if object.settings.enable_lightbox or block.settings[link] != blank %}

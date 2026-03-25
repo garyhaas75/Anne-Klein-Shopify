@@ -332,6 +332,17 @@
       },
       {
         "type": "header",
+        "content": "Accessibility"
+      },
+      {
+        "type": "text",
+        "id": "section_aria_label",
+        "label": "Section label (screen readers)",
+        "default": "Image gallery",
+        "info": "Announces this section to screen reader users."
+      },
+      {
+        "type": "header",
         "content": "Advanced"
       },
       {
@@ -359,6 +370,12 @@
             "id": "image",
             "label": "Image",
             "info": "800 x 800px recommended"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image alt text",
+            "info": "Describe the image for screen readers. Falls back to Shopify library alt if blank."
           },
           {
             "type": "url",
