@@ -16,6 +16,11 @@
 {% assign hl = section.settings.heading_level | default: 'h2' %}
 {% assign lnk = section.settings.link_url %}
 {% assign img_alt = section.settings.image_alt | default: img.alt | default: heading | default: 'Campaign photograph' %}
+{% if ar != blank and ar != 'none' %}
+  {% assign inset_ratio_locked = true %}
+{% else %}
+  {% assign inset_ratio_locked = false %}
+{% endif %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -38,6 +43,7 @@
     max-width: {{ max_w }}px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
   }
   #shopify-section-{{ id }} .ak-inset__heading {
     text-align: {{ section.settings.text_alignment | default: 'center' }};
@@ -46,18 +52,15 @@
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     color: {{ section.settings.heading_color | default: '#000000' }};
   }
-  #shopify-section-{{ id }} .ak-inset__frame {
+  /* Locked aspect: fill frame with object-fit */
+  #shopify-section-{{ id }} .ak-inset__frame--ratio {
     position: relative;
     width: 100%;
     background-color: {{ letterbox }};
     overflow: hidden;
-  }
-  {% if ar != blank and ar != 'none' %}
-  #shopify-section-{{ id }} .ak-inset__frame {
     aspect-ratio: {{ ar }};
   }
-  {% endif %}
-  #shopify-section-{{ id }} .ak-inset__frame .image-element__wrap {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio .image-element__wrap {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -65,41 +68,70 @@
     max-width: none;
     margin: 0;
   }
-  #shopify-section-{{ id }} .ak-inset__frame .is-hidden-desktop-only {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only {
     position: absolute;
     inset: 0;
   }
-  #shopify-section-{{ id }} .ak-inset__frame .is-hidden-desktop-only .image-element__wrap {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only .image-element__wrap {
     position: absolute;
     inset: 0;
   }
-  #shopify-section-{{ id }} .ak-inset__frame img,
-  #shopify-section-{{ id }} .ak-inset__frame .placeholder-svg {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio img,
+  #shopify-section-{{ id }} .ak-inset__frame--ratio .placeholder-svg {
     width: 100%;
     height: 100%;
     object-fit: {{ fit }};
     object-position: {{ pos }};
     display: block;
   }
-  {% if ar == blank or ar == 'none' %}
-  #shopify-section-{{ id }} .ak-inset__frame--natural .image-element__wrap {
+  /* Natural: intrinsic width/height, centered, capped by .ak-inset__inner max-width */
+  #shopify-section-{{ id }} .ak-inset__frame--natural {
     position: relative;
-    inset: auto;
     width: 100%;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: {{ letterbox }};
+    overflow: visible;
+  }
+  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only,
+  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-mobile-only {
+    position: static;
+    width: auto;
+    max-width: 100%;
+    flex-shrink: 0;
+  }
+  #shopify-section-{{ id }} .ak-inset__frame--natural .image-element__wrap {
+    position: static !important;
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-left: auto;
+    margin-right: auto;
   }
   #shopify-section-{{ id }} .ak-inset__frame--natural img,
   #shopify-section-{{ id }} .ak-inset__frame--natural .placeholder-svg {
-    width: 100%;
-    height: auto;
-    object-fit: {{ fit }};
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: unset;
     object-position: {{ pos }};
+    display: block;
   }
-  {% endif %}
-  #shopify-section-{{ id }} .ak-inset__frame .is-hidden-desktop-only { display: none; }
+  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only,
+  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only {
+    display: none;
+  }
   @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-inset__frame .is-hidden-mobile-only { display: none !important; }
-    #shopify-section-{{ id }} .ak-inset__frame .is-hidden-desktop-only { display: block !important; }
+    #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-mobile-only,
+    #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-mobile-only {
+      display: none !important;
+    }
+    #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only,
+    #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only {
+      display: block !important;
+    }
   }
   #shopify-section-{{ id }} .ak-inset__link {
     display: block;
@@ -149,19 +181,31 @@
         {% endif %}
 
         {% capture inset_media %}
-          <div class="ak-inset__frame {% if ar == blank or ar == 'none' %}ak-inset__frame--natural{% endif %}">
+          <div class="ak-inset__frame {% if inset_ratio_locked %}ak-inset__frame--ratio{% else %}ak-inset__frame--natural{% endif %}">
             {% if img != blank %}
-              {% include 'image-element', image: img, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+              {% if inset_ratio_locked %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+              {% else %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: false, additional_classes: 'is-hidden-mobile-only' %}
+              {% endif %}
             {% else %}
               {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
             {% endif %}
             {% if mimg != blank %}
               <div class="is-hidden-desktop-only">
-                {% include 'image-element', image: mimg, alt: img_alt, stretch_width: true %}
+                {% if inset_ratio_locked %}
+                  {% include 'image-element', image: mimg, alt: img_alt, stretch_width: true %}
+                {% else %}
+                  {% include 'image-element', image: mimg, alt: img_alt, stretch_width: false %}
+                {% endif %}
               </div>
             {% elsif img != blank %}
               <div class="is-hidden-desktop-only">
-                {% include 'image-element', image: img, alt: img_alt, stretch_width: true %}
+                {% if inset_ratio_locked %}
+                  {% include 'image-element', image: img, alt: img_alt, stretch_width: true %}
+                {% else %}
+                  {% include 'image-element', image: img, alt: img_alt, stretch_width: false %}
+                {% endif %}
               </div>
             {% else %}
               <div class="is-hidden-desktop-only">
