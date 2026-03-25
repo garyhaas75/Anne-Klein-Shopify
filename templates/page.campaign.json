@@ -47,9 +47,22 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 40
       }
+    },
+    "film_copy": {
+      "type": "page__ak-campaign-copy",
+      "settings": {
+        "heading": "The Film",
+        "heading_level": "h2",
+        "text_alignment": "center",
+        "width": "wide",
+        "show_gutter": true,
+        "heading_font_family": "amiri",
+        "body_font_family": "system"
+      }
     }
   },
   "order": [
-    "campaign_intro"
+    "campaign_intro",
+    "film_copy"
   ]
 }

@@ -1,0 +1,393 @@
+{% comment %}
+  AK Campaign landing — titled rich text (e.g. “The Film”).
+  Body uses schema richtext so merchants can bold words, add links, etc.
+  WCAG 2.2 AA: region, heading level choice, link focus-visible, logical heading after intro h1.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign heading = section.settings.heading %}
+{% assign body_rt = section.settings.body %}
+{% assign heading_level = section.settings.heading_level | default: 'h2' %}
+{% assign text_align = section.settings.text_alignment | default: 'center' %}
+{% assign text_color = section.settings.text_color | default: '#000000' %}
+{% assign bg_color = section.settings.background_color | default: '#ffffff' %}
+{% assign padding_top = section.settings.padding_top | default: 48 %}
+{% assign padding_bottom = section.settings.padding_bottom | default: 48 %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign max_width = section.settings.content_max_width | default: 48 %}
+{% assign section_aria_label = section.settings.section_aria_label %}
+
+{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
+{% assign body_font_key = section.settings.body_font_family | default: 'system' %}
+{% case heading_font_key %}
+  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign heading_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign heading_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign heading_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign heading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% case body_font_key %}
+  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign body_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign body_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign body_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign body_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+
+{% assign heading_size = section.settings.heading_font_size | default: 36 %}
+{% assign heading_weight = section.settings.heading_font_weight | default: '700' %}
+{% assign body_size = section.settings.body_font_size | default: 18 %}
+{% assign body_weight = section.settings.body_font_weight | default: '400' %}
+
+{% capture section_aria %}
+  {% if heading != blank %}
+    aria-labelledby="ak-campaign-copy-heading-{{ id }}"
+  {% elsif section_aria_label != blank %}
+    aria-label="{{ section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign text"
+  {% endif %}
+{% endcapture %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__inner {
+    max-width: {{ max_width }}rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: {{ text_align }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__heading {
+    font-family: {{ heading_font_stack }};
+    font-size: clamp(1.5rem, 4vw, {{ heading_size }}px);
+    font-weight: {{ heading_weight }};
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    color: {{ text_color }};
+    {% if section.settings.heading_underline %}text-decoration: underline; text-underline-offset: 0.15em;{% endif %}
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__rte {
+    font-family: {{ body_font_stack }};
+    font-size: {{ body_size }}px;
+    font-weight: {{ body_weight }};
+    line-height: {{ section.settings.body_line_height | default: 165 }}%;
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__rte p {
+    margin: 0 0 1em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__rte p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__rte a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__rte a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  #shopify-section-{{ id }} .ak-campaign-copy__heading:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-copy-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {{ section_aria }}
+>
+  <div class="container">
+    <div class="ak-campaign-copy__inner">
+      {% if heading != blank %}
+        {% if heading_level == 'h1' %}
+          <h1 class="ak-campaign-copy__heading" id="ak-campaign-copy-heading-{{ id }}">{{ heading }}</h1>
+        {% elsif heading_level == 'h3' %}
+          <h3 class="ak-campaign-copy__heading" id="ak-campaign-copy-heading-{{ id }}">{{ heading }}</h3>
+        {% else %}
+          <h2 class="ak-campaign-copy__heading" id="ak-campaign-copy-heading-{{ id }}">{{ heading }}</h2>
+        {% endif %}
+      {% endif %}
+      {% if body_rt != blank %}
+        <div class="ak-campaign-copy__rte rte">
+          {{ body_rt }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Campaign copy",
+  "class": "ak-campaign-copy-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Heading plus rich text. Use the text editor to bold names, add links, and break into paragraphs. Place AK Video below this section for the campaign film."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Film"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h2",
+      "info": "Use H2 after the intro H1. Avoid multiple H1s per page.",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Max content width",
+      "min": 28,
+      "max": 64,
+      "step": 1,
+      "default": 48,
+      "unit": "rem",
+      "info": "Caps line length for readability."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Fonts — heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "system", "label": "System sans" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 20,
+      "max": 72,
+      "step": 1,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "default": "700",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_underline",
+      "label": "Heading underline",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Fonts — body"
+    },
+    {
+      "type": "select",
+      "id": "body_font_family",
+      "label": "Body font",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body font size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "body_font_weight",
+      "label": "Body font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body line height",
+      "min": 130,
+      "max": 200,
+      "step": 5,
+      "default": 165,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)",
+      "info": "Optional if heading is visible."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign copy",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
