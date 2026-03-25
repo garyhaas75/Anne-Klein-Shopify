@@ -355,7 +355,7 @@
         "image_object_fit": "cover",
         "image_object_position": "center",
         "classic_aspect_ratio": "none",
-        "classic_min_height_desktop": 660,
+        "classic_min_height_desktop": 240,
         "classic_min_height_mobile": 0,
         "images_per_row": 2,
         "enable_lightbox": false,
