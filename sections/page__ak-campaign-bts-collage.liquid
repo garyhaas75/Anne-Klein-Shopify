@@ -3,7 +3,8 @@
   Figma file: agnYrbiuU2Ory43nJYA4Nk
   Desktop frame: 102:586 | Stage (backdrop): 102:717 (1920×2507)
   Desktop tiles: 102:725(p1) 102:724(p2) 102:718(p3) 102:719(p4) 102:720(p5) 102:726(p6) 102:722(p7) 102:723(p8) 102:721(p9)
-  Mobile frame: 35:616
+  Mobile frame: 35:616 | Mobile stage: 191:89 (798×1545)
+  Mobile tiles: 191:97(p1) 191:96(p2) 191:90(p3) 191:91(p4) 191:92(p5) 191:98(p6) 191:94(p7) 191:95(p8) 191:93(p9)
   Headline 196:120 / 102:728, subcopy 196:119 / 102:727 — centered over stage.
   WCAG 2.2 AA: region, image alts, heading order, visible link focus, reduced-motion friendly layout stack on small screens.
 {% endcomment %}
@@ -161,41 +162,22 @@
   #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 78.70%; top: 72.92%; width: 21.25%; height: 21.70%; z-index: 18; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 4.01%; top: 74.83%; width: 21.46%; height: 25.17%; z-index: 14; }
 
+  {% comment %} Mobile: same collage layout, positions from Figma mobile frame 35:616, stage 191:89 (798×1545). {% endcomment %}
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
-      aspect-ratio: unset;
+      aspect-ratio: 798 / 1545;
       min-height: 0;
-      display: flex;
-      flex-direction: column;
-      gap: {{ section.settings.mobile_stack_gap | default: 16 }}px;
-      overflow: visible;
+      max-height: none;
     }
-    #shopify-section-{{ id }} .ak-bts-collage__text {
-      position: relative;
-      left: auto;
-      top: auto;
-      transform: none;
-      order: 1;
-      max-width: 100%;
-      pointer-events: auto;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    #shopify-section-{{ id }} .ak-bts-collage__tiles {
-      order: 2;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: {{ section.settings.mobile_tile_gap | default: 8 }}px;
-    }
-    #shopify-section-{{ id }} .ak-bts-collage__tile {
-      position: relative !important;
-      left: auto !important;
-      top: auto !important;
-      width: 100% !important;
-      height: auto !important;
-      transform: none !important;
-      aspect-ratio: {{ section.settings.mobile_tile_aspect | default: '3 / 4' }};
-    }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 15.66%; height: 10.74%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 38.45%; width: 15.66%; height: 11.26%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 10.78%; top: 5.44%; width: 34.82%; height: 25.18%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 65.16%; top: 0%; width: 34.84%; height: 25.11%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 52.63%; top: 22.52%; width: 34.71%; height: 25.11%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 67.29%; top: 58.90%; width: 15.54%; height: 11.26%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 23.93%; top: 63.88%; width: 34.96%; height: 25.24%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 72.56%; top: 81.10%; width: 27.44%; height: 18.90%; }
+    #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 78.12%; width: 27.82%; height: 21.88%; }
   }
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ id }} .ak-bts-collage__tile-link:focus-visible {
@@ -496,36 +478,6 @@
         { "value": "left", "label": "Left" },
         { "value": "right", "label": "Right" }
       ]
-    },
-    {
-      "type": "header",
-      "content": "Mobile stack"
-    },
-    {
-      "type": "range",
-      "id": "mobile_stack_gap",
-      "label": "Stack gap",
-      "min": 0,
-      "max": 48,
-      "step": 4,
-      "default": 16,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "mobile_tile_gap",
-      "label": "Tile grid gap",
-      "min": 0,
-      "max": 24,
-      "step": 2,
-      "default": 8,
-      "unit": "px"
-    },
-    {
-      "type": "text",
-      "id": "mobile_tile_aspect",
-      "label": "Tile aspect (mobile)",
-      "default": "3 / 4"
     },
     {
       "type": "header",
