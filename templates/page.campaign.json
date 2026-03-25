@@ -37,6 +37,8 @@
         "text_rule_alignment": "center",
         "layout_desktop": "split",
         "split_image_width": 50,
+        "split_image_object_fit": "cover",
+        "split_image_object_position": "center",
         "width": "wide",
         "show_gutter": false,
         "copy_padding_top": 48,
@@ -205,6 +207,8 @@
         "caption_align": "left",
         "caption_vertical": "top",
         "scrim_height_percent": 45,
+        "image_object_fit": "cover",
+        "image_object_position": "center",
         "portrait_aspect_desktop": "none",
         "portrait_aspect_mobile": "none",
         "image_letterbox_color": "#1a1a1a",
@@ -219,6 +223,50 @@
         "role_font_family": "system",
         "role_font_size": 14,
         "role_font_weight": "400",
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
+    },
+    "page_ak_campaign_stills_DGCVEj": {
+      "type": "page__ak-campaign-stills",
+      "blocks": {
+        "still_HtWxii": {
+          "type": "still",
+          "settings": {
+            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_20_2442_1.png",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_MFWYah": {
+          "type": "still",
+          "settings": {
+            "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "still_HtWxii",
+        "still_MFWYah"
+      ],
+      "name": "AK Campaign stills",
+      "settings": {
+        "width": "wide",
+        "show_gutter": false,
+        "still_gap": 0,
+        "image_behavior": "natural",
+        "image_object_fit": "cover",
+        "image_object_position": "center",
+        "crop_min_height_desktop": 480,
+        "crop_min_height_mobile": 400,
+        "letterbox_color": "#1a1a1a",
         "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
@@ -265,10 +313,12 @@
         "row_min_height_desktop": 560,
         "row_min_height_mobile": 0,
         "row_gap": 0,
+        "image_object_fit": "cover",
+        "image_object_position": "center",
         "quote_color": "#1e3a5f",
         "attribution_color": "#000000",
         "text_column_bg": "#ffffff",
-        "quote_underline": true,
+        "quote_underline": false,
         "quote_font_family": "amiri",
         "quote_font_size": 28,
         "quote_font_weight": "400",
@@ -290,6 +340,7 @@
     "campaign_film",
     "collection_cta",
     "model_portraits",
+    "page_ak_campaign_stills_DGCVEj",
     "campaign_quote_zigzag"
   ]
 }

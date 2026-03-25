@@ -1,21 +1,20 @@
 {% comment %}
-  AK Campaign — full-width editorial stills + optional section text and per-still captions (Figma).
+  AK Campaign — full-width editorial stills + optional section text and per-still captions.
   WCAG 2.2 AA: landmarks, headings, image alt, link focus, overlay contrast (scrim).
 {% endcomment %}
 
 {% assign id = section.id %}
-{% include 'ak-campaign-image-defaults' %}
 {% assign padding_top = section.settings.padding_top | default: 0 %}
 {% assign padding_bottom = section.settings.padding_bottom | default: 0 %}
 {% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
 {% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
 {% assign still_gap = section.settings.still_gap | default: 0 %}
 {% assign img_behavior = section.settings.image_behavior | default: 'natural' %}
-{% assign img_pos = campaign_image_object_position %}
+{% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
 {% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
 {% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
-{% assign img_fit = campaign_image_object_fit %}
+{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign sec_heading = section.settings.heading %}
 {% assign sec_intro = section.settings.intro %}
 {% assign text_align = section.settings.text_alignment | default: 'center' %}
@@ -606,15 +605,37 @@
       "id": "image_behavior",
       "label": "Image height",
       "default": "natural",
-      "info": "Natural = full width, height from the photo. Fixed frame = min height + theme-wide fit/focal point (Theme settings → AK Campaign images).",
+      "info": "Natural = full width, height from the photo. Fixed frame = min height plus image fit and focal point below.",
       "options": [
         { "value": "natural", "label": "Natural (intrinsic height)" },
         { "value": "fixed_frame", "label": "Fixed min height (crop or letterbox)" }
       ]
     },
     {
-      "type": "paragraph",
-      "content": "Object fit and focal point for fixed-frame stills use Theme settings → AK Campaign images (same as portraits, intro split, quote zigzag)."
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit (fixed frame only)",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Focal point (fixed frame only)",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
     },
     {
       "type": "range",

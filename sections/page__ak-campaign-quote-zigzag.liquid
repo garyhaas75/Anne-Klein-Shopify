@@ -1,11 +1,12 @@
 {% comment %}
-  AK Campaign — alternating quote + image rows (Figma: text left / image right, then image left / text right).
+  AK Campaign — alternating quote + image rows (auto or per-block layout).
   WCAG: blockquote + footer, image alt, optional link focus-visible, semantic structure.
 {% endcomment %}
 
 {% assign id = section.id %}
-{% include 'ak-campaign-image-defaults' %}
 {% assign split_pct = section.settings.text_column_width | default: 50 %}
+{% assign zigzag_img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign zigzag_img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign img_pct = 100 | minus: split_pct %}
 {% assign row_min = section.settings.row_min_height_desktop | default: 560 %}
 {% assign row_min_m = section.settings.row_min_height_mobile | default: 0 %}
@@ -150,8 +151,8 @@
   #shopify-section-{{ id }} .ak-quote-zigzag__media .placeholder-svg {
     width: 100%;
     height: 100%;
-    object-fit: {{ campaign_image_object_fit }};
-    object-position: {{ campaign_image_object_position }};
+    object-fit: {{ zigzag_img_fit }};
+    object-position: {{ zigzag_img_pos }};
     display: block;
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only { display: none; }
@@ -288,7 +289,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Matches Figma: row 1 = quote left + image right; row 2 = image left + quote right (auto). Override per block if needed."
+      "content": "Add Quote + image row blocks for each row. Each block has its own quote, attribution, images, and optional layout override."
     },
     {
       "type": "select",
@@ -348,6 +349,36 @@
     },
     {
       "type": "header",
+      "content": "Image column"
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "header",
       "content": "Typography"
     },
     {
@@ -371,8 +402,9 @@
     {
       "type": "checkbox",
       "id": "quote_underline",
-      "label": "Underline quote",
-      "default": true
+      "label": "Underline quote text",
+      "default": false,
+      "info": "Off = no line under the quote. Turn on for an editorial underline."
     },
     {
       "type": "select",
@@ -443,10 +475,6 @@
       "id": "image_placeholder_bg",
       "label": "Image area background (loading)",
       "default": "#e8e8e8"
-    },
-    {
-      "type": "paragraph",
-      "content": "How photos crop in the image column: Theme settings → AK Campaign images (object fit + focal point)."
     },
     {
       "type": "text",
@@ -520,7 +548,7 @@
           "id": "row_layout",
           "label": "Row layout",
           "default": "auto",
-          "info": "Auto: odd rows = text left, even rows = text right (Figma zigzag).",
+          "info": "Auto: odd rows = quote left, even rows = quote right.",
           "options": [
             { "value": "auto", "label": "Auto (alternate)" },
             { "value": "text_left", "label": "Quote left, image right" },

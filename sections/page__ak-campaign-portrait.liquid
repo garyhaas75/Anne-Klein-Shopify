@@ -1,10 +1,9 @@
 {% comment %}
-  AK Campaign — full-bleed model portrait(s). Stack one or more blocks (Figma: name + role on image).
+  AK Campaign — full-bleed model portrait(s). Stack one or more blocks (name + role on image).
   WCAG 2.2 AA: landmark, image alt, bottom scrim for text contrast, one link per card when URL set, focus-visible.
 {% endcomment %}
 
 {% assign id = section.id %}
-{% include 'ak-campaign-image-defaults' %}
 {% assign padding_top = section.settings.padding_top | default: 0 %}
 {% assign padding_bottom = section.settings.padding_bottom | default: 0 %}
 {% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
@@ -21,8 +20,8 @@
   {% when 'center' %}{% assign cap_justify = 'center' %}
   {% else %}{% assign cap_justify = 'flex-end' %}
 {% endcase %}
-{% assign img_fit = campaign_image_object_fit %}
-{% assign img_pos = campaign_image_object_position %}
+{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign ar_d = section.settings.portrait_aspect_desktop | default: 'none' %}
 {% assign ar_m = section.settings.portrait_aspect_mobile | default: 'none' %}
 {% assign scrim_h_pct = section.settings.scrim_height_percent | default: 45 %}
@@ -404,7 +403,7 @@
       "id": "layout_desktop",
       "label": "Desktop layout",
       "default": "two_columns",
-      "info": "Matches Figma: two model portraits side by side on large screens; mobile stays stacked.",
+      "info": "Two columns on large screens; one column stacked on mobile.",
       "options": [
         { "value": "two_columns", "label": "Two columns" },
         { "value": "stack", "label": "Stacked (full width each)" }
@@ -446,11 +445,34 @@
     },
     {
       "type": "header",
-      "content": "Image height & aspect"
+      "content": "Image fit & height"
     },
     {
-      "type": "paragraph",
-      "content": "Cover / contain / fill and focal point for these portraits are set once in Theme settings → AK Campaign images."
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "info": "Cover fills the frame (may crop). Contain shows the full image (letterbox). Fill stretches.",
+      "options": [
+        { "value": "cover", "label": "Cover (fill frame)" },
+        { "value": "contain", "label": "Contain (show full image)" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
     },
     {
       "type": "select",
