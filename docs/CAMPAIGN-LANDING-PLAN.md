@@ -55,5 +55,5 @@ Work **one section per iteration**; update the **Status** row when something shi
 
 ## Current position
 
-- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign stills** → **AK Campaign quote zigzag** → **AK Campaign inset media** (narrow tall image). *If **model portraits** are missing from JSON after a merge, re-add **`page__ak-campaign-portrait`** in the editor or restore from git.*  
-- **You still do in admin:** pick the **video** for AK Video; set the CTA **button link** (collection); upload **stills**, **zigzag**, and **inset** images with **alt** text; edit copy per Figma.
+- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign quote zigzag** → **AK Campaign inset media**. *Re-add **AK Campaign stills** / **portraits** in the theme editor if your Figma scroll includes them but they dropped out of JSON (Shopify merges).*  
+- **You still do in admin:** assign **video**; CTA **button link**; **zigzag** + **inset** images and **alt** text; restore stills/portraits if needed.
