@@ -1,0 +1,564 @@
+{% comment %}
+  AK Campaign — alternating quote + image rows (Figma: text left / image right, then image left / text right).
+  WCAG: blockquote + footer, image alt, optional link focus-visible, semantic structure.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign split_pct = section.settings.text_column_width | default: 50 %}
+{% assign img_pct = 100 | minus: split_pct %}
+{% assign row_min = section.settings.row_min_height_desktop | default: 560 %}
+{% assign row_min_m = section.settings.row_min_height_mobile | default: 0 %}
+{% assign q_color = section.settings.quote_color | default: '#1e3a5f' %}
+{% assign attr_color = section.settings.attribution_color | default: '#000000' %}
+{% assign text_bg = section.settings.text_column_bg | default: '#ffffff' %}
+{% assign quote_font_key = section.settings.quote_font_family | default: 'amiri' %}
+{% case quote_font_key %}
+  {% when 'amiri' %}{% assign quote_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign quote_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign quote_font_stack = '"Times New Roman", Times, serif' %}
+  {% else %}{% assign quote_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% assign attr_font_key = section.settings.attribution_font_family | default: 'amiri' %}
+{% case attr_font_key %}
+  {% when 'amiri' %}{% assign attr_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'georgia' %}{% assign attr_font_stack = 'Georgia, serif' %}
+  {% else %}{% assign attr_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ section.settings.padding_top | default: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top | default: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom | default: 0 }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__grid {
+    width: 100%;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__row + .ak-quote-zigzag__row {
+    margin-top: {{ section.settings.row_gap | default: 0 }}px;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-quote-zigzag__row {
+      flex-direction: row;
+      align-items: stretch;
+      min-height: {{ row_min }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__text {
+    flex: 1 1 auto;
+    background-color: {{ text_bg }};
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 0;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-quote-zigzag__text {
+      flex: 0 0 {{ split_pct }}%;
+      max-width: {{ split_pct }}%;
+      padding: clamp(2rem, 5vw, 4rem);
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    {% if row_min_m > 0 %}
+    #shopify-section-{{ id }} .ak-quote-zigzag__text {
+      min-height: {{ row_min_m }}px;
+    }
+    {% endif %}
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__blockquote {
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner {
+    font-family: {{ quote_font_stack }};
+    font-size: clamp(1.25rem, 3.5vw, {{ section.settings.quote_font_size | default: 28 }}px);
+    font-weight: {{ section.settings.quote_font_weight | default: '400' }};
+    line-height: 1.35;
+    color: {{ q_color }};
+    {% if section.settings.quote_underline %}text-decoration: underline; text-underline-offset: 0.12em; text-decoration-thickness: 1px;{% endif %}
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner p {
+    margin: 0 0 0.5em;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__attr {
+    display: block;
+    margin-top: 1.25rem;
+    font-family: {{ attr_font_stack }};
+    font-size: {{ section.settings.attribution_font_size | default: 16 }}px;
+    font-weight: {{ section.settings.attribution_font_weight | default: '400' }};
+    font-style: normal;
+    color: {{ attr_color }};
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media {
+    position: relative;
+    flex: 1 1 auto;
+    background-color: {{ section.settings.image_placeholder_bg | default: '#e8e8e8' }};
+    overflow: hidden;
+    min-height: 280px;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-quote-zigzag__media {
+      flex: 0 0 {{ img_pct }}%;
+      max-width: {{ img_pct }}%;
+      min-height: {{ row_min }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only .image-element__wrap {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media img,
+  #shopify-section-{{ id }} .ak-quote-zigzag__media .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-quote-zigzag__media .is-hidden-desktop-only { display: block !important; }
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__link {
+    display: block;
+    height: 100%;
+    min-height: inherit;
+    text-decoration: none;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__link:focus-visible {
+    outline: 3px solid {{ q_color }};
+    outline-offset: -3px;
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-quote-zigzag-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {% if section.settings.section_aria_label != blank %}
+    aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign quotes"
+  {% endif %}
+>
+  <div class="container equal-columns--outside-trim">
+    <div class="ak-quote-zigzag__grid columns one-whole">
+      <ul class="ak-quote-zigzag__list">
+        {% for block in section.blocks %}
+          {% if block.type == 'zigzag_row' %}
+            {% assign bimg = block.settings.image %}
+            {% assign bm = block.settings.mobile_image | default: bimg %}
+            {% assign qt = block.settings.quote %}
+            {% assign at = block.settings.attribution %}
+            {% assign lnk = block.settings.link_url %}
+            {% assign img_alt = block.settings.image_alt | default: bimg.alt | default: at | default: 'Campaign photograph' %}
+            {% assign layout_pick = block.settings.row_layout | default: 'auto' %}
+            {% if layout_pick == 'text_left' %}
+              {% assign text_left = true %}
+            {% elsif layout_pick == 'text_right' %}
+              {% assign text_left = false %}
+            {% else %}
+              {% assign mod = forloop.index0 | modulo: 2 %}
+              {% if mod == 0 %}
+                {% assign text_left = true %}
+              {% else %}
+                {% assign text_left = false %}
+              {% endif %}
+            {% endif %}
+
+            <li class="ak-quote-zigzag__item" {{ block.shopify_attributes }}>
+              <div class="ak-quote-zigzag__row {% if text_left %}ak-quote-zigzag__row--text-left{% else %}ak-quote-zigzag__row--text-right{% endif %}">
+                {% if text_left %}
+                  <div class="ak-quote-zigzag__text">
+                    {% if qt != blank or at != blank %}
+                      <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
+                        {% if qt != blank %}
+                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                        {% endif %}
+                        {% if at != blank %}
+                          <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
+                        {% endif %}
+                      </blockquote>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                <div class="ak-quote-zigzag__media">
+                  {% if lnk != blank %}
+                    <a
+                      href="{{ lnk }}"
+                      class="ak-quote-zigzag__link"
+                      {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                      aria-label="{{ img_alt | escape }}"
+                    >
+                  {% endif %}
+                  {% if bimg != blank %}
+                    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                  {% else %}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                  {% endif %}
+                  {% if bm != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% elsif bimg != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% else %}
+                    <div class="is-hidden-desktop-only">
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                  {% if lnk != blank %}
+                    </a>
+                  {% endif %}
+                </div>
+
+                {% unless text_left %}
+                  <div class="ak-quote-zigzag__text">
+                    {% if qt != blank or at != blank %}
+                      <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
+                        {% if qt != blank %}
+                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                        {% endif %}
+                        {% if at != blank %}
+                          <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
+                        {% endif %}
+                      </blockquote>
+                    {% endif %}
+                  </div>
+                {% endunless %}
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Campaign quote zigzag",
+  "class": "ak-quote-zigzag-section",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Matches Figma: row 1 = quote left + image right; row 2 = image left + quote right (auto). Override per block if needed."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "text_column_width",
+      "label": "Text column width (desktop)",
+      "min": 35,
+      "max": 65,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "row_min_height_desktop",
+      "label": "Row min height (desktop)",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "default": 560,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_min_height_mobile",
+      "label": "Text block min height (mobile, 0 = off)",
+      "min": 0,
+      "max": 400,
+      "step": 20,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Gap between rows",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Quote color",
+      "default": "#1e3a5f"
+    },
+    {
+      "type": "color",
+      "id": "attribution_color",
+      "label": "Attribution color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_column_bg",
+      "label": "Text column background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "quote_underline",
+      "label": "Underline quote",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quote_font_family",
+      "label": "Quote font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "system", "label": "System sans" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "quote_font_size",
+      "label": "Quote max size",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "quote_font_weight",
+      "label": "Quote weight",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "attribution_font_family",
+      "label": "Attribution font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "system", "label": "System sans" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "attribution_font_size",
+      "label": "Attribution size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "attribution_font_weight",
+      "label": "Attribution weight",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "image_placeholder_bg",
+      "label": "Image area background (loading)",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "zigzag_row",
+      "name": "Quote + image row",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>"
+        },
+        {
+          "type": "text",
+          "id": "attribution",
+          "label": "Attribution",
+          "default": "Caroline Kelley Rosen"
+        },
+        {
+          "type": "select",
+          "id": "row_layout",
+          "label": "Row layout",
+          "default": "auto",
+          "info": "Auto: odd rows = text left, even rows = text right (Figma zigzag).",
+          "options": [
+            { "value": "auto", "label": "Auto (alternate)" },
+            { "value": "text_left", "label": "Quote left, image right" },
+            { "value": "text_right", "label": "Image left, quote right" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image (mobile)"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Image link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign quote zigzag",
+      "category": "Custom",
+      "blocks": [
+        { "type": "zigzag_row" },
+        { "type": "zigzag_row" }
+      ]
+    }
+  ]
+}
+{% endschema %}

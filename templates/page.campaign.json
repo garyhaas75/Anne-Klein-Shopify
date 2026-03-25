@@ -271,6 +271,60 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0
       }
+    },
+    "campaign_quote_zigzag": {
+      "type": "page__ak-campaign-quote-zigzag",
+      "blocks": {
+        "zigzag_1": {
+          "type": "zigzag_row",
+          "settings": {
+            "quote": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>",
+            "attribution": "Caroline Kelley Rosen",
+            "row_layout": "auto",
+            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_20_2442_1.png",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "zigzag_2": {
+          "type": "zigzag_row",
+          "settings": {
+            "quote": "<p>Add second quote in theme editor or duplicate block.</p>",
+            "attribution": "",
+            "row_layout": "auto",
+            "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        }
+      },
+      "block_order": ["zigzag_1", "zigzag_2"],
+      "settings": {
+        "width": "wide",
+        "show_gutter": false,
+        "text_column_width": 50,
+        "row_min_height_desktop": 560,
+        "row_min_height_mobile": 0,
+        "row_gap": 0,
+        "quote_color": "#1e3a5f",
+        "attribution_color": "#000000",
+        "text_column_bg": "#ffffff",
+        "quote_underline": true,
+        "quote_font_family": "amiri",
+        "quote_font_size": 28,
+        "quote_font_weight": "400",
+        "attribution_font_family": "amiri",
+        "attribution_font_size": 16,
+        "attribution_font_weight": "400",
+        "image_placeholder_bg": "#e8e8e8",
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
     }
   },
   "order": [
@@ -279,6 +333,7 @@
     "campaign_film",
     "collection_cta",
     "model_portraits",
-    "page_ak_campaign_stills_DGCVEj"
+    "page_ak_campaign_stills_DGCVEj",
+    "campaign_quote_zigzag"
   ]
 }

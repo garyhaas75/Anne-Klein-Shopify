@@ -11,6 +11,7 @@ Work **one section per iteration**; update the **Status** row when something shi
 | 3 | “Anne Klein Spring-Summer 2026” + paragraph + “SHOP THE COLLECTION” | **`page__ak-campaign-cta`** — **`collection_cta`** on template. Set **Button link** to the campaign collection. | **In template** (set URL in admin) |
 | 4 | Two full-bleed model portraits (name + role on image) | **`page__ak-campaign-portrait`** — **`model_portraits`** on template (repeatable blocks; **desktop two-column** default per Figma; wrapper uses **`columns one-whole`** so the theme flex `.container` does not collapse width). | **In template** (add images + alt in admin) |
 | 5 | Extra full-width stills + optional copy | **`page__ak-campaign-stills`** — section **heading + intro** (optional); each **Still** block: **Caption** with placement **none / below / overlay (bottom)** + scrim. | **In template** (add images, alt, captions in admin) |
+| 5b | **Figma zigzag:** quote left / image right, then **image left / quote right** | **`page__ak-campaign-quote-zigzag`** — **`campaign_quote_zigzag`**; blocks **Quote + image row**; **Row layout** auto-alternates; richtext quote + attribution; 50/50 split (adjustable). | **In template** (tune copy + images) |
 | 6 | Narrow tall inset (e.g. 9:16-style) | `ak-video` or image with max-width **or** small `page__ak-campaign-inset-media` | Not started |
 | 7 | 2×2 BTS grid | `index__gallery` (e.g. 2 per row, 4 images) | Not started |
 | 8 | Large pull quotes (Amiri-style + attribution), repeats | New `page__ak-campaign-quote` (blockquote + blocks or duplicate instances) | Not started |
@@ -24,5 +25,5 @@ Work **one section per iteration**; update the **Status** row when something shi
 
 ## Current position
 
-- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign portrait** → **AK Campaign stills**.  
-- **You still do in admin:** pick the **video** for AK Video; set the CTA **button link** (collection); upload **portrait** and **stills** images with **alt** text.
+- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign portrait** → **AK Campaign stills** → **AK Campaign quote zigzag** (Figma alternating quote/image rows).  
+- **You still do in admin:** pick the **video** for AK Video; set the CTA **button link** (collection); upload **portrait** and **stills** images with **alt** text; edit **zigzag** quotes/attribution/images per Figma.
