@@ -59,10 +59,33 @@
         "heading_font_family": "amiri",
         "body_font_family": "system"
       }
+    },
+    "campaign_film": {
+      "type": "ak-video",
+      "settings": {
+        "layout": "feature",
+        "title": "Campaign film"
+      }
+    },
+    "collection_cta": {
+      "type": "page__ak-campaign-cta",
+      "settings": {
+        "heading": "Anne Klein Spring-Summer 2026",
+        "heading_level": "h2",
+        "text_alignment": "center",
+        "width": "wide",
+        "show_gutter": true,
+        "heading_font_family": "amiri",
+        "body_font_family": "system",
+        "button_label": "SHOP THE COLLECTION",
+        "button_style": "button--primary"
+      }
     }
   },
   "order": [
     "campaign_intro",
-    "film_copy"
+    "film_copy",
+    "campaign_film",
+    "collection_cta"
   ]
 }
