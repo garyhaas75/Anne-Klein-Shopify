@@ -44,7 +44,7 @@
       >
     {% endif %}
     {% if img != blank %}
-      {% include 'image-element', image: img, alt: alt, stretch_width: true %}
+      {% render 'image-element', image: img, alt: alt, stretch_width: true %}
     {% else %}
       {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
     {% endif %}
