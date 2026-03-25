@@ -43,7 +43,7 @@ Work **one section per iteration**; update the **Status** row when something shi
 | 5 | Extra full-width stills + optional copy | **`page__ak-campaign-stills`** — section **heading + intro** (optional); each **Still** block: **Caption** with placement **none / below / overlay (bottom)** + scrim. | **In template** (add images, alt, captions in admin) |
 | 5b | **Figma zigzag:** quote left / image right, then **image left / quote right** | **`page__ak-campaign-quote-zigzag`** — **`campaign_quote_zigzag`**; blocks **Quote + image row**; **Row layout** auto-alternates; richtext quote + attribution; 50/50 split (adjustable). | **In template** (tune copy + images) |
 | 6 | Narrow tall inset — **Figma mobile** `189:47` *AK_SS26_4_9x16_NO LOGO* (666×1020, centered in 798-wide frame) | **`page__ak-campaign-inset-media`** — **`campaign_inset_media`**. Defaults: max width **660px** (20px slider step, nearest to Figma **666px**; slider max **2240px** for near full-width), aspect **111/170**. Desktop: compare **`102:586`** for same scroll band. | **In template** (add image + alt in admin) |
-| 7 | 2×2 BTS grid | `index__gallery` (e.g. 2 per row, 4 images) | Not started |
+| 7 | 2×2 BTS grid — Figma mobile cells **`189:70`–`189:73`** (~360×553, 12px gap, 33px side inset on 798 frame) | **`index__gallery`** — **`campaign_bts_grid`** on template: classic, **2** per row, **crop** on, **wide** + gutter. `css_class` **`ak-campaign-bts-grid`**. | **In template** (add 4 images + alt in editor; lightbox optional) |
 | 8 | **Only if Figma has quote-only bands** (no paired half-image) | New `page__ak-campaign-quote` **or** reuse/duplicate **quote zigzag** text column styling — **confirm in Figma** vs Step 5b | Confirm in Figma |
 | 9 | “Behind the Scenes” + Instagram line | `index__rich-text` or heading + RTE with link on `@handle` | Not started |
 | 10 | Asymmetric editorial collage | New custom section (many positioned blocks) or simplified grid—confirm in Figma before build | Not started |
@@ -55,5 +55,5 @@ Work **one section per iteration**; update the **Status** row when something shi
 
 ## Current position
 
-- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign quote zigzag** → **AK Campaign inset media**. *Re-add **AK Campaign stills** / **portraits** in the theme editor if your Figma scroll includes them but they dropped out of JSON (Shopify merges).*  
-- **You still do in admin:** assign **video**; CTA **button link**; **zigzag** + **inset** images and **alt** text; restore stills/portraits if needed.
+- **On `campaign` template (order):** intro → **AK Campaign copy** → **AK Video** → **AK Campaign CTA** → **AK Campaign quote zigzag** → **AK Campaign inset media** → **Gallery** (`campaign_bts_grid`, 2×2 BTS). *Re-add **AK Campaign stills** / **portraits** in the theme editor if your Figma scroll includes them but they dropped out of JSON (Shopify merges).*  
+- **You still do in admin:** assign **video**; CTA **button link**; **zigzag** + **inset** + **BTS grid** images and **alt** text; restore stills/portraits if needed.

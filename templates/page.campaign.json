@@ -262,6 +262,56 @@
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
+    },
+    "campaign_bts_grid": {
+      "type": "index__gallery",
+      "blocks": {
+        "bts_1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "bts_2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "bts_3": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "bts_4": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "bts_1",
+        "bts_2",
+        "bts_3",
+        "bts_4"
+      ],
+      "settings": {
+        "gallery_type": "classic",
+        "crop_images": true,
+        "images_per_row": 2,
+        "enable_lightbox": true,
+        "overlay_color": "#000000",
+        "link_color": "#FFFFFF",
+        "width": "wide",
+        "show_gutter": true,
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "animation": "none",
+        "css_class": "ak-campaign-bts-grid",
+        "custom_css": ""
+      }
     }
   },
   "order": [
@@ -270,6 +320,7 @@
     "campaign_film",
     "collection_cta",
     "campaign_quote_zigzag",
-    "campaign_inset_media"
+    "campaign_inset_media",
+    "campaign_bts_grid"
   ]
 }
