@@ -117,10 +117,15 @@
     align-items: center;
     width: 100%;
   }
+  #shopify-section-{{ id }} .ak-campaign-intro__text-stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: min(36rem, 100%);
+  }
   #shopify-section-{{ id }} .ak-campaign-intro__titles {
     text-align: center;
     width: 100%;
-    max-width: 36rem;
   }
   #shopify-section-{{ id }} .ak-campaign-intro__divider-slot {
     display: flex;
@@ -211,13 +216,20 @@
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__body {
       flex-direction: column;
       align-items: flex-start;
-      max-width: 42rem;
+      max-width: none;
+      width: 100%;
     }
-    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-slot {
-      justify-content: flex-start;
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__text-stack {
+      max-width: 100%;
+      align-items: stretch;
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__titles {
       text-align: left;
+      width: max-content;
+      max-width: 100%;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-slot {
+      justify-content: center;
     }
   }
 {% endstyle %}
@@ -257,25 +269,27 @@
           <a href="{{ link_url }}" class="ak-campaign-intro__link" aria-label="{{ heading | default: eyebrow | default: 'Campaign' | escape }}">
         {% endif %}
         <div class="ak-campaign-intro__body">
-          <div class="ak-campaign-intro__titles">
-            {% if eyebrow != blank %}
-              <p class="ak-campaign-intro__eyebrow" {% unless link_url != blank %}tabindex="0"{% endunless %}>{{ eyebrow }}</p>
-            {% endif %}
-            {% if heading != blank %}
-              {% if heading_level == 'h1' %}
-                <h1 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h1>
-              {% elsif heading_level == 'h3' %}
-                <h3 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h3>
-              {% else %}
-                <h2 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h2>
+          <div class="ak-campaign-intro__text-stack">
+            <div class="ak-campaign-intro__titles">
+              {% if eyebrow != blank %}
+                <p class="ak-campaign-intro__eyebrow" {% unless link_url != blank %}tabindex="0"{% endunless %}>{{ eyebrow }}</p>
               {% endif %}
+              {% if heading != blank %}
+                {% if heading_level == 'h1' %}
+                  <h1 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h1>
+                {% elsif heading_level == 'h3' %}
+                  <h3 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h3>
+                {% else %}
+                  <h2 class="ak-campaign-intro__heading" id="ak-campaign-intro-heading-{{ id }}">{{ heading }}</h2>
+                {% endif %}
+              {% endif %}
+            </div>
+            {% if show_divider %}
+              <div class="ak-campaign-intro__divider-slot" aria-hidden="true">
+                <hr class="ak-campaign-intro__divider" />
+              </div>
             {% endif %}
           </div>
-          {% if show_divider %}
-            <div class="ak-campaign-intro__divider-slot" aria-hidden="true">
-              <hr class="ak-campaign-intro__divider" />
-            </div>
-          {% endif %}
         </div>
         {% if link_url != blank %}
           </a>
@@ -367,7 +381,7 @@
       "id": "show_divider",
       "label": "Show vertical rule",
       "default": true,
-      "info": "Placed below the eyebrow and heading (centered when text is centered; left-aligned under the type on split desktop)."
+      "info": "Below the eyebrow and heading. On split desktop the rule is centered under the headline block; text stays left-aligned."
     },
     {
       "type": "range",
