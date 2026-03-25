@@ -12,7 +12,13 @@
 {% assign sub = section.settings.subtext %}
 {% assign backdrop = section.settings.backdrop_image %}
 {% assign bg = section.settings.background_color | default: '#ffffff' %}
-{% assign stage_ar = section.settings.stage_aspect_ratio | default: '798 / 1545' %}
+{% assign stage_ar_raw = section.settings.stage_aspect_ratio | strip %}
+{% assign stage_ar_lc = stage_ar_raw | downcase %}
+{% if stage_ar_raw == blank or stage_ar_lc == 'none' or stage_ar_lc == 'off' %}
+  {% assign stage_use_aspect = false %}
+{% else %}
+  {% assign stage_use_aspect = true %}
+{% endif %}
 
 {% assign hf = section.settings.heading_font_family | default: 'amiri' %}
 {% case hf %}
@@ -50,8 +56,8 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
-      {% if stage_ar != blank and stage_ar != 'none' %}
-        aspect-ratio: {{ stage_ar }};
+      {% if stage_use_aspect %}
+        aspect-ratio: {{ stage_ar_raw }};
       {% endif %}
       {% assign _mh = section.settings.stage_min_height_desktop | default: 0 | plus: 0 %}
       {% if _mh > 0 %}
@@ -355,9 +361,9 @@
     {
       "type": "text",
       "id": "stage_aspect_ratio",
-      "label": "Stage aspect ratio",
-      "default": "798 / 1545",
-      "info": "Overall collage canvas shape (width / height). Default 798 / 1545 matches the Figma frame (~0.52:1, tall). This is NOT each photo ratio — tiles are separate boxes inside this stage."
+      "label": "Stage aspect ratio (optional)",
+      "default": "none",
+      "info": "Leave as none to size the desktop stage with Min / Max height only (recommended). Enter width / height (e.g. 798 / 1545) only if you want a fixed canvas ratio — that can fight with Max height. Not each tile’s ratio."
     },
     {
       "type": "range",
@@ -377,9 +383,9 @@
       "min": 0,
       "max": 2400,
       "step": 24,
-      "default": 0,
+      "default": 920,
       "unit": "px",
-      "info": "Optional floor when aspect ratio is off or images load late. 24px steps (Shopify range limit)."
+      "info": "Floor for stage height when aspect ratio is none (tiles are positioned in %, so the stage needs height). Lower if you use a fixed aspect ratio instead. 24px steps (Shopify range limit)."
     },
     {
       "type": "range",
@@ -390,7 +396,7 @@
       "step": 24,
       "default": 0,
       "unit": "px",
-      "info": "0 = no cap. Sets a ceiling on stage height so a tall aspect-ratio collage compresses vertically (may clip bottom tiles)."
+      "info": "0 = no cap. Use with Min height (and aspect ratio none) to cap how tall the collage gets. May clip bottom tiles if the cap is low."
     },
     {
       "type": "color",
