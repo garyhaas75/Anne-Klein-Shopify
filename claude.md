@@ -30,6 +30,10 @@ Follow these rules **exactly**. Do not skip them.
 - If the goal is for **Shopify / GitHub** to see the change, **commit and push** (when the user wants that), and **confirm with evidence** (e.g. successful `git push`, commit hash).
 - Do **not** assume “saved in Cursor” means “live on the theme.”
 
+## Shopify section schema: `range` settings
+
+- For any **`type: "range"`** setting, **`default` must equal `min` plus an integer multiple of `step`** (same rule applies to values in **`templates/*.json`** section settings). If the design calls for a pixel value that does not fit `step` (e.g. **666** with `min: 240`, `step: 10`), either **set `step: 1`** (or another step that divides evenly) or **change `default`** to a valid step. Invalid combos fail theme upload with “default must be a step in the range.”
+
 ## No false certainty
 
 - Do **not** sound sure because the **local file** looks right.
