@@ -10,20 +10,44 @@
 {% assign img = section.settings.image %}
 {% assign mimg = section.settings.mobile_image | default: img %}
 {% assign max_w = section.settings.media_max_width | default: 660 %}
+{% assign max_w_m = section.settings.media_max_width_mobile | default: 660 %}
 {% assign ar = section.settings.aspect_ratio | default: '111 / 170' %}
+{% if ar != blank and ar != 'none' %}
+  {% assign inset_ratio_locked = true %}
+{% else %}
+  {% assign inset_ratio_locked = false %}
+{% endif %}
+{% assign ar_m_raw = section.settings.aspect_ratio_mobile | default: 'inherit' %}
+{% if ar_m_raw == 'inherit' or ar_m_raw == blank %}
+  {% assign ar_m = ar %}
+{% else %}
+  {% assign ar_m = ar_m_raw %}
+{% endif %}
+{% if ar_m != blank and ar_m != 'none' %}
+  {% assign inset_ratio_locked_mobile = true %}
+{% else %}
+  {% assign inset_ratio_locked_mobile = false %}
+{% endif %}
 {% assign fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign fit_m_raw = section.settings.image_object_fit_mobile | default: 'inherit' %}
+{% if fit_m_raw == 'inherit' or fit_m_raw == blank %}
+  {% assign fit_m = fit %}
+{% else %}
+  {% assign fit_m = fit_m_raw %}
+{% endif %}
 {% assign pos = section.settings.image_object_position | default: 'center' %}
+{% assign pos_m_raw = section.settings.image_object_position_mobile | default: 'inherit' %}
+{% if pos_m_raw == 'inherit' or pos_m_raw == blank %}
+  {% assign pos_m = pos %}
+{% else %}
+  {% assign pos_m = pos_m_raw %}
+{% endif %}
 {% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
 {% assign cap = section.settings.caption %}
 {% assign heading = section.settings.heading %}
 {% assign hl = section.settings.heading_level | default: 'h2' %}
 {% assign lnk = section.settings.link_url %}
 {% assign img_alt = section.settings.image_alt | default: img.alt | default: heading | default: 'Campaign photograph' %}
-{% if ar != blank and ar != 'none' %}
-  {% assign inset_ratio_locked = true %}
-{% else %}
-  {% assign inset_ratio_locked = false %}
-{% endif %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -48,6 +72,11 @@
     margin-right: auto;
     width: 100%;
   }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-inset__inner {
+      max-width: {{ max_w_m }}px;
+    }
+  }
   #shopify-section-{{ id }} .ak-inset__heading {
     text-align: {{ section.settings.text_alignment | default: 'center' }};
     margin: 0 0 1rem;
@@ -55,15 +84,22 @@
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     color: {{ section.settings.heading_color | default: '#000000' }};
   }
-  /* Locked aspect: fill frame with object-fit */
-  #shopify-section-{{ id }} .ak-inset__frame--ratio {
+  /* Ratio frames: separate desktop vs mobile so aspect + fit can differ */
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-mobile-only,
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-desktop-only {
     position: relative;
     width: 100%;
     background-color: {{ letterbox }};
     overflow: hidden;
+  }
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-mobile-only {
     aspect-ratio: {{ ar }};
   }
-  #shopify-section-{{ id }} .ak-inset__frame--ratio .image-element__wrap {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-desktop-only {
+    aspect-ratio: {{ ar_m }};
+  }
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-mobile-only .image-element__wrap,
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-desktop-only .image-element__wrap {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -71,24 +107,25 @@
     max-width: none;
     margin: 0;
   }
-  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only {
-    position: absolute;
-    inset: 0;
-  }
-  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only .image-element__wrap {
-    position: absolute;
-    inset: 0;
-  }
-  #shopify-section-{{ id }} .ak-inset__frame--ratio img,
-  #shopify-section-{{ id }} .ak-inset__frame--ratio .placeholder-svg {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-mobile-only img,
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-mobile-only .placeholder-svg {
     width: 100%;
     height: 100%;
     object-fit: {{ fit }};
     object-position: {{ pos }};
     display: block;
   }
-  /* Natural: fill inset column width; height follows file aspect ratio (no pillarboxing from flex center) */
-  #shopify-section-{{ id }} .ak-inset__frame--natural {
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-desktop-only img,
+  #shopify-section-{{ id }} .ak-inset__frame--ratio.is-hidden-desktop-only .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ fit_m }};
+    object-position: {{ pos_m }};
+    display: block;
+  }
+  /* Natural: full column width; separate frames for mobile vs desktop focal point */
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-mobile-only,
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-desktop-only {
     position: relative;
     width: 100%;
     display: flex;
@@ -98,14 +135,8 @@
     background-color: {{ section.settings.background_color | default: '#ffffff' }};
     overflow: visible;
   }
-  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only,
-  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-mobile-only {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    flex-shrink: 0;
-  }
-  #shopify-section-{{ id }} .ak-inset__frame--natural .image-element__wrap {
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-mobile-only .image-element__wrap,
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-desktop-only .image-element__wrap {
     position: static !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -113,8 +144,8 @@
     margin-left: auto;
     margin-right: auto;
   }
-  #shopify-section-{{ id }} .ak-inset__frame--natural img,
-  #shopify-section-{{ id }} .ak-inset__frame--natural .placeholder-svg {
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-mobile-only img,
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-mobile-only .placeholder-svg {
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
@@ -122,19 +153,14 @@
     object-position: {{ pos }};
     display: block;
   }
-  #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only,
-  #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only {
-    display: none;
-  }
-  @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-mobile-only,
-    #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-mobile-only {
-      display: none !important;
-    }
-    #shopify-section-{{ id }} .ak-inset__frame--ratio .is-hidden-desktop-only,
-    #shopify-section-{{ id }} .ak-inset__frame--natural .is-hidden-desktop-only {
-      display: block !important;
-    }
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-desktop-only img,
+  #shopify-section-{{ id }} .ak-inset__frame--natural.is-hidden-desktop-only .placeholder-svg {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: unset;
+    object-position: {{ pos_m }};
+    display: block;
   }
   #shopify-section-{{ id }} .ak-inset__link {
     display: block;
@@ -184,36 +210,32 @@
         {% endif %}
 
         {% capture inset_media %}
-          <div class="ak-inset__frame {% if inset_ratio_locked %}ak-inset__frame--ratio{% else %}ak-inset__frame--natural{% endif %}">
+          <div class="ak-inset__frame {% if inset_ratio_locked %}ak-inset__frame--ratio{% else %}ak-inset__frame--natural{% endif %} is-hidden-mobile-only">
             {% if img != blank %}
               {% if inset_ratio_locked %}
-                {% include 'image-element', image: img, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: true %}
               {% else %}
-                {% include 'image-element', image: img, alt: img_alt, stretch_width: false, additional_classes: 'is-hidden-mobile-only' %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: false %}
               {% endif %}
             {% else %}
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
             {% endif %}
+          </div>
+          <div class="ak-inset__frame {% if inset_ratio_locked_mobile %}ak-inset__frame--ratio{% else %}ak-inset__frame--natural{% endif %} is-hidden-desktop-only">
             {% if mimg != blank %}
-              <div class="is-hidden-desktop-only">
-                {% if inset_ratio_locked %}
-                  {% include 'image-element', image: mimg, alt: img_alt, stretch_width: true %}
-                {% else %}
-                  {% include 'image-element', image: mimg, alt: img_alt, stretch_width: false %}
-                {% endif %}
-              </div>
+              {% if inset_ratio_locked_mobile %}
+                {% include 'image-element', image: mimg, alt: img_alt, stretch_width: true %}
+              {% else %}
+                {% include 'image-element', image: mimg, alt: img_alt, stretch_width: false %}
+              {% endif %}
             {% elsif img != blank %}
-              <div class="is-hidden-desktop-only">
-                {% if inset_ratio_locked %}
-                  {% include 'image-element', image: img, alt: img_alt, stretch_width: true %}
-                {% else %}
-                  {% include 'image-element', image: img, alt: img_alt, stretch_width: false %}
-                {% endif %}
-              </div>
+              {% if inset_ratio_locked_mobile %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: true %}
+              {% else %}
+                {% include 'image-element', image: img, alt: img_alt, stretch_width: false %}
+              {% endif %}
             {% else %}
-              <div class="is-hidden-desktop-only">
-                {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
             {% endif %}
           </div>
         {% endcapture %}
@@ -320,7 +342,7 @@
     {
       "type": "range",
       "id": "media_max_width",
-      "label": "Max width (inset column)",
+      "label": "Max width (inset column, desktop)",
       "min": 240,
       "max": 2240,
       "step": 20,
@@ -331,7 +353,7 @@
     {
       "type": "select",
       "id": "aspect_ratio",
-      "label": "Aspect ratio",
+      "label": "Aspect ratio (desktop)",
       "default": "111 / 170",
       "info": "111:170 = fixed crop box. None = image scales to full inset column width; height follows the file (no side gutters inside the frame).",
       "options": [
@@ -347,7 +369,7 @@
     {
       "type": "select",
       "id": "image_object_fit",
-      "label": "Image fit",
+      "label": "Image fit (desktop, ratio mode)",
       "default": "cover",
       "options": [
         { "value": "cover", "label": "Cover" },
@@ -358,9 +380,69 @@
     {
       "type": "select",
       "id": "image_object_position",
-      "label": "Focal point",
+      "label": "Focal point (desktop)",
       "default": "center",
       "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "media_max_width_mobile",
+      "label": "Max width (inset column, mobile)",
+      "min": 240,
+      "max": 2240,
+      "step": 20,
+      "default": 660,
+      "unit": "px",
+      "info": "Applies below the theme mobile breakpoint. Independent from desktop max width."
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio_mobile",
+      "label": "Aspect ratio (mobile)",
+      "default": "inherit",
+      "info": "Use “Same as desktop” to match the desktop setting. Choose None for full-width natural height on small screens.",
+      "options": [
+        { "value": "inherit", "label": "Same as desktop" },
+        { "value": "111 / 170", "label": "Figma inset (666×1020)" },
+        { "value": "9 / 16", "label": "9:16" },
+        { "value": "4 / 5", "label": "4:5" },
+        { "value": "3 / 4", "label": "3:4" },
+        { "value": "2 / 3", "label": "2:3" },
+        { "value": "1 / 1", "label": "1:1" },
+        { "value": "none", "label": "None (natural height)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit_mobile",
+      "label": "Image fit (mobile, ratio mode)",
+      "default": "inherit",
+      "options": [
+        { "value": "inherit", "label": "Same as desktop" },
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_object_position_mobile",
+      "label": "Focal point (mobile)",
+      "default": "inherit",
+      "options": [
+        { "value": "inherit", "label": "Same as desktop" },
         { "value": "center", "label": "Center" },
         { "value": "top", "label": "Top" },
         { "value": "bottom", "label": "Bottom" },
