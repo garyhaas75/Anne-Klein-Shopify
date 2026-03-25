@@ -126,7 +126,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin: 0 0 1.25rem;
+    margin: 1.25rem 0 0;
+    flex-shrink: 0;
   }
   #shopify-section-{{ id }} .ak-campaign-intro__divider {
     width: {{ divider_width }}px;
@@ -208,22 +209,15 @@
       padding: 2rem clamp(1.5rem, 4vw, 4rem);
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__body {
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
-      gap: clamp(1rem, 2.5vw, 2rem);
+      flex-direction: column;
+      align-items: flex-start;
       max-width: 42rem;
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__divider-slot {
-      width: auto;
-      flex-shrink: 0;
-      margin: 0;
-      align-self: center;
+      justify-content: flex-start;
     }
     #shopify-section-{{ id }} .ak-campaign-intro--split .ak-campaign-intro__titles {
       text-align: left;
-      flex: 1 1 auto;
-      min-width: 0;
     }
   }
 {% endstyle %}
@@ -263,11 +257,6 @@
           <a href="{{ link_url }}" class="ak-campaign-intro__link" aria-label="{{ heading | default: eyebrow | default: 'Campaign' | escape }}">
         {% endif %}
         <div class="ak-campaign-intro__body">
-          {% if show_divider %}
-            <div class="ak-campaign-intro__divider-slot" aria-hidden="true">
-              <hr class="ak-campaign-intro__divider" />
-            </div>
-          {% endif %}
           <div class="ak-campaign-intro__titles">
             {% if eyebrow != blank %}
               <p class="ak-campaign-intro__eyebrow" {% unless link_url != blank %}tabindex="0"{% endunless %}>{{ eyebrow }}</p>
@@ -282,6 +271,11 @@
               {% endif %}
             {% endif %}
           </div>
+          {% if show_divider %}
+            <div class="ak-campaign-intro__divider-slot" aria-hidden="true">
+              <hr class="ak-campaign-intro__divider" />
+            </div>
+          {% endif %}
         </div>
         {% if link_url != blank %}
           </a>
@@ -373,7 +367,7 @@
       "id": "show_divider",
       "label": "Show vertical rule",
       "default": true,
-      "info": "Stacked: centered above text. Split desktop: to the left of the headline block (Figma)."
+      "info": "Placed below the eyebrow and heading (centered when text is centered; left-aligned under the type on split desktop)."
     },
     {
       "type": "range",
