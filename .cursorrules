@@ -132,4 +132,4 @@ Never ship a range change without this check; theme upload fails with `step inva
 
 ## Range settings: default and template JSON must land on the step grid
 
-Shopify also rejects when **`default`** (in schema) or a value in **section JSON** is not reachable from **`min`** in **`step`** increments: `(value - min) % step === 0`. Example: `min: 0`, `step: 24` → **`920` fails** (`920 % 24 ≠ 0`); use **`912`** or **`936`** instead. Theme upload fails with `default must be a step in the range` / `Setting '…' must be a step in the range`.
+Shopify also rejects when **`default`** (in schema) or a value in **section JSON** is not reachable from **`min`** in **`step`** increments: **`(value - min) % step === 0`** (when `min` is `0`, that is the same as `value % step === 0`). Example: `min: 0`, `step: 24` → **`900` fails** (`900 % 24 = 12`); **`920` fails**; use **`912`** or **`888`** instead. After changing **`min`** or **`step`**, re-check every **`templates/*.json`** value for that setting. Theme upload fails with `default must be a step in the range` / `Setting '…' must be a step in the range`.
