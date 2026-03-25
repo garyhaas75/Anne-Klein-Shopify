@@ -1,0 +1,581 @@
+{% comment %}
+  AK Campaign — full-bleed model portrait(s). Stack one or more blocks (Figma: name + role on image).
+  WCAG 2.2 AA: landmark, image alt, bottom scrim for text contrast, one link per card when URL set, focus-visible.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign padding_top = section.settings.padding_top | default: 0 %}
+{% assign padding_bottom = section.settings.padding_bottom | default: 0 %}
+{% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
+{% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign min_h = section.settings.portrait_min_height | default: 520 %}
+{% assign scrim_opacity = section.settings.scrim_opacity | default: 72 %}
+{% assign text_color = section.settings.overlay_text_color | default: '#ffffff' %}
+
+{% assign name_font_key = section.settings.name_font_family | default: 'amiri' %}
+{% assign role_font_key = section.settings.role_font_family | default: 'system' %}
+{% case name_font_key %}
+  {% when 'amiri' %}{% assign name_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign name_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign name_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign name_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign name_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign name_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign name_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% case role_font_key %}
+  {% when 'amiri' %}{% assign role_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign role_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign role_font_stack = 'Georgia, serif' %}
+  {% when 'times' %}{% assign role_font_stack = '"Times New Roman", Times, serif' %}
+  {% when 'verdana' %}{% assign role_font_stack = 'Verdana, Geneva, sans-serif' %}
+  {% when 'trebuchet' %}{% assign role_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% else %}{% assign role_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+
+{% style %}
+  #shopify-section-{{ id }} {
+    padding-top: {{ padding_top }}px;
+    padding-bottom: {{ padding_bottom }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ padding_top_mobile }}px;
+      padding-bottom: {{ padding_bottom_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__item + .ak-campaign-portrait__item {
+    margin-top: {{ section.settings.stack_gap | default: 0 }}px;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: {{ min_h }}px;
+    background-color: #1a1a1a;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__card {
+      min-height: {{ section.settings.portrait_min_height_mobile | default: min_h }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media img,
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only { display: block !important; }
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 45%;
+    min-height: 140px;
+    background: linear-gradient(to top, rgba(0,0,0,{{ scrim_opacity | divided_by: 100.0 }}), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__caption {
+    position: relative;
+    z-index: 2;
+    min-height: {{ min_h }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: {% if section.settings.caption_align == 'left' %}flex-start{% elsif section.settings.caption_align == 'right' %}flex-end{% else %}center{% endif %};
+    text-align: {% if section.settings.caption_align == 'left' %}left{% elsif section.settings.caption_align == 'right' %}right{% else %}center{% endif %};
+    padding: 2rem 1.5rem 2.5rem;
+    color: {{ text_color }};
+    text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__caption {
+      min-height: {{ section.settings.portrait_min_height_mobile | default: min_h }}px;
+      padding: 1.5rem 1rem 2rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__name {
+    font-family: {{ name_font_stack }};
+    font-size: clamp(1.5rem, 5vw, {{ section.settings.name_font_size | default: 40 }}px);
+    font-weight: {{ section.settings.name_font_weight | default: '400' }};
+    line-height: 1.15;
+    margin: 0 0 0.25em;
+    color: {{ text_color }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__role {
+    font-family: {{ role_font_stack }};
+    font-size: {{ section.settings.role_font_size | default: 16 }}px;
+    font-weight: {{ section.settings.role_font_weight | default: '400' }};
+    line-height: 1.3;
+    margin: 0;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: {{ text_color }};
+    opacity: 0.95;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__card-link:focus-visible {
+    outline: 3px solid {{ text_color }};
+    outline-offset: -3px;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__card-link:focus-visible .ak-campaign-portrait__name,
+  #shopify-section-{{ id }} .ak-campaign-portrait__card-link:focus-visible .ak-campaign-portrait__role {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {% if section.settings.section_aria_label != blank %}
+    aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% else %}
+    aria-label="Campaign portraits"
+  {% endif %}
+>
+  <div class="container equal-columns--outside-trim">
+    <ul class="ak-campaign-portrait__list">
+      {% for block in section.blocks %}
+        {% if block.type == 'portrait' %}
+          {% assign bimg = block.settings.image %}
+          {% assign bm = block.settings.mobile_image | default: bimg %}
+          {% assign nm = block.settings.name %}
+          {% assign rl = block.settings.role %}
+          {% assign lnk = block.settings.link_url %}
+          {% assign hl = block.settings.heading_level | default: 'h3' %}
+          {% assign img_alt = block.settings.image_alt | default: nm | default: 'Model portrait' %}
+
+          <li class="ak-campaign-portrait__item" {{ block.shopify_attributes }}>
+            {% if lnk != blank %}
+              <a
+                href="{{ lnk }}"
+                class="ak-campaign-portrait__card ak-campaign-portrait__card-link"
+                {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                {% if nm != blank %}
+                  aria-labelledby="ak-portrait-name-{{ block.id }}"
+                  {% if rl != blank %}aria-describedby="ak-portrait-role-{{ block.id }}"{% endif %}
+                {% elsif rl != blank %}
+                  aria-label="{{ rl | escape }}"
+                {% else %}
+                  aria-label="{{ img_alt | escape }}"
+                {% endif %}
+              >
+                <div class="ak-campaign-portrait__media" aria-hidden="true">
+                  {% if bimg != blank %}
+                    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                  {% else %}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                  {% endif %}
+                  {% if bm != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% elsif bimg != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% else %}
+                    <div class="is-hidden-desktop-only">
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
+                <div class="ak-campaign-portrait__caption">
+                  {% if nm != blank %}
+                    {% if hl == 'h2' %}
+                      <h2 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h2>
+                    {% elsif hl == 'h4' %}
+                      <h4 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h4>
+                    {% else %}
+                      <h3 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h3>
+                    {% endif %}
+                  {% endif %}
+                  {% if rl != blank %}
+                    <p class="ak-campaign-portrait__role" {% if nm != blank %}id="ak-portrait-role-{{ block.id }}"{% endif %}>{{ rl }}</p>
+                  {% endif %}
+                </div>
+              </a>
+            {% else %}
+              <div class="ak-campaign-portrait__card">
+                <div class="ak-campaign-portrait__media">
+                  {% if bimg != blank %}
+                    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                  {% else %}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                  {% endif %}
+                  {% if bm != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% elsif bimg != blank %}
+                    <div class="is-hidden-desktop-only">
+                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                    </div>
+                  {% else %}
+                    <div class="is-hidden-desktop-only">
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
+                <div class="ak-campaign-portrait__caption">
+                  {% if nm != blank %}
+                    {% if hl == 'h2' %}
+                      <h2 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h2>
+                    {% elsif hl == 'h4' %}
+                      <h4 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h4>
+                    {% else %}
+                      <h3 class="ak-campaign-portrait__name" id="ak-portrait-name-{{ block.id }}">{{ nm }}</h3>
+                    {% endif %}
+                  {% endif %}
+                  {% if rl != blank %}
+                    <p class="ak-campaign-portrait__role">{{ rl }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Campaign portrait",
+  "class": "ak-campaign-portrait-section",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Add one block per full-bleed portrait. Figma uses two in a row in the scroll. Optional link wraps the whole portrait (one focus stop)."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "default": "wide",
+      "options": [
+        { "value": "standard", "label": "Standard" },
+        { "value": "wide", "label": "Wide" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gutter",
+      "label": "Show gutter",
+      "default": false,
+      "info": "Off = edge-to-edge like other campaign full-bleed strips."
+    },
+    {
+      "type": "select",
+      "id": "caption_align",
+      "label": "Name & role alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "portrait_min_height",
+      "label": "Min height (desktop)",
+      "min": 320,
+      "max": 900,
+      "step": 20,
+      "default": 520,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "portrait_min_height_mobile",
+      "label": "Min height (mobile)",
+      "min": 280,
+      "max": 800,
+      "step": 20,
+      "default": 480,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "stack_gap",
+      "label": "Gap between stacked portraits",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "scrim_opacity",
+      "label": "Bottom scrim strength",
+      "min": 40,
+      "max": 90,
+      "step": 2,
+      "default": 72,
+      "unit": "%",
+      "info": "Dark gradient behind text for contrast (WCAG)."
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Name & role color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Fonts — name"
+    },
+    {
+      "type": "select",
+      "id": "name_font_family",
+      "label": "Name font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "system", "label": "System sans" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_font_size",
+      "label": "Name font size (max)",
+      "min": 24,
+      "max": 64,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "name_font_weight",
+      "label": "Name font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Fonts — role"
+    },
+    {
+      "type": "select",
+      "id": "role_font_family",
+      "label": "Role font",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "role_font_size",
+      "label": "Role font size",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "role_font_weight",
+      "label": "Role font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (screen readers)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom (mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "portrait",
+      "name": "Portrait",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (desktop)",
+          "info": "Full-bleed; tall editorial crop works well."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image (mobile)",
+          "info": "Optional; uses desktop image if blank."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "info": "Describe the photo. Falls back to name if blank."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Model name"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role / line",
+          "default": "Model",
+          "info": "Shown in small caps under the name."
+        },
+        {
+          "type": "select",
+          "id": "heading_level",
+          "label": "Name heading level",
+          "default": "h3",
+          "info": "Use H3 if the page already has H1/H2 above.",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link (optional)",
+          "info": "Makes the whole portrait one link."
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Campaign portrait",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "portrait",
+          "settings": {
+            "name": "Tina Kunakey",
+            "role": "Model"
+          }
+        },
+        {
+          "type": "portrait",
+          "settings": {
+            "name": "Caroline Kelley Rosen",
+            "role": "Model"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -165,12 +165,54 @@
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
+    },
+    "model_portraits": {
+      "type": "page__ak-campaign-portrait",
+      "blocks": {
+        "portrait1": {
+          "type": "portrait",
+          "settings": {
+            "name": "Tina Kunakey",
+            "role": "Model"
+          }
+        },
+        "portrait2": {
+          "type": "portrait",
+          "settings": {
+            "name": "Caroline Kelley Rosen",
+            "role": "Model"
+          }
+        }
+      },
+      "block_order": ["portrait1", "portrait2"],
+      "settings": {
+        "width": "wide",
+        "show_gutter": false,
+        "caption_align": "center",
+        "portrait_min_height": 520,
+        "portrait_min_height_mobile": 480,
+        "stack_gap": 0,
+        "scrim_opacity": 72,
+        "overlay_text_color": "#ffffff",
+        "name_font_family": "amiri",
+        "name_font_size": 40,
+        "name_font_weight": "400",
+        "role_font_family": "system",
+        "role_font_size": 14,
+        "role_font_weight": "400",
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
     }
   },
   "order": [
     "campaign_intro",
     "film_copy",
     "campaign_film",
-    "collection_cta"
+    "collection_cta",
+    "model_portraits"
   ]
 }
