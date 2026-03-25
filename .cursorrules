@@ -129,3 +129,7 @@ Shopify rejects themes when any `range` has **more than 101 discrete values**. B
 - **Tall numeric spans (e.g. 0–2400):** use a large enough `step` so step count stays ≤ 101 (this theme uses 24px steps for those height ranges).
 
 Never ship a range change without this check; theme upload fails with `step invalid` / `at most 101 steps`.
+
+## Range settings: default and template JSON must land on the step grid
+
+Shopify also rejects when **`default`** (in schema) or a value in **section JSON** is not reachable from **`min`** in **`step`** increments: `(value - min) % step === 0`. Example: `min: 0`, `step: 24` → **`920` fails** (`920 % 24 ≠ 0`); use **`912`** or **`936`** instead. Theme upload fails with `default must be a step in the range` / `Setting '…' must be a step in the range`.
