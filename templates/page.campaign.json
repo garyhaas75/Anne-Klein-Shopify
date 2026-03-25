@@ -251,7 +251,7 @@
         "zigzag_2": {
           "type": "zigzag_row",
           "settings": {
-            "quote": "<p>Add second quote in theme editor or duplicate block.</p>",
+            "quote": "",
             "attribution": "",
             "row_layout": "auto",
             "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
