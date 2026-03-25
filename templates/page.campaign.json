@@ -227,6 +227,50 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0
       }
+    },
+    "page_ak_campaign_stills_DGCVEj": {
+      "type": "page__ak-campaign-stills",
+      "blocks": {
+        "still_HtWxii": {
+          "type": "still",
+          "settings": {
+            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_20_2442_1.png",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_MFWYah": {
+          "type": "still",
+          "settings": {
+            "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
+            "image_alt": "",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "still_HtWxii",
+        "still_MFWYah"
+      ],
+      "name": "AK Campaign stills",
+      "settings": {
+        "width": "wide",
+        "show_gutter": false,
+        "still_gap": 0,
+        "image_behavior": "natural",
+        "image_object_fit": "cover",
+        "image_object_position": "center",
+        "crop_min_height_desktop": 480,
+        "crop_min_height_mobile": 400,
+        "letterbox_color": "#1a1a1a",
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
     }
   },
   "order": [
@@ -234,6 +278,7 @@
     "film_copy",
     "campaign_film",
     "collection_cta",
-    "model_portraits"
+    "model_portraits",
+    "page_ak_campaign_stills_DGCVEj"
   ]
 }
