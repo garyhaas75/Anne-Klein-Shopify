@@ -15,6 +15,8 @@
       "settings": {
         "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.jpg",
         "mobile_image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.png",
+        "split_image_object_fit": "cover",
+        "split_image_object_position": "center",
         "link_url": "",
         "eyebrow": "INTRODUCING",
         "heading": "The Invisible Thread",
@@ -37,8 +39,6 @@
         "text_rule_alignment": "center",
         "layout_desktop": "split",
         "split_image_width": 50,
-        "split_image_object_fit": "cover",
-        "split_image_object_position": "center",
         "width": "wide",
         "show_gutter": false,
         "copy_padding_top": 48,
@@ -168,68 +168,6 @@
         "padding_bottom_mobile": 40
       }
     },
-    "model_portraits": {
-      "type": "page__ak-campaign-portrait",
-      "blocks": {
-        "portrait1": {
-          "type": "portrait",
-          "settings": {
-            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_14_1781_1.png",
-            "image_alt": "",
-            "name": "Tina Kunakey",
-            "role": "Model",
-            "heading_level": "h3",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "portrait2": {
-          "type": "portrait",
-          "settings": {
-            "image": "shopify://shop_images/3_1.png",
-            "image_alt": "",
-            "name": "Caroline Kelley Rosen",
-            "role": "Model",
-            "heading_level": "h3",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        }
-      },
-      "block_order": [
-        "portrait1",
-        "portrait2"
-      ],
-      "settings": {
-        "width": "wide",
-        "show_gutter": false,
-        "layout_desktop": "two_columns",
-        "caption_align": "left",
-        "caption_vertical": "top",
-        "scrim_height_percent": 45,
-        "image_object_fit": "cover",
-        "image_object_position": "center",
-        "portrait_aspect_desktop": "none",
-        "portrait_aspect_mobile": "none",
-        "image_letterbox_color": "#1a1a1a",
-        "portrait_min_height": 1200,
-        "portrait_min_height_mobile": 480,
-        "stack_gap": 0,
-        "scrim_opacity": 72,
-        "overlay_text_color": "#ffffff",
-        "name_font_family": "amiri",
-        "name_font_size": 40,
-        "name_font_weight": "400",
-        "role_font_family": "system",
-        "role_font_size": 14,
-        "role_font_weight": "400",
-        "section_aria_label": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0
-      }
-    },
     "page_ak_campaign_stills_DGCVEj": {
       "type": "page__ak-campaign-stills",
       "blocks": {
@@ -238,6 +176,8 @@
           "settings": {
             "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_20_2442_1.png",
             "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
             "link_url": "",
             "link_new_tab": false
           }
@@ -247,6 +187,8 @@
           "settings": {
             "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
             "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
             "link_url": "",
             "link_new_tab": false
           }
@@ -258,6 +200,23 @@
       ],
       "name": "AK Campaign stills",
       "settings": {
+        "heading": "",
+        "heading_level": "h2",
+        "intro": "",
+        "text_alignment": "center",
+        "header_max_width": 48,
+        "header_background": "#ffffff",
+        "heading_color": "#000000",
+        "body_color": "#000000",
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
+        "heading_font_weight": "400",
+        "body_font_family": "system",
+        "intro_font_size": 17,
+        "caption_below_alignment": "center",
+        "caption_font_size": 15,
+        "caption_overlay_color": "#ffffff",
+        "caption_scrim_opacity": 65,
         "width": "wide",
         "show_gutter": false,
         "still_gap": 0,
@@ -339,7 +298,6 @@
     "film_copy",
     "campaign_film",
     "collection_cta",
-    "model_portraits",
     "page_ak_campaign_stills_DGCVEj",
     "campaign_quote_zigzag"
   ]
