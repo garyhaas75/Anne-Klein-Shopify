@@ -202,15 +202,15 @@
         "width": "wide",
         "show_gutter": false,
         "layout_desktop": "two_columns",
-        "caption_align": "center",
-        "caption_vertical": "bottom",
+        "caption_align": "left",
+        "caption_vertical": "top",
         "scrim_height_percent": 45,
         "image_object_fit": "cover",
         "image_object_position": "center",
         "portrait_aspect_desktop": "none",
         "portrait_aspect_mobile": "none",
         "image_letterbox_color": "#1a1a1a",
-        "portrait_min_height": 520,
+        "portrait_min_height": 1200,
         "portrait_min_height_mobile": 480,
         "stack_gap": 0,
         "scrim_opacity": 72,
@@ -227,30 +227,6 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0
       }
-    },
-    "campaign_stills": {
-      "type": "page__ak-campaign-stills",
-      "blocks": {
-        "still_1": { "type": "still", "settings": {} },
-        "still_2": { "type": "still", "settings": {} }
-      },
-      "block_order": ["still_1", "still_2"],
-      "settings": {
-        "width": "wide",
-        "show_gutter": false,
-        "still_gap": 0,
-        "image_behavior": "natural",
-        "image_object_fit": "cover",
-        "image_object_position": "center",
-        "crop_min_height_desktop": 480,
-        "crop_min_height_mobile": 400,
-        "letterbox_color": "#1a1a1a",
-        "section_aria_label": "",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0
-      }
     }
   },
   "order": [
@@ -258,7 +234,6 @@
     "film_copy",
     "campaign_film",
     "collection_cta",
-    "model_portraits",
-    "campaign_stills"
+    "model_portraits"
   ]
 }
