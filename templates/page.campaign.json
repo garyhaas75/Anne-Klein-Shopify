@@ -226,6 +226,36 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0
       }
+    },
+    "campaign_inset_media": {
+      "type": "page__ak-campaign-inset-media",
+      "settings": {
+        "heading": "",
+        "heading_level": "h2",
+        "text_alignment": "center",
+        "image_alt": "",
+        "link_url": "",
+        "link_new_tab": false,
+        "caption": "",
+        "media_max_width": 420,
+        "aspect_ratio": "9 / 16",
+        "image_object_fit": "cover",
+        "image_object_position": "center",
+        "letterbox_color": "#1a1a1a",
+        "background_color": "#ffffff",
+        "width": "wide",
+        "show_gutter": true,
+        "heading_color": "#000000",
+        "heading_font_size": 28,
+        "heading_font_weight": "400",
+        "caption_color": "#333333",
+        "caption_font_size": 15,
+        "section_aria_label": "",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
@@ -233,6 +263,7 @@
     "film_copy",
     "campaign_film",
     "collection_cta",
-    "campaign_quote_zigzag"
+    "campaign_quote_zigzag",
+    "campaign_inset_media"
   ]
 }
