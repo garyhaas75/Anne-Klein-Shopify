@@ -1,0 +1,131 @@
+# WCAG 2.2 AA Accessibility Rules
+
+## Core Principle
+Every component, page, and UI element you generate must comply with WCAG 2.2 Level AA
+by default. Accessibility is not optional or additive — it is a first-class requirement
+built into every line of code from the start.
+
+## HTML & Semantics
+- Always use semantic HTML elements: <nav>, <main>, <header>, <footer>, <section>,
+  <article>, <aside>, <button>, <a>, <label>, <fieldset>, <legend>
+- Never use <div> or <span> for interactive elements — use <button> or <a> instead
+- Every page must have exactly one <h1>; heading hierarchy must be logical (h1 → h2 → h3)
+- Never skip heading levels
+- Always include a <html lang="en"> attribute (or appropriate locale)
+- Always include a descriptive <title> on every page
+
+## Images & Media
+- Every <img> must have an alt attribute
+- Decorative images use alt="" and role="presentation"
+- Informative images have meaningful, descriptive alt text (not "image of..." or filename)
+- Complex images (charts, graphs) require a longer description via aria-describedby or
+  a visible caption
+- Videos require captions; audio requires transcripts
+
+## Color & Contrast
+- Normal text (< 18pt / < 14pt bold): minimum contrast ratio 4.5:1
+- Large text (≥ 18pt or ≥ 14pt bold): minimum contrast ratio 3:1
+- UI components and graphical objects: minimum contrast ratio 3:1
+- Never use color alone to convey information — always pair with text, icon, or pattern
+- Never hardcode low-contrast color combinations
+
+## Keyboard & Focus
+- Every interactive element must be keyboard accessible (Tab, Enter, Space, Arrow keys)
+- Never use tabindex > 0
+- tabindex="0" only to make non-interactive elements focusable when necessary
+- tabindex="-1" only for programmatic focus management
+- Always implement visible focus indicators — never use outline: none without a replacement
+- Focus must not be trapped except in modals/dialogs (where it MUST be trapped)
+- After closing a modal, return focus to the element that opened it
+- Implement skip navigation: <a href="#main-content" class="skip-link">Skip to main content</a>
+
+## ARIA
+- Use ARIA only when native HTML semantics are insufficient
+- Prefer native HTML over ARIA: <button> over role="button", <nav> over role="navigation"
+- Every interactive ARIA widget must have an accessible name via:
+  aria-label, aria-labelledby, or a visible <label>
+- Use aria-describedby for supplemental descriptions (error messages, hints)
+- Use aria-live="polite" for dynamic content updates (status messages, search results)
+- Use aria-live="assertive" only for critical alerts
+- Use aria-expanded on toggles (accordions, dropdowns, menus)
+- Use aria-controls to associate controls with the regions they affect
+- Use aria-current="page" on active nav links
+- Use role="dialog" and aria-modal="true" on modal dialogs
+- Never use aria-hidden="true" on focusable elements
+
+## Forms
+- Every form input must have an associated <label> (via for/id or aria-label)
+- Never use placeholder text as the only label
+- Group related inputs with <fieldset> and <legend>
+- Required fields must be marked with aria-required="true" and a visible indicator
+- Error messages must be:
+  - Specific (identify which field and what's wrong)
+  - Associated with the input via aria-describedby
+  - Not reliant on color alone
+- On validation error, move focus to the first error or the error summary
+- Use autocomplete attributes on personal data fields (name, email, address, etc.)
+
+## Touch & Pointer (WCAG 2.2 Specific)
+- Minimum touch/click target size: 24×24px CSS (44×44px preferred)
+- Dragging functionality must have a single-pointer alternative
+- Do not require specific pointer gestures (path-based swipes) without alternatives
+
+## Timing & Motion
+- Never auto-play audio or video with sound
+- Provide controls to pause, stop, or hide any moving content
+- No content should flash more than 3 times per second
+- Respect prefers-reduced-motion — wrap animations in:
+  @media (prefers-reduced-motion: no-preference) { ... }
+- Session timeouts must warn the user and allow extension (minimum 20 seconds to respond)
+
+## Navigation & Structure
+- Provide multiple ways to find content: search, sitemap, or breadcrumbs
+- Clearly indicate the current location (breadcrumbs, aria-current, active states)
+- Consistent navigation order across pages
+- Consistent component naming across pages
+- Page language must be set; language changes within content must use lang attribute
+
+## Authentication (WCAG 2.2 New)
+- Never require cognitive function tests (puzzles, memorization) as the only auth method
+- Support copy/paste in password fields — never block it
+- Support password managers (do not use autocomplete="off" on auth fields)
+- If a CAPTCHA is required, provide an accessible alternative
+
+## Redundant Entry (WCAG 2.2 New)
+- Do not ask users to re-enter information already provided in the same session
+- Pre-populate fields where the data is already known
+
+## Testing Checklist
+After generating any UI component or page, verify:
+- [ ] Passes axe-core scan with zero violations (run via MCP: "scan localhost:3000 for WCAG 2.2 AA issues")
+- [ ] All interactive elements reachable and operable by keyboard only
+- [ ] No visible focus indicator is missing
+- [ ] All images have appropriate alt text
+- [ ] Color contrast meets minimum ratios
+- [ ] Form fields have labels and error handling
+- [ ] Dynamic content updates are announced via aria-live
+- [ ] Touch targets meet minimum size requirements
+- [ ] Animations respect prefers-reduced-motion
+
+## What Automated Scanning Cannot Catch (Requires Manual Review)
+- Whether alt text is actually descriptive and accurate
+- Whether reading order makes logical sense
+- Actual screen reader UX (test with VoiceOver on Mac: Cmd+F5)
+- Whether error messages are genuinely helpful to users
+- Cognitive accessibility and plain language quality
+- WCAG 2.2 criteria: Focus Appearance (2.4.11), Target Size minimum (2.5.8)
+
+---
+
+# Shopify theme section JSON (`{% schema %}`)
+
+## Range settings: max 101 steps (hard limit)
+
+Shopify rejects themes when any `range` has **more than 101 discrete values**. Before adding or editing `min` / `max` / `step` in a section or block schema, verify:
+
+- **Formula:** `stepCount = floor((max - min) / step) + 1` must be **≤ 101** (when in doubt, count selectable values).
+- **Examples that fail:** `min: -240`, `max: 240`, `step: 2` → 241 steps.
+- **Signed ranges:** widening nudge/offset sliders requires **increasing `step`**, not only raising `max`.
+- **Tall numeric spans (e.g. 0–2400):** use a large enough `step` so step count stays ≤ 101 (this theme uses 24px steps for those height ranges).
+
+Never ship a range change without this check; theme upload fails with `step invalid` / `at most 101 steps`.
