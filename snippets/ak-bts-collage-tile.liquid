@@ -15,13 +15,16 @@
   {% assign raw_placement = 'auto' %}
 {% endif %}
 {% assign use_custom_tile = false %}
+{% assign tz = block.settings.tile_z_index | default: 0 | plus: 0 %}
 {% if raw_placement == 'custom' %}
   {% assign use_custom_tile = true %}
   {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
   {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
   {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
   {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
-  {% assign tz = block.settings.tile_z_index | default: 2 | plus: 0 %}
+  {% if tz < 1 %}
+    {% assign tz = 2 %}
+  {% endif %}
 {% elsif raw_placement == 'auto' %}
   {% assign slot_n = slot_index %}
   {% if slot_n > 9 %}
@@ -31,12 +34,35 @@
 {% else %}
   {% assign pl = raw_placement %}
 {% endif %}
+{% assign nx = block.settings.tile_nudge_x | default: 0 | plus: 0 %}
+{% assign ny = block.settings.tile_nudge_y | default: 0 | plus: 0 %}
+{% assign sc_pct = block.settings.tile_scale_pct | default: 100 | plus: 0 %}
+{% if sc_pct < 1 %}
+  {% assign sc_pct = 100 %}
+{% endif %}
+{% assign sc_f = sc_pct | times: 0.01 %}
+{% assign has_tune = false %}
+{% if nx != 0 or ny != 0 %}
+  {% assign has_tune = true %}
+{% endif %}
+{% if sc_pct != 100 %}
+  {% assign has_tune = true %}
+{% endif %}
 <div
   class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
-  {% if use_custom_tile %}style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"{% endif %}
+  {% if use_custom_tile %}
+    style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"
+  {% elsif tz > 0 %}
+    style="z-index: {{ tz }};"
+  {% endif %}
   {{ block.shopify_attributes }}
 >
-  <div class="ak-bts-collage__tile-inner">
+  <div
+    class="ak-bts-collage__tile-inner{% if has_tune %} ak-bts-collage__tile-inner--tune{% endif %}"
+    {% if has_tune %}
+      style="--ak-tx: {{ nx }}px; --ak-ty: {{ ny }}px; --ak-s: {{ sc_f }};"
+    {% endif %}
+  >
     {% if block.settings.link_url != blank %}
       <a
         href="{{ block.settings.link_url }}"

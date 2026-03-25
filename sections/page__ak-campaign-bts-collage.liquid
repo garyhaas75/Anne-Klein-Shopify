@@ -128,6 +128,12 @@
   #shopify-section-{{ id }} .ak-bts-collage__tile-inner {
     position: absolute;
     inset: 0;
+    transform-origin: center center;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-bts-collage__tile-inner--tune {
+      transform: translate3d(var(--ak-tx, 0px), var(--ak-ty, 0px), 0) scale(var(--ak-s, 1));
+    }
   }
   #shopify-section-{{ id }} .ak-bts-collage__tile-inner .image-element__wrap {
     position: absolute;
@@ -155,15 +161,16 @@
     outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
     outline-offset: 2px;
   }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 15.66%; height: 10.74%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 38.44%; width: 15.66%; height: 11.26%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 10.78%; top: 5.44%; width: 34.84%; height: 25.18%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 65.16%; top: 0%; width: 34.84%; height: 25.11%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 52.63%; top: 22.52%; width: 34.71%; height: 25.11%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 67.29%; top: 58.64%; width: 15.54%; height: 11.26%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 23.93%; top: 63.95%; width: 34.96%; height: 25.24%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 72.68%; top: 81.23%; width: 27.44%; height: 18.9%; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 79.16%; width: 27.82%; height: 21.88%; }
+  {% comment %} Slot boxes tuned to SS26 campaign comp; z-index = overlap order (higher = in front). p1 (plant TL) above p3 (large left). {% endcomment %}
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 14.85%; height: 10.35%; z-index: 16; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 37.9%; width: 15.66%; height: 11.35%; z-index: 11; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 9.35%; top: 4.85%; width: 35.25%; height: 25.35%; z-index: 8; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 63.25%; top: 0%; width: 35.25%; height: 25.15%; z-index: 14; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 49.85%; top: 20.9%; width: 35.35%; height: 25.25%; z-index: 13; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 66.5%; top: 55.9%; width: 15.65%; height: 11.45%; z-index: 12; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 21.85%; top: 62.35%; width: 35.35%; height: 25.45%; z-index: 10; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 71.35%; top: 79.65%; width: 28.65%; height: 19.15%; z-index: 9; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 77.85%; width: 28.35%; height: 22.35%; z-index: 11; }
 
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
@@ -206,6 +213,9 @@
       height: auto !important;
       aspect-ratio: {{ section.settings.mobile_tile_aspect | default: '3 / 4' }};
     }
+    #shopify-section-{{ id }} .ak-bts-collage__tile-inner--tune {
+      transform: none;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ id }} .ak-bts-collage__tile-link:focus-visible {
@@ -231,7 +241,7 @@
     <div class="ak-bts-collage__stage">
       {% if backdrop != blank %}
         <div class="ak-bts-collage__backdrop" aria-hidden="true">
-          {% include 'image-element', image: backdrop, alt: '', stretch_width: true %}
+          {% render 'image-element', image: backdrop, alt: '', stretch_width: true %}
         </div>
       {% endif %}
 
@@ -279,7 +289,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: the 1st Collage tile uses collage slot 1 (small top-left), 2nd uses slot 2, etc. — drag blocks in this section to swap which image occupies which slot. Slots are fixed regions (Figma), not left-to-right reading order. Only Custom (%) overrides. Mobile: backdrop, text, then a 2-column stack."
+      "content": "Desktop: the 1st Collage tile uses slot 1 (small top-left), 2nd → slot 2, etc. Drag blocks to swap images. Pick Slot 1–9 to pin an image. Use Nudge / Scale to fine-tune (desktop). Mobile: backdrop, text, then a 2-column grid (nudge/scale skipped there)."
     },
     {
       "type": "header",
@@ -664,7 +674,7 @@
           "id": "placement",
           "label": "Desktop placement",
           "default": "auto",
-          "info": "Layout uses this section’s block order (drag to reorder). Only Custom uses manual %. Preset 1–9 values are legacy and do not pin position.",
+          "info": "Follow block order maps the 1st tile to slot 1, etc. Slot 1–9 pins this block to that region.",
           "options": [
             { "value": "auto", "label": "Follow block order (slots 1–9)" },
             { "value": "p1", "label": "Slot 1 — top-left, small" },
@@ -722,12 +732,45 @@
         {
           "type": "range",
           "id": "tile_z_index",
-          "min": 1,
+          "min": 0,
           "max": 30,
           "step": 1,
-          "default": 2,
-          "label": "Stack order (custom only)",
-          "info": "Higher draws above other tiles."
+          "default": 0,
+          "label": "Stack order override",
+          "info": "0 = use the theme’s slot stacking. 1–30 = force this tile higher (draws above lower numbers). Custom layout uses 2 if left at 0."
+        },
+        {
+          "type": "range",
+          "id": "tile_nudge_x",
+          "min": -80,
+          "max": 80,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "label": "Nudge left / right",
+          "info": "Negative moves left; positive moves right (desktop only)."
+        },
+        {
+          "type": "range",
+          "id": "tile_nudge_y",
+          "min": -80,
+          "max": 80,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "label": "Nudge up / down",
+          "info": "Negative moves up; positive moves down (desktop only)."
+        },
+        {
+          "type": "range",
+          "id": "tile_scale_pct",
+          "min": 70,
+          "max": 130,
+          "step": 1,
+          "default": 100,
+          "unit": "%",
+          "label": "Tile scale",
+          "info": "100% fills the slot. Lower shrinks, higher grows (desktop only; cropped to slot)."
         },
         {
           "type": "url",

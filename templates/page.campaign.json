@@ -430,7 +430,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -445,7 +445,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -460,7 +460,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -475,7 +475,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -490,7 +490,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -505,7 +505,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -520,7 +520,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -535,7 +535,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
@@ -550,7 +550,7 @@
             "custom_top": 0,
             "custom_width": 25,
             "custom_height": 25,
-            "tile_z_index": 2,
+            "tile_z_index": 0,
             "link_url": "",
             "link_new_tab": false
           }
