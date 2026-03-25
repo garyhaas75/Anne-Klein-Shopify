@@ -161,16 +161,16 @@
     outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
     outline-offset: 2px;
   }
-  {% comment %} Overlap order (higher = in front): p1 over p3; bottom p7 / p8 above top-right p4 where they cross. {% endcomment %}
+  {% comment %} Overlap: p4 top-right = rear (low z). p5–p9 above p4 where boxes cross; p1 over p3. {% endcomment %}
   #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 14.85%; height: 10.35%; z-index: 16; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 37.9%; width: 15.66%; height: 11.35%; z-index: 11; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 9.35%; top: 4.85%; width: 35.25%; height: 25.35%; z-index: 8; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 63.25%; top: 0%; width: 35.25%; height: 25.15%; z-index: 14; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 49.85%; top: 20.9%; width: 35.35%; height: 25.25%; z-index: 13; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 66.5%; top: 55.9%; width: 15.65%; height: 11.45%; z-index: 12; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 21.85%; top: 62.35%; width: 35.35%; height: 25.45%; z-index: 15; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 71.35%; top: 79.65%; width: 28.65%; height: 19.15%; z-index: 17; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 77.85%; width: 28.35%; height: 22.35%; z-index: 11; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 63.25%; top: 0%; width: 35.25%; height: 25.15%; z-index: 9; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 49.85%; top: 20.9%; width: 35.35%; height: 25.25%; z-index: 15; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 66.5%; top: 55.9%; width: 15.65%; height: 11.45%; z-index: 13; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 21.85%; top: 62.35%; width: 35.35%; height: 25.45%; z-index: 17; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 71.35%; top: 79.65%; width: 28.65%; height: 19.15%; z-index: 18; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 77.85%; width: 28.35%; height: 22.35%; z-index: 14; }
 
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
