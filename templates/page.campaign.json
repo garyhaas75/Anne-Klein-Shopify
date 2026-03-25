@@ -361,7 +361,7 @@
         "enable_lightbox": false,
         "overlay_color": "#000000",
         "link_color": "#ffffff",
-        "width": "wide",
+        "width": "standard",
         "show_gutter": true,
         "padding_top": 32,
         "padding_bottom": 32,
