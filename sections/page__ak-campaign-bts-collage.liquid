@@ -1,8 +1,10 @@
 {% comment %}
   AK Campaign — "Behind the Scenes" editorial collage (center copy + absolutely positioned tiles).
-  Figma file: agnYrbiuU2Ory43nJYA4Nk | Mobile frame: 35:616
-  Backdrop plate: 191:89 (798×1545). Tiles approx from nodes 191:97,191:96,191:90,191:91,191:92,191:98,191:94,191:95,191:93.
-  Headline 196:120, subcopy 196:119 — centered over stage.
+  Figma file: agnYrbiuU2Ory43nJYA4Nk
+  Desktop frame: 102:586 | Stage (backdrop): 102:717 (1920×2507)
+  Desktop tiles: 102:725(p1) 102:724(p2) 102:718(p3) 102:719(p4) 102:720(p5) 102:726(p6) 102:722(p7) 102:723(p8) 102:721(p9)
+  Mobile frame: 35:616
+  Headline 196:120 / 102:728, subcopy 196:119 / 102:727 — centered over stage.
   WCAG 2.2 AA: region, image alts, heading order, visible link focus, reduced-motion friendly layout stack on small screens.
 {% endcomment %}
 
@@ -10,7 +12,6 @@
 {% assign heading = section.settings.heading %}
 {% assign hl = section.settings.heading_level | default: 'h2' %}
 {% assign sub = section.settings.subtext %}
-{% assign backdrop = section.settings.backdrop_image %}
 {% assign bg = section.settings.background_color | default: '#ffffff' %}
 {% assign stage_ar_raw = section.settings.stage_aspect_ratio | strip %}
 {% assign stage_ar_lc = stage_ar_raw | downcase %}
@@ -72,26 +73,6 @@
         max-height: {{ _mxh }}px;
       {% endif %}
     }
-  }
-  #shopify-section-{{ id }} .ak-bts-collage__backdrop {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-  #shopify-section-{{ id }} .ak-bts-collage__backdrop .image-element__wrap,
-  #shopify-section-{{ id }} .ak-bts-collage__backdrop img {
-    width: 100%;
-    height: 100%;
-    object-fit: {{ section.settings.backdrop_object_fit | default: 'cover' }};
-    object-position: {{ section.settings.backdrop_object_position | default: 'center' }};
-    display: block;
-  }
-  #shopify-section-{{ id }} .ak-bts-collage__backdrop .image-element__wrap {
-    position: absolute;
-    inset: 0;
-    max-width: none;
-    margin: 0;
   }
   #shopify-section-{{ id }} .ak-bts-collage__text {
     position: absolute;
@@ -169,16 +150,16 @@
     outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
     outline-offset: 2px;
   }
-  {% comment %} Preset slot % + z-index (sync base_* in snippets/ak-bts-collage-tile.liquid). p4 rear; p5–p9 over p4. {% endcomment %}
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 14.85%; height: 10.35%; z-index: 16; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 37.9%; width: 15.66%; height: 11.35%; z-index: 11; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 9.35%; top: 4.85%; width: 35.25%; height: 25.35%; z-index: 8; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 61.5%; top: 0%; width: 35.25%; height: 25.15%; z-index: 9; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 46.2%; top: 18.2%; width: 36.8%; height: 26.8%; z-index: 15; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 66.5%; top: 55.9%; width: 15.65%; height: 11.45%; z-index: 13; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 23.5%; top: 57.0%; width: 37.2%; height: 26.8%; z-index: 17; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 71.35%; top: 79.65%; width: 28.65%; height: 19.15%; z-index: 18; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 77.85%; width: 28.35%; height: 22.35%; z-index: 14; }
+  {% comment %} Desktop slot % from Figma desktop frame 102:586, stage 102:717 (1920×2507). Sync base_* in snippets/ak-bts-collage-tile.liquid. {% endcomment %}
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 12.03%; height: 12.32%; z-index: 16; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 21.72%; top: 52.33%; width: 12.01%; height: 12.88%; z-index: 11; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 8.28%; top: 6.18%; width: 26.82%; height: 28.76%; z-index: 8; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 73.18%; top: 0%; width: 26.82%; height: 28.76%; z-index: 9; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 51.88%; top: 15.44%; width: 26.82%; height: 28.76%; z-index: 15; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 74.64%; top: 47.55%; width: 11.98%; height: 12.88%; z-index: 13; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 30.83%; top: 61.57%; width: 26.82%; height: 28.76%; z-index: 17; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 78.70%; top: 72.92%; width: 21.25%; height: 21.70%; z-index: 18; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 4.01%; top: 74.83%; width: 21.46%; height: 25.17%; z-index: 14; }
 
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
@@ -188,13 +169,6 @@
       flex-direction: column;
       gap: {{ section.settings.mobile_stack_gap | default: 16 }}px;
       overflow: visible;
-    }
-    #shopify-section-{{ id }} .ak-bts-collage__backdrop {
-      position: relative;
-      inset: auto;
-      order: 0;
-      aspect-ratio: {{ section.settings.mobile_backdrop_aspect | default: '3 / 4' }};
-      max-height: 70vh;
     }
     #shopify-section-{{ id }} .ak-bts-collage__text {
       position: relative;
@@ -245,12 +219,6 @@
 >
   <div class="container equal-columns--outside-trim">
     <div class="ak-bts-collage__stage">
-      {% if backdrop != blank %}
-        <div class="ak-bts-collage__backdrop" aria-hidden="true">
-          {% render 'image-element', image: backdrop, alt: '', stretch_width: true %}
-        </div>
-      {% endif %}
-
       {% if heading != blank or sub != blank %}
         <div class="ak-bts-collage__text">
           {% if heading != blank %}
@@ -295,7 +263,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: the 1st Collage tile uses slot 1 (small top-left), 2nd → slot 2, etc. Drag blocks to swap images. Pick Slot 1–9 to pin an image. Use Nudge / Scale, optional % sliders + the checkbox on each tile. Mobile: backdrop, text, then a 2-column grid (nudge/scale skipped there)."
+      "content": "Desktop: the 1st Collage tile uses slot 1 (small top-left), 2nd → slot 2, etc. Drag blocks to swap images. Pick Slot 1–9 to pin an image. Use Nudge / Scale, optional % sliders + the checkbox on each tile. Mobile: text, then a 2-column grid (nudge/scale skipped there)."
     },
     {
       "type": "header",
@@ -323,40 +291,6 @@
       "id": "subtext",
       "label": "Subtext",
       "default": "<p>Follow our journey on Instagram <a href=\"https://www.instagram.com/annekleinofficial/\" target=\"_blank\" rel=\"noopener noreferrer\">@AnneKleinOfficial</a></p>"
-    },
-    {
-      "type": "header",
-      "content": "Backdrop (optional)"
-    },
-    {
-      "type": "image_picker",
-      "id": "backdrop_image",
-      "label": "Backdrop image",
-      "info": "Decorative plate behind collage; hidden from assistive tech. Omit for flat background only."
-    },
-    {
-      "type": "select",
-      "id": "backdrop_object_fit",
-      "label": "Backdrop fit",
-      "default": "cover",
-      "options": [
-        { "value": "cover", "label": "Cover" },
-        { "value": "contain", "label": "Contain" },
-        { "value": "fill", "label": "Fill" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "backdrop_object_position",
-      "label": "Backdrop focal point",
-      "default": "center",
-      "options": [
-        { "value": "center", "label": "Center" },
-        { "value": "top", "label": "Top" },
-        { "value": "bottom", "label": "Bottom" },
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
-      ]
     },
     {
       "type": "header",
@@ -576,12 +510,6 @@
       "step": 4,
       "default": 16,
       "unit": "px"
-    },
-    {
-      "type": "text",
-      "id": "mobile_backdrop_aspect",
-      "label": "Backdrop aspect (mobile)",
-      "default": "3 / 4"
     },
     {
       "type": "range",
