@@ -32,7 +32,9 @@ Follow these rules **exactly**. Do not skip them.
 
 ## Shopify section schema: `range` settings
 
-- For any **`type: "range"`** setting, **`default` must equal `min` plus an integer multiple of `step`** (same rule applies to values in **`templates/*.json`** section settings). If the design calls for a pixel value that does not fit `step` (e.g. **666** with `min: 240`, `step: 10`), either **set `step: 1`** (or another step that divides evenly) or **change `default`** to a valid step. Invalid combos fail theme upload with “default must be a step in the range.”
+- **`default`** (and preset values in **`templates/*.json`**) must be **`min` + _n_ × `step`**.
+- The slider must have **at most 101 steps** (Shopify counts discrete values from `min` to `max` by `step`). With a wide span (e.g. 240–900), **`step: 1` is invalid** (too many steps). Prefer a coarser **`step`** (often 10) and pick the **`default`** nearest the design that still sits on the grid.
+- Wrong combos fail upload with “default must be a step in the range” or “Range settings must have at most 101 steps.”
 
 ## No false certainty
 

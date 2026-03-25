@@ -9,7 +9,7 @@
 {% assign id = section.id %}
 {% assign img = section.settings.image %}
 {% assign mimg = section.settings.mobile_image | default: img %}
-{% assign max_w = section.settings.media_max_width | default: 666 %}
+{% assign max_w = section.settings.media_max_width | default: 670 %}
 {% assign ar = section.settings.aspect_ratio | default: '111 / 170' %}
 {% assign fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign pos = section.settings.image_object_position | default: 'center' %}
@@ -323,10 +323,10 @@
       "label": "Max width (inset column)",
       "min": 240,
       "max": 900,
-      "step": 1,
-      "default": 666,
+      "step": 10,
+      "default": 670,
       "unit": "px",
-      "info": "Figma 189:47 uses 666px on a 798px-wide mobile artboard. Step 1 so 666 matches the design (Shopify requires default to land on min + n×step)."
+      "info": "Figma 189:47 frame width 666px. Shopify range sliders allow at most 101 steps and require default on min + n×step — default 670 is closest to 666 with step 10."
     },
     {
       "type": "select",
