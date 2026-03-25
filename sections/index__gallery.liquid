@@ -8,11 +8,16 @@
 {% assign _g_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign _g_pos = section.settings.image_object_position | default: 'center' %}
 {% assign _g_ar = section.settings.classic_aspect_ratio | default: 'none' %}
-{% assign _g_min_d = section.settings.classic_min_height_desktop | default: 0 %}
-{% assign _g_min_m = section.settings.classic_min_height_mobile | default: 0 %}
+
+{% assign _g_min_d = section.settings.classic_min_height_desktop | default: 0 | plus: 0 %}
+{% assign _g_min_m = section.settings.classic_min_height_mobile | default: 0 | plus: 0 %}
 
 {% style %}
-  {% comment %} Classic gallery: optional cell aspect/min-height + object-fit (section-scoped){% endcomment %}
+  {% comment %}
+    Classic gallery sizing. Theme uses .has-image-crop .gallery__item-wrap { height: 100% } but .gallery__item
+    has no defined height, so percentage height never resolves and min-height on the wrap alone does not grow cells.
+    Apply min-height on .gallery__item with flex column so .gallery__item-wrap fills and cropped images scale.
+  {% endcomment %}
   {% if section.settings.gallery_type == 'classic' %}
     {% if _g_ar != blank and _g_ar != 'none' %}
       #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
@@ -22,15 +27,43 @@
     {% endif %}
     {% if _g_min_m > 0 %}
       @media only screen and (max-width: 798px) {
-        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item {
+          display: flex;
+          flex-direction: column;
           min-height: {{ _g_min_m }}px;
+        }
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+          flex: 1 1 auto;
+          min-height: 0;
+          width: 100%;
+          align-self: stretch;
+          height: auto !important;
+        }
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item.has-image-crop .gallery__item-wrap {
+          flex: 1 1 auto;
+          min-height: 100% !important;
+          height: 100% !important;
         }
       }
     {% endif %}
     {% if _g_min_d > 0 %}
       @media only screen and (min-width: 799px) {
-        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item {
+          display: flex;
+          flex-direction: column;
           min-height: {{ _g_min_d }}px;
+        }
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+          flex: 1 1 auto;
+          min-height: 0;
+          width: 100%;
+          align-self: stretch;
+          height: auto !important;
+        }
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item.has-image-crop .gallery__item-wrap {
+          flex: 1 1 auto;
+          min-height: 100% !important;
+          height: 100% !important;
         }
       }
     {% endif %}
@@ -101,7 +134,7 @@
       },
       {
         "type": "paragraph",
-        "content": "Classic gallery only. Use Crop images for fill/crop; add aspect ratio and/or min heights to align cells (e.g. BTS grid)."
+        "content": "Classic gallery only. Use Crop images with min cell height so each column grows; min height sets a floor on the height of each image column."
       },
       {
         "type": "select",
@@ -168,7 +201,7 @@
         "step": 20,
         "default": 0,
         "unit": "px",
-        "info": "0 = off. Classic only."
+        "info": "0 = off. Minimum height per cell; use with Crop images."
       },
       {
         "type": "range",
@@ -179,7 +212,7 @@
         "step": 20,
         "default": 0,
         "unit": "px",
-        "info": "0 = off. Classic only."
+        "info": "0 = off. Minimum height per cell; use with Crop images."
       },
       {
         "type": "range",
