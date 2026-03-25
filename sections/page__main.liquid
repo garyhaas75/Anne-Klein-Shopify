@@ -33,7 +33,9 @@
             ">
   <div class="container page__container">
     {% unless template contains 'page.banner' %}
-      {% include 'heading', title: page.title, heading_tag: 'h1', context: 'page', text_alignment: 'left' %}
+      {% unless section.settings.hide_page_heading %}
+        {% include 'heading', title: page.title, heading_tag: 'h1', context: 'page', text_alignment: 'left' %}
+      {% endunless %}
     {% endunless %}
   </div>
   <div class="page__content content container {% if settings.table_styles_enabled %} table is-striped is-bordered {% endif %}">
@@ -53,6 +55,13 @@
       {
         "type": "header",
         "content": "Layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_page_heading",
+        "label": "Hide page title",
+        "default": false,
+        "info": "Use when another section (e.g. AK Campaign intro) provides the main H1."
       },
       {
         "type": "select",

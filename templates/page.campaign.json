@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "campaign_intro": {
+      "type": "page__ak-campaign-intro",
+      "settings": {
+        "heading_level": "h1"
+      }
+    },
+    "main": {
+      "type": "page__main",
+      "settings": {
+        "hide_page_heading": true,
+        "width": "wide",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": ["campaign_intro", "main"]
+}
