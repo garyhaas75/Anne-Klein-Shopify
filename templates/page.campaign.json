@@ -435,36 +435,6 @@
             "link_new_tab": false
           }
         },
-        "collage_tile_8ddib4": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/AK_SS26_BTS_44_1.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "collage_tile_PqWTft": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/AK_SS_26_APPROVED_SOCIAL_0050_1.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
         "collage_tile_pWbrPP": {
           "type": "collage_tile",
           "settings": {
@@ -480,25 +450,10 @@
             "link_new_tab": false
           }
         },
-        "collage_tile_kJ4F3L": {
+        "collage_tile_8ddib4": {
           "type": "collage_tile",
           "settings": {
-            "image": "shopify://shop_images/AK_SS26_BTS_12_1.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "collage_tile_9dRc9U": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/AK_SS26_BTS_44_4.png",
+            "image": "shopify://shop_images/AK_SS26_BTS_44_1.png",
             "image_alt": "",
             "placement": "auto",
             "custom_left": 0,
@@ -525,21 +480,6 @@
             "link_new_tab": false
           }
         },
-        "collage_tile_JwqG6X": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/3_5.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
         "collage_tile_byqXMV": {
           "type": "collage_tile",
           "settings": {
@@ -554,18 +494,78 @@
             "link_url": "",
             "link_new_tab": false
           }
+        },
+        "collage_tile_9dRc9U": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/AK_SS26_BTS_44_4.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "collage_tile_kJ4F3L": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/AK_SS26_BTS_12_1.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "collage_tile_PqWTft": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/AK_SS_26_APPROVED_SOCIAL_0050_1.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "collage_tile_JwqG6X": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/3_5.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
         }
       },
       "block_order": [
         "collage_tile_XfEcBi",
-        "collage_tile_8ddib4",
-        "collage_tile_PqWTft",
         "collage_tile_pWbrPP",
-        "collage_tile_kJ4F3L",
-        "collage_tile_9dRc9U",
+        "collage_tile_8ddib4",
         "collage_tile_Wh7pLx",
-        "collage_tile_JwqG6X",
-        "collage_tile_byqXMV"
+        "collage_tile_byqXMV",
+        "collage_tile_9dRc9U",
+        "collage_tile_kJ4F3L",
+        "collage_tile_PqWTft",
+        "collage_tile_JwqG6X"
       ],
       "name": "AK Campaign BTS collage",
       "settings": {
