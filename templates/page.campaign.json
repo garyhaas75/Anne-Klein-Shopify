@@ -576,7 +576,7 @@
         "backdrop_object_position": "center",
         "stage_aspect_ratio": "none",
         "stage_max_width": 100,
-        "stage_min_height_desktop": 912,
+        "stage_min_height_desktop": 900,
         "stage_background_color": "#ffffff",
         "text_vertical_position": 52,
         "text_alignment": "center",

@@ -56,10 +56,14 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-bts-collage__stage {
+      height: auto;
       {% if stage_use_aspect %}
         aspect-ratio: {{ stage_ar_raw }};
       {% endif %}
-      {% assign _mh = section.settings.stage_min_height_desktop | default: 0 | plus: 0 %}
+      {% assign _mh = section.settings.stage_min_height_desktop | default: 600 | plus: 0 %}
+      {% if _mh < 600 %}
+        {% assign _mh = 600 %}
+      {% endif %}
       {% if _mh > 0 %}
         min-height: {{ _mh }}px;
       {% endif %}
@@ -380,23 +384,23 @@
       "type": "range",
       "id": "stage_min_height_desktop",
       "label": "Min height (desktop)",
-      "min": 0,
-      "max": 2400,
-      "step": 24,
-      "default": 912,
+      "min": 600,
+      "max": 3000,
+      "step": 30,
+      "default": 900,
       "unit": "px",
-      "info": "Floor for stage height when aspect ratio is none (tiles are positioned in %, so the stage needs height). Lower if you use a fixed aspect ratio instead. Must align with 24px steps (Shopify schema: default and JSON values must be min + n×step)."
+      "info": "Lowest selectable floor is 600px. When aspect ratio is none, this sets stage height (tiles use % of the stage). With a fixed aspect ratio, this is a floor. Keep Min ≤ Max when both are set. 30px steps (values must be min + n×step)."
     },
     {
       "type": "range",
       "id": "stage_max_height_desktop",
       "label": "Max height (desktop)",
       "min": 0,
-      "max": 2400,
-      "step": 24,
+      "max": 3000,
+      "step": 30,
       "default": 0,
       "unit": "px",
-      "info": "0 = no cap. Use with Min height (and aspect ratio none) to cap how tall the collage gets. May clip bottom tiles if the cap is low."
+      "info": "0 = no cap. Ceilings height when aspect ratio or layout would exceed this (does not make the stage taller). If Min is higher than Max, CSS treats the cap as at least Min. Tile images use Tile image fit: Cover crops; Contain keeps the full photo aspect visible (may letterbox)."
     },
     {
       "type": "color",
