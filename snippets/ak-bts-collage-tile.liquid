@@ -1,6 +1,6 @@
 {% comment %}
   slot_index = 1-based order among collage tiles (for "Follow block order" mode).
-  custom = manual %; auto = map order to p1..p9; p1–p9 = pin to that Figma slot.
+  custom = manual %; auto = map order to p1..p9; manual_box = % box override, keep slot z-index.
   Slot % below must stay in sync with sections/page__ak-campaign-bts-collage.liquid
 {% endcomment %}
 {% assign img = block.settings.image %}
@@ -16,6 +16,7 @@
   {% assign raw_placement = 'auto' %}
 {% endif %}
 {% assign use_custom_tile = false %}
+{% assign manual_box = block.settings.manual_box %}
 {% assign tz = block.settings.tile_z_index | default: 0 | plus: 0 %}
 {% if raw_placement == 'custom' %}
   {% assign use_custom_tile = true %}
@@ -57,18 +58,28 @@
     {% when 'p3' %}
       {% assign base_l = 9.35 %}{% assign base_t = 4.85 %}{% assign base_w = 35.25 %}{% assign base_h = 25.35 %}
     {% when 'p4' %}
-      {% assign base_l = 63.25 %}{% assign base_t = 0 %}{% assign base_w = 35.25 %}{% assign base_h = 25.15 %}
+      {% assign base_l = 61.5 %}{% assign base_t = 0 %}{% assign base_w = 35.25 %}{% assign base_h = 25.15 %}
     {% when 'p5' %}
-      {% assign base_l = 49.85 %}{% assign base_t = 20.9 %}{% assign base_w = 35.35 %}{% assign base_h = 25.25 %}
+      {% assign base_l = 46.2 %}{% assign base_t = 18.2 %}{% assign base_w = 36.8 %}{% assign base_h = 26.8 %}
     {% when 'p6' %}
       {% assign base_l = 66.5 %}{% assign base_t = 55.9 %}{% assign base_w = 15.65 %}{% assign base_h = 11.45 %}
     {% when 'p7' %}
-      {% assign base_l = 21.85 %}{% assign base_t = 62.35 %}{% assign base_w = 35.35 %}{% assign base_h = 25.45 %}
+      {% assign base_l = 23.5 %}{% assign base_t = 57.0 %}{% assign base_w = 37.2 %}{% assign base_h = 26.8 %}
     {% when 'p8' %}
       {% assign base_l = 71.35 %}{% assign base_t = 79.65 %}{% assign base_w = 28.65 %}{% assign base_h = 19.15 %}
     {% when 'p9' %}
       {% assign base_l = 0 %}{% assign base_t = 77.85 %}{% assign base_w = 28.35 %}{% assign base_h = 22.35 %}
   {% endcase %}
+{% endif %}
+{% assign manual_active = false %}
+{% if manual_box and use_custom_tile == false %}
+  {% assign l = block.settings.custom_left | default: 0 | plus: 0 %}
+  {% assign t = block.settings.custom_top | default: 0 | plus: 0 %}
+  {% assign w = block.settings.custom_width | default: 25 | plus: 0 %}
+  {% assign h = block.settings.custom_height | default: 25 | plus: 0 %}
+  {% unless l == 0 and t == 0 and w == 25 and h == 25 %}
+    {% assign manual_active = true %}
+  {% endunless %}
 {% endif %}
 
 {% assign has_tune = false %}
@@ -80,7 +91,7 @@
 {% assign eff_t = base_t %}
 {% assign eff_w = base_w %}
 {% assign eff_h = base_h %}
-{% if use_custom_tile %}
+{% if use_custom_tile or manual_active %}
   {% assign eff_l = l %}
   {% assign eff_t = t %}
   {% assign eff_w = w %}
@@ -89,7 +100,7 @@
 {% if sc_pct != 100 %}
   {% assign eff_w = eff_w | times: sc_f %}
   {% assign eff_h = eff_h | times: sc_f %}
-  {% if use_custom_tile %}
+  {% if use_custom_tile or manual_active %}
     {% assign eff_l = w | minus: eff_w | times: 0.5 | plus: l %}
     {% assign eff_t = h | minus: eff_h | times: 0.5 | plus: t %}
   {% else %}
@@ -103,6 +114,14 @@
   {% assign tile_outer_style = 'left: ' | append: eff_l | append: '%; top: ' | append: eff_t | append: '%; width: ' | append: eff_w | append: '%; height: ' | append: eff_h | append: '%; z-index: ' | append: tz | append: ';' %}
   {% if nx != 0 or ny != 0 %}
     {% assign tile_outer_style = tile_outer_style | append: ' transform: translate3d(' | append: nx | append: 'px, ' | append: ny | append: 'px, 0);' %}
+  {% endif %}
+{% elsif manual_active %}
+  {% assign tile_outer_style = 'left: ' | append: eff_l | append: '%; top: ' | append: eff_t | append: '%; width: ' | append: eff_w | append: '%; height: ' | append: eff_h | append: '%;' %}
+  {% if nx != 0 or ny != 0 %}
+    {% assign tile_outer_style = tile_outer_style | append: ' transform: translate3d(' | append: nx | append: 'px, ' | append: ny | append: 'px, 0);' %}
+  {% endif %}
+  {% if tz > 0 %}
+    {% assign tile_outer_style = tile_outer_style | append: ' z-index: ' | append: tz | append: ';' %}
   {% endif %}
 {% elsif has_tune %}
   {% if sc_pct != 100 %}

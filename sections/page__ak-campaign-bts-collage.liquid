@@ -1,5 +1,5 @@
 {% comment %}
-  AK Campaign — “Behind the Scenes” editorial collage (center copy + absolutely positioned tiles).
+  AK Campaign — "Behind the Scenes" editorial collage (center copy + absolutely positioned tiles).
   Figma file: agnYrbiuU2Ory43nJYA4Nk | Mobile frame: 35:616
   Backdrop plate: 191:89 (798×1545). Tiles approx from nodes 191:97,191:96,191:90,191:91,191:92,191:98,191:94,191:95,191:93.
   Headline 196:120, subcopy 196:119 — centered over stage.
@@ -56,6 +56,10 @@
       {% assign _mh = section.settings.stage_min_height_desktop | default: 0 | plus: 0 %}
       {% if _mh > 0 %}
         min-height: {{ _mh }}px;
+      {% endif %}
+      {% assign _mxh = section.settings.stage_max_height_desktop | default: 0 | plus: 0 %}
+      {% if _mxh > 0 %}
+        max-height: {{ _mxh }}px;
       {% endif %}
     }
   }
@@ -159,10 +163,10 @@
   #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 14.85%; height: 10.35%; z-index: 16; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 37.9%; width: 15.66%; height: 11.35%; z-index: 11; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 9.35%; top: 4.85%; width: 35.25%; height: 25.35%; z-index: 8; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 63.25%; top: 0%; width: 35.25%; height: 25.15%; z-index: 9; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 49.85%; top: 20.9%; width: 35.35%; height: 25.25%; z-index: 15; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p4 { left: 61.5%; top: 0%; width: 35.25%; height: 25.15%; z-index: 9; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p5 { left: 46.2%; top: 18.2%; width: 36.8%; height: 26.8%; z-index: 15; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p6 { left: 66.5%; top: 55.9%; width: 15.65%; height: 11.45%; z-index: 13; }
-  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 21.85%; top: 62.35%; width: 35.35%; height: 25.45%; z-index: 17; }
+  #shopify-section-{{ id }} .ak-bts-collage__tile--p7 { left: 23.5%; top: 57.0%; width: 37.2%; height: 26.8%; z-index: 17; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p8 { left: 71.35%; top: 79.65%; width: 28.65%; height: 19.15%; z-index: 18; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p9 { left: 0%; top: 77.85%; width: 28.35%; height: 22.35%; z-index: 14; }
 
@@ -281,7 +285,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: the 1st Collage tile uses slot 1 (small top-left), 2nd → slot 2, etc. Drag blocks to swap images. Pick Slot 1–9 to pin an image. Use Nudge / Scale to fine-tune (desktop). Mobile: backdrop, text, then a 2-column grid (nudge/scale skipped there)."
+      "content": "Desktop: the 1st Collage tile uses slot 1 (small top-left), 2nd → slot 2, etc. Drag blocks to swap images. Pick Slot 1–9 to pin an image. Use Nudge / Scale, optional % sliders + the checkbox on each tile. Mobile: backdrop, text, then a 2-column grid (nudge/scale skipped there)."
     },
     {
       "type": "header",
@@ -363,7 +367,8 @@
       "max": 100,
       "step": 1,
       "default": 100,
-      "unit": "%"
+      "unit": "%",
+      "info": "Caps how wide the collage stage is within the section (not a minimum). Lower values narrow the frame."
     },
     {
       "type": "range",
@@ -375,6 +380,17 @@
       "default": 0,
       "unit": "px",
       "info": "Optional floor when aspect ratio is off or images load late. 24px steps (Shopify range limit)."
+    },
+    {
+      "type": "range",
+      "id": "stage_max_height_desktop",
+      "label": "Max height (desktop)",
+      "min": 0,
+      "max": 2400,
+      "step": 24,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = no cap. Sets a ceiling on stage height so a tall aspect-ratio collage compresses vertically (may clip bottom tiles)."
     },
     {
       "type": "color",
@@ -666,7 +682,7 @@
           "id": "placement",
           "label": "Desktop placement",
           "default": "auto",
-          "info": "Follow block order maps the 1st tile to slot 1, etc. Slot 1–9 pins this block to that region.",
+          "info": "Custom (%) = freeform box + default stack 2. Otherwise turn on Use % sliders for this tile below to drive Left/Top/Width/Height while keeping slot stacking.",
           "options": [
             { "value": "auto", "label": "Follow block order (slots 1–9)" },
             { "value": "p1", "label": "Slot 1 — top-left, small" },
@@ -682,6 +698,13 @@
           ]
         },
         {
+          "type": "checkbox",
+          "id": "manual_box",
+          "label": "Use % sliders for this tile (keep slot stacking)",
+          "default": false,
+          "info": "When on, Left / Top / Width / Height below position this tile on desktop; z-index still follows your slot (block order or chosen slot). Turn off for default slot shape. Use Custom (%) placement for a fully custom tile including stack order. Move sliders away from 0 / 0 / 25 / 25 when using the checkbox or the box will stay on the preset slot."
+        },
+        {
           "type": "range",
           "id": "custom_left",
           "min": 0,
@@ -689,7 +712,7 @@
           "step": 1,
           "default": 0,
           "unit": "%",
-          "label": "Custom left"
+          "label": "Left (%)"
         },
         {
           "type": "range",
@@ -699,7 +722,7 @@
           "step": 1,
           "default": 0,
           "unit": "%",
-          "label": "Custom top"
+          "label": "Top (%)"
         },
         {
           "type": "range",
@@ -709,8 +732,8 @@
           "step": 1,
           "default": 25,
           "unit": "%",
-          "label": "Custom width",
-          "info": "Shown when placement is Custom (%). Defines the outer tile box. Preset slots: use Tile scale to resize within the slot."
+          "label": "Width (%)",
+          "info": "Used with Custom (%) or when the Use % sliders checkbox is on."
         },
         {
           "type": "range",
@@ -720,8 +743,8 @@
           "step": 1,
           "default": 25,
           "unit": "%",
-          "label": "Custom height",
-          "info": "Shown when placement is Custom (%). Outer tile height; pair with Custom width."
+          "label": "Height (%)",
+          "info": "Used with Custom (%) or when the Use % sliders checkbox is on."
         },
         {
           "type": "range",
@@ -731,29 +754,29 @@
           "step": 1,
           "default": 0,
           "label": "Stack order override",
-          "info": "0 = use the theme’s slot stacking. 1–30 = force this tile higher (draws above lower numbers). Custom layout uses 2 if left at 0."
+          "info": "0 = use the theme's slot stacking. 1–30 = force this tile higher (draws above lower numbers). Custom layout uses 2 if left at 0."
         },
         {
           "type": "range",
           "id": "tile_nudge_x",
-          "min": -80,
-          "max": 80,
+          "min": -240,
+          "max": 240,
           "step": 2,
           "default": 0,
           "unit": "px",
           "label": "Nudge left / right",
-          "info": "Negative moves left; positive moves right (desktop only)."
+          "info": "±240px range. Negative moves left; positive moves right (desktop only)."
         },
         {
           "type": "range",
           "id": "tile_nudge_y",
-          "min": -80,
-          "max": 80,
+          "min": -240,
+          "max": 240,
           "step": 2,
           "default": 0,
           "unit": "px",
           "label": "Nudge up / down",
-          "info": "Negative moves up; positive moves down (desktop only)."
+          "info": "±240px range. Negative moves up; positive moves down (desktop only)."
         },
         {
           "type": "range",
