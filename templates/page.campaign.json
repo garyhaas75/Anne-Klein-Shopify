@@ -1,13 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "layout": "theme",
   "sections": {
     "campaign_intro": {
       "type": "page__ak-campaign-intro",
       "settings": {
+        "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.jpg",
+        "mobile_image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.png",
+        "link_url": "",
+        "eyebrow": "INTRODUCING",
+        "heading": "The Invisible Thread",
         "heading_level": "h1",
-        "layout_desktop": "split"
+        "text_color": "#000000",
+        "text_background_color": "#ffffff",
+        "show_divider": true,
+        "divider_height": 250,
+        "divider_width": 1,
+        "divider_color": "#000000",
+        "font_family": "system",
+        "eyebrow_font_size": 24,
+        "eyebrow_font_weight": "400",
+        "eyebrow_underline": false,
+        "heading_font_size": 72,
+        "heading_font_weight": "400",
+        "heading_underline": false,
+        "layout_desktop": "split",
+        "split_image_width": 50,
+        "width": "wide",
+        "show_gutter": false,
+        "copy_padding_top": 48,
+        "copy_padding_top_mobile": 40,
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 40,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 40
       }
     }
   },
-  "order": ["campaign_intro"]
+  "order": [
+    "campaign_intro"
+  ]
 }
