@@ -253,24 +253,17 @@
       {% endif %}
 
       <div class="ak-bts-collage__tiles">
+        {% comment %}
+          Shopify orders section.blocks to match the theme editor / JSON block_order.
+          Do not re-walk block_order with id matching — mismatched ids can ignore reorder.
+        {% endcomment %}
         {% assign collage_slot = 0 %}
-        {% if section.block_order != blank and section.block_order.size > 0 %}
-          {% for block_id in section.block_order %}
-            {% for b in section.blocks %}
-              {% if b.id == block_id and b.type == 'collage_tile' %}
-                {% assign collage_slot = collage_slot | plus: 1 %}
-                {% render 'ak-bts-collage-tile', block: b, slot_index: collage_slot %}
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        {% else %}
-          {% for block in section.blocks %}
-            {% if block.type == 'collage_tile' %}
-              {% assign collage_slot = collage_slot | plus: 1 %}
-              {% render 'ak-bts-collage-tile', block: block, slot_index: collage_slot %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+        {% for block in section.blocks %}
+          {% if block.type == 'collage_tile' %}
+            {% assign collage_slot = collage_slot | plus: 1 %}
+            {% render 'ak-bts-collage-tile', block: block, slot_index: collage_slot %}
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -286,7 +279,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Desktop: centered headline + subcopy over an optional backdrop. Collage positions follow Collage tile block order (drag blocks in this section to reorder). Only Custom (%) overrides position. Legacy Preset 1–9 in the dropdown are ignored for layout. Mobile: backdrop, text, then a 2-column tile stack."
+      "content": "Desktop: the 1st Collage tile uses collage slot 1 (small top-left), 2nd uses slot 2, etc. — drag blocks in this section to swap which image occupies which slot. Slots are fixed regions (Figma), not left-to-right reading order. Only Custom (%) overrides. Mobile: backdrop, text, then a 2-column stack."
     },
     {
       "type": "header",
