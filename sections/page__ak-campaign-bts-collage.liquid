@@ -357,7 +357,7 @@
       "id": "stage_aspect_ratio",
       "label": "Stage aspect ratio",
       "default": "798 / 1545",
-      "info": "CSS aspect-ratio value, e.g. 798 / 1545. Set blank or \"none\" to disable ratio (min-height still applies)."
+      "info": "Overall collage canvas shape (width / height). Default 798 / 1545 matches the Figma frame (~0.52:1, tall). This is NOT each photo ratio — tiles are separate boxes inside this stage."
     },
     {
       "type": "range",
@@ -526,10 +526,15 @@
       "content": "Tiles (desktop)"
     },
     {
+      "type": "paragraph",
+      "content": "Each tile is a fixed % rectangle on the stage. Cover fills the box and crops the image (original photo shape is not fully visible). Contain keeps the whole image inside the box (may show letterboxing). Use Tile focal point with Cover to choose which part stays visible."
+    },
+    {
       "type": "select",
       "id": "tile_object_fit",
       "label": "Tile image fit",
       "default": "cover",
+      "info": "Cover = fill slot, crop edges. Contain = full image visible, preserve aspect ratio within slot.",
       "options": [
         { "value": "cover", "label": "Cover" },
         { "value": "contain", "label": "Contain" }
