@@ -1,6 +1,7 @@
 {% comment %}
   slot_index = 1-based order among collage tiles (for "Follow block order" mode).
   custom = manual %; auto = map order to p1..p9; p1–p9 = pin to that Figma slot.
+  Slot % below must stay in sync with sections/page__ak-campaign-bts-collage.liquid
 {% endcomment %}
 {% assign img = block.settings.image %}
 {% if block.settings.image_alt != blank %}
@@ -34,6 +35,7 @@
 {% else %}
   {% assign pl = raw_placement %}
 {% endif %}
+
 {% assign nx = block.settings.tile_nudge_x | default: 0 | plus: 0 %}
 {% assign ny = block.settings.tile_nudge_y | default: 0 | plus: 0 %}
 {% assign sc_pct = block.settings.tile_scale_pct | default: 100 | plus: 0 %}
@@ -41,28 +43,86 @@
   {% assign sc_pct = 100 %}
 {% endif %}
 {% assign sc_f = sc_pct | times: 0.01 %}
+
+{% assign base_l = 0 %}
+{% assign base_t = 0 %}
+{% assign base_w = 0 %}
+{% assign base_h = 0 %}
+{% if use_custom_tile == false %}
+  {% case pl %}
+    {% when 'p1' %}
+      {% assign base_l = 0 %}{% assign base_t = 0 %}{% assign base_w = 14.85 %}{% assign base_h = 10.35 %}
+    {% when 'p2' %}
+      {% assign base_l = 0 %}{% assign base_t = 37.9 %}{% assign base_w = 15.66 %}{% assign base_h = 11.35 %}
+    {% when 'p3' %}
+      {% assign base_l = 9.35 %}{% assign base_t = 4.85 %}{% assign base_w = 35.25 %}{% assign base_h = 25.35 %}
+    {% when 'p4' %}
+      {% assign base_l = 63.25 %}{% assign base_t = 0 %}{% assign base_w = 35.25 %}{% assign base_h = 25.15 %}
+    {% when 'p5' %}
+      {% assign base_l = 49.85 %}{% assign base_t = 20.9 %}{% assign base_w = 35.35 %}{% assign base_h = 25.25 %}
+    {% when 'p6' %}
+      {% assign base_l = 66.5 %}{% assign base_t = 55.9 %}{% assign base_w = 15.65 %}{% assign base_h = 11.45 %}
+    {% when 'p7' %}
+      {% assign base_l = 21.85 %}{% assign base_t = 62.35 %}{% assign base_w = 35.35 %}{% assign base_h = 25.45 %}
+    {% when 'p8' %}
+      {% assign base_l = 71.35 %}{% assign base_t = 79.65 %}{% assign base_w = 28.65 %}{% assign base_h = 19.15 %}
+    {% when 'p9' %}
+      {% assign base_l = 0 %}{% assign base_t = 77.85 %}{% assign base_w = 28.35 %}{% assign base_h = 22.35 %}
+  {% endcase %}
+{% endif %}
+
 {% assign has_tune = false %}
-{% if nx != 0 or ny != 0 %}
+{% if nx != 0 or ny != 0 or sc_pct != 100 %}
   {% assign has_tune = true %}
 {% endif %}
+
+{% assign eff_l = base_l %}
+{% assign eff_t = base_t %}
+{% assign eff_w = base_w %}
+{% assign eff_h = base_h %}
+{% if use_custom_tile %}
+  {% assign eff_l = l %}
+  {% assign eff_t = t %}
+  {% assign eff_w = w %}
+  {% assign eff_h = h %}
+{% endif %}
 {% if sc_pct != 100 %}
-  {% assign has_tune = true %}
+  {% assign eff_w = eff_w | times: sc_f %}
+  {% assign eff_h = eff_h | times: sc_f %}
+  {% if use_custom_tile %}
+    {% assign eff_l = w | minus: eff_w | times: 0.5 | plus: l %}
+    {% assign eff_t = h | minus: eff_h | times: 0.5 | plus: t %}
+  {% else %}
+    {% assign eff_l = base_w | minus: eff_w | times: 0.5 | plus: base_l %}
+    {% assign eff_t = base_h | minus: eff_h | times: 0.5 | plus: base_t %}
+  {% endif %}
+{% endif %}
+
+{% assign tile_outer_style = '' %}
+{% if use_custom_tile %}
+  {% assign tile_outer_style = 'left: ' | append: eff_l | append: '%; top: ' | append: eff_t | append: '%; width: ' | append: eff_w | append: '%; height: ' | append: eff_h | append: '%; z-index: ' | append: tz | append: ';' %}
+  {% if nx != 0 or ny != 0 %}
+    {% assign tile_outer_style = tile_outer_style | append: ' transform: translate3d(' | append: nx | append: 'px, ' | append: ny | append: 'px, 0);' %}
+  {% endif %}
+{% elsif has_tune %}
+  {% if sc_pct != 100 %}
+    {% assign tile_outer_style = 'left: ' | append: eff_l | append: '%; top: ' | append: eff_t | append: '%; width: ' | append: eff_w | append: '%; height: ' | append: eff_h | append: '%;' %}
+  {% endif %}
+  {% if nx != 0 or ny != 0 %}
+    {% assign tile_outer_style = tile_outer_style | append: ' transform: translate3d(' | append: nx | append: 'px, ' | append: ny | append: 'px, 0);' %}
+  {% endif %}
+  {% if tz > 0 %}
+    {% assign tile_outer_style = tile_outer_style | append: ' z-index: ' | append: tz | append: ';' %}
+  {% endif %}
+{% elsif tz > 0 %}
+  {% assign tile_outer_style = 'z-index: ' | append: tz | append: ';' %}
 {% endif %}
 <div
   class="ak-bts-collage__tile {% unless use_custom_tile %}ak-bts-collage__tile--{{ pl }}{% endunless %}"
-  {% if use_custom_tile %}
-    style="left: {{ l }}%; top: {{ t }}%; width: {{ w }}%; height: {{ h }}%; z-index: {{ tz }};"
-  {% elsif tz > 0 %}
-    style="z-index: {{ tz }};"
-  {% endif %}
+  {% if tile_outer_style != blank %}style="{{ tile_outer_style | strip }}"{% endif %}
   {{ block.shopify_attributes }}
 >
-  <div
-    class="ak-bts-collage__tile-inner{% if has_tune %} ak-bts-collage__tile-inner--tune{% endif %}"
-    {% if has_tune %}
-      style="--ak-tx: {{ nx }}px; --ak-ty: {{ ny }}px; --ak-s: {{ sc_f }};"
-    {% endif %}
-  >
+  <div class="ak-bts-collage__tile-inner">
     {% if block.settings.link_url != blank %}
       <a
         href="{{ block.settings.link_url }}"

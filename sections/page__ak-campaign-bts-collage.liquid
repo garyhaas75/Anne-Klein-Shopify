@@ -128,12 +128,6 @@
   #shopify-section-{{ id }} .ak-bts-collage__tile-inner {
     position: absolute;
     inset: 0;
-    transform-origin: center center;
-  }
-  @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }} .ak-bts-collage__tile-inner--tune {
-      transform: translate3d(var(--ak-tx, 0px), var(--ak-ty, 0px), 0) scale(var(--ak-s, 1));
-    }
   }
   #shopify-section-{{ id }} .ak-bts-collage__tile-inner .image-element__wrap {
     position: absolute;
@@ -161,7 +155,7 @@
     outline: 3px solid {{ section.settings.heading_color | default: '#000000' }};
     outline-offset: 2px;
   }
-  {% comment %} Overlap: p4 top-right = rear (low z). p5–p9 above p4 where boxes cross; p1 over p3. {% endcomment %}
+  {% comment %} Preset slot % + z-index (sync base_* in snippets/ak-bts-collage-tile.liquid). p4 rear; p5–p9 over p4. {% endcomment %}
   #shopify-section-{{ id }} .ak-bts-collage__tile--p1 { left: 0%; top: 0%; width: 14.85%; height: 10.35%; z-index: 16; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p2 { left: 0%; top: 37.9%; width: 15.66%; height: 11.35%; z-index: 11; }
   #shopify-section-{{ id }} .ak-bts-collage__tile--p3 { left: 9.35%; top: 4.85%; width: 35.25%; height: 25.35%; z-index: 8; }
@@ -211,10 +205,8 @@
       top: auto !important;
       width: 100% !important;
       height: auto !important;
+      transform: none !important;
       aspect-ratio: {{ section.settings.mobile_tile_aspect | default: '3 / 4' }};
-    }
-    #shopify-section-{{ id }} .ak-bts-collage__tile-inner--tune {
-      transform: none;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -717,7 +709,8 @@
           "step": 1,
           "default": 25,
           "unit": "%",
-          "label": "Custom width"
+          "label": "Custom width",
+          "info": "Shown when placement is Custom (%). Defines the outer tile box. Preset slots: use Tile scale to resize within the slot."
         },
         {
           "type": "range",
@@ -727,7 +720,8 @@
           "step": 1,
           "default": 25,
           "unit": "%",
-          "label": "Custom height"
+          "label": "Custom height",
+          "info": "Shown when placement is Custom (%). Outer tile height; pair with Custom width."
         },
         {
           "type": "range",
@@ -770,7 +764,7 @@
           "default": 100,
           "unit": "%",
           "label": "Tile scale",
-          "info": "100% fills the slot. Lower shrinks, higher grows (desktop only; cropped to slot)."
+          "info": "Scales the tile container within its slot (centered). 100% = default preset box size. Desktop only; use Custom (%) for a freeform box instead."
         },
         {
           "type": "url",
