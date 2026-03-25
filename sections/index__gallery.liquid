@@ -4,6 +4,62 @@
 - **Campaign BTS 2×2:** Figma mobile `35:616`, grid cells `189:70`–`189:73` (see docs/CAMPAIGN-LANDING-PLAN.md Step 7). Preset: classic, 2/row, crop.
 {% endcomment %}
 
+{% assign _gid = section.id %}
+{% assign _g_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign _g_pos = section.settings.image_object_position | default: 'center' %}
+{% assign _g_ar = section.settings.classic_aspect_ratio | default: 'none' %}
+{% assign _g_min_d = section.settings.classic_min_height_desktop | default: 0 %}
+{% assign _g_min_m = section.settings.classic_min_height_mobile | default: 0 %}
+
+{% style %}
+  {% comment %} Classic gallery: optional cell aspect/min-height + object-fit (section-scoped){% endcomment %}
+  {% if section.settings.gallery_type == 'classic' %}
+    {% if _g_ar != blank and _g_ar != 'none' %}
+      #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+        aspect-ratio: {{ _g_ar }};
+        overflow: hidden;
+      }
+    {% endif %}
+    {% if _g_min_m > 0 %}
+      @media only screen and (max-width: 798px) {
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+          min-height: {{ _g_min_m }}px;
+        }
+      }
+    {% endif %}
+    {% if _g_min_d > 0 %}
+      @media only screen and (min-width: 799px) {
+        #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+          min-height: {{ _g_min_d }}px;
+        }
+      }
+    {% endif %}
+    {% if section.settings.crop_images %}
+      #shopify-section-{{ _gid }} .gallery-type--classic .has-image-crop img {
+        object-fit: {{ _g_fit }} !important;
+        object-position: {{ _g_pos }};
+      }
+    {% elsif _g_ar != blank and _g_ar != 'none' %}
+      #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: {{ _g_fit }};
+        object-position: {{ _g_pos }};
+      }
+      #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap .image-element__wrap {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+      }
+      #shopify-section-{{ _gid }} .gallery-type--classic .gallery__item .gallery__item-wrap {
+        position: relative;
+      }
+    {% endif %}
+  {% endif %}
+{% endstyle %}
+
 {% include 'include-gallery' %}
 
 {% schema %}
@@ -38,6 +94,92 @@
         "label": "Crop images",
         "default": false,
         "info": "Applies to classic only."
+      },
+      {
+        "type": "header",
+        "content": "Image sizing (classic)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Classic gallery only. Use Crop images for fill/crop; add aspect ratio and/or min heights to align cells (e.g. BTS grid)."
+      },
+      {
+        "type": "select",
+        "id": "image_crop_position",
+        "label": "Crop focal (horizontal)",
+        "default": "center",
+        "info": "When Crop images is on (theme left/center/right crop).",
+        "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_object_fit",
+        "label": "Object fit (cropped cells)",
+        "default": "cover",
+        "info": "When Crop images is on. Also used with Aspect ratio when crop is off.",
+        "options": [
+          { "value": "cover", "label": "Cover" },
+          { "value": "contain", "label": "Contain" },
+          { "value": "fill", "label": "Fill (stretch)" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_object_position",
+        "label": "Focal point",
+        "default": "center",
+        "options": [
+          { "value": "center", "label": "Center" },
+          { "value": "top", "label": "Top" },
+          { "value": "bottom", "label": "Bottom" },
+          { "value": "left", "label": "Left" },
+          { "value": "right", "label": "Right" },
+          { "value": "center top", "label": "Center top" },
+          { "value": "center bottom", "label": "Center bottom" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "classic_aspect_ratio",
+        "label": "Cell aspect ratio",
+        "default": "none",
+        "info": "Locks each classic cell’s frame. Pair with Crop images for best results.",
+        "options": [
+          { "value": "none", "label": "None (natural / column-driven)" },
+          { "value": "1 / 1", "label": "1:1" },
+          { "value": "4 / 5", "label": "4:5" },
+          { "value": "3 / 4", "label": "3:4" },
+          { "value": "2 / 3", "label": "2:3" },
+          { "value": "16 / 9", "label": "16:9" },
+          { "value": "4 / 3", "label": "4:3" },
+          { "value": "360 / 553", "label": "Figma BTS cell (~360×553)" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "classic_min_height_desktop",
+        "label": "Min cell height (desktop)",
+        "min": 0,
+        "max": 800,
+        "step": 20,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = off. Classic only."
+      },
+      {
+        "type": "range",
+        "id": "classic_min_height_mobile",
+        "label": "Min cell height (mobile)",
+        "min": 0,
+        "max": 600,
+        "step": 20,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = off. Classic only."
       },
       {
         "type": "range",

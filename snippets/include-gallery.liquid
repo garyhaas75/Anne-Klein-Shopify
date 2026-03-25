@@ -13,8 +13,12 @@
 {% endif %}
 
 {% if object.settings.crop_images == true %}
+  {% assign _crop_pos = object.settings.image_crop_position | default: 'center' %}
+  {% if _crop_pos != 'left' and _crop_pos != 'right' %}
+    {% assign _crop_pos = 'center' %}
+  {% endif %}
   {%- capture image_crop -%}
-    has-image-crop image-crop--center
+    has-image-crop image-crop--{{ _crop_pos }}
   {%- endcapture -%}
 {% endif %}
 
