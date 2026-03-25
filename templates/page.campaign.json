@@ -55,7 +55,7 @@
       "settings": {
         "heading": "The Film",
         "heading_level": "h2",
-        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women\u2014as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
+        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
         "text_alignment": "center",
         "content_max_width": 48,
         "width": "wide",
@@ -186,7 +186,7 @@
         "zigzag_2": {
           "type": "zigzag_row",
           "settings": {
-            "quote": "<p>\"When you meet other moms, you talk about something and you feel connected.\u201d</p>",
+            "quote": "<p>\"When you meet other moms, you talk about something and you feel connected.”</p>",
             "attribution": "Tina Kunakey",
             "row_layout": "auto",
             "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2.jpg",
@@ -283,7 +283,7 @@
         "image_placeholder_bg": "#e8e8e8",
         "heading": "",
         "heading_level": "h2",
-        "body": "<p>\u201cWomen share the sense of knowing what a female body goes through. And no matter if you experience something different, even if that woman didn't experience it, they still understand you and have compassion for you.\u201d</p>",
+        "body": "<p>“Women share the sense of knowing what a female body goes through. And no matter if you experience something different, even if that woman didn't experience it, they still understand you and have compassion for you.”</p>",
         "attribution": "Caroline Kelley Rosen",
         "text_alignment": "center",
         "text_block_margin_top": 32,
@@ -420,6 +420,36 @@
     "page_ak_campaign_bts_collage_wbmeyz": {
       "type": "page__ak-campaign-bts-collage",
       "blocks": {
+        "collage_tile_XfEcBi": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/AK_SS_26_APPROVED_SOCIAL_0049_1.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "collage_tile_8ddib4": {
+          "type": "collage_tile",
+          "settings": {
+            "image": "shopify://shop_images/AK_SS26_BTS_44_1.png",
+            "image_alt": "",
+            "placement": "auto",
+            "custom_left": 0,
+            "custom_top": 0,
+            "custom_width": 25,
+            "custom_height": 25,
+            "tile_z_index": 2,
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
         "collage_tile_PqWTft": {
           "type": "collage_tile",
           "settings": {
@@ -495,36 +525,6 @@
             "link_new_tab": false
           }
         },
-        "collage_tile_8ddib4": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/AK_SS26_BTS_44_1.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "collage_tile_XfEcBi": {
-          "type": "collage_tile",
-          "settings": {
-            "image": "shopify://shop_images/AK_SS_26_APPROVED_SOCIAL_0049_1.png",
-            "image_alt": "",
-            "placement": "auto",
-            "custom_left": 0,
-            "custom_top": 0,
-            "custom_width": 25,
-            "custom_height": 25,
-            "tile_z_index": 2,
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
         "collage_tile_JwqG6X": {
           "type": "collage_tile",
           "settings": {
@@ -557,13 +557,13 @@
         }
       },
       "block_order": [
+        "collage_tile_XfEcBi",
+        "collage_tile_8ddib4",
         "collage_tile_PqWTft",
         "collage_tile_pWbrPP",
         "collage_tile_kJ4F3L",
         "collage_tile_9dRc9U",
         "collage_tile_Wh7pLx",
-        "collage_tile_8ddib4",
-        "collage_tile_XfEcBi",
         "collage_tile_JwqG6X",
         "collage_tile_byqXMV"
       ],
