@@ -1,6 +1,6 @@
 {% comment %}
-  AK Campaign — full-width editorial stills, no copy (Figma Step 5).
-  WCAG 2.2 AA: region label, image alt, optional single link per still, focus-visible.
+  AK Campaign — full-width editorial stills + optional section text and per-still captions (Figma).
+  WCAG 2.2 AA: landmarks, headings, image alt, link focus, overlay contrast (scrim).
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -15,6 +15,31 @@
 {% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
 {% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign sec_heading = section.settings.heading %}
+{% assign sec_intro = section.settings.intro %}
+{% assign text_align = section.settings.text_alignment | default: 'center' %}
+{% assign hdr_color = section.settings.heading_color | default: '#000000' %}
+{% assign body_color = section.settings.body_color | default: '#000000' %}
+{% assign hdr_bg = section.settings.header_background | default: '#ffffff' %}
+{% assign cap_below_align = section.settings.caption_below_alignment | default: 'center' %}
+{% assign cap_overlay_color = section.settings.caption_overlay_color | default: '#ffffff' %}
+{% assign cap_scrim = section.settings.caption_scrim_opacity | default: 65 %}
+{% assign cap_scrim_f = cap_scrim | divided_by: 100.0 %}
+
+{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
+{% case heading_font_key %}
+  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign heading_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
+  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
+{% assign body_font_key = section.settings.body_font_family | default: 'system' %}
+{% case body_font_key %}
+  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Helvetica, serif' %}
+  {% when 'arial' %}{% assign body_font_stack = 'Arial, Helvetica, sans-serif' %}
+  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
+  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
+{% endcase %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -31,6 +56,54 @@
     width: 100%;
     flex: 1 1 100%;
     max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__header {
+    width: 100%;
+    flex: 0 0 100%;
+    background-color: {{ hdr_bg }};
+    color: {{ body_color }};
+    padding: 1.5rem 1.25rem 2rem;
+    text-align: {{ text_align }};
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-campaign-stills__header {
+      padding: 2rem 1.5rem 2.5rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__header-inner {
+    max-width: {{ section.settings.header_max_width | default: 48 }}rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__heading {
+    font-family: {{ heading_font_stack }};
+    font-size: clamp(1.5rem, 4vw, {{ section.settings.heading_font_size | default: 36 }}px);
+    font-weight: {{ section.settings.heading_font_weight | default: '400' }};
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    color: {{ hdr_color }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__intro {
+    font-family: {{ body_font_stack }};
+    font-size: {{ section.settings.intro_font_size | default: 17 }}px;
+    line-height: 1.55;
+    margin: 0;
+    color: {{ body_color }};
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__intro p {
+    margin: 0 0 0.75em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__intro p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__intro a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__intro a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
   #shopify-section-{{ id }} .ak-campaign-stills__list {
     list-style: none;
@@ -52,14 +125,76 @@
     overflow: hidden;
     background-color: {{ letterbox }};
   }
+  #shopify-section-{{ id }} .ak-campaign-stills__media-shell {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__media-shell--overlay {
+    position: relative;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption-scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40%;
+    min-height: 100px;
+    background: linear-gradient(to top, rgba(0,0,0,{{ cap_scrim_f }}), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 1.25rem 1.25rem 1.5rem;
+    color: {{ cap_overlay_color }};
+    text-align: {% if cap_below_align == 'left' %}left{% elsif cap_below_align == 'right' %}right{% else %}center{% endif %};
+    text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+    font-family: {{ body_font_stack }};
+    font-size: {{ section.settings.caption_font_size | default: 15 }}px;
+    line-height: 1.45;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay p {
+    margin: 0 0 0.5em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay a {
+    color: inherit;
+    text-decoration: underline;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--below {
+    padding: 1rem 1.25rem 0;
+    text-align: {% if cap_below_align == 'left' %}left{% elsif cap_below_align == 'right' %}right{% else %}center{% endif %};
+    color: {{ body_color }};
+    background-color: {{ hdr_bg }};
+    font-family: {{ body_font_stack }};
+    font-size: {{ section.settings.caption_font_size | default: 15 }}px;
+    line-height: 1.45;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--below p {
+    margin: 0 0 0.5em;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--below p:last-child {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-stills__caption--below a {
+    color: inherit;
+    text-decoration: underline;
+  }
   #shopify-section-{{ id }} .ak-campaign-stills__link {
     display: block;
     text-decoration: none;
     color: inherit;
   }
   #shopify-section-{{ id }} .ak-campaign-stills__link:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 2px;
+    outline: 3px solid #1a1a1a;
+    outline-offset: 4px;
   }
   {% if img_behavior == 'natural' %}
   #shopify-section-{{ id }} .ak-campaign-stills__media {
@@ -131,12 +266,34 @@
   role="region"
   {% if section.settings.section_aria_label != blank %}
     aria-label="{{ section.settings.section_aria_label | escape }}"
+  {% elsif sec_heading != blank %}
+    aria-labelledby="ak-stills-heading-{{ id }}"
   {% else %}
     aria-label="Campaign images"
   {% endif %}
 >
   <div class="container equal-columns--outside-trim">
     <div class="ak-campaign-stills__grid columns one-whole">
+      {% if sec_heading != blank or sec_intro != blank %}
+        <div class="ak-campaign-stills__header">
+          <div class="ak-campaign-stills__header-inner">
+            {% if sec_heading != blank %}
+              {% assign hl = section.settings.heading_level | default: 'h2' %}
+              {% if hl == 'h1' %}
+                <h1 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h1>
+              {% elsif hl == 'h3' %}
+                <h3 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h3>
+              {% else %}
+                <h2 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h2>
+              {% endif %}
+            {% endif %}
+            {% if sec_intro != blank %}
+              <div class="ak-campaign-stills__intro rte">{{ sec_intro }}</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
       <ul class="ak-campaign-stills__list">
         {% for block in section.blocks %}
           {% if block.type == 'still' %}
@@ -144,6 +301,12 @@
             {% assign bm = block.settings.mobile_image | default: bimg %}
             {% assign lnk = block.settings.link_url %}
             {% assign img_alt = block.settings.image_alt | default: bimg.alt | default: 'Campaign photograph' %}
+            {% assign cap = block.settings.caption %}
+            {% assign cap_place = block.settings.caption_placement | default: 'none' %}
+            {% assign overlay = false %}
+            {% if cap != blank and cap_place == 'overlay_bottom' %}{% assign overlay = true %}{% endif %}
+            {% assign below = false %}
+            {% if cap != blank and cap_place == 'below_image' %}{% assign below = true %}{% endif %}
 
             <li class="ak-campaign-stills__item" {{ block.shopify_attributes }}>
               {% if lnk != blank %}
@@ -152,51 +315,78 @@
                   class="ak-campaign-stills__frame ak-campaign-stills__link"
                   {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
                   aria-label="{{ img_alt | escape }}"
+                  {% if overlay and cap != blank %}aria-describedby="ak-stills-cap-{{ block.id }}"{% endif %}
                 >
-                  <div class="ak-campaign-stills__media" aria-hidden="true">
-                    {% if bimg != blank %}
-                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
-                    {% else %}
-                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
-                    {% endif %}
-                    {% if bm != blank %}
-                      <div class="is-hidden-desktop-only">
-                        {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
-                      </div>
-                    {% elsif bimg != blank %}
-                      <div class="is-hidden-desktop-only">
-                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
-                      </div>
-                    {% else %}
-                      <div class="is-hidden-desktop-only">
-                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  <div class="ak-campaign-stills__media-shell {% if overlay %}ak-campaign-stills__media-shell--overlay{% endif %}">
+                    <div class="ak-campaign-stills__media" {% if overlay %}aria-hidden="true"{% endif %}>
+                      {% if bimg != blank %}
+                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                      {% else %}
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                      {% endif %}
+                      {% if bm != blank %}
+                        <div class="is-hidden-desktop-only">
+                          {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                        </div>
+                      {% elsif bimg != blank %}
+                        <div class="is-hidden-desktop-only">
+                          {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                        </div>
+                      {% else %}
+                        <div class="is-hidden-desktop-only">
+                          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    {% if overlay %}
+                      <div class="ak-campaign-stills__caption-scrim" aria-hidden="true"></div>
+                      <div class="ak-campaign-stills__caption ak-campaign-stills__caption--overlay rte" id="ak-stills-cap-{{ block.id }}">
+                        {{ cap }}
                       </div>
                     {% endif %}
                   </div>
                 </a>
+                {% if below %}
+                  <div class="ak-campaign-stills__caption ak-campaign-stills__caption--below rte">
+                    {{ cap }}
+                  </div>
+                {% endif %}
               {% else %}
                 <div class="ak-campaign-stills__frame">
-                  <div class="ak-campaign-stills__media">
-                    {% if bimg != blank %}
-                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
-                    {% else %}
-                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
-                    {% endif %}
-                    {% if bm != blank %}
-                      <div class="is-hidden-desktop-only">
-                        {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
-                      </div>
-                    {% elsif bimg != blank %}
-                      <div class="is-hidden-desktop-only">
-                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
-                      </div>
-                    {% else %}
-                      <div class="is-hidden-desktop-only">
-                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  <div class="ak-campaign-stills__media-shell {% if overlay %}ak-campaign-stills__media-shell--overlay{% endif %}">
+                    <div class="ak-campaign-stills__media">
+                      {% if bimg != blank %}
+                        {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+                      {% else %}
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+                      {% endif %}
+                      {% if bm != blank %}
+                        <div class="is-hidden-desktop-only">
+                          {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+                        </div>
+                      {% elsif bimg != blank %}
+                        <div class="is-hidden-desktop-only">
+                          {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+                        </div>
+                      {% else %}
+                        <div class="is-hidden-desktop-only">
+                          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    {% if overlay %}
+                      <div class="ak-campaign-stills__caption-scrim" aria-hidden="true"></div>
+                      <div class="ak-campaign-stills__caption ak-campaign-stills__caption--overlay rte" id="ak-stills-cap-{{ block.id }}">
+                        {{ cap }}
                       </div>
                     {% endif %}
                   </div>
                 </div>
+                {% if below %}
+                  <div class="ak-campaign-stills__caption ak-campaign-stills__caption--below rte">
+                    {{ cap }}
+                  </div>
+                {% endif %}
               {% endif %}
             </li>
           {% endif %}
@@ -215,7 +405,174 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Full-width images with no text—stack as many blocks as you need (Figma: extra editorial stills)."
+      "content": "Optional heading and intro above the stills. Each Still block can add a caption (below the image or over the bottom with a scrim)."
+    },
+    {
+      "type": "header",
+      "content": "Section text (optional)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Shown above the image stack. Leave blank to hide."
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro / body",
+      "info": "Optional paragraph(s) under the heading."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Section text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "header_max_width",
+      "label": "Section text max width",
+      "min": 32,
+      "max": 64,
+      "step": 2,
+      "default": 48,
+      "unit": "rem"
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Section text background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body & below-caption color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "default": "amiri",
+      "options": [
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "system", "label": "System sans" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 56,
+      "step": 1,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading weight",
+      "default": "400",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_font_family",
+      "label": "Body / caption font",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "intro_font_size",
+      "label": "Intro font size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "default": 17,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Still captions"
+    },
+    {
+      "type": "select",
+      "id": "caption_below_alignment",
+      "label": "Caption alignment (below & overlay)",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "caption_font_size",
+      "label": "Caption font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "caption_overlay_color",
+      "label": "Overlay caption color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "caption_scrim_opacity",
+      "label": "Overlay caption scrim strength",
+      "min": 30,
+      "max": 90,
+      "step": 5,
+      "default": 65,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
     },
     {
       "type": "select",
@@ -248,7 +605,7 @@
       "id": "image_behavior",
       "label": "Image height",
       "default": "natural",
-      "info": "Natural = full width, height from the photo (no forced crop). Fixed frame = min height + fit below.",
+      "info": "Natural = full width, height from the photo. Fixed frame = min height + fit.",
       "options": [
         { "value": "natural", "label": "Natural (intrinsic height)" },
         { "value": "fixed_frame", "label": "Fixed min height (crop or letterbox)" }
@@ -377,6 +734,23 @@
           "id": "image_alt",
           "label": "Image alt text",
           "info": "Describe the photo for accessibility."
+        },
+        {
+          "type": "richtext",
+          "id": "caption",
+          "label": "Caption",
+          "info": "Optional. Choose placement below. For overlay, use short text for readability."
+        },
+        {
+          "type": "select",
+          "id": "caption_placement",
+          "label": "Caption placement",
+          "default": "none",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "below_image", "label": "Below image" },
+            { "value": "overlay_bottom", "label": "Overlay (bottom)" }
+          ]
         },
         {
           "type": "url",
