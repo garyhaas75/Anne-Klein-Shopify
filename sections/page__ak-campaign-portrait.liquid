@@ -12,6 +12,8 @@
 {% assign scrim_opacity = section.settings.scrim_opacity | default: 72 %}
 {% assign text_color = section.settings.overlay_text_color | default: '#ffffff' %}
 
+{% assign layout_desktop = section.settings.layout_desktop | default: 'two_columns' %}
+{% assign portrait_gap = section.settings.stack_gap | default: 0 %}
 {% assign name_font_key = section.settings.name_font_family | default: 'amiri' %}
 {% assign role_font_key = section.settings.role_font_family | default: 'system' %}
 {% case name_font_key %}
@@ -44,21 +46,43 @@
       padding-bottom: {{ padding_bottom_mobile }}px;
     }
   }
+  /* Theme .container is flex: children need .columns.one-whole or explicit width or they shrink to content (breaks absolute-fill images). */
+  #shopify-section-{{ id }} .ak-campaign-portrait__grid {
+    width: 100%;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
   #shopify-section-{{ id }} .ak-campaign-portrait__list {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: {{ section.settings.stack_gap | default: 0 }}px;
     margin: 0;
     padding: 0;
     list-style: none;
+    width: 100%;
   }
-  #shopify-section-{{ id }} .ak-campaign-portrait__item + .ak-campaign-portrait__item {
-    margin-top: {{ section.settings.stack_gap | default: 0 }}px;
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__list--two-columns {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: {{ portrait_gap }}px;
+    }
+    #shopify-section-{{ id }} .ak-campaign-portrait__list--two-columns .ak-campaign-portrait__item {
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+      max-width: none;
+    }
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__item {
+    width: 100%;
+    min-width: 0;
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__card {
     position: relative;
     display: block;
     overflow: hidden;
+    width: 100%;
     min-height: {{ min_h }}px;
     background-color: #1a1a1a;
   }
@@ -71,6 +95,30 @@
     position: absolute;
     inset: 0;
     z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only .image-element__wrap {
+    position: absolute;
+    inset: 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media > .placeholder-svg {
+    position: absolute;
+    inset: 0;
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__media img,
   #shopify-section-{{ id }} .ak-campaign-portrait__media .placeholder-svg {
@@ -150,7 +198,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section {% if layout_desktop == 'two_columns' %}ak-campaign-portrait-section--two-columns{% endif %} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {% if section.settings.section_aria_label != blank %}
@@ -160,7 +208,8 @@
   {% endif %}
 >
   <div class="container equal-columns--outside-trim">
-    <ul class="ak-campaign-portrait__list">
+    <div class="ak-campaign-portrait__grid columns one-whole">
+    <ul class="ak-campaign-portrait__list ak-campaign-portrait__list--{{ layout_desktop | replace: '_', '-' }}">
       {% for block in section.blocks %}
         {% if block.type == 'portrait' %}
           {% assign bimg = block.settings.image %}
@@ -265,6 +314,7 @@
         {% endif %}
       {% endfor %}
     </ul>
+    </div>
   </div>
 </section>
 
@@ -295,6 +345,17 @@
       "label": "Show gutter",
       "default": false,
       "info": "Off = edge-to-edge like other campaign full-bleed strips."
+    },
+    {
+      "type": "select",
+      "id": "layout_desktop",
+      "label": "Desktop layout",
+      "default": "two_columns",
+      "info": "Matches Figma: two model portraits side by side on large screens; mobile stays stacked.",
+      "options": [
+        { "value": "two_columns", "label": "Two columns" },
+        { "value": "stack", "label": "Stacked (full width each)" }
+      ]
     },
     {
       "type": "select",
@@ -330,7 +391,7 @@
     {
       "type": "range",
       "id": "stack_gap",
-      "label": "Gap between stacked portraits",
+      "label": "Gap between portraits",
       "min": 0,
       "max": 48,
       "step": 4,

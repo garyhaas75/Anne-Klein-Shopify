@@ -188,6 +188,7 @@
       "settings": {
         "width": "wide",
         "show_gutter": false,
+        "layout_desktop": "two_columns",
         "caption_align": "center",
         "portrait_min_height": 520,
         "portrait_min_height_mobile": 480,
