@@ -51,7 +51,11 @@
 {% if body_size_mobile < 1 %}
   {% assign body_size_mobile = body_size %}
 {% endif %}
+{% assign heading_use_line_2 = section.settings.heading_use_line_2 %}
 {% assign heading_line_2 = section.settings.heading_line_2 | strip %}
+{% unless heading_use_line_2 %}
+  {% assign heading_line_2 = '' %}
+{% endunless %}
 {% assign h_mw_d = section.settings.heading_max_width_desktop | default: 0 | plus: 0 %}
 {% assign h_mw_m = section.settings.heading_max_width_mobile | default: 0 | plus: 0 %}
 {% if h_mw_m < 1 %}
@@ -254,11 +258,18 @@
       "default": "Anne Klein Spring-Summer 2026"
     },
     {
+      "type": "checkbox",
+      "id": "heading_use_line_2",
+      "label": "Use a second heading line",
+      "default": false,
+      "info": "Adds line 2 below line 1 in the same title element (accessibility-friendly)."
+    },
+    {
       "type": "text",
       "id": "heading_line_2",
-      "label": "Heading (line 2, optional)",
-      "default": " ",
-      "info": "Second line of the same heading (e.g. Spring-Summer 2026). Leave empty for one line (theme treats spaces-only as empty). Pair with Title max width (mobile) on phones."
+      "label": "Heading (line 2)",
+      "default": "Spring-Summer 2026",
+      "info": "Shown only when “Use a second heading line” is on. Put the first part in Line 1 (e.g. Anne Klein). Title max width (mobile) can tune wrapping."
     },
     {
       "type": "select",
