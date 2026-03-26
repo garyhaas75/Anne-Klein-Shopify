@@ -10,6 +10,10 @@
   {% assign bmvid = bvid %}
 {% endif %}
 {% assign vtitle = img_alt | default: 'Portrait video' %}
+{% assign v_preload = 'metadata' %}
+{% if block.settings.video_autoplay %}
+  {% assign v_preload = 'auto' %}
+{% endif %}
 
 {% if media_is_video %}
   {% assign poster_d = '' %}
@@ -31,7 +35,10 @@
       class="ak-campaign-portrait__video"
       controls
       playsinline
-      preload="metadata"
+      preload="{{ v_preload }}"
+      {% if block.settings.video_autoplay %}autoplay{% endif %}
+      {% if block.settings.video_loop %}loop{% endif %}
+      {% if block.settings.video_muted %}muted{% endif %}
       {% if poster_d != blank %}poster="{{ poster_d }}"{% endif %}
       title="{{ vtitle | escape }}"
     >
@@ -46,7 +53,10 @@
       class="ak-campaign-portrait__video"
       controls
       playsinline
-      preload="metadata"
+      preload="{{ v_preload }}"
+      {% if block.settings.video_autoplay %}autoplay{% endif %}
+      {% if block.settings.video_loop %}loop{% endif %}
+      {% if block.settings.video_muted %}muted{% endif %}
       {% if poster_m != blank %}poster="{{ poster_m }}"{% endif %}
       title="{{ vtitle | escape }}"
     >

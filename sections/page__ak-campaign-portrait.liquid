@@ -1,6 +1,6 @@
 {% comment %}
   AK Campaign — full-bleed model portrait(s). Each block: image or Shopify video + name/role overlay.
-  WCAG 2.2 AA: landmark, alt/video title, scrim for contrast, whole-card link for image only, video uses native controls (no autoplay), focus-visible.
+  WCAG 2.2 AA: landmark, alt/video title, scrim for contrast, whole-card link for image only, native video controls, optional autoplay (pair with Start muted for browser policy), focus-visible.
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -866,6 +866,30 @@
           "id": "video_mobile",
           "label": "Video (mobile)",
           "info": "Optional. Uses desktop video if empty."
+        },
+        {
+          "type": "header",
+          "content": "Video playback"
+        },
+        {
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Autoplay",
+          "default": false,
+          "info": "Most browsers only allow autoplay when the video is muted. Turn on Start muted for reliable autoplay."
+        },
+        {
+          "type": "checkbox",
+          "id": "video_loop",
+          "label": "Loop",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "video_muted",
+          "label": "Start muted",
+          "default": false,
+          "info": "Begins without sound; visitors can unmute with the player controls. Native controls always include volume."
         },
         {
           "type": "image_picker",
