@@ -389,8 +389,12 @@
           {% assign lnk = block.settings.link_url %}
           {% assign hl = block.settings.heading_level | default: 'h3' %}
           {% assign img_alt = block.settings.image_alt | default: nm | default: 'Model portrait' %}
+          {% assign portrait_video_source_count = 0 %}
+          {% if block.settings.video != blank %}
+            {% assign portrait_video_source_count = block.settings.video.sources | size %}
+          {% endif %}
           {% assign media_is_video = false %}
-          {% if block.settings.media_type == 'video' and block.settings.video != blank %}
+          {% if block.settings.media_type == 'video' and portrait_video_source_count > 0 %}
             {% assign media_is_video = true %}
           {% endif %}
           {% assign card_as_link = false %}
@@ -414,7 +418,7 @@
                 {% endif %}
               >
                 <div class="ak-campaign-portrait__media" aria-hidden="true">
-                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt %}
+                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt, media_is_video: media_is_video %}
                 </div>
                 <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
                 <div class="ak-campaign-portrait__caption">
@@ -435,7 +439,7 @@
             {% else %}
               <div class="ak-campaign-portrait__card">
                 <div class="ak-campaign-portrait__media"{% unless media_is_video %} aria-hidden="true"{% endunless %}>
-                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt %}
+                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt, media_is_video: media_is_video %}
                 </div>
                 <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
                 <div class="ak-campaign-portrait__caption">
@@ -848,13 +852,14 @@
           "options": [
             { "value": "image", "label": "Image" },
             { "value": "video", "label": "Video" }
-          ]
+          ],
+          "info": "Choose Video only after selecting a file under Video (desktop). If Media type is Video but no video is set, images are shown instead."
         },
         {
           "type": "video",
           "id": "video",
           "label": "Video (desktop)",
-          "info": "Shopify-hosted file. Native controls (play, pause, seek, volume, fullscreen). No autoplay."
+          "info": "Required when Media type is Video. If no file is chosen, desktop/mobile images are used instead (no empty player)."
         },
         {
           "type": "video",

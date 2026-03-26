@@ -1,13 +1,8 @@
 {% comment %}
   AK campaign portrait — image or Shopify-hosted video (desktop + mobile).
-  Expects: block, img_alt (string for images and video title).
+  Expects: block, img_alt (string), media_is_video (boolean, true only when a video file with sources is set).
 {% endcomment %}
-{% assign mt = block.settings.media_type | default: 'image' %}
 {% assign bvid = block.settings.video %}
-{% assign media_is_video = false %}
-{% if mt == 'video' and bvid != blank %}
-  {% assign media_is_video = true %}
-{% endif %}
 {% assign bimg = block.settings.image %}
 {% assign bm = block.settings.mobile_image | default: bimg %}
 {% assign bmvid = block.settings.video_mobile %}
@@ -63,17 +58,17 @@
   </div>
 {% else %}
   {% if bimg != blank %}
-    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+    {% render 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
   {% else %}
     {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
   {% endif %}
   {% if bm != blank %}
     <div class="is-hidden-desktop-only">
-      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+      {% render 'image-element', image: bm, alt: img_alt, stretch_width: true %}
     </div>
   {% elsif bimg != blank %}
     <div class="is-hidden-desktop-only">
-      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+      {% render 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
     </div>
   {% else %}
     <div class="is-hidden-desktop-only">
