@@ -175,16 +175,18 @@
       margin-left: calc(-50vw + 50%);
     }
     #shopify-section-{{ id }} .ak-quote-zigzag__media .image-element__wrap {
-      position: static;
-      width: 100%;
-      height: auto;
-      max-width: none;
-      margin: 0;
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      margin: 0 !important;
     }
     #shopify-section-{{ id }} .ak-quote-zigzag__media img,
     #shopify-section-{{ id }} .ak-quote-zigzag__media .placeholder-svg {
-      width: 100%;
-      height: auto;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      object-fit: cover;
       display: block;
     }
   }
