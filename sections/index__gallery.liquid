@@ -91,9 +91,9 @@
       }
     {% endif %}
   {% endif %}
-  {% comment %} Keep 2-column grid on mobile when images_per_row == 2 (Figma mobile shows 2x2, theme forces single-column via small-down--one-whole). {% endcomment %}
+  {% comment %} Theme's small-down--one-whole (max-width: 480px) forces single column. Override to keep 2-up on phones when configured for 2 per row. {% endcomment %}
   {% if section.settings.images_per_row == 2 %}
-    @media only screen and (max-width: 798px) {
+    @media only screen and (max-width: 480px) {
       #shopify-section-{{ _gid }} .gallery__item.small-down--one-whole {
         width: 50% !important;
         max-width: 50% !important;
