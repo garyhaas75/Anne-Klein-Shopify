@@ -475,6 +475,62 @@
   </div>
 </section>
 
+{% assign portrait_section_autoplay = false %}
+{% for block in section.blocks %}
+  {% if block.type == 'portrait' %}
+    {% assign _ap_vc = 0 %}
+    {% if block.settings.video != blank %}
+      {% assign _ap_vc = block.settings.video.sources | size %}
+    {% endif %}
+    {% if block.settings.media_type == 'video' and _ap_vc > 0 and block.settings.video_autoplay %}
+      {% assign portrait_section_autoplay = true %}
+      {% break %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% if portrait_section_autoplay %}
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ id }}');
+      if (!root) return;
+
+      function playVisiblePortraitAutoplay() {
+        var videos = root.querySelectorAll('.ak-campaign-portrait__video[data-ak-portrait-autoplay]');
+        if (!videos.length) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          videos.forEach(function (v) {
+            v.removeAttribute('autoplay');
+          });
+          return;
+        }
+
+        videos.forEach(function (video) {
+          var shell = video.closest('.ak-campaign-portrait__video-shell');
+          if (!shell || window.getComputedStyle(shell).display === 'none') return;
+          video.muted = true;
+          var playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(function () {});
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', playVisiblePortraitAutoplay);
+      } else {
+        playVisiblePortraitAutoplay();
+      }
+
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(playVisiblePortraitAutoplay, 200);
+      });
+    })();
+  </script>
+{% endif %}
+
 {% schema %}
 {
   "name": "AK Campaign portrait",
@@ -876,7 +932,7 @@
           "id": "video_autoplay",
           "label": "Autoplay",
           "default": false,
-          "info": "Most browsers only allow autoplay when the video is muted. Turn on Start muted for reliable autoplay."
+          "info": "Starts automatically on the visible player (desktop vs mobile). Browsers require muted playback—sound stays off until the visitor unmutes in the controls."
         },
         {
           "type": "checkbox",
@@ -889,7 +945,7 @@
           "id": "video_muted",
           "label": "Start muted",
           "default": false,
-          "info": "Begins without sound; visitors can unmute with the player controls. Native controls always include volume."
+          "info": "When Autoplay is off: if on, playback starts without sound until unmuted. Autoplay always starts muted (browser policy)."
         },
         {
           "type": "image_picker",
