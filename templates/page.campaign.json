@@ -155,20 +155,21 @@
         "transcript": ""
       }
     },
-    "collection_cta": {
+    "page_ak_campaign_cta_hyCJqz": {
       "type": "page__ak-campaign-cta",
+      "name": "AK Campaign CTA",
       "settings": {
         "heading": "Anne Klein Spring-Summer 2026",
         "heading_use_line_2": false,
         "heading_line_2": "Spring-Summer 2026",
-        "heading_separate_mobile": false,
-        "heading_mobile": "Anne Klein Spring-Summer 2026",
-        "heading_use_line_2_mobile": false,
+        "heading_separate_mobile": true,
+        "heading_mobile": "Anne Klein",
+        "heading_use_line_2_mobile": true,
         "heading_line_2_mobile": "Spring-Summer 2026",
         "heading_level": "h2",
         "body": "<p>Explore the full campaign and shop new arrivals from the season.</p>",
         "button_label": "SHOP THE COLLECTION",
-        "button_link": "shopify://collections/ss26-campaign",
+        "button_link": "",
         "button_new_tab": false,
         "button_style": "button--primary",
         "text_alignment": "center",
@@ -928,7 +929,7 @@
     "campaign_intro",
     "film_copy",
     "campaign_film",
-    "collection_cta",
+    "page_ak_campaign_cta_hyCJqz",
     "model_portraits",
     "campaign_quote_zigzag",
     "campaign_inset_media",
