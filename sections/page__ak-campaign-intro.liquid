@@ -26,6 +26,9 @@
 {% assign divider_height = section.settings.divider_height | default: 250 %}
 {% assign divider_width = section.settings.divider_width | default: 1 %}
 {% assign divider_color = section.settings.divider_color | default: '#000000' %}
+{% assign divider_height_mobile = section.settings.divider_height_mobile | default: 250 %}
+{% assign divider_width_mobile = section.settings.divider_width_mobile | default: 1 %}
+{% assign divider_color_mobile = section.settings.divider_color_mobile | default: '#000000' %}
 {% assign img_alt = image.alt | default: heading | default: eyebrow | default: 'Campaign' %}
 {% assign mobile_img_alt = mobile_image.alt | default: heading | default: eyebrow | default: 'Campaign' %}
 
@@ -158,6 +161,13 @@
     border: none;
     padding: 0;
     margin: 0;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-intro__divider {
+      width: {{ divider_width_mobile }}px;
+      height: {{ divider_height_mobile }}px;
+      background-color: {{ divider_color_mobile }};
+    }
   }
   #shopify-section-{{ id }} .ak-campaign-intro__eyebrow {
     font-family: {{ eyebrow_font_stack }};
@@ -421,6 +431,10 @@
       "info": "Below the eyebrow and heading. Position matches “Text & vertical rule alignment.”"
     },
     {
+      "type": "paragraph",
+      "content": "Desktop (799px and wider)"
+    },
+    {
       "type": "range",
       "id": "divider_height",
       "label": "Rule height",
@@ -444,6 +458,37 @@
       "type": "color",
       "id": "divider_color",
       "label": "Rule color",
+      "default": "#000000"
+    },
+    {
+      "type": "paragraph",
+      "content": "Mobile (798px and below)"
+    },
+    {
+      "type": "range",
+      "id": "divider_height_mobile",
+      "label": "Rule height (mobile)",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "default": 250,
+      "unit": "px",
+      "info": "Independent from desktop. Match Figma mobile frame."
+    },
+    {
+      "type": "range",
+      "id": "divider_width_mobile",
+      "label": "Rule width (mobile)",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "divider_color_mobile",
+      "label": "Rule color (mobile)",
       "default": "#000000"
     },
     {
