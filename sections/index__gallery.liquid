@@ -91,12 +91,11 @@
       }
     {% endif %}
   {% endif %}
-  {% comment %} Theme's small-down--one-whole (max-width: 480px) forces single column. Override to keep 2-up on phones when configured for 2 per row. {% endcomment %}
-  {% if section.settings.images_per_row == 2 %}
-    @media only screen and (max-width: 480px) {
-      #shopify-section-{{ _gid }} .gallery__item.small-down--one-whole {
-        width: 50% !important;
-        max-width: 50% !important;
+  {% comment %} Classic gallery is a flex row; min-width:auto can prevent 2-up cells from sharing a row. {% endcomment %}
+  {% if section.settings.gallery_type == 'classic' and section.settings.images_per_row == 2 %}
+    @media only screen and (max-width: 798px) {
+      #shopify-section-{{ _gid }} .gallery-type--classic.container .gallery__item {
+        min-width: 0;
       }
     }
   {% endif %}

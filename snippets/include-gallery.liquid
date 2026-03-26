@@ -129,7 +129,12 @@
                       {% if object.settings.gallery_type != 'horizontal-masonry' %}
                         {% include 'column-width', value: object.settings.images_per_row %}
                         medium-down--one-half
-                        small-down--one-whole
+                        {% comment %} Below $grid-small (480px), one-whole forces full width → single column. For 2-up galleries, keep small-down--one-half so 2×2 matches Figma. {% endcomment %}
+                        {% if object.settings.images_per_row == 2 %}
+                          small-down--one-half
+                        {% else %}
+                          small-down--one-whole
+                        {% endif %}
                       {% endif %}
                       column
                       {% if object.settings.gallery_type == 'classic' %}{{ image_crop }}{% endif %}"
