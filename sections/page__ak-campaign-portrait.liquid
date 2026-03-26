@@ -14,6 +14,20 @@
 
 {% assign layout_desktop = section.settings.layout_desktop | default: 'two_columns' %}
 {% assign portrait_gap = section.settings.stack_gap | default: 0 %}
+{% assign stack_gap_m = section.settings.stack_gap_mobile | default: 0 | plus: 0 %}
+{% if stack_gap_m < 1 %}
+  {% assign stack_gap_m = portrait_gap %}
+{% endif %}
+{% assign name_sz = section.settings.name_font_size | default: 40 %}
+{% assign name_sz_m = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
+{% if name_sz_m < 1 %}
+  {% assign name_sz_m = name_sz %}
+{% endif %}
+{% assign role_sz = section.settings.role_font_size | default: 14 %}
+{% assign role_sz_m = section.settings.role_font_size_mobile | default: 0 | plus: 0 %}
+{% if role_sz_m < 1 %}
+  {% assign role_sz_m = role_sz %}
+{% endif %}
 {% assign cap_v = section.settings.caption_vertical | default: 'bottom' %}
 {% case cap_v %}
   {% when 'top' %}{% assign cap_justify = 'flex-start' %}
@@ -26,26 +40,10 @@
 {% assign ar_m = section.settings.portrait_aspect_mobile | default: 'none' %}
 {% assign scrim_h_pct = section.settings.scrim_height_percent | default: 45 %}
 {% assign scrim_op_f = scrim_opacity | divided_by: 100.0 %}
-{% assign name_font_key = section.settings.name_font_family | default: 'amiri' %}
-{% assign role_font_key = section.settings.role_font_family | default: 'system' %}
-{% case name_font_key %}
-  {% when 'amiri' %}{% assign name_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign name_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign name_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign name_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign name_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign name_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign name_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% case role_font_key %}
-  {% when 'amiri' %}{% assign role_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign role_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign role_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign role_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign role_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign role_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign role_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture name_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.name_font_family %}{% endcapture %}
+{% assign name_font_stack = name_font_stack | strip %}
+{% capture role_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.role_font_family %}{% endcapture %}
+{% assign role_font_stack = role_font_stack | strip %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -67,13 +65,16 @@
   #shopify-section-{{ id }} .ak-campaign-portrait__list {
     display: flex;
     flex-direction: column;
-    gap: {{ section.settings.stack_gap | default: 0 }}px;
+    gap: {{ stack_gap_m }}px;
     margin: 0;
     padding: 0;
     list-style: none;
     width: 100%;
   }
   @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__list {
+      gap: {{ portrait_gap }}px;
+    }
     #shopify-section-{{ id }} .ak-campaign-portrait__list--two-columns {
       flex-direction: row;
       flex-wrap: wrap;
@@ -216,7 +217,7 @@
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__name {
     font-family: {{ name_font_stack }};
-    font-size: clamp(1.5rem, 5vw, {{ section.settings.name_font_size | default: 40 }}px);
+    font-size: clamp(1.5rem, 5vw, {{ name_sz }}px);
     font-weight: {{ section.settings.name_font_weight | default: '400' }};
     line-height: 1.15;
     margin: 0 0 0.25em;
@@ -224,7 +225,7 @@
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__role {
     font-family: {{ role_font_stack }};
-    font-size: {{ section.settings.role_font_size | default: 16 }}px;
+    font-size: {{ role_sz }}px;
     font-weight: {{ section.settings.role_font_weight | default: '400' }};
     line-height: 1.3;
     margin: 0;
@@ -246,6 +247,14 @@
   #shopify-section-{{ id }} .ak-campaign-portrait__card-link:focus-visible .ak-campaign-portrait__role {
     text-decoration: underline;
     text-underline-offset: 0.15em;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-portrait__name {
+      font-size: clamp(1.5rem, 5vw, {{ name_sz_m }}px);
+    }
+    #shopify-section-{{ id }} .ak-campaign-portrait__role {
+      font-size: {{ role_sz_m }}px;
+    }
   }
 {% endstyle %}
 
@@ -536,12 +545,24 @@
     {
       "type": "range",
       "id": "stack_gap",
-      "label": "Gap between portraits",
+      "label": "Gap between portraits (desktop row)",
       "min": 0,
       "max": 48,
       "step": 4,
       "default": 0,
-      "unit": "px"
+      "unit": "px",
+      "info": "Used when layout is two columns (≥799px). Stacked list uses mobile gap below unless 0."
+    },
+    {
+      "type": "range",
+      "id": "stack_gap_mobile",
+      "label": "Gap between portraits (stacked / mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop gap. Applies to the vertical stack at ≤798px."
     },
     {
       "type": "range",
@@ -570,8 +591,8 @@
       "label": "Name font",
       "default": "amiri",
       "options": [
-        { "value": "amiri", "label": "Amiri" },
         { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
@@ -582,12 +603,23 @@
     {
       "type": "range",
       "id": "name_font_size",
-      "label": "Name font size (max)",
+      "label": "Name font size (max, desktop)",
       "min": 24,
       "max": 64,
       "step": 1,
       "default": 40,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_font_size_mobile",
+      "label": "Name font size (max, mobile)",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -624,12 +656,23 @@
     {
       "type": "range",
       "id": "role_font_size",
-      "label": "Role font size",
+      "label": "Role font size (desktop)",
       "min": 11,
       "max": 22,
       "step": 1,
       "default": 14,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "role_font_size_mobile",
+      "label": "Role font size (mobile)",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",

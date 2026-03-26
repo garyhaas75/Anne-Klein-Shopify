@@ -24,29 +24,44 @@
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign max_w_text = section.settings.content_max_width | default: 48 %}
+{% assign max_w_text_m = section.settings.content_max_width_mobile | default: 0 | plus: 0 %}
+{% if max_w_text_m < 1 %}
+  {% assign max_w_text_m = max_w_text %}
+{% endif %}
+{% assign two_h = section.settings.heading_font_size | default: 32 %}
+{% assign two_h_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if two_h_m < 1 %}
+  {% assign two_h_m = two_h %}
+{% endif %}
+{% assign two_b = section.settings.body_font_size | default: 20 %}
+{% assign two_b_m = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
+{% if two_b_m < 1 %}
+  {% assign two_b_m = two_b %}
+{% endif %}
+{% assign two_attr = section.settings.attribution_font_size | default: 16 %}
+{% assign two_attr_m = section.settings.attribution_font_size_mobile | default: 0 | plus: 0 %}
+{% if two_attr_m < 1 %}
+  {% assign two_attr_m = two_attr %}
+{% endif %}
+{% assign two_lh = section.settings.body_line_height | default: 150 %}
+{% assign two_lh_m = section.settings.body_line_height_mobile | default: 0 | plus: 0 %}
+{% if two_lh_m < 1 %}
+  {% assign two_lh_m = two_lh %}
+{% endif %}
+{% assign two_txt_mt = section.settings.text_block_margin_top | default: 32 %}
+{% assign two_txt_mt_m = section.settings.text_block_margin_top_mobile | default: 0 | plus: 0 %}
+{% if two_txt_mt_m < 1 %}
+  {% assign two_txt_mt_m = two_txt_mt %}
+{% endif %}
 {% assign lnk1 = section.settings.image_1_link %}
 {% assign lnk2 = section.settings.image_2_link %}
 
-{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
-{% assign body_font_key = section.settings.body_font_family | default: 'amiri' %}
-{% case heading_font_key %}
-  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Georgia, serif' %}
-  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign heading_font_stack = '"Times New Roman", Times, serif' %}
-  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% case body_font_key %}
-  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Georgia, serif' %}
-  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign body_font_stack = '"Times New Roman", Times, serif' %}
-  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% assign attr_font_key = section.settings.attribution_font_family | default: 'amiri' %}
-{% case attr_font_key %}
-  {% when 'amiri' %}{% assign attr_font_stack = 'Amiri, Georgia, serif' %}
-  {% when 'georgia' %}{% assign attr_font_stack = 'Georgia, serif' %}
-  {% else %}{% assign attr_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
+{% assign heading_font_stack = heading_font_stack | strip %}
+{% capture body_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.body_font_family %}{% endcapture %}
+{% assign body_font_stack = body_font_stack | strip %}
+{% capture attr_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.attribution_font_family %}{% endcapture %}
+{% assign attr_font_stack = attr_font_stack | strip %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -131,7 +146,7 @@
     outline-offset: 2px;
   }
   #shopify-section-{{ id }} .ak-two-up__text {
-    margin-top: {{ section.settings.text_block_margin_top | default: 32 }}px;
+    margin-top: {{ two_txt_mt }}px;
     max-width: {{ max_w_text }}rem;
     margin-left: auto;
     margin-right: auto;
@@ -140,7 +155,7 @@
   }
   #shopify-section-{{ id }} .ak-two-up__heading {
     font-family: {{ heading_font_stack }};
-    font-size: clamp(1.25rem, 3vw, {{ section.settings.heading_font_size | default: 32 }}px);
+    font-size: clamp(1.25rem, 3vw, {{ two_h }}px);
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     line-height: 1.25;
     margin: 0 0 1rem;
@@ -148,9 +163,9 @@
   }
   #shopify-section-{{ id }} .ak-two-up__rte {
     font-family: {{ body_font_stack }};
-    font-size: {{ section.settings.body_font_size | default: 20 }}px;
+    font-size: {{ two_b }}px;
     font-weight: {{ section.settings.body_font_weight | default: '400' }};
-    line-height: {{ section.settings.body_line_height | default: 150 }}%;
+    line-height: {{ two_lh }}%;
   }
   #shopify-section-{{ id }} .ak-two-up__rte p {
     margin: 0 0 0.75em;
@@ -171,9 +186,25 @@
     display: block;
     margin-top: 1.25rem;
     font-family: {{ attr_font_stack }};
-    font-size: {{ section.settings.attribution_font_size | default: 16 }}px;
+    font-size: {{ two_attr }}px;
     font-weight: {{ section.settings.attribution_font_weight | default: '400' }};
     color: {{ attr_color }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-two-up__text {
+      margin-top: {{ two_txt_mt_m }}px;
+      max-width: {{ max_w_text_m }}rem;
+    }
+    #shopify-section-{{ id }} .ak-two-up__heading {
+      font-size: clamp(1.25rem, 3vw, {{ two_h_m }}px);
+    }
+    #shopify-section-{{ id }} .ak-two-up__rte {
+      font-size: {{ two_b_m }}px;
+      line-height: {{ two_lh_m }}%;
+    }
+    #shopify-section-{{ id }} .ak-two-up__attr {
+      font-size: {{ two_attr_m }}px;
+    }
   }
 {% endstyle %}
 
@@ -415,7 +446,7 @@
     {
       "type": "range",
       "id": "text_block_margin_top",
-      "label": "Space above text block",
+      "label": "Space above text block (desktop)",
       "min": 0,
       "max": 120,
       "step": 4,
@@ -424,14 +455,36 @@
     },
     {
       "type": "range",
+      "id": "text_block_margin_top_mobile",
+      "label": "Space above text block (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
       "id": "content_max_width",
-      "label": "Text max width",
+      "label": "Text max width (desktop)",
       "min": 28,
       "max": 72,
       "step": 1,
       "default": 48,
       "unit": "rem",
       "info": "Only constrains the text block; images use full section width."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_mobile",
+      "label": "Text max width (mobile)",
+      "min": 0,
+      "max": 72,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = same as desktop."
     },
     {
       "type": "header",
@@ -443,21 +496,35 @@
       "label": "Heading font",
       "default": "amiri",
       "options": [
+        { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
-        { "value": "system", "label": "System" }
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading size (max)",
+      "label": "Heading size (max, desktop)",
       "min": 18,
       "max": 56,
       "step": 1,
       "default": 32,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading size (max, mobile)",
+      "min": 0,
+      "max": 56,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -478,10 +545,13 @@
       "label": "Body font",
       "default": "amiri",
       "options": [
+        { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
-        { "value": "system", "label": "System" }
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
@@ -510,7 +580,7 @@
     {
       "type": "range",
       "id": "body_line_height",
-      "label": "Body line height",
+      "label": "Body line height (desktop)",
       "min": 120,
       "max": 200,
       "step": 5,
@@ -518,25 +588,51 @@
       "unit": "%"
     },
     {
+      "type": "range",
+      "id": "body_line_height_mobile",
+      "label": "Body line height (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "info": "0 = same as desktop."
+    },
+    {
       "type": "select",
       "id": "attribution_font_family",
       "label": "Attribution font",
       "default": "amiri",
       "options": [
+        { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
-        { "value": "system", "label": "System" }
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "attribution_font_size",
-      "label": "Attribution size",
+      "label": "Attribution size (desktop)",
       "min": 12,
       "max": 22,
       "step": 1,
       "default": 16,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "attribution_font_size_mobile",
+      "label": "Attribution size (mobile)",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",

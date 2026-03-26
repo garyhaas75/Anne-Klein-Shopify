@@ -18,31 +18,34 @@
 {% assign max_width = section.settings.content_max_width | default: 48 %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 
-{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
-{% assign body_font_key = section.settings.body_font_family | default: 'system' %}
-{% case heading_font_key %}
-  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign heading_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign heading_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign heading_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign heading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% case body_font_key %}
-  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign body_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign body_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign body_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign body_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
+{% assign heading_font_stack = heading_font_stack | strip %}
+{% capture body_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.body_font_family %}{% endcapture %}
+{% assign body_font_stack = body_font_stack | strip %}
 
 {% assign heading_size = section.settings.heading_font_size | default: 36 %}
+{% assign heading_size_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if heading_size_m < 1 %}
+  {% assign heading_size_m = heading_size %}
+{% endif %}
 {% assign heading_weight = section.settings.heading_font_weight | default: '700' %}
 {% assign body_size = section.settings.body_font_size | default: 18 %}
+{% assign body_size_m = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
+{% if body_size_m < 1 %}
+  {% assign body_size_m = body_size %}
+{% endif %}
 {% assign body_weight = section.settings.body_font_weight | default: '400' %}
+{% assign body_lh = section.settings.body_line_height | default: 165 %}
+{% assign body_lh_m = section.settings.body_line_height_mobile | default: 0 | plus: 0 %}
+{% if body_lh_m < 1 %}
+  {% assign body_lh_m = body_lh %}
+{% endif %}
+{% assign max_width_m = section.settings.content_max_width_mobile | default: 0 | plus: 0 %}
+{% if max_width_m < 1 %}
+  {% assign max_width_m = max_width %}
+{% endif %}
+{% assign pad_x = section.settings.content_padding_x | default: 0 | plus: 0 %}
+{% assign pad_x_m = section.settings.content_padding_x_mobile | default: 24 | plus: 0 %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -69,8 +72,12 @@
   }
   #shopify-section-{{ id }} .ak-campaign-copy__inner {
     max-width: {{ max_width }}rem;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+    padding-left: {{ pad_x }}px;
+    padding-right: {{ pad_x }}px;
+    box-sizing: border-box;
     text-align: {{ text_align }};
   }
   #shopify-section-{{ id }} .ak-campaign-copy__heading {
@@ -86,8 +93,22 @@
     font-family: {{ body_font_stack }};
     font-size: {{ body_size }}px;
     font-weight: {{ body_weight }};
-    line-height: {{ section.settings.body_line_height | default: 165 }}%;
+    line-height: {{ body_lh }}%;
     color: {{ text_color }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-copy__inner {
+      max-width: {{ max_width_m }}rem;
+      padding-left: {{ pad_x_m }}px;
+      padding-right: {{ pad_x_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-campaign-copy__heading {
+      font-size: clamp(1.5rem, 4vw, {{ heading_size_m }}px);
+    }
+    #shopify-section-{{ id }} .ak-campaign-copy__rte {
+      font-size: {{ body_size_m }}px;
+      line-height: {{ body_lh_m }}%;
+    }
   }
   #shopify-section-{{ id }} .ak-campaign-copy__rte p {
     margin: 0 0 1em;
@@ -192,13 +213,46 @@
     {
       "type": "range",
       "id": "content_max_width",
-      "label": "Max content width",
+      "label": "Max content width (desktop)",
       "min": 28,
       "max": 64,
       "step": 1,
       "default": 48,
       "unit": "rem",
       "info": "Caps line length for readability."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_mobile",
+      "label": "Max content width (mobile)",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = same as desktop. Applied at ≤798px. Pair with horizontal padding if text touches screen edges."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x",
+      "label": "Horizontal padding (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Left and right inset inside the content column."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x_mobile",
+      "label": "Horizontal padding (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Left and right inset at ≤798px. Helps when section gutter is off or max width fills the screen."
     },
     {
       "type": "select",
@@ -238,8 +292,8 @@
       "label": "Heading font",
       "default": "amiri",
       "options": [
-        { "value": "amiri", "label": "Amiri" },
         { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
@@ -250,12 +304,23 @@
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading font size",
+      "label": "Heading font size (desktop)",
       "min": 20,
       "max": 72,
       "step": 1,
       "default": 36,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile max)",
+      "min": 0,
+      "max": 72,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop. Applied at ≤798px."
     },
     {
       "type": "select",
@@ -298,12 +363,23 @@
     {
       "type": "range",
       "id": "body_font_size",
-      "label": "Body font size",
+      "label": "Body font size (desktop)",
       "min": 14,
       "max": 28,
       "step": 1,
       "default": 18,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body font size (mobile)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -321,12 +397,23 @@
     {
       "type": "range",
       "id": "body_line_height",
-      "label": "Body line height",
+      "label": "Body line height (desktop)",
       "min": 130,
       "max": 200,
       "step": 5,
       "default": 165,
       "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "body_line_height_mobile",
+      "label": "Body line height (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "info": "0 = same as desktop."
     },
     {
       "type": "header",

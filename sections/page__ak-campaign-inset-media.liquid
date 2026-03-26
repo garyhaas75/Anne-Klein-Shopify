@@ -49,6 +49,26 @@
 {% assign lnk = section.settings.link_url %}
 {% assign img_alt = section.settings.image_alt | default: img.alt | default: heading | default: 'Campaign photograph' %}
 
+{% assign inset_h_sz = section.settings.heading_font_size | default: 28 %}
+{% assign inset_h_sz_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if inset_h_sz_m < 1 %}
+  {% assign inset_h_sz_m = inset_h_sz %}
+{% endif %}
+{% assign inset_cap_sz = section.settings.caption_font_size | default: 15 %}
+{% assign inset_cap_sz_m = section.settings.caption_font_size_mobile | default: 0 | plus: 0 %}
+{% if inset_cap_sz_m < 1 %}
+  {% assign inset_cap_sz_m = inset_cap_sz %}
+{% endif %}
+{% assign inset_cap_mt = section.settings.caption_margin_top | default: 16 %}
+{% assign inset_cap_mt_m = section.settings.caption_margin_top_mobile | default: 0 | plus: 0 %}
+{% if inset_cap_mt_m < 1 %}
+  {% assign inset_cap_mt_m = inset_cap_mt %}
+{% endif %}
+{% capture inset_heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
+{% assign inset_heading_font_stack = inset_heading_font_stack | strip %}
+{% capture inset_caption_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.caption_font_family %}{% endcapture %}
+{% assign inset_caption_font_stack = inset_caption_font_stack | strip %}
+
 {% style %}
   #shopify-section-{{ id }} {
     padding-top: {{ section.settings.padding_top | default: 0 }}px;
@@ -80,7 +100,8 @@
   #shopify-section-{{ id }} .ak-inset__heading {
     text-align: {{ section.settings.text_alignment | default: 'center' }};
     margin: 0 0 1rem;
-    font-size: clamp(1.25rem, 3vw, {{ section.settings.heading_font_size | default: 28 }}px);
+    font-family: {{ inset_heading_font_stack }};
+    font-size: clamp(1.25rem, 3vw, {{ inset_h_sz }}px);
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     color: {{ section.settings.heading_color | default: '#000000' }};
   }
@@ -172,9 +193,10 @@
     outline-offset: 4px;
   }
   #shopify-section-{{ id }} .ak-inset__caption {
-    margin-top: 1rem;
+    margin-top: {{ inset_cap_mt }}px;
     text-align: {{ section.settings.text_alignment | default: 'center' }};
-    font-size: {{ section.settings.caption_font_size | default: 15 }}px;
+    font-family: {{ inset_caption_font_stack }};
+    font-size: {{ inset_cap_sz }}px;
     line-height: 1.5;
     color: {{ section.settings.caption_color | default: '#333333' }};
   }
@@ -491,14 +513,40 @@
       "default": "#000000"
     },
     {
+      "type": "select",
+      "id": "heading_font_family",
+      "label": "Heading font",
+      "default": "amiri",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading size (max)",
+      "label": "Heading size (max, desktop)",
       "min": 16,
       "max": 48,
       "step": 1,
       "default": 28,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading size (max, mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -519,14 +567,61 @@
       "default": "#333333"
     },
     {
+      "type": "select",
+      "id": "caption_font_family",
+      "label": "Caption font",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
+    },
+    {
       "type": "range",
       "id": "caption_font_size",
-      "label": "Caption size",
+      "label": "Caption size (desktop)",
       "min": 12,
       "max": 22,
       "step": 1,
       "default": 15,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_font_size_mobile",
+      "label": "Caption size (mobile)",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "caption_margin_top",
+      "label": "Caption spacing above (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_margin_top_mobile",
+      "label": "Caption spacing above (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "text",

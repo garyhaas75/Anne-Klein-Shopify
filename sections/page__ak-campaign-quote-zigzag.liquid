@@ -13,19 +13,30 @@
 {% assign q_color = section.settings.quote_color | default: '#1e3a5f' %}
 {% assign attr_color = section.settings.attribution_color | default: '#000000' %}
 {% assign text_bg = section.settings.text_column_bg | default: '#ffffff' %}
-{% assign quote_font_key = section.settings.quote_font_family | default: 'amiri' %}
-{% case quote_font_key %}
-  {% when 'amiri' %}{% assign quote_font_stack = 'Amiri, Georgia, serif' %}
-  {% when 'georgia' %}{% assign quote_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign quote_font_stack = '"Times New Roman", Times, serif' %}
-  {% else %}{% assign quote_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% assign attr_font_key = section.settings.attribution_font_family | default: 'amiri' %}
-{% case attr_font_key %}
-  {% when 'amiri' %}{% assign attr_font_stack = 'Amiri, Georgia, serif' %}
-  {% when 'georgia' %}{% assign attr_font_stack = 'Georgia, serif' %}
-  {% else %}{% assign attr_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture quote_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.quote_font_family %}{% endcapture %}
+{% assign quote_font_stack = quote_font_stack | strip %}
+{% assign zz_row_gap = section.settings.row_gap | default: 0 %}
+{% assign zz_row_gap_m = section.settings.row_gap_mobile | default: 0 | plus: 0 %}
+{% if zz_row_gap_m < 1 %}
+  {% assign zz_row_gap_m = zz_row_gap %}
+{% endif %}
+{% assign zz_q = section.settings.quote_font_size | default: 28 %}
+{% assign zz_q_m = section.settings.quote_font_size_mobile | default: 0 | plus: 0 %}
+{% if zz_q_m < 1 %}
+  {% assign zz_q_m = zz_q %}
+{% endif %}
+{% assign zz_a = section.settings.attribution_font_size | default: 16 %}
+{% assign zz_a_m = section.settings.attribution_font_size_mobile | default: 0 | plus: 0 %}
+{% if zz_a_m < 1 %}
+  {% assign zz_a_m = zz_a %}
+{% endif %}
+{% assign zz_pady_d = section.settings.text_cell_padding_y_desktop | default: 48 %}
+{% assign zz_padx_d = section.settings.text_cell_padding_x_desktop | default: 40 %}
+{% assign zz_pady_m = section.settings.text_cell_padding_y_mobile | default: 40 %}
+{% assign zz_padx_m = section.settings.text_cell_padding_x_mobile | default: 24 %}
+
+{% capture attr_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.attribution_font_family %}{% endcapture %}
+{% assign attr_font_stack = attr_font_stack | strip %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -55,7 +66,7 @@
     width: 100%;
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__row + .ak-quote-zigzag__row {
-    margin-top: {{ section.settings.row_gap | default: 0 }}px;
+    margin-top: {{ zz_row_gap }}px;
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-quote-zigzag__row {
@@ -67,7 +78,7 @@
   #shopify-section-{{ id }} .ak-quote-zigzag__text {
     flex: 1 1 auto;
     background-color: {{ text_bg }};
-    padding: 2rem 1.5rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,24 +89,20 @@
     #shopify-section-{{ id }} .ak-quote-zigzag__text {
       flex: 0 0 {{ split_pct }}%;
       max-width: {{ split_pct }}%;
-      padding: clamp(2rem, 5vw, 4rem);
+      padding: {{ zz_pady_d }}px {{ zz_padx_d }}px;
     }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quote-zigzag__text {
       align-items: center;
       text-align: center;
-      padding: 2.5rem 1.5rem;
+      padding: {{ zz_pady_m }}px {{ zz_padx_m }}px;
       {% if row_min_m > 0 %}
         min-height: {{ row_min_m }}px;
       {% endif %}
     }
-    #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner {
-      font-size: clamp(1.5rem, 5.5vw, {{ section.settings.quote_font_size | default: 28 }}px);
-    }
-    #shopify-section-{{ id }} .ak-quote-zigzag__attr {
-      text-align: center;
-      width: 100%;
+    #shopify-section-{{ id }} .ak-quote-zigzag__row + .ak-quote-zigzag__row {
+      margin-top: {{ zz_row_gap_m }}px;
     }
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__blockquote {
@@ -106,7 +113,7 @@
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner {
     font-family: {{ quote_font_stack }};
-    font-size: clamp(1.25rem, 3.5vw, {{ section.settings.quote_font_size | default: 28 }}px);
+    font-size: clamp(1.25rem, 3.5vw, {{ zz_q }}px);
     font-weight: {{ section.settings.quote_font_weight | default: '400' }};
     line-height: 1.35;
     color: {{ q_color }};
@@ -122,10 +129,20 @@
     display: block;
     margin-top: 1.25rem;
     font-family: {{ attr_font_stack }};
-    font-size: {{ section.settings.attribution_font_size | default: 16 }}px;
+    font-size: {{ zz_a }}px;
     font-weight: {{ section.settings.attribution_font_weight | default: '400' }};
     font-style: normal;
     color: {{ attr_color }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner {
+      font-size: clamp(1.5rem, 5.5vw, {{ zz_q_m }}px);
+    }
+    #shopify-section-{{ id }} .ak-quote-zigzag__attr {
+      text-align: center;
+      width: 100%;
+      font-size: {{ zz_a_m }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__media {
     position: relative;
@@ -361,12 +378,23 @@
     {
       "type": "range",
       "id": "row_gap",
-      "label": "Gap between rows",
+      "label": "Gap between rows (desktop)",
       "min": 0,
       "max": 48,
       "step": 4,
       "default": 0,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Gap between rows (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "header",
@@ -433,21 +461,35 @@
       "label": "Quote font",
       "default": "amiri",
       "options": [
+        { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
-        { "value": "system", "label": "System sans" }
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "quote_font_size",
-      "label": "Quote max size",
+      "label": "Quote max size (desktop)",
       "min": 18,
       "max": 40,
       "step": 1,
       "default": 28,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "quote_font_size_mobile",
+      "label": "Quote max size (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -466,20 +508,35 @@
       "label": "Attribution font",
       "default": "amiri",
       "options": [
+        { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
-        { "value": "system", "label": "System sans" }
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "attribution_font_size",
-      "label": "Attribution size",
+      "label": "Attribution size (desktop)",
       "min": 13,
       "max": 22,
       "step": 1,
       "default": 16,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "attribution_font_size_mobile",
+      "label": "Attribution size (mobile)",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -505,6 +562,48 @@
     {
       "type": "header",
       "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "text_cell_padding_y_desktop",
+      "label": "Quote cell padding top/bottom (desktop)",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 48,
+      "unit": "px",
+      "info": "Applied at ≥799px (quote column)."
+    },
+    {
+      "type": "range",
+      "id": "text_cell_padding_x_desktop",
+      "label": "Quote cell padding left/right (desktop)",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 40,
+      "unit": "px",
+      "info": "Applied at ≥799px (quote column)."
+    },
+    {
+      "type": "range",
+      "id": "text_cell_padding_y_mobile",
+      "label": "Quote cell padding top/bottom (mobile)",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "text_cell_padding_x_mobile",
+      "label": "Quote cell padding left/right (mobile)",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
     },
     {
       "type": "range",

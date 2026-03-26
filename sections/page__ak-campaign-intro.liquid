@@ -32,30 +32,22 @@
 {% assign img_alt = image.alt | default: heading | default: eyebrow | default: 'Campaign' %}
 {% assign mobile_img_alt = mobile_image.alt | default: heading | default: eyebrow | default: 'Campaign' %}
 
-{% assign eyebrow_font_key = section.settings.eyebrow_font_family | default: 'system' %}
-{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
-{% case eyebrow_font_key %}
-  {% when 'amiri' %}{% assign eyebrow_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign eyebrow_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign eyebrow_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign eyebrow_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign eyebrow_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign eyebrow_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign eyebrow_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% case heading_font_key %}
-  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign heading_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
-  {% when 'times' %}{% assign heading_font_stack = '"Times New Roman", Times, serif' %}
-  {% when 'verdana' %}{% assign heading_font_stack = 'Verdana, Geneva, sans-serif' %}
-  {% when 'trebuchet' %}{% assign heading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
-  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture eyebrow_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_font_family %}{% endcapture %}
+{% assign eyebrow_font_stack = eyebrow_font_stack | strip %}
+{% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
+{% assign heading_font_stack = heading_font_stack | strip %}
 
 {% assign eyebrow_size = section.settings.eyebrow_font_size | default: 24 %}
+{% assign eyebrow_size_mobile = section.settings.eyebrow_font_size_mobile | default: 0 | plus: 0 %}
+{% if eyebrow_size_mobile < 1 %}
+  {% assign eyebrow_size_mobile = eyebrow_size %}
+{% endif %}
 {% assign eyebrow_weight = section.settings.eyebrow_font_weight | default: '400' %}
 {% assign heading_size = section.settings.heading_font_size | default: 72 %}
+{% assign heading_size_mobile = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if heading_size_mobile < 1 %}
+  {% assign heading_size_mobile = heading_size %}
+{% endif %}
 {% assign heading_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign split_image_pct = section.settings.split_image_width | default: 50 %}
 {% assign text_rule_align = section.settings.text_rule_alignment | default: 'center' %}
@@ -187,6 +179,14 @@
     margin: 0;
     color: {{ text_color }};
     {% if section.settings.heading_underline %}text-decoration: underline; text-underline-offset: 0.15em;{% endif %}
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-intro__eyebrow {
+      font-size: {{ eyebrow_size_mobile }}px;
+    }
+    #shopify-section-{{ id }} .ak-campaign-intro__heading {
+      font-size: clamp(2.25rem, 8vw, {{ heading_size_mobile }}px);
+    }
   }
   #shopify-section-{{ id }} .ak-campaign-intro__heading:focus-visible,
   #shopify-section-{{ id }} .ak-campaign-intro__eyebrow:focus-visible {
@@ -520,8 +520,8 @@
       "label": "Heading font",
       "default": "amiri",
       "options": [
-        { "value": "amiri", "label": "Amiri" },
         { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
@@ -532,12 +532,23 @@
     {
       "type": "range",
       "id": "eyebrow_font_size",
-      "label": "Eyebrow font size",
+      "label": "Eyebrow font size (desktop)",
       "min": 12,
       "max": 36,
       "step": 1,
       "default": 24,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "label": "Eyebrow font size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop. Applied at ≤798px."
     },
     {
       "type": "select",
@@ -574,6 +585,17 @@
       "step": 2,
       "default": 72,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile max)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop max. Caps the clamp at ≤798px."
     },
     {
       "type": "select",

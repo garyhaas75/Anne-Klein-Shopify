@@ -9,6 +9,30 @@
 {% assign padding_top_mobile = section.settings.padding_top_mobile | default: padding_top %}
 {% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: padding_bottom %}
 {% assign still_gap = section.settings.still_gap | default: 0 %}
+{% assign still_gap_m = section.settings.still_gap_mobile | default: 0 | plus: 0 %}
+{% if still_gap_m < 1 %}
+  {% assign still_gap_m = still_gap %}
+{% endif %}
+{% assign hdr_max_w = section.settings.header_max_width | default: 48 %}
+{% assign hdr_max_w_m = section.settings.header_max_width_mobile | default: 0 | plus: 0 %}
+{% if hdr_max_w_m < 1 %}
+  {% assign hdr_max_w_m = hdr_max_w %}
+{% endif %}
+{% assign still_heading_sz = section.settings.heading_font_size | default: 36 %}
+{% assign still_heading_sz_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if still_heading_sz_m < 1 %}
+  {% assign still_heading_sz_m = still_heading_sz %}
+{% endif %}
+{% assign still_intro_sz = section.settings.intro_font_size | default: 17 %}
+{% assign still_intro_sz_m = section.settings.intro_font_size_mobile | default: 0 | plus: 0 %}
+{% if still_intro_sz_m < 1 %}
+  {% assign still_intro_sz_m = still_intro_sz %}
+{% endif %}
+{% assign still_cap_sz = section.settings.caption_font_size | default: 15 %}
+{% assign still_cap_sz_m = section.settings.caption_font_size_mobile | default: 0 | plus: 0 %}
+{% if still_cap_sz_m < 1 %}
+  {% assign still_cap_sz_m = still_cap_sz %}
+{% endif %}
 {% assign img_behavior = section.settings.image_behavior | default: 'natural' %}
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
@@ -26,20 +50,12 @@
 {% assign cap_scrim = section.settings.caption_scrim_opacity | default: 65 %}
 {% assign cap_scrim_f = cap_scrim | divided_by: 100.0 %}
 
-{% assign heading_font_key = section.settings.heading_font_family | default: 'amiri' %}
-{% case heading_font_key %}
-  {% when 'amiri' %}{% assign heading_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign heading_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign heading_font_stack = 'Georgia, serif' %}
-  {% else %}{% assign heading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
-{% assign body_font_key = section.settings.body_font_family | default: 'system' %}
-{% case body_font_key %}
-  {% when 'amiri' %}{% assign body_font_stack = 'Amiri, Helvetica, serif' %}
-  {% when 'arial' %}{% assign body_font_stack = 'Arial, Helvetica, sans-serif' %}
-  {% when 'georgia' %}{% assign body_font_stack = 'Georgia, serif' %}
-  {% else %}{% assign body_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
-{% endcase %}
+{% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
+{% assign heading_font_stack = heading_font_stack | strip %}
+{% capture body_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.body_font_family %}{% endcapture %}
+{% assign body_font_stack = body_font_stack | strip %}
+{% capture caption_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.caption_font_family %}{% endcapture %}
+{% assign caption_font_stack = caption_font_stack | strip %}
 
 {% style %}
   #shopify-section-{{ id }} {
@@ -71,13 +87,13 @@
     }
   }
   #shopify-section-{{ id }} .ak-campaign-stills__header-inner {
-    max-width: {{ section.settings.header_max_width | default: 48 }}rem;
+    max-width: {{ hdr_max_w }}rem;
     margin-left: auto;
     margin-right: auto;
   }
   #shopify-section-{{ id }} .ak-campaign-stills__heading {
     font-family: {{ heading_font_stack }};
-    font-size: clamp(1.5rem, 4vw, {{ section.settings.heading_font_size | default: 36 }}px);
+    font-size: clamp(1.5rem, 4vw, {{ still_heading_sz }}px);
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     line-height: 1.2;
     margin: 0 0 0.75rem;
@@ -85,7 +101,7 @@
   }
   #shopify-section-{{ id }} .ak-campaign-stills__intro {
     font-family: {{ body_font_stack }};
-    font-size: {{ section.settings.intro_font_size | default: 17 }}px;
+    font-size: {{ still_intro_sz }}px;
     line-height: 1.55;
     margin: 0;
     color: {{ body_color }};
@@ -154,8 +170,8 @@
     color: {{ cap_overlay_color }};
     text-align: {% if cap_below_align == 'left' %}left{% elsif cap_below_align == 'right' %}right{% else %}center{% endif %};
     text-shadow: 0 1px 2px rgba(0,0,0,0.85);
-    font-family: {{ body_font_stack }};
-    font-size: {{ section.settings.caption_font_size | default: 15 }}px;
+    font-family: {{ caption_font_stack }};
+    font-size: {{ still_cap_sz }}px;
     line-height: 1.45;
   }
   #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay p {
@@ -173,8 +189,8 @@
     text-align: {% if cap_below_align == 'left' %}left{% elsif cap_below_align == 'right' %}right{% else %}center{% endif %};
     color: {{ body_color }};
     background-color: {{ hdr_bg }};
-    font-family: {{ body_font_stack }};
-    font-size: {{ section.settings.caption_font_size | default: 15 }}px;
+    font-family: {{ caption_font_stack }};
+    font-size: {{ still_cap_sz }}px;
     line-height: 1.45;
   }
   #shopify-section-{{ id }} .ak-campaign-stills__caption--below p {
@@ -186,6 +202,24 @@
   #shopify-section-{{ id }} .ak-campaign-stills__caption--below a {
     color: inherit;
     text-decoration: underline;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-campaign-stills__list {
+      gap: {{ still_gap_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-campaign-stills__header-inner {
+      max-width: {{ hdr_max_w_m }}rem;
+    }
+    #shopify-section-{{ id }} .ak-campaign-stills__heading {
+      font-size: clamp(1.5rem, 4vw, {{ still_heading_sz_m }}px);
+    }
+    #shopify-section-{{ id }} .ak-campaign-stills__intro {
+      font-size: {{ still_intro_sz_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-campaign-stills__caption--overlay,
+    #shopify-section-{{ id }} .ak-campaign-stills__caption--below {
+      font-size: {{ still_cap_sz_m }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-campaign-stills__link {
     display: block;
@@ -448,12 +482,23 @@
     {
       "type": "range",
       "id": "header_max_width",
-      "label": "Section text max width",
+      "label": "Section text max width (desktop)",
       "min": 32,
       "max": 64,
       "step": 2,
       "default": 48,
       "unit": "rem"
+    },
+    {
+      "type": "range",
+      "id": "header_max_width_mobile",
+      "label": "Section text max width (mobile)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = same as desktop."
     },
     {
       "type": "color",
@@ -479,21 +524,35 @@
       "label": "Heading font",
       "default": "amiri",
       "options": [
-        { "value": "amiri", "label": "Amiri" },
         { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" }
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading size",
+      "label": "Heading size (desktop)",
       "min": 20,
       "max": 56,
       "step": 1,
       "default": 36,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading size (mobile max)",
+      "min": 0,
+      "max": 56,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -516,13 +575,16 @@
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" }
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
       ]
     },
     {
       "type": "range",
       "id": "intro_font_size",
-      "label": "Intro font size",
+      "label": "Intro font size (desktop)",
       "min": 14,
       "max": 22,
       "step": 1,
@@ -530,8 +592,34 @@
       "unit": "px"
     },
     {
+      "type": "range",
+      "id": "intro_font_size_mobile",
+      "label": "Intro font size (mobile)",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
       "type": "header",
       "content": "Still captions"
+    },
+    {
+      "type": "select",
+      "id": "caption_font_family",
+      "label": "Caption font",
+      "default": "system",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" }
+      ]
     },
     {
       "type": "select",
@@ -547,12 +635,23 @@
     {
       "type": "range",
       "id": "caption_font_size",
-      "label": "Caption font size",
+      "label": "Caption font size (desktop)",
       "min": 12,
       "max": 20,
       "step": 1,
       "default": 15,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "caption_font_size_mobile",
+      "label": "Caption font size (mobile)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "color",
@@ -593,12 +692,23 @@
     {
       "type": "range",
       "id": "still_gap",
-      "label": "Gap between stills",
+      "label": "Gap between stills (desktop)",
       "min": 0,
       "max": 48,
       "step": 4,
       "default": 0,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "still_gap_mobile",
+      "label": "Gap between stills (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",

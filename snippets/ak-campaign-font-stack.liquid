@@ -1,0 +1,14 @@
+{% comment %}
+  Campaign typography: maps a setting value to a CSS font-family stack (no property name).
+  Pass: font_key (e.g. section.settings.heading_font_family)
+{% endcomment %}
+{%- assign _k = font_key | default: 'system' -%}
+{%- case _k -%}
+  {%- when 'amiri' -%}Amiri, Georgia, serif
+  {%- when 'arial' -%}Arial, Helvetica, sans-serif
+  {%- when 'georgia' -%}Georgia, serif
+  {%- when 'times' -%}"Times New Roman", Times, serif
+  {%- when 'verdana' -%}Verdana, Geneva, sans-serif
+  {%- when 'trebuchet' -%}"Trebuchet MS", "Lucida Grande", sans-serif
+  {%- else -%}-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif
+{%- endcase -%}

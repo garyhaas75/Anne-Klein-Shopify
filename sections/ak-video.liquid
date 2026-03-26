@@ -84,6 +84,46 @@
 {% assign overlay_line1_font_weight = section.settings.overlay_line1_font_weight | default: '400' %}
 {% assign overlay_heading_font_weight = section.settings.overlay_heading_font_weight | default: '700' %}
 {% assign overlay_cta_font_weight = section.settings.overlay_cta_font_weight | default: '700' %}
+{% assign ov_pad_t = section.settings.overlay_padding_top | default: 0 | plus: 0 %}
+{% assign ov_pad_b = section.settings.overlay_padding_bottom | default: 0 | plus: 0 %}
+{% assign ov_pad_t_m = section.settings.overlay_padding_top_mobile | default: 0 | plus: 0 %}
+{% if ov_pad_t_m < 1 %}
+  {% assign ov_pad_t_m = ov_pad_t %}
+{% endif %}
+{% assign ov_pad_b_m = section.settings.overlay_padding_bottom_mobile | default: 0 | plus: 0 %}
+{% if ov_pad_b_m < 1 %}
+  {% assign ov_pad_b_m = ov_pad_b %}
+{% endif %}
+{% assign ov_gap = section.settings.overlay_line_spacing | default: 12 | plus: 0 %}
+{% assign ov_gap_m = section.settings.overlay_line_spacing_mobile | default: 0 | plus: 0 %}
+{% if ov_gap_m < 1 %}
+  {% assign ov_gap_m = ov_gap %}
+{% endif %}
+{% assign ov_l1_pb = section.settings.overlay_line1_padding_bottom | default: 0 | plus: 0 %}
+{% assign ov_l1_pb_m = section.settings.overlay_line1_padding_bottom_mobile | default: 0 | plus: 0 %}
+{% if ov_l1_pb_m < 1 %}
+  {% assign ov_l1_pb_m = ov_l1_pb %}
+{% endif %}
+{% assign ov_h_pb = section.settings.overlay_heading_padding_bottom | default: 0 | plus: 0 %}
+{% assign ov_h_pb_m = section.settings.overlay_heading_padding_bottom_mobile | default: 0 | plus: 0 %}
+{% if ov_h_pb_m < 1 %}
+  {% assign ov_h_pb_m = ov_h_pb %}
+{% endif %}
+{% assign ov_fs_l1 = section.settings.overlay_subheading_font_size | default: 16 | plus: 0 %}
+{% assign ov_fs_l1_m = section.settings.overlay_subheading_font_size_mobile | default: 0 | plus: 0 %}
+{% if ov_fs_l1_m < 1 %}
+  {% assign ov_fs_l1_m = ov_fs_l1 %}
+{% endif %}
+{% assign ov_fs_h = section.settings.overlay_heading_font_size | default: 48 | plus: 0 %}
+{% assign ov_fs_h_m = section.settings.overlay_heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if ov_fs_h_m < 1 %}
+  {% assign ov_fs_h_m = ov_fs_h %}
+{% endif %}
+{% assign ov_fs_cta = section.settings.overlay_cta_font_size | default: 14 | plus: 0 %}
+{% assign ov_fs_cta_m = section.settings.overlay_cta_font_size_mobile | default: 0 | plus: 0 %}
+{% if ov_fs_cta_m < 1 %}
+  {% assign ov_fs_cta_m = ov_fs_cta %}
+{% endif %}
 <section
   class="ak-video ak-video--{{ layout }} relative w-full overflow-hidden"
   id="ak-video-{{ section.id }}"
@@ -247,19 +287,19 @@
         {% if section.settings.overlay_link != blank %}
           {% assign overlay_has_link = true %}
         {% endif %}
-        <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack{% if overlay_has_link %} ak-video__overlay--has-link{% endif %}" style="padding-top: {{ section.settings.overlay_padding_top | default: 0 }}px; padding-bottom: {{ section.settings.overlay_padding_bottom | default: 0 }}px;">
+        <div class="ak-video__overlay ak-video__overlay--{{ ov_pos }} ak-video__overlay--stack{% if overlay_has_link %} ak-video__overlay--has-link{% endif %}">
           <div class="ak-video__overlay-inner">
             {% if has_line1 %}
-              <p class="ak-video__overlay-line1" style="font-size: {{ section.settings.overlay_subheading_font_size | default: 16 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
+              <p class="ak-video__overlay-line1" style="color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_subheading }}</p>
             {% endif %}
             {% if has_heading %}
-              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" style="font-size: {{ section.settings.overlay_heading_font_size | default: 48 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
+              <{{ heading_tag }} class="ak-video__title ak-video__overlay-heading" style="color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_heading | default: section.settings.overlay_text }}</{{ heading_tag }}>
             {% endif %}
             {% if has_cta %}
               {% if overlay_has_link %}
-                <span class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</span>
+                <span class="ak-video__overlay-cta" style="color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</span>
               {% else %}
-                <p class="ak-video__overlay-cta" style="font-size: {{ section.settings.overlay_cta_font_size | default: 14 }}px; color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
+                <p class="ak-video__overlay-cta" style="color: {{ section.settings.text_color | default: '#ffffff' }}; {% if section.settings.overlay_cta_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}">{{ section.settings.overlay_cta }}</p>
               {% endif %}
             {% endif %}
           </div>
@@ -583,12 +623,17 @@
     align-items: flex-end;
     justify-content: center;
   }
+  #ak-video-{{ section.id }} .ak-video__overlay--stack {
+    padding-top: {{ ov_pad_t }}px;
+    padding-bottom: {{ ov_pad_b }}px;
+    box-sizing: border-box;
+  }
   #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: {{ section.settings.overlay_line_spacing | default: 12 }}px;
+    gap: {{ ov_gap }}px;
     text-align: center;
     padding: 0 !important;
     margin: 0 !important;
@@ -596,6 +641,7 @@
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
     font-family: {{ font_stack_line1 }};
     font-weight: {{ overlay_line1_font_weight }};
+    font-size: {{ ov_fs_l1 }}px;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -608,6 +654,7 @@
   #ak-video-{{ section.id }} .ak-video__overlay-cta {
     font-family: {{ font_stack_cta }};
     font-weight: {{ overlay_cta_font_weight }};
+    font-size: {{ ov_fs_cta }}px;
     margin: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -629,10 +676,10 @@
     line-height: 1 !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
-    margin-bottom: {{ section.settings.overlay_line1_padding_bottom | default: 0 }}px !important;
+    margin-bottom: {{ ov_l1_pb }}px !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-heading {
-    margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
+    margin-bottom: {{ ov_h_pb }}px !important;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1:focus-visible,
   #ak-video-{{ section.id }} .ak-video__overlay-heading:focus-visible,
@@ -669,11 +716,37 @@
     text-align: center;
     margin: 0 !important;
     margin-top: 0 !important;
-    margin-bottom: {{ section.settings.overlay_heading_padding_bottom | default: 0 }}px !important;
+    margin-bottom: {{ ov_h_pb }}px !important;
     padding: 0 !important;
     text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     line-height: 1 !important;
+  }
+  #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-heading {
+    font-size: {{ ov_fs_h }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #ak-video-{{ section.id }} .ak-video__overlay--stack {
+      padding-top: {{ ov_pad_t_m }}px;
+      padding-bottom: {{ ov_pad_b_m }}px;
+    }
+    #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-inner {
+      gap: {{ ov_gap_m }}px;
+    }
+    #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-line1 {
+      font-size: {{ ov_fs_l1_m }}px;
+      margin-bottom: {{ ov_l1_pb_m }}px !important;
+    }
+    #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-heading {
+      font-size: {{ ov_fs_h_m }}px;
+      margin-bottom: {{ ov_h_pb_m }}px !important;
+    }
+    #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__overlay-cta {
+      font-size: {{ ov_fs_cta_m }}px;
+    }
+    #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__title {
+      margin-bottom: {{ ov_h_pb_m }}px !important;
+    }
   }
   #ak-video-{{ section.id }} .ak-video__hashtag {
     font-family: {{ font_stack_hashtag }};
@@ -1243,6 +1316,90 @@
       "max": 200,
       "step": 5,
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Overlay — mobile (max-width 798px)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_top_mobile",
+      "label": "Overlay padding top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "info": "0 = same as overlay padding top (desktop)."
+    },
+    {
+      "type": "range",
+      "id": "overlay_padding_bottom_mobile",
+      "label": "Overlay padding bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "info": "0 = same as overlay padding bottom (desktop)."
+    },
+    {
+      "type": "range",
+      "id": "overlay_line_spacing_mobile",
+      "label": "Spacing between overlay lines (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop spacing between lines."
+    },
+    {
+      "type": "range",
+      "id": "overlay_line1_padding_bottom_mobile",
+      "label": "Padding below line 1 (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "overlay_heading_padding_bottom_mobile",
+      "label": "Padding below line 2 (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "overlay_subheading_font_size_mobile",
+      "label": "Line 1 font size (px)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop line 1 size."
+    },
+    {
+      "type": "range",
+      "id": "overlay_heading_font_size_mobile",
+      "label": "Line 2 font size (px)",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop line 2 size."
+    },
+    {
+      "type": "range",
+      "id": "overlay_cta_font_size_mobile",
+      "label": "Line 3 font size (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0,
+      "info": "0 = same as desktop line 3 size."
     },
     {
       "type": "text",
