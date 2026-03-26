@@ -124,6 +124,30 @@
 {% if ov_fs_cta_m < 1 %}
   {% assign ov_fs_cta_m = ov_fs_cta %}
 {% endif %}
+{% assign video_fit_mobile_choice = section.settings.video_fit_mobile | default: 'same' %}
+{% if video_fit_mobile_choice == 'same' %}
+  {% assign video_fit_mobile = video_fit %}
+{% else %}
+  {% assign video_fit_mobile = video_fit_mobile_choice %}
+{% endif %}
+{% assign sw_d = section.settings.section_max_width | default: 0 | plus: 0 %}
+{% assign sw_m = section.settings.section_max_width_mobile | default: 0 | plus: 0 %}
+{% assign vmw_d = section.settings.video_max_width | default: 0 | plus: 0 %}
+{% assign vmw_m = section.settings.video_max_width_mobile | default: 0 | plus: 0 %}
+{% assign vmh_d = section.settings.video_max_height | default: 0 | plus: 0 %}
+{% assign vmh_m = section.settings.video_max_height_mobile | default: 0 | plus: 0 %}
+{% assign smh_d = section.settings.section_max_height | default: 0 | plus: 0 %}
+{% assign smh_m = section.settings.section_max_height_mobile | default: 0 | plus: 0 %}
+{% assign sec_pad_t = section.settings.section_padding_top | default: 0 | plus: 0 %}
+{% assign sec_pad_b = section.settings.section_padding_bottom | default: 0 | plus: 0 %}
+{% assign sec_pad_t_m = section.settings.section_padding_top_mobile | default: 0 | plus: 0 %}
+{% assign sec_pad_b_m = section.settings.section_padding_bottom_mobile | default: 0 | plus: 0 %}
+{% if sec_pad_t_m < 1 %}
+  {% assign sec_pad_t_m = sec_pad_t %}
+{% endif %}
+{% if sec_pad_b_m < 1 %}
+  {% assign sec_pad_b_m = sec_pad_b %}
+{% endif %}
 <section
   class="ak-video ak-video--{{ layout }} relative w-full overflow-hidden"
   id="ak-video-{{ section.id }}"
@@ -409,21 +433,49 @@
     box-sizing: border-box;
     isolation: isolate;
     z-index: 0;
-    {% if section.settings.section_max_width != blank and section.settings.section_max_width > 0 %}
-    max-width: {{ section.settings.section_max_width }}px;
-    margin-left: auto;
-    margin-right: auto;
-    {% endif %}
-    {% if is_hero %}
-    height: 100vh;
-    max-height: 100vh;
-    {% else %}
-    height: 60vh;
-    min-height: 400px;
-    {% endif %}
-    {% if section.settings.section_max_height != blank and section.settings.section_max_height > 0 %}
-    max-height: {{ section.settings.section_max_height }}px;
-    {% endif %}
+    width: 100%;
+  }
+  @media (min-width: 799px) {
+    #ak-video-{{ section.id }} {
+      {% if sw_d > 0 %}
+      max-width: {{ sw_d }}px;
+      margin-left: auto;
+      margin-right: auto;
+      {% endif %}
+      {% if is_hero %}
+      height: 100vh;
+      max-height: 100vh;
+      {% else %}
+      height: 60vh;
+      min-height: 400px;
+      {% endif %}
+      {% if smh_d > 0 %}
+      max-height: {{ smh_d }}px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 798px) {
+    #ak-video-{{ section.id }} {
+      padding-top: {{ sec_pad_t_m }}px;
+      padding-bottom: {{ sec_pad_b_m }}px;
+      {% if sw_m > 0 %}
+      max-width: {{ sw_m }}px;
+      margin-left: auto;
+      margin-right: auto;
+      {% endif %}
+      {% if smh_m > 0 %}
+      height: {{ smh_m }}px;
+      max-height: {{ smh_m }}px;
+      {% else %}
+      {% if is_hero %}
+      height: 100vh;
+      max-height: 100vh;
+      {% else %}
+      height: 60vh;
+      min-height: 400px;
+      {% endif %}
+      {% endif %}
+    }
   }
   #ak-video-{{ section.id }} .ak-video__wrap {
     position: relative;
@@ -437,29 +489,42 @@
   #ak-video-{{ section.id }} .ak-video__player {
     display: block;
     vertical-align: bottom;
-    object-fit: {{ video_fit }};
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
     background-color: {{ bg_color }};
-    {% if section.settings.video_max_width != blank and section.settings.video_max_width > 0 %}
-    max-width: {{ section.settings.video_max_width }}px;
-    {% endif %}
-    {% if section.settings.video_max_height != blank and section.settings.video_max_height > 0 %}
-    max-height: {{ section.settings.video_max_height }}px;
-    min-height: 0;
-    {% endif %}
+    flex-shrink: 1;
+    min-width: 0;
+    align-self: center;
   }
-  {% comment %} When fit is cover and no max-height, extend video past container to remove black line; wrap overflow clips. {% endcomment %}
+  @media (min-width: 799px) {
+    #ak-video-{{ section.id }} .ak-video__player {
+      object-fit: {{ video_fit }};
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      {% if vmw_d > 0 %}
+      max-width: min(100%, {{ vmw_d }}px);
+      {% endif %}
+      {% if vmh_d > 0 %}
+      max-height: {{ vmh_d }}px;
+      min-height: 0;
+      {% endif %}
+    }
+  }
+  {% comment %} Desktop: cover nudge when no max-height {% endcomment %}
   {% if video_fit == 'cover' %}
-  #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
-    min-height: calc(100% + 10px);
-    margin-bottom: -6px;
+  @media (min-width: 799px) {
+    #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
+      {% if vmh_d < 1 %}
+      min-height: calc(100% + 10px);
+      margin-bottom: -6px;
+      {% endif %}
+    }
   }
   {% endif %}
-  {% if video_fit == 'cover' and section.settings.video_max_height != blank and section.settings.video_max_height > 0 %}
-  #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
-    margin-bottom: 0;
+  {% if video_fit == 'cover' and vmh_d > 0 %}
+  @media (min-width: 799px) {
+    #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
+      margin-bottom: 0;
+    }
   }
   {% endif %}
   #ak-video-{{ section.id }} .ak-video__start-card,
@@ -857,12 +922,6 @@
     border-top: 1px solid rgba(255,255,255,0.3);
   }
   @media (max-width: 798px) {
-    {% if section.settings.section_max_height_mobile != blank and section.settings.section_max_height_mobile > 0 %}
-    #ak-video-{{ section.id }} {
-      height: {{ section.settings.section_max_height_mobile }}px;
-      max-height: {{ section.settings.section_max_height_mobile }}px;
-    }
-    {% endif %}
     /* On mobile: force controls and transcript hidden unless tap-to-show class or focus-within.
        !important overrides desktop :hover rule which has higher specificity and sticks on touch. */
     #ak-video-{{ section.id }}:not(.ak-video--controls-visible) .ak-video__controls,
@@ -884,10 +943,17 @@
       visibility: visible !important;
     }
     #ak-video-{{ section.id }} .ak-video__player {
-      min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
-      {% if section.settings.video_max_height_mobile != blank and section.settings.video_max_height_mobile > 0 %}
-      max-height: {{ section.settings.video_max_height_mobile }}px;
+      object-fit: {{ video_fit_mobile }};
+      width: 100%;
+      height: 100%;
+      {% if vmw_m > 0 %}
+      max-width: min(100%, {{ vmw_m }}px);
+      {% endif %}
+      {% if vmh_m > 0 %}
+      max-height: {{ vmh_m }}px;
       min-height: 0;
+      {% else %}
+      min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
       {% endif %}
     }
     #ak-video-{{ section.id }} .ak-video__title {
@@ -1146,6 +1212,52 @@
         { "value": "feature", "label": "Feature (bottom overlay text)" }
       ],
       "default": "hero"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "header",
@@ -1554,12 +1666,22 @@
     {
       "type": "range",
       "id": "section_max_width",
-      "label": "Section max width (px)",
+      "label": "Section max width — desktop (px)",
       "min": 0,
       "max": 2400,
       "step": 50,
       "default": 0,
-      "info": "0 = no limit. Section is centered when limited."
+      "info": "0 = no limit (≥799px). Centered when set."
+    },
+    {
+      "type": "range",
+      "id": "section_max_width_mobile",
+      "label": "Section max width — mobile (px)",
+      "min": 0,
+      "max": 1200,
+      "step": 24,
+      "default": 0,
+      "info": "0 = no limit (≤798px). Use to inset the block on small screens."
     },
     {
       "type": "range",
@@ -1584,12 +1706,22 @@
     {
       "type": "range",
       "id": "video_max_width",
-      "label": "Video max width (px)",
+      "label": "Video max width — desktop (px)",
       "min": 0,
       "max": 2400,
       "step": 50,
       "default": 0,
-      "info": "0 = no limit."
+      "info": "0 = full width of the section (≥799px). Capped with min(100%, value) so it works inside the frame."
+    },
+    {
+      "type": "range",
+      "id": "video_max_width_mobile",
+      "label": "Video max width — mobile (px)",
+      "min": 0,
+      "max": 1200,
+      "step": 24,
+      "default": 0,
+      "info": "0 = full width of the section (≤798px)."
     },
     {
       "type": "range",
@@ -1614,13 +1746,25 @@
     {
       "type": "select",
       "id": "video_fit",
-      "label": "Video fit",
+      "label": "Video fit — desktop",
       "options": [
         { "value": "cover", "label": "Cover (fill container, crop if needed)" },
         { "value": "contain", "label": "Contain (fit entire video, may show background)" }
       ],
       "default": "cover",
-      "info": "Contain shows background color where the video doesn't fill the space."
+      "info": "Applied at ≥799px. Contain shows background where the video doesn't fill the space."
+    },
+    {
+      "type": "select",
+      "id": "video_fit_mobile",
+      "label": "Video fit — mobile",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as desktop" },
+        { "value": "cover", "label": "Cover (fill container, crop if needed)" },
+        { "value": "contain", "label": "Contain (fit entire video, may show background)" }
+      ],
+      "info": "Applied at ≤798px."
     },
     {
       "type": "color",
