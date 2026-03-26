@@ -1,5 +1,6 @@
 {% comment %}
-  AK Campaign — alternating quote + image rows (auto or per-block layout).
+  AK Campaign — alternating quote + image rows (auto or per-block layout) on desktop.
+  Mobile: quote always stacks above image (flex order); desktop row order unchanged.
   WCAG: blockquote + footer, image alt, optional link focus-visible, semantic structure.
 {% endcomment %}
 
@@ -93,7 +94,9 @@
     }
   }
   @media only screen and (max-width: 798px) {
+    /* Stack quote above image on all rows (desktop zigzag only affects ≥799px). */
     #shopify-section-{{ id }} .ak-quote-zigzag__text {
+      order: 1;
       align-items: center;
       text-align: center;
       padding: {{ zz_pady_m }}px {{ zz_padx_m }}px;
@@ -187,6 +190,7 @@
       margin-right: 0;
     }
     #shopify-section-{{ id }} .ak-quote-zigzag__media {
+      order: 2;
       width: 100vw;
       max-width: 100vw;
       margin-left: calc(-50vw + 50%);
@@ -668,7 +672,7 @@
           "id": "row_layout",
           "label": "Row layout",
           "default": "auto",
-          "info": "Auto: odd rows = quote left, even rows = quote right.",
+          "info": "Auto: odd rows = quote left, even rows = quote right (desktop). On mobile, quote always stacks above the image.",
           "options": [
             { "value": "auto", "label": "Auto (alternate)" },
             { "value": "text_left", "label": "Quote left, image right" },
