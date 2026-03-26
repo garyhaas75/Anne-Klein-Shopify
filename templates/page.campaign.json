@@ -319,6 +319,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/grid1_cbc2c9a2-36b5-42ba-a722-0952c09fcb02.png",
+            "image_alt": "",
             "link": ""
           }
         },
@@ -326,6 +327,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/grid2_059bdf6a-d4d8-46d3-9644-5ac815cbc477.png",
+            "image_alt": "",
             "link": ""
           }
         },
@@ -333,6 +335,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/grid3_0ec15921-692a-403e-a0c0-65495bd23dcf.png",
+            "image_alt": "",
             "link": ""
           }
         },
@@ -340,6 +343,7 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/grid4_1994897a-d806-4c29-ab03-def43308cd76.png",
+            "image_alt": "",
             "link": ""
           }
         }
@@ -368,6 +372,7 @@
         "padding_top": 32,
         "padding_bottom": 32,
         "animation": "none",
+        "section_aria_label": "Image gallery",
         "css_class": "ak-campaign-bts-grid",
         "custom_css": ""
       }
@@ -375,11 +380,11 @@
     "page_ak_campaign_two_up_text_3nVRPf": {
       "type": "page__ak-campaign-two-up-text",
       "settings": {
-        "image_1": "shopify://shop_images/AK_SS26_BTS_44_5.png",
+        "image_1": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_14_1781_5.png",
         "image_1_alt": "",
         "image_1_link": "",
         "image_1_new_tab": false,
-        "image_2": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_14_1781_16.png",
+        "image_2": "shopify://shop_images/AK_SS26_BTS_44_3_82bd358f-1d79-480e-a19c-8154e2196a6c.png",
         "image_2_alt": "",
         "image_2_link": "",
         "image_2_new_tab": false,
