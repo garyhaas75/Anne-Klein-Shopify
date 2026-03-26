@@ -1,0 +1,83 @@
+{% comment %}
+  AK campaign portrait — image or Shopify-hosted video (desktop + mobile).
+  Expects: block, img_alt (string for images and video title).
+{% endcomment %}
+{% assign mt = block.settings.media_type | default: 'image' %}
+{% assign bvid = block.settings.video %}
+{% assign media_is_video = false %}
+{% if mt == 'video' and bvid != blank %}
+  {% assign media_is_video = true %}
+{% endif %}
+{% assign bimg = block.settings.image %}
+{% assign bm = block.settings.mobile_image | default: bimg %}
+{% assign bmvid = block.settings.video_mobile %}
+{% if bmvid == blank %}
+  {% assign bmvid = bvid %}
+{% endif %}
+{% assign vtitle = img_alt | default: 'Portrait video' %}
+
+{% if media_is_video %}
+  {% assign poster_d = '' %}
+  {% if bimg != blank %}
+    {% assign poster_d = bimg | image_url: width: 1920 %}
+  {% elsif bvid.preview_image != blank %}
+    {% assign poster_d = bvid.preview_image | image_url: width: 1920 %}
+  {% endif %}
+  {% assign poster_m = '' %}
+  {% if block.settings.mobile_image != blank %}
+    {% assign poster_m = block.settings.mobile_image | image_url: width: 1200 %}
+  {% elsif bimg != blank %}
+    {% assign poster_m = bimg | image_url: width: 1200 %}
+  {% elsif bmvid.preview_image != blank %}
+    {% assign poster_m = bmvid.preview_image | image_url: width: 1200 %}
+  {% endif %}
+  <div class="ak-campaign-portrait__video-shell is-hidden-mobile-only">
+    <video
+      class="ak-campaign-portrait__video"
+      controls
+      playsinline
+      preload="metadata"
+      {% if poster_d != blank %}poster="{{ poster_d }}"{% endif %}
+      title="{{ vtitle | escape }}"
+    >
+      {% for source in bvid.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="ak-campaign-portrait__video-shell is-hidden-desktop-only">
+    <video
+      class="ak-campaign-portrait__video"
+      controls
+      playsinline
+      preload="metadata"
+      {% if poster_m != blank %}poster="{{ poster_m }}"{% endif %}
+      title="{{ vtitle | escape }}"
+    >
+      {% for source in bmvid.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+      Your browser does not support the video tag.
+    </video>
+  </div>
+{% else %}
+  {% if bimg != blank %}
+    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+  {% else %}
+    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+  {% endif %}
+  {% if bm != blank %}
+    <div class="is-hidden-desktop-only">
+      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
+    </div>
+  {% elsif bimg != blank %}
+    <div class="is-hidden-desktop-only">
+      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
+    </div>
+  {% else %}
+    <div class="is-hidden-desktop-only">
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {% endif %}
+{% endif %}

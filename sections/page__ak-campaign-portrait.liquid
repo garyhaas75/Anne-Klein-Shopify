@@ -1,6 +1,6 @@
 {% comment %}
-  AK Campaign — full-bleed model portrait(s). Stack one or more blocks (name + role on image).
-  WCAG 2.2 AA: landmark, image alt, bottom scrim for text contrast, one link per card when URL set, focus-visible.
+  AK Campaign — full-bleed model portrait(s). Each block: image or Shopify video + name/role overlay.
+  WCAG 2.2 AA: landmark, alt/video title, scrim for contrast, whole-card link for image only, video uses native controls (no autoplay), focus-visible.
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -35,6 +35,10 @@
   {% else %}{% assign cap_justify = 'flex-end' %}
 {% endcase %}
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
+{% assign portrait_natural_height = false %}
+{% if img_fit == 'natural' %}
+  {% assign portrait_natural_height = true %}
+{% endif %}
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign ar_d = section.settings.portrait_aspect_desktop | default: 'none' %}
 {% assign ar_m = section.settings.portrait_aspect_mobile | default: 'none' %}
@@ -100,20 +104,24 @@
     background-color: {{ section.settings.image_letterbox_color | default: '#1a1a1a' }};
   }
   @media only screen and (min-width: 799px) {
-    {% if ar_d != blank and ar_d != 'none' %}
-    #shopify-section-{{ id }} .ak-campaign-portrait__card {
-      aspect-ratio: {{ ar_d }};
-    }
+    {% if portrait_natural_height == false %}
+      {% if ar_d != blank and ar_d != 'none' %}
+      #shopify-section-{{ id }} .ak-campaign-portrait__card {
+        aspect-ratio: {{ ar_d }};
+      }
+      {% endif %}
     {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-campaign-portrait__card {
       min-height: {{ section.settings.portrait_min_height_mobile | default: min_h }}px;
     }
-    {% if ar_m != blank and ar_m != 'none' %}
-    #shopify-section-{{ id }} .ak-campaign-portrait__card {
-      aspect-ratio: {{ ar_m }};
-    }
+    {% if portrait_natural_height == false %}
+      {% if ar_m != blank and ar_m != 'none' %}
+      #shopify-section-{{ id }} .ak-campaign-portrait__card {
+        aspect-ratio: {{ ar_m }};
+      }
+      {% endif %}
     {% endif %}
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__media {
@@ -145,12 +153,21 @@
     position: absolute;
     inset: 0;
   }
-  #shopify-section-{{ id }} .ak-campaign-portrait__media img,
-  #shopify-section-{{ id }} .ak-campaign-portrait__media .placeholder-svg {
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .ak-campaign-portrait__video-shell {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__media img,
+  #shopify-section-{{ id }} .ak-campaign-portrait__media .placeholder-svg,
+  #shopify-section-{{ id }} .ak-campaign-portrait__media video.ak-campaign-portrait__video {
+    width: 100%;
+    height: 100%;
+    {% unless portrait_natural_height %}
     object-fit: {{ img_fit }};
     object-position: {{ img_pos }};
+    {% endunless %}
     display: block;
   }
   #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only { display: none; }
@@ -165,13 +182,80 @@
       margin: 0;
     }
     #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only img,
-    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only .placeholder-svg {
+    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only .placeholder-svg,
+    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only video.ak-campaign-portrait__video {
       width: 100% !important;
       max-width: none;
       margin-left: 0 !important;
       margin-right: 0 !important;
+      {% if portrait_natural_height %}
+      height: auto !important;
+      {% endif %}
+    }
+    #shopify-section-{{ id }} .ak-campaign-portrait__media .is-hidden-desktop-only .ak-campaign-portrait__video-shell {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      margin: 0;
     }
   }
+  {% if portrait_natural_height %}
+  /* Natural height: image sets card height (width 100%, height auto). Ignores aspect ratio settings. Focal point has no effect. */
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media > .placeholder-svg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media .image-element__wrap,
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media .is-hidden-desktop-only .image-element__wrap {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    margin: 0;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media .is-hidden-desktop-only {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media .ak-campaign-portrait__video-shell {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media img,
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media .placeholder-svg,
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__media video.ak-campaign-portrait__video {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__caption {
+    position: absolute;
+    inset: 0;
+    min-height: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }}.ak-campaign-portrait-section--natural-height .ak-campaign-portrait__caption {
+      min-height: 0 !important;
+    }
+  }
+  {% endif %}
   #shopify-section-{{ id }} .ak-campaign-portrait__scrim {
     position: absolute;
     left: 0;
@@ -248,6 +332,19 @@
     color: {{ text_color }};
     opacity: 0.95;
   }
+  #shopify-section-{{ id }} .ak-campaign-portrait__video-link-wrap {
+    margin: 0.75rem 0 0;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__video-text-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    font-weight: 600;
+  }
+  #shopify-section-{{ id }} .ak-campaign-portrait__video-text-link:focus-visible {
+    outline: 3px solid {{ text_color }};
+    outline-offset: 2px;
+  }
   #shopify-section-{{ id }} .ak-campaign-portrait__card-link {
     text-decoration: none;
     color: inherit;
@@ -273,7 +370,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section ak-campaign-portrait-section--text-{{ cap_v }} {% if layout_desktop == 'two_columns' %}ak-campaign-portrait-section--two-columns{% endif %} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-portrait-section ak-campaign-portrait-section--text-{{ cap_v }} {% if layout_desktop == 'two_columns' %}ak-campaign-portrait-section--two-columns{% endif %}{% if portrait_natural_height %} ak-campaign-portrait-section--natural-height{% endif %} {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {% if section.settings.section_aria_label != blank %}
@@ -287,16 +384,22 @@
     <ul class="ak-campaign-portrait__list ak-campaign-portrait__list--{{ layout_desktop | replace: '_', '-' }}">
       {% for block in section.blocks %}
         {% if block.type == 'portrait' %}
-          {% assign bimg = block.settings.image %}
-          {% assign bm = block.settings.mobile_image | default: bimg %}
           {% assign nm = block.settings.name %}
           {% assign rl = block.settings.role %}
           {% assign lnk = block.settings.link_url %}
           {% assign hl = block.settings.heading_level | default: 'h3' %}
           {% assign img_alt = block.settings.image_alt | default: nm | default: 'Model portrait' %}
+          {% assign media_is_video = false %}
+          {% if block.settings.media_type == 'video' and block.settings.video != blank %}
+            {% assign media_is_video = true %}
+          {% endif %}
+          {% assign card_as_link = false %}
+          {% if lnk != blank and media_is_video == false %}
+            {% assign card_as_link = true %}
+          {% endif %}
 
           <li class="ak-campaign-portrait__item" {{ block.shopify_attributes }}>
-            {% if lnk != blank %}
+            {% if card_as_link %}
               <a
                 href="{{ lnk }}"
                 class="ak-campaign-portrait__card ak-campaign-portrait__card-link"
@@ -311,24 +414,7 @@
                 {% endif %}
               >
                 <div class="ak-campaign-portrait__media" aria-hidden="true">
-                  {% if bimg != blank %}
-                    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
-                  {% else %}
-                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
-                  {% endif %}
-                  {% if bm != blank %}
-                    <div class="is-hidden-desktop-only">
-                      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
-                    </div>
-                  {% elsif bimg != blank %}
-                    <div class="is-hidden-desktop-only">
-                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
-                    </div>
-                  {% else %}
-                    <div class="is-hidden-desktop-only">
-                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                    </div>
-                  {% endif %}
+                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt %}
                 </div>
                 <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
                 <div class="ak-campaign-portrait__caption">
@@ -348,25 +434,8 @@
               </a>
             {% else %}
               <div class="ak-campaign-portrait__card">
-                <div class="ak-campaign-portrait__media">
-                  {% if bimg != blank %}
-                    {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
-                  {% else %}
-                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
-                  {% endif %}
-                  {% if bm != blank %}
-                    <div class="is-hidden-desktop-only">
-                      {% include 'image-element', image: bm, alt: img_alt, stretch_width: true %}
-                    </div>
-                  {% elsif bimg != blank %}
-                    <div class="is-hidden-desktop-only">
-                      {% include 'image-element', image: bimg, alt: img_alt, stretch_width: true %}
-                    </div>
-                  {% else %}
-                    <div class="is-hidden-desktop-only">
-                      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                    </div>
-                  {% endif %}
+                <div class="ak-campaign-portrait__media"{% unless media_is_video %} aria-hidden="true"{% endunless %}>
+                  {% render 'ak-campaign-portrait-media', block: block, img_alt: img_alt %}
                 </div>
                 <div class="ak-campaign-portrait__scrim" aria-hidden="true"></div>
                 <div class="ak-campaign-portrait__caption">
@@ -380,7 +449,16 @@
                     {% endif %}
                   {% endif %}
                   {% if rl != blank %}
-                    <p class="ak-campaign-portrait__role">{{ rl }}</p>
+                    <p class="ak-campaign-portrait__role" {% if nm != blank %}id="ak-portrait-role-{{ block.id }}"{% endif %}>{{ rl }}</p>
+                  {% endif %}
+                  {% if media_is_video and lnk != blank %}
+                    <p class="ak-campaign-portrait__video-link-wrap">
+                      <a
+                        href="{{ lnk }}"
+                        class="ak-campaign-portrait__video-text-link"
+                        {% if block.settings.link_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                      >{% if block.settings.link_title != blank %}{{ block.settings.link_title }}{% else %}Learn more{% endif %}</a>
+                    </p>
                   {% endif %}
                 </div>
               </div>
@@ -475,10 +553,11 @@
       "id": "image_object_fit",
       "label": "Image fit",
       "default": "cover",
-      "info": "Cover fills the frame (may crop). Contain shows the full image (letterbox). Fill stretches.",
+      "info": "Cover crops inside the frame. Contain letterboxes inside min height. Natural height scales width to 100% and height by aspect ratio (min height is a floor). Fill stretches (not proportional).",
       "options": [
         { "value": "cover", "label": "Cover (fill frame)" },
-        { "value": "contain", "label": "Contain (show full image)" },
+        { "value": "contain", "label": "Contain (full image, letterbox)" },
+        { "value": "natural", "label": "Natural height (proportional to width)" },
         { "value": "fill", "label": "Fill (stretch)" }
       ]
     },
@@ -487,6 +566,7 @@
       "id": "image_object_position",
       "label": "Image focal point",
       "default": "center",
+      "info": "Used for Cover, Contain, and Fill. Not used for Natural height.",
       "options": [
         { "value": "center", "label": "Center" },
         { "value": "top", "label": "Top" },
@@ -761,22 +841,44 @@
       "name": "Portrait",
       "settings": [
         {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ]
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (desktop)",
+          "info": "Shopify-hosted file. Native controls (play, pause, seek, volume, fullscreen). No autoplay."
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Video (mobile)",
+          "info": "Optional. Uses desktop video if empty."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image (desktop)",
-          "info": "Full-bleed; tall editorial crop works well."
+          "info": "Image mode: main art. Video mode: optional poster before play; falls back to video preview."
         },
         {
           "type": "image_picker",
           "id": "mobile_image",
           "label": "Image (mobile)",
-          "info": "Optional; uses desktop image if blank."
+          "info": "Image mode: optional mobile art. Video mode: optional mobile poster."
         },
         {
           "type": "text",
           "id": "image_alt",
-          "label": "Image alt text",
-          "info": "Describe the photo. Falls back to name if blank."
+          "label": "Image / video description",
+          "info": "Alt text for images; also used as the video accessible name (title). Falls back to name if blank."
         },
         {
           "type": "text",
@@ -807,7 +909,14 @@
           "type": "url",
           "id": "link_url",
           "label": "Link (optional)",
-          "info": "Makes the whole portrait one link."
+          "info": "Image: whole card is one link. Video: use link label below (cannot wrap the player)."
+        },
+        {
+          "type": "text",
+          "id": "link_title",
+          "label": "Link label (with video + URL)",
+          "default": "Learn more",
+          "info": "Visible text link in the caption when media is video and a URL is set."
         },
         {
           "type": "checkbox",
