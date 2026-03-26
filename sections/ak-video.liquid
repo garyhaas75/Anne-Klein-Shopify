@@ -427,7 +427,8 @@
   #ak-video-{{ section.id }} {
     position: relative;
     overflow: hidden;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
     margin-top: 0;
     margin-bottom: 0;
     box-sizing: border-box;
@@ -437,6 +438,8 @@
   }
   @media (min-width: 799px) {
     #ak-video-{{ section.id }} {
+      padding-top: {{ sec_pad_t }}px;
+      padding-bottom: {{ sec_pad_b }}px;
       {% if sw_d > 0 %}
       max-width: {{ sw_d }}px;
       margin-left: auto;
