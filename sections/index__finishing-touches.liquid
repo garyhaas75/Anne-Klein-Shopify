@@ -495,6 +495,9 @@
   function unbindTrackpadScroll($gallery) {
     var wheel = $gallery.data('akFtWheel');
     if (!wheel || !wheel.handler) return;
+    if (wheel.rafId != null) {
+      cancelAnimationFrame(wheel.rafId);
+    }
     var el = $gallery[0];
     if (el) el.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
     if (wheel.viewportEl && wheel.viewportEl !== el) {
@@ -511,50 +514,124 @@
     unbindTrackpadScroll($gallery);
 
     var accumX = 0;
-    var threshold = 55;
-    var locked = false;
-    var lockTimer;
+    var pixelsPerCellStep = 28;
     var resetTimer;
+    var viewport = $gallery.find('.flickity-viewport')[0];
+
+    var wheelState = { handler: null, viewportEl: null, rafId: null };
+
+    function toPixels(dx, e) {
+      var d = dx;
+      if (e.deltaMode === 1) {
+        d *= 16;
+      } else if (e.deltaMode === 2) {
+        d *= (viewport && viewport.clientWidth) ? viewport.clientWidth : 800;
+      }
+      return d;
+    }
+
+    function scrollLeftFromFlickity(fk) {
+      return -fk.x;
+    }
+
+    function getLeadingCellIndex(fk) {
+      var left = scrollLeftFromFlickity(fk);
+      var cells = fk.cells;
+      if (!cells || !cells.length) return 0;
+      var idx = 0;
+      for (var i = 0; i < cells.length; i++) {
+        if (cells[i].x <= left + 0.5) {
+          idx = i;
+        } else {
+          break;
+        }
+      }
+      return idx;
+    }
+
+    function cellToSlideIndex(fk, cell) {
+      for (var s = 0; s < fk.slides.length; s++) {
+        var slide = fk.slides[s];
+        for (var c = 0; c < slide.cells.length; c++) {
+          if (slide.cells[c] === cell) return s;
+        }
+      }
+      return -1;
+    }
+
+    function moveOneCell(fk, dir) {
+      var cells = fk.cells;
+      if (!cells || !cells.length) return false;
+      var i = getLeadingCellIndex(fk);
+      var next = i + dir;
+      if (next < 0 || next >= cells.length) return false;
+      var targetCell = cells[next];
+      if (typeof fk.selectCell === 'function') {
+        fk.selectCell(targetCell.element, true, false);
+        return true;
+      }
+      var si = cellToSlideIndex(fk, targetCell);
+      if (si >= 0) {
+        $gallery.flickity('select', si, true, false);
+        return true;
+      }
+      return false;
+    }
+
+    function tickScroll() {
+      wheelState.rafId = null;
+      var fk = $gallery.data('flickity');
+      if (!fk) return;
+      if (accumX >= pixelsPerCellStep) {
+        accumX -= pixelsPerCellStep;
+        moveOneCell(fk, 1);
+      } else if (accumX <= -pixelsPerCellStep) {
+        accumX += pixelsPerCellStep;
+        moveOneCell(fk, -1);
+      }
+      if (Math.abs(accumX) >= pixelsPerCellStep) {
+        wheelState.rafId = requestAnimationFrame(tickScroll);
+      }
+    }
 
     function handleWheel(e) {
       if (e.ctrlKey || e.metaKey) return;
 
-      var absX = Math.abs(e.deltaX);
-      var absY = Math.abs(e.deltaY);
-
-      if (absX <= absY) return;
+      var dx = e.deltaX;
+      var dy = e.deltaY;
+      if (e.shiftKey) {
+        dx = dy;
+        dy = e.deltaX;
+      }
+      if (Math.abs(dx) <= Math.abs(dy)) return;
 
       e.preventDefault();
 
-      if (locked) return;
-
-      accumX += e.deltaX;
+      accumX += toPixels(dx, e);
       clearTimeout(resetTimer);
-      resetTimer = setTimeout(function() { accumX = 0; }, 200);
+      resetTimer = setTimeout(function() {
+        accumX = 0;
+        if (wheelState.rafId != null) {
+          cancelAnimationFrame(wheelState.rafId);
+          wheelState.rafId = null;
+        }
+      }, 220);
 
-      if (accumX > threshold) {
-        accumX = 0;
-        locked = true;
-        $gallery.flickity('next');
-        clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 700);
-      } else if (accumX < -threshold) {
-        accumX = 0;
-        locked = true;
-        $gallery.flickity('previous');
-        clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 700);
+      if (wheelState.rafId == null && Math.abs(accumX) >= pixelsPerCellStep) {
+        wheelState.rafId = requestAnimationFrame(tickScroll);
       }
     }
 
+    wheelState.handler = handleWheel;
+
     el.addEventListener('wheel', handleWheel, wheelListenerOpts);
 
-    var viewport = $gallery.find('.flickity-viewport')[0];
     var viewportEl = viewport && viewport !== el ? viewport : null;
     if (viewportEl) {
       viewportEl.addEventListener('wheel', handleWheel, wheelListenerOpts);
     }
-    $gallery.data('akFtWheel', { handler: handleWheel, viewportEl: viewportEl });
+    wheelState.viewportEl = viewportEl;
+    $gallery.data('akFtWheel', wheelState);
   }
 
   if (MOBILE_MQ.addEventListener) {
