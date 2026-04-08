@@ -514,11 +514,31 @@
     unbindTrackpadScroll($gallery);
 
     var accumX = 0;
-    var pixelsPerCellStep = 28;
+    var pixelsPerCellStep = 10;
     var resetTimer;
     var viewport = $gallery.find('.flickity-viewport')[0];
 
     var wheelState = { handler: null, viewportEl: null, rafId: null };
+
+    function readWheelDeltas(e) {
+      var dx = e.deltaX;
+      var dy = e.deltaY;
+      if (typeof dx !== 'number' || (dx === 0 && typeof e.wheelDeltaX === 'number')) {
+        if (e.wheelDeltaX) dx = -e.wheelDeltaX / 3;
+      }
+      if (typeof dy !== 'number' || (dy === 0 && typeof e.wheelDeltaY === 'number')) {
+        if (e.wheelDeltaY) dy = -e.wheelDeltaY / 3;
+      }
+      return { dx: dx || 0, dy: dy || 0 };
+    }
+
+    function isMostlyHorizontalScroll(dx, dy) {
+      var adx = Math.abs(dx);
+      var ady = Math.abs(dy);
+      if (adx + ady < 0.01) return false;
+      if (adx >= ady) return true;
+      return adx >= 1.2 && adx >= ady * 0.55;
+    }
 
     function toPixels(dx, e) {
       var d = dx;
@@ -597,13 +617,14 @@
     function handleWheel(e) {
       if (e.ctrlKey || e.metaKey) return;
 
-      var dx = e.deltaX;
-      var dy = e.deltaY;
+      var w = readWheelDeltas(e);
+      var dx = w.dx;
+      var dy = w.dy;
       if (e.shiftKey) {
-        dx = dy;
-        dy = e.deltaX;
+        dx = w.dy;
+        dy = w.dx;
       }
-      if (Math.abs(dx) <= Math.abs(dy)) return;
+      if (!isMostlyHorizontalScroll(dx, dy)) return;
 
       e.preventDefault();
 
@@ -615,7 +636,7 @@
           cancelAnimationFrame(wheelState.rafId);
           wheelState.rafId = null;
         }
-      }, 220);
+      }, 450);
 
       if (wheelState.rafId == null && Math.abs(accumX) >= pixelsPerCellStep) {
         wheelState.rafId = requestAnimationFrame(tickScroll);
