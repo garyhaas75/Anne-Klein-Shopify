@@ -513,134 +513,92 @@
     if (!el) return;
     unbindTrackpadScroll($gallery);
 
-    var accumX = 0;
-    var pixelsPerCellStep = 10;
-    var resetTimer;
+    var settleTimer;
     var viewport = $gallery.find('.flickity-viewport')[0];
-
     var wheelState = { handler: null, viewportEl: null, rafId: null };
+    var pendingDelta = 0;
 
-    function readWheelDeltas(e) {
-      var dx = e.deltaX;
-      var dy = e.deltaY;
-      if (typeof dx !== 'number' || (dx === 0 && typeof e.wheelDeltaX === 'number')) {
-        if (e.wheelDeltaX) dx = -e.wheelDeltaX / 3;
+    function getNearestSlideIndex(fk) {
+      var slides = fk.slides;
+      if (!slides || !slides.length) return 0;
+      var best = 0;
+      var bestDist = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var d = Math.abs(fk.x - slides[i].target);
+        if (d < bestDist) { bestDist = d; best = i; }
       }
-      if (typeof dy !== 'number' || (dy === 0 && typeof e.wheelDeltaY === 'number')) {
-        if (e.wheelDeltaY) dy = -e.wheelDeltaY / 3;
-      }
-      return { dx: dx || 0, dy: dy || 0 };
+      return best;
     }
 
-    function isMostlyHorizontalScroll(dx, dy) {
-      var adx = Math.abs(dx);
-      var ady = Math.abs(dy);
-      if (adx + ady < 0.01) return false;
-      if (adx >= ady) return true;
-      return adx >= 1.2 && adx >= ady * 0.55;
-    }
-
-    function toPixels(dx, e) {
-      var d = dx;
-      if (e.deltaMode === 1) {
-        d *= 16;
-      } else if (e.deltaMode === 2) {
-        d *= (viewport && viewport.clientWidth) ? viewport.clientWidth : 800;
-      }
-      return d;
-    }
-
-    function scrollLeftFromFlickity(fk) {
-      return -fk.x;
-    }
-
-    function getLeadingCellIndex(fk) {
-      var left = scrollLeftFromFlickity(fk);
-      var cells = fk.cells;
-      if (!cells || !cells.length) return 0;
-      var idx = 0;
-      for (var i = 0; i < cells.length; i++) {
-        if (cells[i].x <= left + 0.5) {
-          idx = i;
-        } else {
-          break;
-        }
-      }
-      return idx;
-    }
-
-    function cellToSlideIndex(fk, cell) {
-      for (var s = 0; s < fk.slides.length; s++) {
-        var slide = fk.slides[s];
-        for (var c = 0; c < slide.cells.length; c++) {
-          if (slide.cells[c] === cell) return s;
-        }
-      }
-      return -1;
-    }
-
-    function moveOneCell(fk, dir) {
-      var cells = fk.cells;
-      if (!cells || !cells.length) return false;
-      var i = getLeadingCellIndex(fk);
-      var next = i + dir;
-      if (next < 0 || next >= cells.length) return false;
-      var targetCell = cells[next];
-      if (typeof fk.selectCell === 'function') {
-        fk.selectCell(targetCell.element, true, false);
-        return true;
-      }
-      var si = cellToSlideIndex(fk, targetCell);
-      if (si >= 0) {
-        $gallery.flickity('select', si, true, false);
-        return true;
-      }
-      return false;
-    }
-
-    function tickScroll() {
+    function applyScroll() {
       wheelState.rafId = null;
       var fk = $gallery.data('flickity');
+      if (!fk || pendingDelta === 0) return;
+
+      var delta = pendingDelta;
+      pendingDelta = 0;
+
+      var newX = fk.x - delta;
+
+      var slides = fk.slides;
+      if (slides && slides.length) {
+        var maxX = slides[0].target;
+        var minX = slides[slides.length - 1].target;
+        if (newX > maxX) newX = maxX;
+        if (newX < minX) newX = minX;
+      }
+
+      fk.x = newX;
+      fk.positionSlider();
+    }
+
+    function settleAfterScroll() {
+      var fk = $gallery.data('flickity');
       if (!fk) return;
-      if (accumX >= pixelsPerCellStep) {
-        accumX -= pixelsPerCellStep;
-        moveOneCell(fk, 1);
-      } else if (accumX <= -pixelsPerCellStep) {
-        accumX += pixelsPerCellStep;
-        moveOneCell(fk, -1);
-      }
-      if (Math.abs(accumX) >= pixelsPerCellStep) {
-        wheelState.rafId = requestAnimationFrame(tickScroll);
-      }
+      var idx = getNearestSlideIndex(fk);
+      $gallery.flickity('select', idx, false, false);
     }
 
     function handleWheel(e) {
       if (e.ctrlKey || e.metaKey) return;
 
-      var w = readWheelDeltas(e);
-      var dx = w.dx;
-      var dy = w.dy;
-      if (e.shiftKey) {
-        dx = w.dy;
-        dy = w.dx;
+      var dx = e.deltaX || 0;
+      var dy = e.deltaY || 0;
+
+      if (typeof dx !== 'number' || (dx === 0 && typeof e.wheelDeltaX === 'number' && e.wheelDeltaX)) {
+        dx = -e.wheelDeltaX / 3;
       }
-      if (!isMostlyHorizontalScroll(dx, dy)) return;
+
+      if (e.shiftKey && Math.abs(dy) > Math.abs(dx)) {
+        dx = dy; dy = 0;
+      }
+
+      var adx = Math.abs(dx);
+      var ady = Math.abs(dy);
+      if (adx < 0.5) return;
+      if (adx < ady * 0.4) return;
 
       e.preventDefault();
 
-      accumX += toPixels(dx, e);
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(function() {
-        accumX = 0;
+      var pxDelta = dx;
+      if (e.deltaMode === 1) pxDelta *= 16;
+      else if (e.deltaMode === 2) pxDelta *= (viewport ? viewport.clientWidth : 800);
+
+      pendingDelta += pxDelta;
+
+      if (wheelState.rafId == null) {
+        wheelState.rafId = requestAnimationFrame(applyScroll);
+      }
+
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function() {
+        pendingDelta = 0;
         if (wheelState.rafId != null) {
           cancelAnimationFrame(wheelState.rafId);
           wheelState.rafId = null;
         }
-      }, 450);
-
-      if (wheelState.rafId == null && Math.abs(accumX) >= pixelsPerCellStep) {
-        wheelState.rafId = requestAnimationFrame(tickScroll);
-      }
+        settleAfterScroll();
+      }, 300);
     }
 
     wheelState.handler = handleWheel;
