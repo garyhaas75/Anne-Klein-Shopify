@@ -498,6 +498,9 @@
     if (wheel.rafId != null) {
       cancelAnimationFrame(wheel.rafId);
     }
+    if (wheel.settleTimer != null) {
+      clearTimeout(wheel.settleTimer);
+    }
     var el = $gallery[0];
     if (el) el.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
     if (wheel.viewportEl && wheel.viewportEl !== el) {
@@ -513,10 +516,11 @@
     if (!el) return;
     unbindTrackpadScroll($gallery);
 
-    var settleTimer;
     var viewport = $gallery.find('.flickity-viewport')[0];
-    var wheelState = { handler: null, viewportEl: null, rafId: null };
+    var wheelState = { handler: null, viewportEl: null, rafId: null, settleTimer: null };
     var pendingDelta = 0;
+    var scrollScale = 0.28;
+    var maxPixelsPerFrame = 22;
 
     function getNearestSlideIndex(fk) {
       var slides = fk.slides;
@@ -533,12 +537,20 @@
     function applyScroll() {
       wheelState.rafId = null;
       var fk = $gallery.data('flickity');
-      if (!fk || pendingDelta === 0) return;
+      if (!fk) return;
 
-      var delta = pendingDelta;
-      pendingDelta = 0;
+      if (Math.abs(pendingDelta) < 0.25) {
+        pendingDelta = 0;
+        return;
+      }
 
-      var newX = fk.x - delta;
+      var step = pendingDelta;
+      if (Math.abs(step) > maxPixelsPerFrame) {
+        step = maxPixelsPerFrame * (step > 0 ? 1 : -1);
+      }
+      pendingDelta -= step;
+
+      var newX = fk.x - step;
 
       var slides = fk.slides;
       if (slides && slides.length) {
@@ -546,10 +558,17 @@
         var minX = slides[slides.length - 1].target;
         if (newX > maxX) newX = maxX;
         if (newX < minX) newX = minX;
+        if (newX === maxX || newX === minX) {
+          pendingDelta = 0;
+        }
       }
 
       fk.x = newX;
       fk.positionSlider();
+
+      if (Math.abs(pendingDelta) >= 0.25) {
+        wheelState.rafId = requestAnimationFrame(applyScroll);
+      }
     }
 
     function settleAfterScroll() {
@@ -584,21 +603,22 @@
       if (e.deltaMode === 1) pxDelta *= 16;
       else if (e.deltaMode === 2) pxDelta *= (viewport ? viewport.clientWidth : 800);
 
-      pendingDelta += pxDelta;
+      pendingDelta += pxDelta * scrollScale;
 
       if (wheelState.rafId == null) {
         wheelState.rafId = requestAnimationFrame(applyScroll);
       }
 
-      clearTimeout(settleTimer);
-      settleTimer = setTimeout(function() {
+      clearTimeout(wheelState.settleTimer);
+      wheelState.settleTimer = setTimeout(function() {
+        wheelState.settleTimer = null;
         pendingDelta = 0;
         if (wheelState.rafId != null) {
           cancelAnimationFrame(wheelState.rafId);
           wheelState.rafId = null;
         }
         settleAfterScroll();
-      }, 300);
+      }, 380);
     }
 
     wheelState.handler = handleWheel;
