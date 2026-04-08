@@ -511,7 +511,7 @@
     unbindTrackpadScroll($gallery);
 
     var accumX = 0;
-    var threshold = 20;
+    var threshold = 55;
     var locked = false;
     var lockTimer;
     var resetTimer;
@@ -530,20 +530,20 @@
 
       accumX += e.deltaX;
       clearTimeout(resetTimer);
-      resetTimer = setTimeout(function() { accumX = 0; }, 150);
+      resetTimer = setTimeout(function() { accumX = 0; }, 200);
 
       if (accumX > threshold) {
         accumX = 0;
         locked = true;
         $gallery.flickity('next');
         clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 350);
+        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 700);
       } else if (accumX < -threshold) {
         accumX = 0;
         locked = true;
         $gallery.flickity('previous');
         clearTimeout(lockTimer);
-        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 350);
+        lockTimer = setTimeout(function() { locked = false; accumX = 0; }, 700);
       }
     }
 
