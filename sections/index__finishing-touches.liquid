@@ -143,6 +143,34 @@
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-viewport {
     min-height: 200px;
   }
+  /* Desktop: native horizontal scroll — browser trackpad inertia (Flickity uses transforms; wheel JS cannot match this). */
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      width: 100%;
+      min-height: 200px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      touch-action: pan-x pinch-zoom;
+      scrollbar-gutter: stable;
+    }
+    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery .gallery-cell {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+    }
+  }
+  @media only screen and (min-width: 799px) and (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery {
+      scroll-behavior: auto;
+    }
+  }
   /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px). !important overrides theme global .flickity-page-dots { display: block !important } on medium-down. */
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
@@ -173,7 +201,8 @@
     </div>
   {% endif %}
   <div class="container">
-    <div class="one-whole column has-column-padding-bottom featured-collection layout--slider is-justify-center is-flex is-flex-wrap is-flex-row">
+    {% comment %} No layout--slider: global jsFeaturedCollection would init a second Flickity here. Desktop uses native overflow-x scroll for real trackpad behavior. {% endcomment %}
+    <div class="one-whole column has-column-padding-bottom featured-collection ak-ft-carousel-host is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
         <div class="ak-finishing-touches__carousel-wrap">
         {% comment %} data-mobile-columns must match gallery-cell medium-down--one-half (2 cols ≤798px). {% endcomment %}
@@ -332,6 +361,144 @@
     return Math.max(1, cap);
   }
 
+  function teardownNativeCarousel($section, $gallery) {
+    var n = $gallery.data('akFtNative');
+    if (n && typeof n.teardown === 'function') {
+      n.teardown();
+    }
+    $gallery.removeData('akFtNative');
+    $section.removeClass('ak-ft--native-desktop');
+  }
+
+  function initNativeDesktopCarousel($section, $gallery, opts) {
+    var groupSize = opts.groupSize;
+    var showNav = opts.showNav;
+    var scroller = $gallery[0];
+    var $cells = $gallery.find('.gallery-cell');
+    var totalCells = $cells.length;
+    var reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    $section.addClass('ak-ft--native-desktop');
+    labelCells($gallery);
+    insertLiveRegion($gallery, $section);
+
+    var resumeRaw = $gallery.data('akFtResumeCellIndex');
+    $gallery.removeData('akFtResumeCellIndex');
+    if (resumeRaw != null && resumeRaw !== '') {
+      var rIdx = parseInt(resumeRaw, 10);
+      if (!isNaN(rIdx) && rIdx > 0 && rIdx < totalCells) {
+        requestAnimationFrame(function() {
+          var el = $cells.get(rIdx);
+          if (el) el.scrollIntoView({ inline: 'start', block: 'nearest', behavior: reducedMotionMq.matches ? 'auto' : 'smooth' });
+        });
+      }
+    }
+
+    function scrollBehavior() {
+      return reducedMotionMq.matches ? 'auto' : 'smooth';
+    }
+
+    function horizontalScrollAmount() {
+      return Math.max(120, Math.floor(scroller.clientWidth * 0.82));
+    }
+
+    var $wrap = $gallery.closest('.ak-finishing-touches__carousel-wrap');
+    var $nav;
+    var $prev;
+    var $next;
+    var $dotsWrap;
+
+    if (showNav) {
+      var prevSvg = '<svg class="flickity-button-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>';
+      var nextSvg = '<svg class="flickity-button-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>';
+      $nav = jQuery('<nav class="ak-finishing-touches__nav" aria-label="Carousel navigation"></nav>');
+      $prev = jQuery('<button type="button" class="flickity-button flickity-prev-next-button previous"></button>').html(prevSvg);
+      $next = jQuery('<button type="button" class="flickity-button flickity-prev-next-button next"></button>').html(nextSvg);
+      $prev.attr('aria-label', 'Previous products');
+      $next.attr('aria-label', 'Next products');
+      $dotsWrap = jQuery('<div class="flickity-page-dots" role="tablist"></div>');
+      var numPages = Math.max(1, Math.ceil(totalCells / groupSize));
+      for (var p = 0; p < numPages; p++) {
+        var $dot = jQuery('<button type="button" class="dot" role="tab"></button>');
+        $dot.attr('aria-label', 'Go to page ' + (p + 1) + ' of ' + numPages);
+        $dotsWrap.append($dot);
+      }
+      $nav.append($prev, $dotsWrap, $next);
+      $wrap.append($nav);
+    }
+
+    function updateNativeNav() {
+      if (!showNav) return;
+      var maxS = scroller.scrollWidth - scroller.clientWidth;
+      var atStart = scroller.scrollLeft <= 2;
+      var atEnd = maxS <= 2 || scroller.scrollLeft >= maxS - 2;
+      $prev.attr('aria-disabled', atStart ? 'true' : 'false');
+      $next.attr('aria-disabled', atEnd ? 'true' : 'false');
+      var numPages = Math.max(1, Math.ceil(totalCells / groupSize));
+      var progress = maxS > 0 ? scroller.scrollLeft / maxS : 0;
+      var activePage = numPages <= 1 ? 0 : Math.min(numPages - 1, Math.round(progress * (numPages - 1)));
+      $dotsWrap.find('.dot').each(function(i) {
+        var on = i === activePage;
+        var $d = jQuery(this);
+        $d.attr('aria-selected', on ? 'true' : 'false');
+        $d.attr('tabindex', on ? '0' : '-1');
+        if (on) {
+          $d.attr('aria-current', 'true');
+        } else {
+          $d.removeAttr('aria-current');
+        }
+        $d.toggleClass('is-selected', on);
+      });
+      var $live = $section.find('.ak-finishing-touches__sr-status');
+      if ($live.length) {
+        $live.text((carouselLabel ? carouselLabel + ', ' : '') + 'Page ' + (activePage + 1) + ' of ' + numPages);
+      }
+    }
+
+    var scrollTick;
+    function onScroll() {
+      if (scrollTick) return;
+      scrollTick = requestAnimationFrame(function() {
+        scrollTick = null;
+        updateNativeNav();
+      });
+    }
+
+    if (showNav) {
+      $prev.on('click.akftnative', function() {
+        scroller.scrollBy({ left: -horizontalScrollAmount(), behavior: scrollBehavior() });
+      });
+      $next.on('click.akftnative', function() {
+        scroller.scrollBy({ left: horizontalScrollAmount(), behavior: scrollBehavior() });
+      });
+      $dotsWrap.find('.dot').each(function(pageIdx) {
+        jQuery(this).on('click.akftnative', function() {
+          var cellIdx = pageIdx * groupSize;
+          if (cellIdx >= totalCells) cellIdx = Math.max(0, totalCells - 1);
+          var target = $cells.get(cellIdx);
+          if (target) target.scrollIntoView({ inline: 'start', block: 'nearest', behavior: scrollBehavior() });
+        });
+      });
+    }
+
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+
+    $gallery.data('akFtNative', {
+      teardown: function() {
+        scroller.removeEventListener('scroll', onScroll);
+        if (showNav) {
+          $prev.off('.akftnative');
+          $next.off('.akftnative');
+          $dotsWrap.find('.dot').off('.akftnative');
+        }
+      }
+    });
+
+    setTimeout(function() {
+      updateNativeNav();
+    }, 50);
+  }
+
   function initFinishingTouchesCarousel() {
     if (typeof jQuery === 'undefined') return;
     var $section = jQuery('#shopify-section-' + sectionId);
@@ -346,8 +513,9 @@
     if (data.collection_style !== 'slider') return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
+
+    teardownNativeCarousel($section, $gallery);
     if ($gallery.hasClass('flickity-enabled')) {
-      unbindTrackpadScroll($gallery);
       $gallery.flickity('destroy');
     }
     $section.find('.ak-finishing-touches__nav').remove();
@@ -358,6 +526,11 @@
     var isMobile = MOBILE_MQ.matches;
     var groupSize = getEffectiveGroupSize(productsPer, productsLimit, isMobile, mobileColumns);
     var showNav = productsLimit > groupSize;
+
+    if (!isMobile) {
+      initNativeDesktopCarousel($section, $gallery, { groupSize: groupSize, showNav: showNav });
+      return;
+    }
 
     var resumeRaw = $gallery.data('akFtResumeCellIndex');
     var initialIndex = 0;
@@ -387,7 +560,6 @@
         ready: function() {
           setTimeout(function() {
             $gallery.flickity('resize');
-            bindTrackpadScroll($gallery);
           }, 500);
           moveNavBelowSlider($section);
           labelCells($gallery);
@@ -407,7 +579,7 @@
     var $section = jQuery('#shopify-section-' + sectionId);
     if (!$section.length) return;
     var $gallery = $section.find('.slider-gallery');
-    if (!$gallery.length || !$gallery.hasClass('flickity-enabled')) return;
+    if (!$gallery.length) return;
     var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
     if (!$dataEl.length) return;
     var data = {};
@@ -416,22 +588,44 @@
       data = typeof raw === 'object' ? raw : JSON.parse(raw);
     } catch (e) { return; }
     if (data.collection_style !== 'slider') return;
-    var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
-    var productsLimit = parseInt(data.products_limit, 10) || 0;
-    var mobileColumns = getMobileColumns($gallery);
-    var gNow = getEffectiveGroupSize(productsPer, productsLimit, MOBILE_MQ.matches, mobileColumns);
-    var gPrev = getEffectiveGroupSize(productsPer, productsLimit, !MOBILE_MQ.matches, mobileColumns);
-    if (gNow === gPrev) return;
 
-    var flkty = $gallery.data('flickity');
-    if (!flkty) return;
-    var cellIndex = 0;
-    var slide = flkty.selectedSlide;
-    if (slide && slide.cells && slide.cells.length && slide.cells[0].element) {
-      var idx = $gallery.find('.gallery-cell').index(slide.cells[0].element);
-      if (idx >= 0) cellIndex = idx;
+    var isMobile = MOBILE_MQ.matches;
+    var hasFlickity = $gallery.hasClass('flickity-enabled');
+    var hasNative = $section.hasClass('ak-ft--native-desktop');
+
+    var shouldReinit = false;
+    if (isMobile && hasNative) shouldReinit = true;
+    else if (!isMobile && hasFlickity) shouldReinit = true;
+    else if (isMobile && hasFlickity) {
+      var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
+      var productsLimit = parseInt(data.products_limit, 10) || 0;
+      var mobileColumns = getMobileColumns($gallery);
+      var gNow = getEffectiveGroupSize(productsPer, productsLimit, true, mobileColumns);
+      var gPrev = getEffectiveGroupSize(productsPer, productsLimit, false, mobileColumns);
+      if (gNow !== gPrev) shouldReinit = true;
     }
-    $gallery.data('akFtResumeCellIndex', cellIndex);
+
+    if (!shouldReinit) return;
+
+    if (hasFlickity) {
+      var flkty = $gallery.data('flickity');
+      var cellIndex = 0;
+      if (flkty && flkty.selectedSlide && flkty.selectedSlide.cells && flkty.selectedSlide.cells[0]) {
+        var elCell = flkty.selectedSlide.cells[0].element;
+        var idx = $gallery.find('.gallery-cell').index(elCell);
+        if (idx >= 0) cellIndex = idx;
+      }
+      $gallery.data('akFtResumeCellIndex', cellIndex);
+    } else if (hasNative) {
+      var sc = $gallery[0];
+      var sl = sc ? sc.scrollLeft : 0;
+      var best = 0;
+      $gallery.find('.gallery-cell').each(function(i) {
+        if (this.offsetLeft <= sl + 8) best = i;
+      });
+      $gallery.data('akFtResumeCellIndex', best);
+    }
+
     initFinishingTouchesCarousel();
   }
 
@@ -488,149 +682,6 @@
     if ($live.length && total > 0) {
       $live.text((carouselLabel ? carouselLabel + ', ' : '') + 'Page ' + (idx + 1) + ' of ' + total);
     }
-  }
-
-  var wheelListenerOpts = { passive: false };
-
-  function unbindTrackpadScroll($gallery) {
-    var wheel = $gallery.data('akFtWheel');
-    if (!wheel || !wheel.handler) return;
-    if (wheel.rafId != null) {
-      cancelAnimationFrame(wheel.rafId);
-    }
-    if (wheel.settleTimer != null) {
-      clearTimeout(wheel.settleTimer);
-    }
-    var el = $gallery[0];
-    if (el) el.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
-    if (wheel.viewportEl && wheel.viewportEl !== el) {
-      wheel.viewportEl.removeEventListener('wheel', wheel.handler, wheelListenerOpts);
-    }
-    $gallery.removeData('akFtWheel');
-  }
-
-  function bindTrackpadScroll($gallery) {
-    var flkty = $gallery.data('flickity');
-    if (!flkty) return;
-    var el = $gallery[0];
-    if (!el) return;
-    unbindTrackpadScroll($gallery);
-
-    var viewport = $gallery.find('.flickity-viewport')[0];
-    var wheelState = { handler: null, viewportEl: null, rafId: null, settleTimer: null };
-    var pendingDelta = 0;
-    var scrollScale = 0.28;
-    var maxPixelsPerFrame = 22;
-
-    function getNearestSlideIndex(fk) {
-      var slides = fk.slides;
-      if (!slides || !slides.length) return 0;
-      var best = 0;
-      var bestDist = Infinity;
-      for (var i = 0; i < slides.length; i++) {
-        var d = Math.abs(fk.x - slides[i].target);
-        if (d < bestDist) { bestDist = d; best = i; }
-      }
-      return best;
-    }
-
-    function applyScroll() {
-      wheelState.rafId = null;
-      var fk = $gallery.data('flickity');
-      if (!fk) return;
-
-      if (Math.abs(pendingDelta) < 0.25) {
-        pendingDelta = 0;
-        return;
-      }
-
-      var step = pendingDelta;
-      if (Math.abs(step) > maxPixelsPerFrame) {
-        step = maxPixelsPerFrame * (step > 0 ? 1 : -1);
-      }
-      pendingDelta -= step;
-
-      var newX = fk.x - step;
-
-      var slides = fk.slides;
-      if (slides && slides.length) {
-        var maxX = slides[0].target;
-        var minX = slides[slides.length - 1].target;
-        if (newX > maxX) newX = maxX;
-        if (newX < minX) newX = minX;
-        if (newX === maxX || newX === minX) {
-          pendingDelta = 0;
-        }
-      }
-
-      fk.x = newX;
-      fk.positionSlider();
-
-      if (Math.abs(pendingDelta) >= 0.25) {
-        wheelState.rafId = requestAnimationFrame(applyScroll);
-      }
-    }
-
-    function settleAfterScroll() {
-      var fk = $gallery.data('flickity');
-      if (!fk) return;
-      var idx = getNearestSlideIndex(fk);
-      $gallery.flickity('select', idx, false, false);
-    }
-
-    function handleWheel(e) {
-      if (e.ctrlKey || e.metaKey) return;
-
-      var dx = e.deltaX || 0;
-      var dy = e.deltaY || 0;
-
-      if (typeof dx !== 'number' || (dx === 0 && typeof e.wheelDeltaX === 'number' && e.wheelDeltaX)) {
-        dx = -e.wheelDeltaX / 3;
-      }
-
-      if (e.shiftKey && Math.abs(dy) > Math.abs(dx)) {
-        dx = dy; dy = 0;
-      }
-
-      var adx = Math.abs(dx);
-      var ady = Math.abs(dy);
-      if (adx < 0.5) return;
-      if (adx < ady * 0.4) return;
-
-      e.preventDefault();
-
-      var pxDelta = dx;
-      if (e.deltaMode === 1) pxDelta *= 16;
-      else if (e.deltaMode === 2) pxDelta *= (viewport ? viewport.clientWidth : 800);
-
-      pendingDelta += pxDelta * scrollScale;
-
-      if (wheelState.rafId == null) {
-        wheelState.rafId = requestAnimationFrame(applyScroll);
-      }
-
-      clearTimeout(wheelState.settleTimer);
-      wheelState.settleTimer = setTimeout(function() {
-        wheelState.settleTimer = null;
-        pendingDelta = 0;
-        if (wheelState.rafId != null) {
-          cancelAnimationFrame(wheelState.rafId);
-          wheelState.rafId = null;
-        }
-        settleAfterScroll();
-      }, 380);
-    }
-
-    wheelState.handler = handleWheel;
-
-    el.addEventListener('wheel', handleWheel, wheelListenerOpts);
-
-    var viewportEl = viewport && viewport !== el ? viewport : null;
-    if (viewportEl) {
-      viewportEl.addEventListener('wheel', handleWheel, wheelListenerOpts);
-    }
-    wheelState.viewportEl = viewportEl;
-    $gallery.data('akFtWheel', wheelState);
   }
 
   if (MOBILE_MQ.addEventListener) {
