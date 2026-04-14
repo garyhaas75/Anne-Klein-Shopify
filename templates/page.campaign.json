@@ -250,6 +250,7 @@
         "portrait1",
         "portrait2"
       ],
+      "disabled": true,
       "settings": {
         "width": "wide",
         "show_gutter": false,
