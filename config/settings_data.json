@@ -6430,7 +6430,7 @@
           "overlay_heading_font_weight": "400",
           "overlay_heading_underline": false,
           "overlay_cta": "DISCOVER",
-          "overlay_cta_font_size": 18,
+          "overlay_cta_font_size": 14,
           "overlay_cta_font_weight": "700",
           "overlay_cta_underline": true,
           "overlay_link": "shopify://pages/campaign-new",
