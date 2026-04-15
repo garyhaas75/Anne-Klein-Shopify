@@ -72,6 +72,15 @@ Target **branch `main`** only. Enable:
   3. Put **file key + node id(s)** in a **Liquid comment** at the top of the section file, and add/update the **plan table** row in `CAMPAIGN-LANDING-PLAN.md` with the same ids.
 - Do **not** invent layout from a one-line plan step if Figma MCP is available—**use it** for that section.
 
+## Responsive: nothing gets clipped
+
+- **Every** section, component, and layout must stay **fully within the viewport** at **every** width — desktop, tablet, mobile.
+- **Nothing** gets cut off, clipped, or extends beyond the viewable area. This is **non-negotiable best practice**, applied to every build, every time.
+- Use `overflow: hidden` on section wrappers, `max-width: 100%` on content containers, and percentage-based or fluid widths instead of fixed pixel widths that can exceed the viewport.
+- Flex and grid children that can grow wider than the viewport must have `min-width: 0` so they can shrink.
+- **Before** claiming a section is "done," visually verify at **375px, 768px, 1024px, 1360px, and 1920px** — use the browser tool, not guesswork from the code.
+- If any content is clipped or extends past the viewport edge at any width, the work is **not done**.
+
 ## WCAG / code quality
 
 - Continue to follow [.cursorrules](.cursorrules) for accessibility and implementation quality on all UI work.

@@ -130,6 +130,20 @@ Shopify rejects themes when any `range` has **more than 101 discrete values**. B
 
 Never ship a range change without this check; theme upload fails with `step invalid` / `at most 101 steps`.
 
+## Responsive: nothing gets clipped (hard rule)
+
+Every section, component, and layout MUST stay fully within the viewport at every
+width — desktop, tablet, and mobile. Nothing gets cut off, clipped, or extends beyond
+the viewable area. This is non-negotiable best practice, applied to every build, every time.
+
+- Use `overflow: hidden` on section wrappers to prevent content from bleeding past edges
+- Use `max-width: 100%` and `box-sizing: border-box` on content containers
+- Use percentage-based or fluid widths — never fixed pixel widths that can exceed the viewport
+- Flex and grid children that can grow wider than the viewport must have `min-width: 0`
+- Carousels/sliders: the scroll must happen INSIDE a constrained container, not spill out
+- Before claiming any section is "done," visually verify at 375px, 768px, 1024px, 1360px, 1920px
+- If content clips or extends past the viewport edge at ANY width, the work is NOT done
+
 ## Range settings: default and template JSON must land on the step grid
 
 Shopify also rejects when **`default`** (in schema) or a value in **section JSON** is not reachable from **`min`** in **`step`** increments: **`(value - min) % step === 0`** (when `min` is `0`, that is the same as `value % step === 0`). Example: `min: 0`, `step: 24` → **`900` fails** (`900 % 24 = 12`); **`920` fails**; use **`912`** or **`888`** instead. After changing **`min`** or **`step`**, re-check every **`templates/*.json`** value for that setting. Theme upload fails with `default must be a step in the range` / `Setting '…' must be a step in the range`.
