@@ -91,6 +91,13 @@
 {% assign mobile_headline_color = object.settings.heading_color_mobile %}
 {% assign mobile_preheading_color = object.settings.pretext_color_mobile %}
 {% assign mobile_subtitle_color = object.settings.subheading_color_mobile %}
+{% assign heading_font_size_mobile = object.settings.heading_font_size_mobile | default: 0 %}
+{% assign text_alignment_mobile = object.settings.text_alignment_mobile | default: '' %}
+{% assign text_horizontal_position_mobile = object.settings.text_horizontal_position_mobile | default: '' %}
+{% assign text_vertical_position_mobile = object.settings.text_vertical_position_mobile | default: '' %}
+{% assign text_width_mobile = object.settings.text_width_mobile | default: 0 %}
+{% assign padding_left_mobile = object.settings.padding_left_mobile | default: 0 %}
+{% assign padding_right_mobile = object.settings.padding_right_mobile | default: 0 %}
 {% comment %}Layout{% endcomment %}
 {% assign width = object.settings.width %}
 {% assign padding_top = object.settings.padding_top %}
@@ -244,11 +251,27 @@
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px !important;
+      {% if padding_left_mobile > 0 %}padding-left: {{ padding_left_mobile }}px;{% endif %}
+      {% if padding_right_mobile > 0 %}padding-right: {{ padding_right_mobile }}px;{% endif %}
+      {% if width == 'half' %}width: 100% !important;{% endif %}
     }
     #shopify-section-{{ id }} .caption {
       padding-top: {{ overlay_padding_top_mobile }}px !important;
       padding-bottom: {{ overlay_padding_bottom_mobile }}px !important;
     }
+    {% if text_width_mobile > 0 %}
+    #shopify-section-{{ id }} .caption-content { width: {{ text_width_mobile }}% !important; }
+    {% endif %}
+    #shopify-section-{{ id }} .image-with-text-overlay__heading {
+      {% if heading_font_size_mobile > 0 %}
+        font-size: {{ heading_font_size_mobile }}px !important;
+      {% else %}
+        font-size: {{ heading_font_size | times: 0.7 | round }}px !important;
+      {% endif %}
+    }
+    {% if text_alignment_mobile != '' %}
+    #shopify-section-{{ id }} .caption-content { text-align: {{ text_alignment_mobile }} !important; }
+    {% endif %}
   }
 
   #shopify-section-{{ id }} .caption--click-through {
@@ -442,7 +465,7 @@
 {% endif %}
       {% if pretext != blank or title != blank or subtitle != blank or button_1 != blank or button_2 != blank %}
         <div id="caption-pos-{{ id }}" class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}" style="{{ caption_pos_style }}">
-          <div class="caption-content text-align-{{ text_alignment }}" style="pointer-events: all !important; text-align: {{ text_alignment }} !important; display: inline-block !important;">
+          <div class="caption-content text-align-{{ text_alignment }}" style="pointer-events: {% if caption_click_through %}none{% else %}all{% endif %} !important; text-align: {{ text_alignment }} !important; display: inline-block !important;">
             {% if pretext != blank %}
               <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle" style="color: {{ resolved_preheading_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 {{ pretext }}

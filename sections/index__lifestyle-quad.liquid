@@ -24,6 +24,8 @@
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign cta_font_size = section.settings.cta_font_size | default: 14 %}
 {% assign cta_font_weight = section.settings.cta_font_weight | default: '700' %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign cta_font_size_mobile = section.settings.cta_font_size_mobile | default: 0 %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -76,6 +78,7 @@
   #shopify-section-{{ id }} .ak-quad__cta { color: {{ text_color }}; text-transform: none; }
   #shopify-section-{{ id }} .ak-quad__wrap {
     margin: 0 auto;
+    overflow: hidden;
     {% if container_width == 'standard' %}max-width: 1200px;{% elsif container_width == 'wide' %}max-width: 1400px;{% endif %}
   }
   #shopify-section-{{ id }} .ak-lifestyle-quad .ak-quad__grid {
@@ -186,6 +189,22 @@
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-quad__heading {
+      {% if heading_font_size_mobile > 0 %}
+        font-size: {{ heading_font_size_mobile }}px;
+      {% else %}
+        font-size: {{ heading_font_size | times: 0.65 | round }}px;
+      {% endif %}
+    }
+    #shopify-section-{{ id }} .ak-quad__cta {
+      {% if cta_font_size_mobile > 0 %}
+        font-size: {{ cta_font_size_mobile }}px;
+      {% else %}
+        font-size: {{ cta_font_size }}px;
+      {% endif %}
+    }
   }
   #shopify-section-{{ id }} .ak-quad__cta-link:hover,
   #shopify-section-{{ id }} .ak-quad__cta-link:focus-visible { opacity: 0.9; }
@@ -499,6 +518,17 @@
       "info": "Panel heading (e.g. Dress with Intention)."
     },
     {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 42,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size (mobile)",
+      "default": 28,
+      "info": "0 = auto-scale from desktop size (~65%)."
+    },
+    {
       "type": "select",
       "id": "heading_font_weight",
       "label": "Heading font weight",
@@ -521,6 +551,17 @@
       "label": "CTA font size",
       "default": 14,
       "info": "CTA text (e.g. SHOP DRESSES)."
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA font size (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",

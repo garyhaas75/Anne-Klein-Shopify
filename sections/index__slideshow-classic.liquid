@@ -122,9 +122,13 @@
           <a href="{{ link }}" class="banner--full-link"></a>
         {% endif %}
 
+        {% assign caption_click_through_slide = false %}
+        {% if link != blank and button_1 == blank and button_2 == blank %}
+          {% assign caption_click_through_slide = true %}
+        {% endif %}
         {% if block.settings.pretext != blank or block.settings.title != blank or block.settings.subtitle != blank or button_1 != blank or button_2 != blank %}
-          <div class="caption text-align-{{ block.settings.text_horizontal_position }}">
-            <div class="caption-content text-align-{{ block.settings.text_alignment }}">
+          <div class="caption text-align-{{ block.settings.text_horizontal_position }}"{% if caption_click_through_slide %} style="pointer-events: none;"{% endif %}>
+            <div class="caption-content text-align-{{ block.settings.text_alignment }}" style="pointer-events: {% if caption_click_through_slide %}none{% else %}all{% endif %};">
               {% if block.settings.pretext != blank %}
                 <div class="slideshow-classic__preheading pretext subtitle">
                   {{ block.settings.pretext }}

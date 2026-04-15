@@ -43,6 +43,11 @@
 {% assign label_icon_image_mobile = section.settings.label_icon_image_mobile %}
 {% assign tile_aspect_ratio = section.settings.tile_aspect_ratio | default: '3_4' %}
 {% assign section_max_width = section.settings.section_max_width | default: 1400 %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign heading_alignment_mobile = section.settings.heading_alignment_mobile | default: '' %}
+{% assign label_font_size_mobile = section.settings.label_font_size_mobile | default: 0 %}
+{% assign grid_gap_mobile = section.settings.grid_gap_mobile | default: 0 %}
+{% assign container_padding_mobile = section.settings.container_padding_mobile | default: 0 %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -90,6 +95,7 @@
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
     box-sizing: border-box;
+    overflow: hidden;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-new-arrivals {
@@ -219,6 +225,9 @@
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: none; }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: inline-flex; }
+  @media only screen and (max-width: 1024px) {
+    #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
@@ -233,7 +242,18 @@
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
       height: {{ icon_size_mobile_px }}px !important;
     }
-    #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
+    #shopify-section-{{ id }} .ak-new-arrivals__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: {% if grid_gap_mobile > 0 %}{{ grid_gap_mobile }}{% else %}{{ grid_gap | times: 0.75 | round }}{% endif %}px;
+      padding: {% if container_padding_mobile > 0 %}{{ container_padding_mobile }}{% else %}{{ container_padding | times: 0.75 | round }}{% endif %}px;
+    }
+    #shopify-section-{{ id }} .ak-new-arrivals__title {
+      {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% endif %}
+      {% if heading_alignment_mobile != '' %}text-align: {{ heading_alignment_mobile }};{% endif %}
+    }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-label {
+      {% if label_font_size_mobile > 0 %}font-size: {{ label_font_size_mobile }}px;{% endif %}
+    }
   }
 {% endstyle %}
 
@@ -372,6 +392,17 @@
     },
     {
       "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
       "id": "heading_letter_spacing",
       "min": 0,
       "max": 10,
@@ -386,6 +417,18 @@
       "label": "Heading alignment",
       "default": "center",
       "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Heading alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
@@ -416,6 +459,17 @@
       "step": 1,
       "unit": "px",
       "default": 18
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "label": "Label font size (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -539,6 +593,17 @@
     },
     {
       "type": "range",
+      "id": "container_padding_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding around tile grid (mobile)",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
+    },
+    {
+      "type": "range",
       "id": "grid_gap",
       "min": 8,
       "max": 48,
@@ -546,6 +611,17 @@
       "unit": "px",
       "label": "Gap between tiles",
       "default": 24
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between tiles (mobile)",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
     },
     {
       "type": "header",

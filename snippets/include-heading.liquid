@@ -35,6 +35,9 @@
 {% assign padding_right = object.settings.padding_right %}
 {% assign padding_top_mobile = object.settings.padding_top_mobile | default: padding_top %}
 {% assign padding_bottom_mobile = object.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign heading_alignment_mobile = object.settings.heading_alignment_mobile | default: '' %}
+{% assign padding_left_mobile = object.settings.padding_left_mobile | default: 0 %}
+{% assign padding_right_mobile = object.settings.padding_right_mobile | default: 0 %}
 {% assign animation = object.settings.animation | default: 'none' %}
 {% case object.settings.font_family | default: 'system' %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
@@ -96,7 +99,16 @@
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px;
+      {% if padding_left_mobile > 0 %}padding-left: {{ padding_left_mobile }}px;{% endif %}
+      {% if padding_right_mobile > 0 %}padding-right: {{ padding_right_mobile }}px;{% endif %}
+      {% if width == 'half' %}width: 100% !important;{% endif %}
     }
+    {% if heading_alignment_mobile != '' %}
+    #shopify-section-{{ id }} .heading-section__content {
+      align-items: {% if heading_alignment_mobile == 'left' %}flex-start{% elsif heading_alignment_mobile == 'right' %}flex-end{% else %}center{% endif %};
+      text-align: {{ heading_alignment_mobile }};
+    }
+    {% endif %}
   }
 
   {% include 'css-loop', css: section_css, id: id %}

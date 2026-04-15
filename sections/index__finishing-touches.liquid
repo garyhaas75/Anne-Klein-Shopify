@@ -19,6 +19,8 @@
 {% assign heading_font_size = section.settings.heading_font_size | default: 24 %}
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign heading_underline = section.settings.heading_underline %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign heading_alignment_mobile = section.settings.heading_alignment_mobile | default: '' %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
@@ -84,6 +86,12 @@
     width: 100%;
     box-sizing: border-box;
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-finishing-touches__heading {
+      {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% else %}font-size: {{ heading_font_size | times: 0.75 | round }}px;{% endif %}
+      {% if heading_alignment_mobile != '' %}text-align: {{ heading_alignment_mobile }};{% endif %}
+    }
   }
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -725,6 +733,18 @@
       ]
     },
     {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Heading alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Fonts"
     },
@@ -752,6 +772,17 @@
       "step": 2,
       "unit": "px",
       "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
     },
     {
       "type": "select",

@@ -27,6 +27,9 @@
 {% assign pill_padding_v_mobile = section.settings.pill_padding_vertical_mobile | default: 10 %}
 {% assign pill_padding_h_mobile = section.settings.pill_padding_horizontal_mobile | default: 14 %}
 {% assign pill_spacing_mobile = section.settings.pill_spacing_mobile | default: 6 %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign pill_font_size_mobile = section.settings.pill_font_size_mobile | default: 0 %}
+{% assign content_alignment_mobile = section.settings.content_alignment_mobile | default: '' %}
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign pill_font_weight = section.settings.pill_font_weight | default: '400' %}
 {% case section.settings.font_family %}
@@ -196,7 +199,15 @@
       flex: 0 1 auto !important;
       min-width: 0 !important;
     }
-    #shopify-section-{{ id }} .ak-pills__pill { padding: {{ pill_padding_v_mobile }}px {{ pill_padding_h_mobile }}px; font-size: {{ pill_font_size | times: 0.9375 | round }}px; }
+    #shopify-section-{{ id }} .ak-pills__pill { padding: {{ pill_padding_v_mobile }}px {{ pill_padding_h_mobile }}px; font-size: {% if pill_font_size_mobile > 0 %}{{ pill_font_size_mobile }}{% else %}{{ pill_font_size | times: 0.9375 | round }}{% endif %}px; }
+    #shopify-section-{{ id }} .ak-pills__heading {
+      {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% else %}font-size: {{ heading_font_size | times: 0.75 | round }}px;{% endif %}
+    }
+    {% if content_alignment_mobile != '' %}
+    #shopify-section-{{ id }} .ak-pills__inner--align-left .ak-pills__heading,
+    #shopify-section-{{ id }} .ak-pills__inner--align-center .ak-pills__heading,
+    #shopify-section-{{ id }} .ak-pills__inner--align-right .ak-pills__heading { text-align: {{ content_alignment_mobile }}; }
+    {% endif %}
   }
 {% endstyle %}
 
@@ -267,6 +278,17 @@
       "info": "Font size for the section heading (e.g. New for the Season)."
     },
     {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size (mobile)",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
+    },
+    {
       "type": "select",
       "id": "heading_font_weight",
       "label": "Heading font weight",
@@ -301,6 +323,18 @@
         { "value": "right", "label": "Right" }
       ],
       "info": "Aligns the heading and pills as a group (left, center, or right on the page)."
+    },
+    {
+      "type": "select",
+      "id": "content_alignment_mobile",
+      "label": "Content alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "color",
@@ -394,6 +428,17 @@
       "label": "Pill font size",
       "default": 18,
       "info": "Font size for category pill labels."
+    },
+    {
+      "type": "range",
+      "id": "pill_font_size_mobile",
+      "min": 0,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Pill font size (mobile)",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~94%)."
     },
     {
       "type": "range",

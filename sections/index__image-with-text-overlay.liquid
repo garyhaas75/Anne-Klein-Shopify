@@ -205,6 +205,17 @@
       "unit": "px"
     },
     {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile)",
+      "min": 0,
+      "max": 56,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = auto-scale from desktop (~70%)."
+    },
+    {
       "type": "select",
       "id": "heading_font_weight",
       "label": "Heading font weight",
@@ -281,60 +292,69 @@
       "id": "text_alignment",
       "label": "Text alignment",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ],
       "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Text alignment (mobile)",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
     },
     {
       "type": "select",
       "id": "text_horizontal_position",
       "label": "Horizontal position",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ],
       "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_horizontal_position_mobile",
+      "label": "Horizontal position (mobile)",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
     },
     {
       "type": "select",
       "id": "text_vertical_position",
       "label": "Vertical position",
       "options": [
-        {
-          "value": "top",
-          "label": "Top"
-        },
-        {
-          "value": "middle",
-          "label": "Middle"
-        },
-        {
-          "value": "bottom",
-          "label": "Bottom"
-        }
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
       ],
       "default": "middle"
+    },
+    {
+      "type": "select",
+      "id": "text_vertical_position_mobile",
+      "label": "Vertical position (mobile)",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": ""
     },
     {
       "type": "header",
@@ -401,6 +421,16 @@
       "max": 100,
       "default": 40,
       "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "text_width_mobile",
+      "label": "Text width (mobile)",
+      "min": 0,
+      "max": 100,
+      "default": 0,
+      "unit": "%",
+      "info": "0 = same as desktop. On small screens, consider 80-100%."
     },
     {
       "type": "header",
@@ -671,6 +701,26 @@
       "min": 0,
       "max": 80,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Left spacing (mobile)",
+      "min": 0,
+      "max": 40,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Right spacing (mobile)",
+      "min": 0,
+      "max": 40,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",

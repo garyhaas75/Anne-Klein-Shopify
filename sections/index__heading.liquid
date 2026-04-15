@@ -103,20 +103,23 @@
         "id": "heading_alignment",
         "label": "Text alignment",
         "options": [
-          {
-            "value": "start",
-            "label": "Left"
-          },
-          {
-            "value": "center",
-            "label": "Center"
-          },
-          {
-            "value": "end",
-            "label": "Right"
-          }
+          { "value": "start", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "end", "label": "Right" }
         ],
         "default": "center"
+      },
+      {
+        "type": "select",
+        "id": "heading_alignment_mobile",
+        "label": "Text alignment (mobile)",
+        "options": [
+          { "value": "", "label": "Same as desktop" },
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ],
+        "default": ""
       },
       {
         "type": "select",
@@ -215,6 +218,26 @@
         "min": 0,
         "max": 80,
         "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_left_mobile",
+        "label": "Left spacing (mobile)",
+        "min": 0,
+        "max": 40,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
+      },
+      {
+        "type": "range",
+        "id": "padding_right_mobile",
+        "label": "Right spacing (mobile)",
+        "min": 0,
+        "max": 40,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
       },
       {
         "type": "select",
