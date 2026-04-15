@@ -61,6 +61,12 @@
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
     {% if width == 'wide' %}width: 100%;{% endif %}
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} > .container {
+    min-width: 0;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -70,10 +76,12 @@
   }
   #shopify-section-{{ id }} .ak-finishing-touches__heading-wrap {
     width: 100%;
+    max-width: 100%;
     flex: 0 0 100%;
     display: block;
     box-sizing: border-box;
     min-height: 1px;
+    min-width: 0;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__heading {
     margin: 0 0 1.5rem;
@@ -91,6 +99,12 @@
     #shopify-section-{{ id }} .ak-finishing-touches__heading {
       {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% else %}font-size: {{ heading_font_size | times: 0.75 | round }}px;{% endif %}
       {% if heading_alignment_mobile != '' %}text-align: {{ heading_alignment_mobile }};{% endif %}
+    }
+  }
+  /* Desktop: title + nav align to content column; avoid flex is-justify-center on host centering a min-intrinsic-wide carousel strip. */
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-finishing-touches__heading {
+      text-align: center !important;
     }
   }
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
@@ -112,12 +126,18 @@
   #shopify-section-{{ id }} .ak-ft-carousel-host {
     min-width: 0;
     max-width: 100%;
+    justify-content: flex-start !important;
+    align-items: stretch;
+    overflow-x: hidden;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
     width: 100%;
     min-width: 0;
     max-width: 100%;
-    overflow-x: visible;
+    flex: 1 1 auto;
+    align-self: stretch;
+    overflow-x: hidden;
+    box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-enabled {
     display: flex;
@@ -134,6 +154,11 @@
     gap: 1rem;
     margin-top: 1.25rem;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-prev-next-button {
     position: static;
@@ -231,7 +256,7 @@
   {% endif %}
   <div class="container">
     {% comment %} No layout--slider: global jsFeaturedCollection would init a second Flickity here. Desktop uses native overflow-x scroll for real trackpad behavior. {% endcomment %}
-    <div class="one-whole column has-column-padding-bottom featured-collection ak-ft-carousel-host is-justify-center is-flex is-flex-wrap is-flex-row">
+    <div class="one-whole column has-column-padding-bottom featured-collection ak-ft-carousel-host is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
         <div class="ak-finishing-touches__carousel-wrap">
         {% comment %} data-mobile-columns must match gallery-cell medium-down--one-half (2 cols ≤798px). {% endcomment %}
