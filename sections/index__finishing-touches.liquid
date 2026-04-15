@@ -154,10 +154,12 @@
   /* Desktop: native horizontal scroll — browser trackpad inertia (Flickity uses transforms; wheel JS cannot match this). */
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
       align-items: stretch;
+      align-content: flex-start;
+      justify-content: flex-start;
       width: 100%;
       min-height: 200px;
       overflow-x: auto;
@@ -168,10 +170,17 @@
       touch-action: pan-x pinch-zoom;
       scrollbar-gutter: stable;
     }
-    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery .gallery-cell {
+    /* Flickity leaves position/width/transform inline on cells; without this, native flex row stacks vertically after resize. */
+    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery > .gallery-cell {
       scroll-snap-align: start;
       flex: 0 0 auto;
       box-sizing: border-box;
+      position: relative !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+      transform: none !important;
     }
   }
   @media only screen and (min-width: 799px) and (prefers-reduced-motion: reduce) {
@@ -378,6 +387,18 @@
     $section.removeClass('ak-ft--native-desktop');
   }
 
+  /** Strip Flickity inline layout so native flex / theme column widths apply after destroy or breakpoint change. */
+  function clearGalleryCellFlickityStyles($gallery) {
+    var props = ['width', 'height', 'left', 'right', 'top', 'bottom', 'transform', 'position'];
+    $gallery.find('.gallery-cell').each(function() {
+      var el = this;
+      if (!el || !el.style) return;
+      for (var i = 0; i < props.length; i++) {
+        el.style.removeProperty(props[i]);
+      }
+    });
+  }
+
   function initNativeDesktopCarousel($section, $gallery, opts) {
     var groupSize = opts.groupSize;
     var showNav = opts.showNav;
@@ -526,6 +547,7 @@
     if ($gallery.hasClass('flickity-enabled')) {
       $gallery.flickity('destroy');
     }
+    clearGalleryCellFlickityStyles($gallery);
     $section.find('.ak-finishing-touches__nav').remove();
 
     var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
@@ -697,6 +719,18 @@
   } else if (MOBILE_MQ.addListener) {
     MOBILE_MQ.addListener(onFinishingTouchesViewportChange);
   }
+
+  /* matchMedia does not fire when staying desktop-only; Flickity→native can leave bad inline widths — re-sync after resize. */
+  var akFtResizeTimer;
+  window.addEventListener('resize', function() {
+    if (MOBILE_MQ.matches) return;
+    clearTimeout(akFtResizeTimer);
+    akFtResizeTimer = setTimeout(function() {
+      var $sec = jQuery('#shopify-section-' + sectionId);
+      if (!$sec.length || !$sec.hasClass('ak-ft--native-desktop')) return;
+      initFinishingTouchesCarousel();
+    }, 200);
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(initFinishingTouchesCarousel, 100); });
