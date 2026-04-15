@@ -108,8 +108,16 @@
   #shopify-section-{{ id }} .ak-ft__product-link { text-decoration: none; color: inherit; display: block; }
   #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }
   /* Nav under slider: wrap + flex layout */
+  /* min-width:0 lets a flex child shrink so inner overflow-x:auto can scroll instead of clipping (default min-width:auto). */
+  #shopify-section-{{ id }} .ak-ft-carousel-host {
+    min-width: 0;
+    max-width: 100%;
+  }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: visible;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-enabled {
     display: flex;
@@ -161,6 +169,8 @@
       align-content: flex-start;
       justify-content: flex-start;
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
       min-height: 200px;
       overflow-x: auto;
       overflow-y: hidden;
@@ -169,9 +179,11 @@
       scroll-snap-type: x proximity;
       touch-action: pan-x pinch-zoom;
       scrollbar-gutter: stable;
+      padding-inline-end: clamp(12px, 3vw, 32px);
+      box-sizing: border-box;
     }
     /* Flickity leaves position/width/transform inline on cells; without this, native flex row stacks vertically after resize. */
-    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery > .gallery-cell {
+    #shopify-section-{{ id }}.ak-ft--native-desktop .ak-finishing-touches__carousel-wrap .slider-gallery .gallery-cell {
       scroll-snap-align: start;
       flex: 0 0 auto;
       box-sizing: border-box;
