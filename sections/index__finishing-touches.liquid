@@ -378,17 +378,6 @@
     $section.removeClass('ak-ft--native-desktop');
   }
 
-  function clearGalleryCellFlickityStyles($gallery) {
-    var props = ['width', 'height', 'left', 'right', 'top', 'bottom', 'transform', 'position'];
-    $gallery.find('.gallery-cell').each(function() {
-      var el = this;
-      if (!el || !el.style) return;
-      for (var i = 0; i < props.length; i++) {
-        el.style.removeProperty(props[i]);
-      }
-    });
-  }
-
   function initNativeDesktopCarousel($section, $gallery, opts) {
     var groupSize = opts.groupSize;
     var showNav = opts.showNav;
@@ -537,7 +526,6 @@
     if ($gallery.hasClass('flickity-enabled')) {
       $gallery.flickity('destroy');
     }
-    clearGalleryCellFlickityStyles($gallery);
     $section.find('.ak-finishing-touches__nav').remove();
 
     var productsPer = Math.max(1, parseInt(data.products_per, 10) || 4);
@@ -709,17 +697,6 @@
   } else if (MOBILE_MQ.addListener) {
     MOBILE_MQ.addListener(onFinishingTouchesViewportChange);
   }
-
-  var akFtResizeTimer;
-  window.addEventListener('resize', function() {
-    if (MOBILE_MQ.matches) return;
-    clearTimeout(akFtResizeTimer);
-    akFtResizeTimer = setTimeout(function() {
-      var $sec = jQuery('#shopify-section-' + sectionId);
-      if (!$sec.length || !$sec.hasClass('ak-ft--native-desktop')) return;
-      initFinishingTouchesCarousel();
-    }, 200);
-  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { setTimeout(initFinishingTouchesCarousel, 100); });
