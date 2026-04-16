@@ -250,6 +250,7 @@
         "portrait1",
         "portrait2"
       ],
+      "disabled": true,
       "settings": {
         "width": "wide",
         "show_gutter": false,
@@ -471,6 +472,7 @@
         "product_bCakFf",
         "product_XwNHWH"
       ],
+      "disabled": true,
       "name": "AK Finishing Touches",
       "settings": {
         "title": "FINISHING TOUCHES",
@@ -505,7 +507,7 @@
         "image_2_alt": "",
         "image_2_link": "",
         "image_2_new_tab": false,
-        "image_gap_desktop": 0,
+        "image_gap_desktop": 6,
         "image_gap_mobile": 0,
         "image_min_height_desktop": 900,
         "image_min_height_mobile": 280,
@@ -540,7 +542,7 @@
         "width": "wide",
         "show_gutter": false,
         "section_aria_label": "",
-        "padding_top": 0,
+        "padding_top": 16,
         "padding_bottom": 0,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0
