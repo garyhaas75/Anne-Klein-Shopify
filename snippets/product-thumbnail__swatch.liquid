@@ -39,12 +39,12 @@
         {% endfor %}
 
          {% if col_count > 1 %}
-          <a href="{{ product.url | within: collection }}" class="more_color">+More Colors</a>
+          <a href="{% if collection %}{{ product.url | within: collection }}{% else %}{{ product.url }}{% endif %}" class="more_color">+More Colors</a>
         {% else %}
         <div></div>
         {% endif %}
         {% if product.tags contains 'Overflow' %}
-        <a href="{{ product.url | within: collection }}" class="more_color">+More Colors</a>
+        <a href="{% if collection %}{{ product.url | within: collection }}{% else %}{{ product.url }}{% endif %}" class="more_color">+More Colors</a>
         {% endif %}
         
 

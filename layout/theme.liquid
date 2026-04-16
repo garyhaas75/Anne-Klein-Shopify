@@ -552,7 +552,9 @@ $('body').on('click', '.js-watch-video', function(e){
     });
     
     $('.search_input').bind("enterKey",function(e){
-      
+      {% if request.design_mode %}
+      return;
+      {% endif %}
       window.location.href = 'https://anneklein.com/search?q=' + $(this).val();
     });
     $('.search_input').keyup(function(e){
