@@ -84,3 +84,11 @@ Target **branch `main`** only. Enable:
 ## WCAG / code quality
 
 - Continue to follow [.cursorrules](.cursorrules) for accessibility and implementation quality on all UI work.
+
+## Section font dropdowns (`Amiri`, `Helvetica Neue`)
+
+- **Editor options:** Any `select` that offers “safe” web fonts (`system`, `arial`, `georgia`, …) must list **`amiri`** and **`helvetica`** if the section is meant to match campaign / homepage typography. Add the same two `{ "value": "…" }` rows after `trebuchet` in the schema `options` array.
+- **Liquid:** Every `{% case %}` that maps those values to `font-family` stacks must include `{% when 'amiri' %}` and `{% when 'helvetica' %}`. Prefer the same stacks as [`snippets/ak-campaign-font-stack.liquid`](snippets/ak-campaign-font-stack.liquid) (Amiri: `Amiri, Georgia, serif`; Helvetica: `"Helvetica Neue", Helvetica, Arial, sans-serif`).
+- **Amiri loading:** `font-family: Amiri` only works if Google Fonts (or theme `font_face`) loads Amiri. Sections that can select Amiri on **non-campaign** pages should `{% render 'ak-campaign-fonts' %}` when a relevant setting equals `amiri`. [`layout/theme.liquid`](layout/theme.liquid) already injects that snippet when theme font settings contain `amiri`, on **`template.suffix == 'campaign'`** or **`campaign-new`**, or when the section/snippet renders it.
+- **Campaign sections** that use `{% render 'ak-campaign-font-stack', font_key: … %}` only need schema updates plus **`helvetica`** in that snippet (Amiri was already mapped there).
+

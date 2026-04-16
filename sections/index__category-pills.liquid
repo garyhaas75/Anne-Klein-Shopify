@@ -32,12 +32,17 @@
 {% assign content_alignment_mobile = section.settings.content_alignment_mobile | default: '' %}
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign pill_font_weight = section.settings.pill_font_weight | default: '400' %}
+{% if section.settings.font_family == 'amiri' or section.settings.font_heading == 'amiri' or section.settings.font_pills == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% assign _heading_font = section.settings.font_heading | default: section.settings.font_family %}
@@ -47,6 +52,8 @@
   {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_heading = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_heading = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack_heading = font_stack %}
 {% endcase %}
@@ -57,6 +64,8 @@
   {% when 'times' %}{% assign font_stack_pills = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_pills = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_pills = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_pills = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_pills = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_pills = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack_pills = font_stack %}
 {% endcase %}
@@ -372,7 +381,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Used when \"Same as default\" is selected for heading or pills below."
     },
@@ -388,7 +399,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Font for the section heading (e.g. \"New for the Season\"). Can be different from pill labels."
     },
@@ -404,7 +417,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Font for the category pill buttons. Can be different from the section heading."
     },

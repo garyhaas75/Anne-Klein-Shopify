@@ -46,7 +46,7 @@
     if _rf contains 'amiri' or _hf contains 'amiri' or _pf contains 'amiri' or _sf contains 'amiri' or _bf contains 'amiri' or _bh contains 'amiri' or _lg contains 'amiri'
       assign ak_need_amiri = true
     endif
-    if template.suffix == 'campaign'
+    if template.suffix == 'campaign' or template.suffix == 'campaign-new'
       assign ak_need_amiri = true
     endif
   -%}
