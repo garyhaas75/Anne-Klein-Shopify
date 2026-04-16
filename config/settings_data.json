@@ -6429,7 +6429,7 @@
           "font_hashtag": "",
           "overlay_vertical_position": "bottom",
           "overlay_line_spacing": 0,
-          "overlay_line1_padding_bottom": 8,
+          "overlay_line1_padding_bottom": 10,
           "overlay_heading_padding_bottom": 6,
           "overlay_padding_top": 0,
           "overlay_padding_bottom": 25,
