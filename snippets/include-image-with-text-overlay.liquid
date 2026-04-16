@@ -25,6 +25,8 @@
 {% assign title = object.settings.title %}
 {% assign title_color = object.settings.heading_color %}
 {% assign heading_font_size = object.settings.heading_font_size | default: 32 %}
+{% assign subheading_font_size = object.settings.subheading_font_size | default: 18 %}
+{% assign subheading_font_size_mobile = object.settings.subheading_font_size_mobile | default: 0 | plus: 0 %}
 {% assign heading_font_weight = object.settings.heading_font_weight | default: '400' %}
 {% assign preheading_font_weight = object.settings.preheading_font_weight | default: '400' %}
 {% assign subheading_font_weight = object.settings.subheading_font_weight | default: '400' %}
@@ -181,6 +183,7 @@
   .image-with-text-overlay__subheading {
     font-family: {{ subheading_font_stack }};
     font-weight: {{ subheading_font_weight }};
+    font-size: {{ subheading_font_size }}px !important;
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     text-transform: none;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
@@ -279,6 +282,13 @@
         font-size: {{ heading_font_size_mobile }}px !important;
       {% else %}
         font-size: {{ heading_font_size | times: 0.7 | round }}px !important;
+      {% endif %}
+    }
+    #shopify-section-{{ id }} .image-with-text-overlay__subheading {
+      {% if subheading_font_size_mobile > 0 %}
+        font-size: {{ subheading_font_size_mobile }}px !important;
+      {% else %}
+        font-size: {{ subheading_font_size | times: 0.7 | round }}px !important;
       {% endif %}
     }
     {% if text_alignment_mobile != '' %}
