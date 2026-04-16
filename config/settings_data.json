@@ -5965,7 +5965,7 @@
         "settings": {
           "heading": "New for the Season",
           "heading_color": "#000000",
-          "heading_font_size": 24,
+          "heading_font_size": 30,
           "heading_font_size_mobile": 0,
           "heading_font_weight": "400",
           "layout_mode": "inline",
@@ -5991,7 +5991,7 @@
           "section_aria_label": "",
           "padding_top": 28,
           "padding_bottom": 28,
-          "padding_top_mobile": 24,
+          "padding_top_mobile": 16,
           "padding_bottom_mobile": 24
         }
       },
