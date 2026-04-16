@@ -119,6 +119,11 @@
 {% if ov_fs_h_m < 1 %}
   {% assign ov_fs_h_m = ov_fs_h %}
 {% endif %}
+{% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 0 | plus: 0 %}
+{% assign heading_letter_spacing_mobile = section.settings.heading_letter_spacing_mobile | default: -1 | plus: 0 %}
+{% if heading_letter_spacing_mobile < 0 %}
+  {% assign heading_letter_spacing_mobile = heading_letter_spacing %}
+{% endif %}
 {% assign ov_fs_cta = section.settings.overlay_cta_font_size | default: 14 | plus: 0 %}
 {% assign ov_fs_cta_m = section.settings.overlay_cta_font_size_mobile | default: 0 | plus: 0 %}
 {% if ov_fs_cta_m < 1 %}
@@ -620,6 +625,7 @@
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
     text-transform: none;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__end-card-heading {
     font-family: {{ font_stack_end_card }};
@@ -627,6 +633,7 @@
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
     text-transform: none;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__start-card-text {
     font-family: {{ font_stack }};
@@ -742,6 +749,7 @@
     text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     line-height: 1 !important;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
     margin-bottom: {{ ov_l1_pb }}px !important;
@@ -780,7 +788,7 @@
     font-family: {{ font_stack_heading }};
     font-size: clamp(1.5rem, 5vw, 4rem);
     font-weight: {{ overlay_heading_font_weight }};
-    letter-spacing: 0.05em;
+    letter-spacing: {{ heading_letter_spacing }}px;
     text-align: center;
     margin: 0 !important;
     margin-top: 0 !important;
@@ -814,6 +822,12 @@
     }
     #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__title {
       margin-bottom: {{ ov_h_pb_m }}px !important;
+    }
+    #ak-video-{{ section.id }} .ak-video__start-card-heading,
+    #ak-video-{{ section.id }} .ak-video__end-card-heading,
+    #ak-video-{{ section.id }} .ak-video__overlay-heading,
+    #ak-video-{{ section.id }} .ak-video__title {
+      letter-spacing: {{ heading_letter_spacing_mobile }}px;
     }
   }
   #ak-video-{{ section.id }} .ak-video__hashtag {
@@ -1583,6 +1597,28 @@
       "id": "overlay_heading_underline",
       "label": "Underline line 2",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Heading letter spacing",
+      "min": -2,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "Start card, end card, and overlay main titles (line 2 / feature title)."
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing_mobile",
+      "label": "Heading letter spacing (mobile)",
+      "min": -1,
+      "max": 20,
+      "step": 1,
+      "default": -1,
+      "unit": "px",
+      "info": "-1 = same as desktop. Applied at ≤798px."
     },
     {
       "type": "text",
