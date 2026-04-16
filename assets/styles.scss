@@ -8604,6 +8604,66 @@ span._ks_text {
     }
     .content {
       margin-top: -10px;
+      max-width: 100%;
+      min-width: 0;
+      overflow-wrap: anywhere;
+
+      /* Match accordion tab titles (e.g. “Best for”) for in-description subheads (RTE often uses h3–h6). */
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: Figtree, "Helvetica", sans-serif;
+        font-weight: $weight-medium;
+        font-size: $size-6;
+        line-height: 22px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #000;
+        margin-top: 1.25em;
+        margin-bottom: 0.5em;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      /* Theme reset sets ul { list-style: none }; re-assert list styling inside PDP description. */
+      ul {
+        list-style: disc outside;
+        margin-left: 2em;
+        margin-top: 0.75em;
+        margin-bottom: 1em;
+        padding-left: 0.35em;
+
+        ul {
+          list-style-type: circle;
+          margin-top: 0.5em;
+
+          ul {
+            list-style-type: square;
+          }
+        }
+      }
+
+      ol {
+        list-style: decimal outside;
+        list-style-position: outside;
+        margin-left: 2em;
+        margin-top: 0.75em;
+        margin-bottom: 1em;
+        padding-left: 0.35em;
+      }
+
+      li {
+        font-size: $size-6;
+        line-height: 20px;
+        margin-top: 0.35em;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
     }
     .content p{
       font-size: $size-6;

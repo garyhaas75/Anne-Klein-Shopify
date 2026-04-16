@@ -19,7 +19,7 @@
       {% if product.description != blank %}
       <div class="accordion">
         <button class="heading active" aria-expanded="true">Description</button>
-        <div class="content">{{ product.description }}
+        <div class="content rte">{{ product.description }}
           
         {% if product.tags contains 'iflex' or product.tags contains 'ortholite' or product.tags contains 'water_resistant' %}
         	<div class="pdp-description-icons">
