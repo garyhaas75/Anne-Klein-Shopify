@@ -6052,7 +6052,7 @@
           "font_heading": "",
           "font_cta": "helvetica",
           "heading_font_size": 42,
-          "heading_font_size_mobile": 28,
+          "heading_font_size_mobile": 38,
           "heading_font_weight": "400",
           "cta_font_size": 14,
           "cta_font_size_mobile": 0,
@@ -6136,7 +6136,7 @@
           "heading_color": "#000000",
           "font_family": "helvetica",
           "heading_font_weight": "700",
-          "heading_font_size": 18,
+          "heading_font_size": 16,
           "heading_font_size_mobile": 0,
           "heading_letter_spacing": 0,
           "heading_alignment": "center",
@@ -6162,9 +6162,9 @@
           "grid_gap_mobile": 0,
           "section_aria_label": "",
           "padding_top": 36,
-          "padding_bottom": 80,
-          "padding_top_mobile": 40,
-          "padding_bottom_mobile": 40
+          "padding_bottom": 72,
+          "padding_top_mobile": 30,
+          "padding_bottom_mobile": 50
         }
       },
       "index_finishing_touches_TLVBqV": {
@@ -6439,7 +6439,7 @@
           "overlay_line1_padding_bottom_mobile": 0,
           "overlay_heading_padding_bottom_mobile": 0,
           "overlay_subheading_font_size_mobile": 0,
-          "overlay_heading_font_size_mobile": 0,
+          "overlay_heading_font_size_mobile": 40,
           "overlay_cta_font_size_mobile": 0,
           "overlay_subheading": "Spring 2026 Campaign",
           "overlay_subheading_font_size": 18,
