@@ -230,7 +230,7 @@
           {% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
             {% for product in collections[collection_ref].products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-              {% if product.featured_media.preview_image.alt != blank %}
+              {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
                 {% assign alt_text = product.featured_media.preview_image.alt %}
               {% else %}
                 {% assign alt_text = product.title %}
@@ -243,7 +243,11 @@
                         {% if settings.stickers_enabled %}
                           {% include 'product-thumbnail__sticker' %}
                         {% endif %}
-                        {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                        {% if product.featured_media != blank %}
+                          {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {% endif %}
                         {% if product.media[1] != blank and settings.show_secondary_image %}
                           {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                         {% endif %}
@@ -285,7 +289,7 @@
                 {% if output_index < product_limit %}
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% if product.featured_media.preview_image.alt != blank %}
+                  {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
                     {% assign alt_text = product.featured_media.preview_image.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
@@ -298,7 +302,11 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if product.featured_media != blank %}
+                              {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% else %}
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% endif %}
                             {% if product.media[1] != blank and settings.show_secondary_image %}
                               {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
