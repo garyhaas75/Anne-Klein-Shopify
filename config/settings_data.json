@@ -6430,7 +6430,7 @@
           "overlay_vertical_position": "bottom",
           "overlay_line_spacing": 0,
           "overlay_line1_padding_bottom": 10,
-          "overlay_heading_padding_bottom": 6,
+          "overlay_heading_padding_bottom": 30,
           "overlay_padding_top": 0,
           "overlay_padding_bottom": 25,
           "overlay_padding_top_mobile": 0,
