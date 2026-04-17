@@ -34,6 +34,26 @@
   <link rel="preconnect dns-prefetch" href="https://v.shopify.com" />
   <link rel="preconnect dns-prefetch" href="https://cdn.shopifycloud.com" />
 
+  {%- liquid
+    assign ak_need_amiri = false
+    assign _rf = settings.regular__font | default: '' | append: ''
+    assign _hf = settings.heading__font | default: '' | append: ''
+    assign _pf = settings.preheading_font | default: '' | append: ''
+    assign _sf = settings.subheading_font | default: '' | append: ''
+    assign _bf = settings.banner_text__font | default: '' | append: ''
+    assign _bh = settings.banner_heading__font | default: '' | append: ''
+    assign _lg = settings.logo__font | default: '' | append: ''
+    if _rf contains 'amiri' or _hf contains 'amiri' or _pf contains 'amiri' or _sf contains 'amiri' or _bf contains 'amiri' or _bh contains 'amiri' or _lg contains 'amiri'
+      assign ak_need_amiri = true
+    endif
+    if template.suffix == 'campaign' or template.suffix == 'campaign-new'
+      assign ak_need_amiri = true
+    endif
+  -%}
+  {% if ak_need_amiri %}
+    {% render 'ak-campaign-fonts' %}
+  {% endif %}
+
   
   {% if settings.enable_shopify_review_comments %}
     <link rel="preconnect dns-prefetch" href="https://productreviews.shopifycdn.com" />
@@ -552,7 +572,9 @@ $('body').on('click', '.js-watch-video', function(e){
     });
     
     $('.search_input').bind("enterKey",function(e){
-      
+      {% if request.design_mode %}
+      return;
+      {% endif %}
       window.location.href = 'https://anneklein.com/search?q=' + $(this).val();
     });
     $('.search_input').keyup(function(e){

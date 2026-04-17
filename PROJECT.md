@@ -41,7 +41,7 @@ Single source of truth for key decisions, rules, guidelines, and learnings. Use 
 
 ### Repository and theme
 
-- **Git:** Project is in Git with remote `origin` → GitHub (Anne-Klein-Shopify). Default branch: `main`.
+- **Git:** Project is in Git with remote `origin` → GitHub (Anne-Klein-Shopify). **Ongoing work:** branch **`dev`**. **`main`** is the protected release line (see [`claude.md`](claude.md) and GitHub branch rules); promote **`dev` → `main`** only via GitHub when you intend to.
 - **Existing video:** The theme’s current Video section (`index__video.liquid` / `include-video.liquid`) is unchanged; the new AK Video section is independent and additive.
 
 ---

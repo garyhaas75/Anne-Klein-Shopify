@@ -24,12 +24,17 @@
 {% assign section_aria_label = section.settings.section_aria_label %}
 {% assign hero_alt = image.alt | default: heading | default: preheading | default: "Campaign hero" %}
 {% assign mobile_alt = mobile_image.alt | default: heading | default: preheading | default: "Campaign hero" %}
+{% if section.settings.font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% assign preheading_font_weight = section.settings.preheading_font_weight | default: '400' %}
@@ -50,6 +55,9 @@
   #shopify-section-{{ id }} {
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -127,6 +135,9 @@
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-hero-campaign__cta { font-size: 0.9375rem; }
   }
   #shopify-section-{{ id }} .ak-hero-campaign__cta-link {
     display: flex;
@@ -271,7 +282,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Safe fonts that work without loading a font package."
     },

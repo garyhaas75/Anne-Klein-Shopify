@@ -48,14 +48,14 @@
           <small>{{ 'products.general.from' | t }}</small>
         {% endif %}
         {% if product.price_min > 0 %}
-          <span class="visually-hidden">{% if product.compare_at_price_max > product.price %}Sale price: {% else %}Price: {% endif %}</span>
+          <span class="is-sr-only">{% if product.compare_at_price_max > product.price %}Sale price: {% else %}Price: {% endif %}</span>
           <span class="money">{{ product.price_min | money }}</span>
         {% else %}
           {{ settings.free_price_text }}
         {% endif %}
         {% if product.compare_at_price_max > product.price %}
           <span class="product-thumbnail__was-price was-price">
-            <span class="visually-hidden">Original price: </span>
+            <span class="is-sr-only">Original price: </span>
             <span class="money">{{ product.compare_at_price_max | money }}</span>
           </span>
         {% endif %}

@@ -25,6 +25,8 @@
 {% assign title = object.settings.title %}
 {% assign title_color = object.settings.heading_color %}
 {% assign heading_font_size = object.settings.heading_font_size | default: 32 %}
+{% assign subheading_font_size = object.settings.subheading_font_size | default: 18 %}
+{% assign subheading_font_size_mobile = object.settings.subheading_font_size_mobile | default: 0 | plus: 0 %}
 {% assign heading_font_weight = object.settings.heading_font_weight | default: '400' %}
 {% assign preheading_font_weight = object.settings.preheading_font_weight | default: '400' %}
 {% assign subheading_font_weight = object.settings.subheading_font_weight | default: '400' %}
@@ -61,12 +63,17 @@
 {% comment %} Accessibility contrast (ADA) {% endcomment %}
 {% assign text_shadow_contrast = object.settings.text_shadow_contrast | default: true %}
 {% assign scrim_overlay = object.settings.scrim_overlay | default: 'dark' %}
+{% if object.settings.preheading_font_family == 'amiri' or object.settings.font_family == 'amiri' or object.settings.subheading_font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case object.settings.preheading_font_family | default: 'system' %}
   {% when 'arial' %}{% assign preheading_font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign preheading_font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign preheading_font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign preheading_font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign preheading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign preheading_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign preheading_font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign preheading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% case object.settings.font_family | default: 'system' %}
@@ -75,6 +82,8 @@
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% case object.settings.subheading_font_family | default: 'system' %}
@@ -83,6 +92,8 @@
   {% when 'times' %}{% assign subheading_font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign subheading_font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign subheading_font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign subheading_font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign subheading_font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign subheading_font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% comment %} Mobile {% endcomment %}
@@ -91,6 +102,13 @@
 {% assign mobile_headline_color = object.settings.heading_color_mobile %}
 {% assign mobile_preheading_color = object.settings.pretext_color_mobile %}
 {% assign mobile_subtitle_color = object.settings.subheading_color_mobile %}
+{% assign heading_font_size_mobile = object.settings.heading_font_size_mobile | default: 0 %}
+{% assign text_alignment_mobile = object.settings.text_alignment_mobile | default: '' %}
+{% assign text_horizontal_position_mobile = object.settings.text_horizontal_position_mobile | default: '' %}
+{% assign text_vertical_position_mobile = object.settings.text_vertical_position_mobile | default: '' %}
+{% assign text_width_mobile = object.settings.text_width_mobile | default: 0 %}
+{% assign padding_left_mobile = object.settings.padding_left_mobile | default: 0 %}
+{% assign padding_right_mobile = object.settings.padding_right_mobile | default: 0 %}
 {% comment %}Layout{% endcomment %}
 {% assign width = object.settings.width %}
 {% assign padding_top = object.settings.padding_top %}
@@ -165,6 +183,7 @@
   .image-with-text-overlay__subheading {
     font-family: {{ subheading_font_stack }};
     font-weight: {{ subheading_font_weight }};
+    font-size: {{ subheading_font_size }}px !important;
     color: {% if subheading_alpha != 0 %}{{ subtitle_color }}{% else %}{{ settings.heading_color }}{% endif %} !important;
     text-transform: none;
     {% if subheading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
@@ -238,17 +257,43 @@
     {% elsif width == 'half' %}
       width: 50%;
     {% endif %}
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px !important;
+      {% if padding_left_mobile > 0 %}padding-left: {{ padding_left_mobile }}px;{% endif %}
+      {% if padding_right_mobile > 0 %}padding-right: {{ padding_right_mobile }}px;{% endif %}
+      {% if width == 'half' %}width: 100% !important;{% endif %}
     }
     #shopify-section-{{ id }} .caption {
       padding-top: {{ overlay_padding_top_mobile }}px !important;
       padding-bottom: {{ overlay_padding_bottom_mobile }}px !important;
     }
+    {% if text_width_mobile > 0 %}
+    #shopify-section-{{ id }} .caption-content { width: {{ text_width_mobile }}% !important; }
+    {% endif %}
+    #shopify-section-{{ id }} .image-with-text-overlay__heading {
+      {% if heading_font_size_mobile > 0 %}
+        font-size: {{ heading_font_size_mobile }}px !important;
+      {% else %}
+        font-size: {{ heading_font_size | times: 0.7 | round }}px !important;
+      {% endif %}
+    }
+    #shopify-section-{{ id }} .image-with-text-overlay__subheading {
+      {% if subheading_font_size_mobile > 0 %}
+        font-size: {{ subheading_font_size_mobile }}px !important;
+      {% else %}
+        font-size: {{ subheading_font_size | times: 0.7 | round }}px !important;
+      {% endif %}
+    }
+    {% if text_alignment_mobile != '' %}
+    #shopify-section-{{ id }} .caption-content { text-align: {{ text_alignment_mobile }} !important; }
+    {% endif %}
   }
 
   #shopify-section-{{ id }} .caption--click-through {
@@ -442,7 +487,7 @@
 {% endif %}
       {% if pretext != blank or title != blank or subtitle != blank or button_1 != blank or button_2 != blank %}
         <div id="caption-pos-{{ id }}" class="caption text-align-{{ text_horizontal_position }} align-{{ text_vertical_position }}{% if caption_click_through %} caption--click-through{% endif %}{% if scrim_overlay == 'dark' %} caption--scrim-dark{% endif %}" style="{{ caption_pos_style }}">
-          <div class="caption-content text-align-{{ text_alignment }}" style="pointer-events: all !important; text-align: {{ text_alignment }} !important; display: inline-block !important;">
+          <div class="caption-content text-align-{{ text_alignment }}" style="pointer-events: {% if caption_click_through %}none{% else %}all{% endif %} !important; text-align: {{ text_alignment }} !important; display: inline-block !important;">
             {% if pretext != blank %}
               <div class="image-with-text-overlay__preheading banner__subheading pretext subtitle" style="color: {{ resolved_preheading_color }} !important; {% if text_shadow_contrast %}text-shadow: 0 1px 2px rgba(0,0,0,0.85) !important;{% endif %}">
                 {{ pretext }}

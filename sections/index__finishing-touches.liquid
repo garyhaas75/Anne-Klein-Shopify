@@ -19,12 +19,19 @@
 {% assign heading_font_size = section.settings.heading_font_size | default: 24 %}
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign heading_underline = section.settings.heading_underline %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign heading_alignment_mobile = section.settings.heading_alignment_mobile | default: '' %}
+{% if section.settings.font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 
@@ -59,6 +66,9 @@
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
     {% if width == 'wide' %}width: 100%;{% endif %}
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -85,6 +95,12 @@
     box-sizing: border-box;
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
   }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-finishing-touches__heading {
+      {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% else %}font-size: {{ heading_font_size | times: 0.75 | round }}px;{% endif %}
+      {% if heading_alignment_mobile != '' %}text-align: {{ heading_alignment_mobile }};{% endif %}
+    }
+  }
   #shopify-section-{{ id }} .ak-finishing-touches__sr-status.is-sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
@@ -102,6 +118,7 @@
   /* Nav under slider: wrap + flex layout */
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
     width: 100%;
+    min-width: 0;
   }
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .flickity-enabled {
     display: flex;
@@ -218,7 +235,7 @@
           {% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
             {% for product in collections[collection_ref].products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-              {% if product.featured_media.preview_image.alt != blank %}
+              {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
                 {% assign alt_text = product.featured_media.preview_image.alt %}
               {% else %}
                 {% assign alt_text = product.title %}
@@ -231,7 +248,11 @@
                         {% if settings.stickers_enabled %}
                           {% include 'product-thumbnail__sticker' %}
                         {% endif %}
-                        {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                        {% if product.featured_media != blank %}
+                          {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {% endif %}
                         {% if product.media[1] != blank and settings.show_secondary_image %}
                           {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                         {% endif %}
@@ -273,7 +294,7 @@
                 {% if output_index < product_limit %}
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% if product.featured_media.preview_image.alt != blank %}
+                  {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
                     {% assign alt_text = product.featured_media.preview_image.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
@@ -286,7 +307,11 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if product.featured_media != blank %}
+                              {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% else %}
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% endif %}
                             {% if product.media[1] != blank and settings.show_secondary_image %}
                               {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
@@ -725,6 +750,18 @@
       ]
     },
     {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Heading alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Fonts"
     },
@@ -739,7 +776,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Safe fonts that work without loading a font package."
     },
@@ -752,6 +791,17 @@
       "step": 2,
       "unit": "px",
       "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
     },
     {
       "type": "select",

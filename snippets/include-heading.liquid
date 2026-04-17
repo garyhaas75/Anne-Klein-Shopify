@@ -35,13 +35,21 @@
 {% assign padding_right = object.settings.padding_right %}
 {% assign padding_top_mobile = object.settings.padding_top_mobile | default: padding_top %}
 {% assign padding_bottom_mobile = object.settings.padding_bottom_mobile | default: padding_bottom %}
+{% assign heading_alignment_mobile = object.settings.heading_alignment_mobile | default: '' %}
+{% assign padding_left_mobile = object.settings.padding_left_mobile | default: 0 %}
+{% assign padding_right_mobile = object.settings.padding_right_mobile | default: 0 %}
 {% assign animation = object.settings.animation | default: 'none' %}
+{% if object.settings.font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case object.settings.font_family | default: 'system' %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% comment %} Advanced {% endcomment %}
@@ -90,13 +98,25 @@
     {%- elsif width == 'half' -%}
       width: 50%;
     {%- endif %}
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
       padding-top: {{ padding_top_mobile }}px;
       padding-bottom: {{ padding_bottom_mobile }}px;
+      {% if padding_left_mobile > 0 %}padding-left: {{ padding_left_mobile }}px;{% endif %}
+      {% if padding_right_mobile > 0 %}padding-right: {{ padding_right_mobile }}px;{% endif %}
+      {% if width == 'half' %}width: 100% !important;{% endif %}
     }
+    {% if heading_alignment_mobile != '' %}
+    #shopify-section-{{ id }} .heading-section__content {
+      align-items: {% if heading_alignment_mobile == 'left' %}flex-start{% elsif heading_alignment_mobile == 'right' %}flex-end{% else %}center{% endif %};
+      text-align: {{ heading_alignment_mobile }};
+    }
+    {% endif %}
   }
 
   {% include 'css-loop', css: section_css, id: id %}

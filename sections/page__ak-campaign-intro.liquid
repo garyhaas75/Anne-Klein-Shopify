@@ -49,6 +49,11 @@
   {% assign heading_size_mobile = heading_size %}
 {% endif %}
 {% assign heading_weight = section.settings.heading_font_weight | default: '400' %}
+{% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 0 | plus: 0 %}
+{% assign heading_letter_spacing_mobile = section.settings.heading_letter_spacing_mobile | default: -1 | plus: 0 %}
+{% if heading_letter_spacing_mobile < 0 %}
+  {% assign heading_letter_spacing_mobile = heading_letter_spacing %}
+{% endif %}
 {% assign split_image_pct = section.settings.split_image_width | default: 50 %}
 {% assign text_rule_align = section.settings.text_rule_alignment | default: 'center' %}
 {% case text_rule_align %}
@@ -178,6 +183,7 @@
     line-height: 1.1;
     margin: 0;
     color: {{ text_color }};
+    letter-spacing: {{ heading_letter_spacing }}px;
     {% if section.settings.heading_underline %}text-decoration: underline; text-underline-offset: 0.15em;{% endif %}
   }
   @media only screen and (max-width: 798px) {
@@ -186,6 +192,7 @@
     }
     #shopify-section-{{ id }} .ak-campaign-intro__heading {
       font-size: clamp(2.25rem, 8vw, {{ heading_size_mobile }}px);
+      letter-spacing: {{ heading_letter_spacing_mobile }}px;
     }
   }
   #shopify-section-{{ id }} .ak-campaign-intro__heading:focus-visible,
@@ -511,7 +518,8 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -526,7 +534,8 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -615,6 +624,27 @@
       "id": "heading_underline",
       "label": "Heading underline",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Heading letter spacing",
+      "min": -10,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing_mobile",
+      "label": "Heading letter spacing (mobile)",
+      "min": -1,
+      "max": 20,
+      "step": 1,
+      "default": -1,
+      "unit": "px",
+      "info": "-1 = same as desktop. Applied at ≤798px."
     },
     {
       "type": "header",

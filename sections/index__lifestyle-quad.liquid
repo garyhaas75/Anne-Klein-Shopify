@@ -24,12 +24,38 @@
 {% assign heading_font_weight = section.settings.heading_font_weight | default: '400' %}
 {% assign cta_font_size = section.settings.cta_font_size | default: 14 %}
 {% assign cta_font_weight = section.settings.cta_font_weight | default: '700' %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign cta_font_size_mobile = section.settings.cta_font_size_mobile | default: 0 %}
+{% assign caption_text_align = section.settings.caption_text_align | default: 'left' %}
+{% assign caption_text_align_mobile_raw = section.settings.caption_text_align_mobile %}
+{% if caption_text_align_mobile_raw == blank %}
+  {% assign caption_text_align_mobile = caption_text_align %}
+{% else %}
+  {% assign caption_text_align_mobile = caption_text_align_mobile_raw %}
+{% endif %}
+{% case caption_text_align %}
+  {% when 'left' %}{% assign caption_align_flex = 'flex-start' %}{% assign caption_align_ta = 'left' %}
+  {% when 'center' %}{% assign caption_align_flex = 'center' %}{% assign caption_align_ta = 'center' %}
+  {% when 'right' %}{% assign caption_align_flex = 'flex-end' %}{% assign caption_align_ta = 'right' %}
+  {% else %}{% assign caption_align_flex = 'flex-start' %}{% assign caption_align_ta = 'left' %}
+{% endcase %}
+{% case caption_text_align_mobile %}
+  {% when 'left' %}{% assign caption_align_flex_m = 'flex-start' %}{% assign caption_align_ta_m = 'left' %}
+  {% when 'center' %}{% assign caption_align_flex_m = 'center' %}{% assign caption_align_ta_m = 'center' %}
+  {% when 'right' %}{% assign caption_align_flex_m = 'flex-end' %}{% assign caption_align_ta_m = 'right' %}
+  {% else %}{% assign caption_align_flex_m = caption_align_flex %}{% assign caption_align_ta_m = caption_align_ta %}
+{% endcase %}
+{% if section.settings.font_family == 'amiri' or section.settings.font_heading == 'amiri' or section.settings.font_cta == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% assign _heading_font = section.settings.font_heading | default: section.settings.font_family %}
@@ -39,6 +65,8 @@
   {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_heading = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_heading = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack_heading = font_stack %}
 {% endcase %}
@@ -49,6 +77,8 @@
   {% when 'times' %}{% assign font_stack_cta = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_cta = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_cta = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_cta = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_cta = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_cta = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack_cta = font_stack %}
 {% endcase %}
@@ -65,6 +95,9 @@
   #shopify-section-{{ id }} {
     padding-top: {{ padding_top }}px;
     padding-bottom: {{ padding_bottom }}px;
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -76,6 +109,7 @@
   #shopify-section-{{ id }} .ak-quad__cta { color: {{ text_color }}; text-transform: none; }
   #shopify-section-{{ id }} .ak-quad__wrap {
     margin: 0 auto;
+    overflow: hidden;
     {% if container_width == 'standard' %}max-width: 1200px;{% elsif container_width == 'wide' %}max-width: 1400px;{% endif %}
   }
   #shopify-section-{{ id }} .ak-lifestyle-quad .ak-quad__grid {
@@ -147,16 +181,32 @@
   #shopify-section-{{ id }} .ak-quad__caption {
     position: absolute; left: 0; right: 0; bottom: 0;
     padding: {{ overlay_caption_pt }}px 1.25rem {{ overlay_caption_pb }}px; z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: {{ caption_align_flex }};
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-quad__caption .ak-quad__heading,
+  #shopify-section-{{ id }} .ak-quad__caption .ak-quad__cta {
+    width: 100%;
+    text-align: {{ caption_align_ta }};
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quad__caption {
       padding: {{ overlay_caption_pt_m }}px 1rem {{ overlay_caption_pb_m }}px;
+      align-items: {{ caption_align_flex_m }};
+    }
+    #shopify-section-{{ id }} .ak-quad__caption .ak-quad__heading,
+    #shopify-section-{{ id }} .ak-quad__caption .ak-quad__cta {
+      text-align: {{ caption_align_ta_m }};
     }
   }
   #shopify-section-{{ id }} .ak-quad__cta-link {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: {{ caption_align_flex }};
     justify-content: flex-end;
     position: absolute;
     left: 0; right: 0; top: 0; bottom: 0;
@@ -164,10 +214,22 @@
     text-decoration: none;
     color: inherit;
     z-index: 2;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-quad__cta-link .ak-quad__heading,
+  #shopify-section-{{ id }} .ak-quad__cta-link .ak-quad__cta {
+    width: 100%;
+    text-align: {{ caption_align_ta }};
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-quad__cta-link {
       padding: {{ overlay_caption_pt_m }}px 1rem {{ overlay_caption_pb_m }}px;
+      align-items: {{ caption_align_flex_m }};
+    }
+    #shopify-section-{{ id }} .ak-quad__cta-link .ak-quad__heading,
+    #shopify-section-{{ id }} .ak-quad__cta-link .ak-quad__cta {
+      text-align: {{ caption_align_ta_m }};
     }
   }
   #shopify-section-{{ id }} .ak-quad__heading {
@@ -186,6 +248,22 @@
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-quad__heading {
+      {% if heading_font_size_mobile > 0 %}
+        font-size: {{ heading_font_size_mobile }}px;
+      {% else %}
+        font-size: {{ heading_font_size | times: 0.65 | round }}px;
+      {% endif %}
+    }
+    #shopify-section-{{ id }} .ak-quad__cta {
+      {% if cta_font_size_mobile > 0 %}
+        font-size: {{ cta_font_size_mobile }}px;
+      {% else %}
+        font-size: {{ cta_font_size }}px;
+      {% endif %}
+    }
   }
   #shopify-section-{{ id }} .ak-quad__cta-link:hover,
   #shopify-section-{{ id }} .ak-quad__cta-link:focus-visible { opacity: 0.9; }
@@ -453,7 +531,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Used when heading or CTA font below is set to \"Same as default\"."
     },
@@ -469,7 +549,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -484,7 +566,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -497,6 +581,17 @@
       "label": "Heading font size",
       "default": 42,
       "info": "Panel heading (e.g. Dress with Intention)."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 42,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size (mobile)",
+      "default": 28,
+      "info": "0 = auto-scale from desktop size (~65%)."
     },
     {
       "type": "select",
@@ -521,6 +616,17 @@
       "label": "CTA font size",
       "default": 14,
       "info": "CTA text (e.g. SHOP DRESSES)."
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA font size (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -640,6 +746,30 @@
     {
       "type": "header",
       "content": "Text overlay container"
+    },
+    {
+      "type": "select",
+      "id": "caption_text_align",
+      "label": "Caption text alignment (desktop)",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "info": "Panel heading and CTA text. Applies when the panel has a link or caption-only."
+    },
+    {
+      "type": "select",
+      "id": "caption_text_align_mobile",
+      "label": "Caption text alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "range",

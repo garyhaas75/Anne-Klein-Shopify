@@ -43,12 +43,32 @@
 {% assign label_icon_image_mobile = section.settings.label_icon_image_mobile %}
 {% assign tile_aspect_ratio = section.settings.tile_aspect_ratio | default: '3_4' %}
 {% assign section_max_width = section.settings.section_max_width | default: 1400 %}
+{% assign heading_font_size_mobile = section.settings.heading_font_size_mobile | default: 0 %}
+{% assign heading_alignment_mobile = section.settings.heading_alignment_mobile | default: '' %}
+{% assign label_font_size_mobile = section.settings.label_font_size_mobile | default: 0 %}
+{% assign grid_gap_mobile = section.settings.grid_gap_mobile | default: 0 %}
+{% assign container_padding_mobile = section.settings.container_padding_mobile | default: 0 %}
+{% assign heading_padding_top = section.settings.heading_padding_top | default: 0 | plus: 0 %}
+{% assign heading_padding_bottom = section.settings.heading_padding_bottom | default: 24 | plus: 0 %}
+{% assign heading_padding_top_mobile = section.settings.heading_padding_top_mobile | default: 0 | plus: 0 %}
+{% assign heading_padding_bottom_mobile = section.settings.heading_padding_bottom_mobile | default: 0 | plus: 0 %}
+{% if heading_padding_top_mobile < 1 %}
+  {% assign heading_padding_top_mobile = heading_padding_top %}
+{% endif %}
+{% if heading_padding_bottom_mobile < 1 %}
+  {% assign heading_padding_bottom_mobile = heading_padding_bottom %}
+{% endif %}
+{% if section.settings.font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 
@@ -81,6 +101,11 @@
 {% endif %}
 
 {% style %}
+  #shopify-section-{{ id }} {
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
   #shopify-section-{{ id }} .ak-new-arrivals {
     display: block;
     width: 100%;
@@ -90,6 +115,7 @@
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
     box-sizing: border-box;
+    overflow: hidden;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-new-arrivals {
@@ -113,7 +139,7 @@
     font-size: {{ heading_font_size }}px;
     font-weight: {{ heading_font_weight }};
     text-align: {{ heading_alignment }};
-    margin: 0 0 1.5rem;
+    margin: {{ heading_padding_top }}px 0 {{ heading_padding_bottom }}px;
     color: {{ heading_color }};
     letter-spacing: {% if heading_letter_spacing == 0 %}0{% else %}{{ heading_ls_str }}em{% endif %};
     {% if heading_underline %}text-decoration: underline; text-underline-offset: 0.2em;{% endif %}
@@ -133,12 +159,17 @@
   #shopify-section-{{ id }} .ak-new-arrivals__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: {{ grid_gap }}px;
+    gap: 0;
     padding: {{ container_padding }}px;
     width: 100%;
     box-sizing: border-box;
     list-style: none;
     margin: 0;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-new-arrivals__grid {
+      gap: {{ grid_gap }}px;
+    }
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-link {
     display: flex;
@@ -219,6 +250,9 @@
   }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: none; }
   #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: inline-flex; }
+  @media only screen and (max-width: 1024px) {
+    #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--desktop { display: none; }
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon--mobile { display: inline-flex; }
@@ -233,7 +267,20 @@
     #shopify-section-{{ id }} .ak-new-arrivals__tile-icon img {
       height: {{ icon_size_mobile_px }}px !important;
     }
-    #shopify-section-{{ id }} .ak-new-arrivals__grid { grid-template-columns: repeat(2, 1fr); gap: {{ grid_gap | times: 0.75 | round }}px; padding: {{ container_padding | times: 0.75 | round }}px; }
+    #shopify-section-{{ id }} .ak-new-arrivals__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: {% if grid_gap_mobile > 0 %}{{ grid_gap_mobile }}{% else %}16{% endif %}px;
+      padding: {% if container_padding_mobile > 0 %}{{ container_padding_mobile }}{% else %}{{ container_padding | times: 0.75 | round }}{% endif %}px;
+    }
+    #shopify-section-{{ id }} .ak-new-arrivals__title {
+      {% if heading_font_size_mobile > 0 %}font-size: {{ heading_font_size_mobile }}px;{% endif %}
+      {% if heading_alignment_mobile != '' %}text-align: {{ heading_alignment_mobile }};{% endif %}
+      margin-top: {{ heading_padding_top_mobile }}px;
+      margin-bottom: {{ heading_padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ id }} .ak-new-arrivals__tile-label {
+      {% if label_font_size_mobile > 0 %}font-size: {{ label_font_size_mobile }}px;{% endif %}
+    }
   }
 {% endstyle %}
 
@@ -343,7 +390,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Safe fonts that work without loading a font package."
     },
@@ -372,6 +421,17 @@
     },
     {
       "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading font size (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
       "id": "heading_letter_spacing",
       "min": 0,
       "max": 10,
@@ -392,10 +452,65 @@
       ]
     },
     {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Heading alignment (mobile)",
+      "default": "",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
       "type": "checkbox",
       "id": "heading_underline",
       "label": "Heading underline",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading margin bottom",
+      "default": 24,
+      "info": "Space below the heading before the tile grid."
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading margin top (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading margin bottom (mobile)",
+      "default": 0,
+      "info": "0 = same as desktop."
     },
     {
       "type": "color",
@@ -416,6 +531,17 @@
       "step": 1,
       "unit": "px",
       "default": 18
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "label": "Label font size (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -539,13 +665,36 @@
     },
     {
       "type": "range",
+      "id": "container_padding_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding around tile grid (mobile)",
+      "default": 0,
+      "info": "0 = auto-scale from desktop (~75%)."
+    },
+    {
+      "type": "range",
       "id": "grid_gap",
       "min": 8,
       "max": 48,
       "step": 4,
       "unit": "px",
-      "label": "Gap between tiles",
-      "default": 24
+      "label": "Gap between tiles (desktop)",
+      "default": 24,
+      "info": "Used at viewport widths 799px and up (including 2-column tablet)."
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between tiles (mobile)",
+      "default": 0,
+      "info": "Used below 799px only. Independent of desktop gap. 0 = 16px default."
     },
     {
       "type": "header",

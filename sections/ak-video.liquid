@@ -12,13 +12,22 @@
   assign heading_tag = section.settings.heading_level | default: 'h1'
   assign video_fit = section.settings.video_fit | default: 'cover'
   assign bg_color = section.settings.video_background_color | default: '#000000'
+  assign ak_video_wants_amiri = false
+  if section.settings.font_family == 'amiri' or section.settings.font_overlay_line1 == 'amiri' or section.settings.font_overlay_heading == 'amiri' or section.settings.font_overlay_cta == 'amiri' or section.settings.font_start_card_heading == 'amiri' or section.settings.font_end_card_heading == 'amiri' or section.settings.font_hashtag == 'amiri'
+    assign ak_video_wants_amiri = true
+  endif
 %}
+{% if ak_video_wants_amiri %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% case section.settings.font_family %}
   {% when 'arial' %}{% assign font_stack = 'Arial, Helvetica, sans-serif' %}
   {% when 'georgia' %}{% assign font_stack = 'Georgia, serif' %}
   {% when 'times' %}{% assign font_stack = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% else %}{% assign font_stack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}
 {% assign font_stack_line1 = font_stack %}
@@ -34,6 +43,8 @@
   {% when 'times' %}{% assign font_stack_line1 = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_line1 = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_line1 = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_line1 = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_line1 = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_line1 = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign f_h = section.settings.font_overlay_heading %}
@@ -43,6 +54,8 @@
   {% when 'times' %}{% assign font_stack_heading = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_heading = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_heading = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_heading = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_heading = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_heading = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign f_cta = section.settings.font_overlay_cta %}
@@ -52,6 +65,8 @@
   {% when 'times' %}{% assign font_stack_cta = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_cta = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_cta = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_cta = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_cta = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_cta = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign f_start = section.settings.font_start_card_heading %}
@@ -61,6 +76,8 @@
   {% when 'times' %}{% assign font_stack_start_card = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_start_card = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_start_card = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_start_card = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_start_card = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_start_card = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign f_end = section.settings.font_end_card_heading %}
@@ -70,6 +87,8 @@
   {% when 'times' %}{% assign font_stack_end_card = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_end_card = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_end_card = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_end_card = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_end_card = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_end_card = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign f_hashtag = section.settings.font_hashtag %}
@@ -79,6 +98,8 @@
   {% when 'times' %}{% assign font_stack_hashtag = '"Times New Roman", Times, serif' %}
   {% when 'verdana' %}{% assign font_stack_hashtag = 'Verdana, Geneva, sans-serif' %}
   {% when 'trebuchet' %}{% assign font_stack_hashtag = '"Trebuchet MS", "Lucida Grande", sans-serif' %}
+  {% when 'amiri' %}{% assign font_stack_hashtag = 'Amiri, Georgia, serif' %}
+  {% when 'helvetica' %}{% assign font_stack_hashtag = '"Helvetica Neue", Helvetica, Arial, sans-serif' %}
   {% when 'system' %}{% assign font_stack_hashtag = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' %}
 {% endcase %}{% endif %}
 {% assign overlay_line1_font_weight = section.settings.overlay_line1_font_weight | default: '400' %}
@@ -118,6 +139,11 @@
 {% assign ov_fs_h_m = section.settings.overlay_heading_font_size_mobile | default: 0 | plus: 0 %}
 {% if ov_fs_h_m < 1 %}
   {% assign ov_fs_h_m = ov_fs_h %}
+{% endif %}
+{% assign heading_letter_spacing = section.settings.heading_letter_spacing | default: 0 | plus: 0 %}
+{% assign heading_letter_spacing_mobile = section.settings.heading_letter_spacing_mobile | default: -1 | plus: 0 %}
+{% if heading_letter_spacing_mobile < 0 %}
+  {% assign heading_letter_spacing_mobile = heading_letter_spacing %}
 {% endif %}
 {% assign ov_fs_cta = section.settings.overlay_cta_font_size | default: 14 | plus: 0 %}
 {% assign ov_fs_cta_m = section.settings.overlay_cta_font_size_mobile | default: 0 | plus: 0 %}
@@ -620,6 +646,7 @@
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
     text-transform: none;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__end-card-heading {
     font-family: {{ font_stack_end_card }};
@@ -627,6 +654,7 @@
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
     text-transform: none;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__start-card-text {
     font-family: {{ font_stack }};
@@ -742,6 +770,7 @@
     text-transform: none;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
     line-height: 1 !important;
+    letter-spacing: {{ heading_letter_spacing }}px;
   }
   #ak-video-{{ section.id }} .ak-video__overlay-line1 {
     margin-bottom: {{ ov_l1_pb }}px !important;
@@ -780,7 +809,7 @@
     font-family: {{ font_stack_heading }};
     font-size: clamp(1.5rem, 5vw, 4rem);
     font-weight: {{ overlay_heading_font_weight }};
-    letter-spacing: 0.05em;
+    letter-spacing: {{ heading_letter_spacing }}px;
     text-align: center;
     margin: 0 !important;
     margin-top: 0 !important;
@@ -814,6 +843,12 @@
     }
     #ak-video-{{ section.id }} .ak-video__overlay--stack .ak-video__title {
       margin-bottom: {{ ov_h_pb_m }}px !important;
+    }
+    #ak-video-{{ section.id }} .ak-video__start-card-heading,
+    #ak-video-{{ section.id }} .ak-video__end-card-heading,
+    #ak-video-{{ section.id }} .ak-video__overlay-heading,
+    #ak-video-{{ section.id }} .ak-video__title {
+      letter-spacing: {{ heading_letter_spacing_mobile }}px;
     }
   }
   #ak-video-{{ section.id }} .ak-video__hashtag {
@@ -1281,7 +1316,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ],
       "info": "Used when a specific font below is set to \"Section default\"."
     },
@@ -1297,7 +1334,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1312,7 +1351,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1327,7 +1368,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1342,7 +1385,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1357,7 +1402,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1372,7 +1419,9 @@
         { "value": "georgia", "label": "Georgia" },
         { "value": "times", "label": "Times New Roman" },
         { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" }
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
       ]
     },
     {
@@ -1583,6 +1632,28 @@
       "id": "overlay_heading_underline",
       "label": "Underline line 2",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Heading letter spacing",
+      "min": -10,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "Start card, end card, and overlay main titles (line 2 / feature title)."
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing_mobile",
+      "label": "Heading letter spacing (mobile)",
+      "min": -1,
+      "max": 20,
+      "step": 1,
+      "default": -1,
+      "unit": "px",
+      "info": "-1 = same as desktop. Applied at ≤798px."
     },
     {
       "type": "text",
