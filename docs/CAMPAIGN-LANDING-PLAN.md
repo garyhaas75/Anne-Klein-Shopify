@@ -49,6 +49,28 @@ Work **one section per iteration**; update the **Status** row when something shi
 | 9 | “Behind the Scenes” + Instagram line (Figma **196:119**–**196:120**, mobile frame **35:616**) | **`page__ak-campaign-bts-collage`** — heading + **richtext** subcopy (default Instagram link). Same section as Step 10. | **In template** (`campaign_bts_collage` after BTS grid) |
 | 10 | Asymmetric editorial collage (backdrop **191:89**; tiles **191:97**, **191:96**, **191:90**, **191:91**, **191:92**, **191:98**, **191:94**, **191:95**, **191:93** on **798×1545** stage) | **`page__ak-campaign-bts-collage`** — optional backdrop; **nine** `collage_tile` blocks with presets **p1–p9** (% positions from Figma) or **Custom** %; mobile = backdrop → text → **2-col** tile stack. | **In template** (add backdrop + tile images + **alt** in admin) |
 
+### Anne Klein Artist Series page (`page.anne-klein-artist-series`)
+
+**Figma file key:** `0kmSuSntT1RaS2ElBXMw25` — **Canvas “Artist Series”** node **`333:421`**; frames **`AK_Artist Series_Desktop`** **`351:1393`**, **`AK_Artist Series_Mobile`** **`333:422`**.  
+**Template:** [`templates/page.anne-klein-artist-series.json`](../templates/page.anne-klein-artist-series.json).
+
+| Band (Figma, top → bottom) | Theme section (`page.anne-klein-artist-series.json`) |
+|----------------------------|------------------------------------------------------|
+| Hero — “Anne Klein Artist Series” + **Anjelica Roselyn** | `page__ak-campaign-intro` — `artist_series_hero` |
+| **Where Style & Story Connect** + mission copy | `page__ak-campaign-copy` — `artist_series_mission` |
+| Primary interview / film | `ak-video` (feature) — `artist_series_video_primary` |
+| **About the Artist** + bio | `page__ak-campaign-copy` — `artist_series_about` |
+| Horizontal motif strip (Figma **Group 63**) | `index__gallery` — `artist_series_icon_strip` — **horizontal scroll** via `css_class` **`ak-artist-series-icon-strip`** + section **Custom CSS** |
+| 4×2 product region + **SHOP THE COLLECTION** | `index__finishing-touches` — `artist_series_products` (8 hand-picked products) + `page__ak-campaign-cta` — `artist_series_mid_cta` |
+| Zigzag quotes + imagery | `page__ak-campaign-quote-zigzag` — `artist_series_zigzag` |
+| **The Invisible Thread with Anjelica Roselyn** | `page__ak-campaign-copy` — `artist_series_thread_heading` |
+| Secondary hero film | `ak-video` (hero) — `artist_series_video_secondary` |
+| Pull quote | `page__ak-campaign-copy` — `artist_series_quote` |
+| Large feature still | `page__ak-campaign-stills` — `artist_series_feature_still` |
+| Footer quote + ANNE KLEIN + CTA | `page__ak-campaign-cta` — `artist_series_footer_cta` |
+
+**Admin follow-up:** Assign **videos** on both `ak-video` sections; set **product** blocks or switch finishing touches to **From collection**; set **SHOP THE COLLECTION** URLs on CTAs; replace motif strip images / **alt** text as needed.
+
 ## Template
 
 - Page template: **`campaign`** → [`templates/page.campaign.json`](../templates/page.campaign.json)
