@@ -370,12 +370,31 @@
                 {% if output_index < product_limit %}
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
-                    {% assign alt_text = product.featured_media.preview_image.alt %}
+                  {% assign override_image = block.settings.override_image %}
+                  {% assign override_image_hover = block.settings.override_image_hover %}
+                  {% assign override_alt = block.settings.image_alt | strip %}
+                  {% if override_image != blank %}
+                    {% assign primary_image = override_image %}
+                  {% elsif product.featured_media != blank %}
+                    {% assign primary_image = product.featured_media.preview_image %}
+                  {% else %}
+                    {% assign primary_image = blank %}
+                  {% endif %}
+                  {% if override_alt != blank %}
+                    {% assign alt_text = override_alt %}
+                  {% elsif primary_image != blank and primary_image.alt != blank %}
+                    {% assign alt_text = primary_image.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
                   {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+                  {% if override_image_hover != blank %}
+                    {% assign hover_image = override_image_hover %}
+                  {% elsif override_image == blank and product.media[1] != blank %}
+                    {% assign hover_image = product.media[1] %}
+                  {% else %}
+                    {% assign hover_image = blank %}
+                  {% endif %}
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
                     <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
@@ -383,13 +402,13 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% if product.featured_media != blank %}
-                              {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if primary_image != blank %}
+                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% else %}
                               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                             {% endif %}
-                            {% if product.media[1] != blank and settings.show_secondary_image %}
-                              {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% if hover_image != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
                           </div>
                           {% if hover_enabled or settings.enable_quickshop %}
@@ -1119,6 +1138,32 @@
           "id": "product",
           "label": "Product",
           "info": "Select a product to show in the carousel. Add more blocks to add more products; order is the display order."
+        },
+        {
+          "type": "header",
+          "content": "Image override (optional)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Leave blank to use the product's featured image. Upload an alternate image to control the aspect ratio and visual height of this tile, or to use lifestyle photography that differs from the PDP image."
+        },
+        {
+          "type": "image_picker",
+          "id": "override_image",
+          "label": "Override image",
+          "info": "Used in place of the product's featured image. Crop / size all override images to the same dimensions for an even grid."
+        },
+        {
+          "type": "image_picker",
+          "id": "override_image_hover",
+          "label": "Override hover image",
+          "info": "Optional. Shown on hover when the theme's secondary-image swap is enabled. Falls back to the product's second media if blank and no override image is set."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text (override)",
+          "info": "Describe the image for accessibility. Falls back to the product's alt text or title."
         }
       ]
     }
