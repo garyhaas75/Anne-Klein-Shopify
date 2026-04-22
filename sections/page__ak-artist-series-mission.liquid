@@ -294,6 +294,30 @@
     {% endif %}
     color: {{ text_color }};
   }
+  /* Rich text often includes inline font-size on <p>, <span>, etc.; match the Body size setting */
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte p,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte li,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte td,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte th,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte blockquote {
+    font-size: {{ body_size }}px !important;
+    line-height: {{ body_lh }}%;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h1,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h2,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h3,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h4,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h5,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte h6 {
+    font-size: {{ body_size }}px !important;
+    line-height: {{ body_lh }}%;
+    font-weight: {{ body_weight }};
+    font-family: {{ body_font_stack }};
+  }
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte p span,
+  #shopify-section-{{ id }} .ak-artist-series-mission__rte li span {
+    font-size: inherit !important;
+  }
   #shopify-section-{{ id }} .ak-artist-series-mission__rte p {
     margin: 0 0 1em;
   }
@@ -320,6 +344,25 @@
       {% else %}
         max-width: none;
       {% endif %}
+    }
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte p,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte li,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte td,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte th,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte blockquote {
+      font-size: {{ body_size_mobile }}px !important;
+      line-height: {{ body_lh_mobile }}%;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h1,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h2,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h3,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h4,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h5,
+    #shopify-section-{{ id }} .ak-artist-series-mission__rte h6 {
+      font-size: {{ body_size_mobile }}px !important;
+      line-height: {{ body_lh_mobile }}%;
+      font-weight: {{ body_weight }};
+      font-family: {{ body_font_stack_mobile }};
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__signature {
@@ -907,7 +950,8 @@
       "max": 28,
       "step": 1,
       "default": 18,
-      "unit": "px"
+      "unit": "px",
+      "info": "Applies to paragraph and list text. Inline font sizes from the rich text editor are matched to this value so the control is accurate."
     },
     {
       "type": "range",
