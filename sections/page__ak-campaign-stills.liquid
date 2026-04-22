@@ -37,7 +37,8 @@
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
 {% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
-{% assign letterbox = section.settings.letterbox_color | default: 'rgba(0,0,0,0)' %}
+{% assign letterbox = section.settings.letterbox_color | default: '#ffffff' %}
+{% assign letterbox_transparent = section.settings.letterbox_transparent %}
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign sec_heading = section.settings.heading %}
 {% assign sec_intro = section.settings.intro %}
@@ -139,7 +140,9 @@
     display: block;
     width: 100%;
     overflow: hidden;
-    {% if letterbox != 'rgba(0,0,0,0)' and letterbox != blank %}
+    {% if letterbox_transparent %}
+      background-color: transparent;
+    {% else %}
       background-color: {{ letterbox }};
     {% endif %}
   }
@@ -773,11 +776,18 @@
       "unit": "px"
     },
     {
+      "type": "checkbox",
+      "id": "letterbox_transparent",
+      "label": "Transparent frame background",
+      "default": true,
+      "info": "When on, the frame is fully transparent and the page background shows through. When off, the color below is used."
+    },
+    {
       "type": "color",
       "id": "letterbox_color",
-      "label": "Frame background (only shows where the image doesn't fill)",
-      "default": "rgba(0,0,0,0)",
-      "info": "Used as the letterbox color in Fixed-frame mode with Contain fit, and as the placeholder color while the image loads. Leave transparent if you don't want any color showing."
+      "label": "Frame background color",
+      "default": "#ffffff",
+      "info": "Only used when ‘Transparent frame background’ is off. Shows where the image doesn't fill (Fixed-frame + Contain fit) and as the placeholder while the image loads."
     },
     {
       "type": "text",
