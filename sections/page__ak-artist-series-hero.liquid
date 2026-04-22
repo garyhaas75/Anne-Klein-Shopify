@@ -527,17 +527,17 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    /* Smooth linear ramp across desktop widths.
-       Anchor: at ~1024px viewport ≈ slider value, at ~3000px viewport ≈ 2.5× slider.
-       Pure linear (no plateaus): font-size = A + B×vw. The clamp min/max are loose guard rails
-       (0.85× / 3.5× slider), set wide so the linear ramp drives the size at every typical width.
-       Parent has overflow: hidden + overflow-wrap so the container governs the practical max. */
+    /* Preferred max size: smooth linear ramp across desktop widths
+       (slider value ≈ size at ~1024px viewport, ≈ 2.5× slider at ~3000px).
+       The auto-fit script below scales DOWN from this size when needed so the
+       artist name always fits on a single line within its container. */
     font-size: clamp({{ nm_sz | times: 0.85 }}px, calc({{ nm_sz | times: 0.235 }}px + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 }}px);
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
     margin: 0;
-    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
     max-width: 100%;
     box-sizing: border-box;
     width: 100%;
@@ -650,6 +650,58 @@
     </div>
   </div>
 </section>
+
+{%- if artist_name != blank -%}
+  <script>
+    (function () {
+      var nameId = 'ak-artist-series-hero-name-{{ id }}';
+      var el = document.getElementById(nameId);
+      if (!el) return;
+      var parent = el.parentElement;
+      if (!parent) return;
+
+      var pending = false;
+      function fit() {
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(function () {
+          pending = false;
+          // Reset to the CSS-defined preferred max, then shrink to fit.
+          el.style.fontSize = '';
+          var style = window.getComputedStyle(el);
+          var paddingX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+          var available = parent.clientWidth - paddingX;
+          if (available <= 0) return;
+          var current = parseFloat(style.fontSize);
+          if (!current) return;
+          // Floor to keep type readable on very narrow viewports.
+          var minSize = 18;
+          // Two-pass proportional shrink converges in 1–2 iterations.
+          for (var i = 0; i < 4; i++) {
+            var overflow = el.scrollWidth;
+            if (overflow <= available + 0.5) break;
+            current = Math.max(minSize, current * (available / overflow));
+            el.style.fontSize = current + 'px';
+            if (current === minSize) break;
+          }
+        });
+      }
+
+      fit();
+      var ro = (typeof ResizeObserver === 'function') ? new ResizeObserver(fit) : null;
+      if (ro) ro.observe(parent);
+      window.addEventListener('resize', fit, { passive: true });
+      window.addEventListener('orientationchange', fit, { passive: true });
+      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        document.fonts.ready.then(fit);
+      }
+      // Re-fit when the Theme Editor swaps section content.
+      document.addEventListener('shopify:section:load', function (e) {
+        if (e && e.detail && e.detail.sectionId === '{{ id }}') fit();
+      });
+    })();
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
