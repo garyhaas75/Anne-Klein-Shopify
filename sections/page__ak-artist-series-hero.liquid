@@ -68,10 +68,10 @@
 
 {% style %}
   /*
-    Theme Flex: only `.section.is-width-wide` breaks out of $site-max-width.
-    There is no `.is-width-full` — using it left the hero stuck at the default
-    `.section` width. Skip `has-background` on the root so we don't inherit
-    horizontal padding from `.section.has-background`.
+    Theme Flex: `.section.is-width-wide` = full content width (no `.is-width-full`).
+    Hero layout: one `__stage` with fixed min-height; `__media` is absolute fill;
+    `__band` is absolute bottom (over the photo, not below it); eyebrow + name
+    overlay with z-index above band so all type sits on the image/band stack.
   */
   #shopify-section-{{ id }} {
     display: block;
@@ -79,32 +79,54 @@
     max-width: none;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero {
-    position: relative;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
     box-sizing: border-box;
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__media {
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage {
     position: relative;
     width: 100%;
     max-width: 100%;
+    min-height: {{ image_min_height }}px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
     line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__media img,
   #shopify-section-{{ id }} .ak-artist-series-hero__media .placeholder-svg {
     display: block;
     width: 100%;
-    height: auto;
-    min-height: {{ image_min_height }}px;
+    height: 100%;
     object-fit: cover;
     object-position: {{ image_object_position }};
+    min-height: 0 !important;
   }
-  @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-artist-series-hero__media img,
-    #shopify-section-{{ id }} .ak-artist-series-hero__media .placeholder-svg {
-      min-height: {{ image_min_height_mobile }}px;
-    }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media > .is-hidden-desktop-only {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: none; }
   @media only screen and (max-width: 798px) {
@@ -118,7 +140,7 @@
     width: min({{ wordmark_max_width }}px, 28vw);
     height: auto;
     max-width: 60%;
-    z-index: 2;
+    z-index: 4;
     pointer-events: none;
   }
   @media only screen and (max-width: 798px) {
@@ -130,22 +152,29 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: {{ band_height }}px;
+    min-height: 0;
     background-color: {{ band_color }};
     color: {{ band_text_color }};
-    min-height: {{ band_height }}px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    padding: 1rem 1.5rem 2rem;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    pointer-events: none;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__band {
-      min-height: {{ band_height_mobile }}px;
-      padding: 1rem 1rem 1.5rem;
+      height: {{ band_height_mobile }}px;
+      padding: 1rem;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
@@ -188,6 +217,7 @@
     font-weight: {{ eyebrow_weight }};
     line-height: 1.2;
     margin: 0 0 0.5em;
+    color: {{ overlay_text_color }};
     {% if section.settings.eyebrow_uppercase %}text-transform: uppercase; letter-spacing: 0.12em;{% endif %}
   }
   @media only screen and (max-width: 798px) {
@@ -204,6 +234,7 @@
     margin: 0;
     overflow-wrap: break-word;
     max-width: 100%;
+    color: {{ overlay_text_color }};
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
@@ -231,23 +262,55 @@
   {{ section_aria }}
 >
   <div class="ak-artist-series-hero">
-    <div class="ak-artist-series-hero__media">
-      {% if image != blank %}
-        {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
-      {% else %}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
-      {% endif %}
-      {% if mobile_image != blank %}
-        <div class="is-hidden-desktop-only">
-          {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true %}
-        </div>
-      {% elsif image != blank %}
-        <div class="is-hidden-desktop-only">
-          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true %}
-        </div>
-      {% else %}
-        <div class="is-hidden-desktop-only">
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    <div class="ak-artist-series-hero__stage">
+      <div class="ak-artist-series-hero__media">
+        {% if image != blank %}
+          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+        {% endif %}
+        {% if mobile_image != blank %}
+          <div class="is-hidden-desktop-only">
+            {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true %}
+          </div>
+        {% elsif image != blank %}
+          <div class="is-hidden-desktop-only">
+            {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true %}
+          </div>
+        {% else %}
+          <div class="is-hidden-desktop-only">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ak-artist-series-hero__band">
+        {% if ak_logo != blank %}
+          <img
+            class="ak-artist-series-hero__ak-logo"
+            src="{{ ak_logo | img_url: '800x' }}"
+            alt="{{ ak_logo_alt | escape }}"
+            loading="lazy"
+            width="{{ ak_logo.width }}"
+            height="{{ ak_logo.height }}"
+          >
+        {% endif %}
+      </div>
+
+      {% if eyebrow != blank or artist_name != blank %}
+        <div class="ak-artist-series-hero__overlay" aria-hidden="false">
+          {% if eyebrow != blank %}
+            <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
+          {% endif %}
+          {% if artist_name != blank %}
+            {% if heading_level == 'h2' %}
+              <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h2>
+            {% elsif heading_level == 'h3' %}
+              <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h3>
+            {% else %}
+              <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h1>
+            {% endif %}
+          {% endif %}
         </div>
       {% endif %}
 
@@ -262,36 +325,6 @@
         >
       {% endif %}
     </div>
-
-    <div class="ak-artist-series-hero__band">
-      {% if ak_logo != blank %}
-        <img
-          class="ak-artist-series-hero__ak-logo"
-          src="{{ ak_logo | img_url: '800x' }}"
-          alt="{{ ak_logo_alt | escape }}"
-          loading="lazy"
-          width="{{ ak_logo.width }}"
-          height="{{ ak_logo.height }}"
-        >
-      {% endif %}
-    </div>
-
-    {% if eyebrow != blank or artist_name != blank %}
-      <div class="ak-artist-series-hero__overlay" aria-hidden="false">
-        {% if eyebrow != blank %}
-          <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
-        {% endif %}
-        {% if artist_name != blank %}
-          {% if heading_level == 'h2' %}
-            <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h2>
-          {% elsif heading_level == 'h3' %}
-            <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h3>
-          {% else %}
-            <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h1>
-          {% endif %}
-        {% endif %}
-      </div>
-    {% endif %}
   </div>
 </section>
 
@@ -420,7 +453,7 @@
     },
     {
       "type": "header",
-      "content": "Bottom band + AK logo"
+      "content": "Bottom band + AK logo (overlays photo)"
     },
     {
       "type": "color",
