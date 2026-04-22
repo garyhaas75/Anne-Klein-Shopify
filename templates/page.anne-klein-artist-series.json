@@ -14,8 +14,10 @@
       "type": "page__ak-artist-series-hero",
       "name": "AK Artist Series hero",
       "settings": {
+        "image": "shopify://shop_images/Screenshot_2026-04-22_at_10.05.27_AM_a6dd4368-772b-4a37-9778-56c14fa9d0a3.png",
         "image_alt": "",
         "image_object_position": "center",
+        "image_fill_and_crop": false,
         "image_min_height": 720,
         "image_min_height_mobile": 480,
         "wordmark_text": "Anne Klein Artist Series",
