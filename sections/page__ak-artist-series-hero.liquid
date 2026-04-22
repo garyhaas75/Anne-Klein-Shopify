@@ -2,9 +2,9 @@
   AK Artist Series — hero band.
   Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
   Frames: AK_Artist Series_Desktop 351:1393, AK_Artist Series_Mobile 333:422
-  Composition: full-bleed photo (butterflies + AK signature baked in) with top-left
-  “Anne Klein Artist Series” as live text, large eyebrow + artist name overlay
-  that overlaps a bottom white band, and a centered AK logo inside that band.
+  Composition: full-bleed photo (butterflies + AK signature baked in), top-left
+  wordmark, eyebrow + large artist name near the bottom with a gradient scrim (no
+  solid white bar by default), optional solid bottom band + centered AK logo.
   WCAG 2.2 AA: region landmark, single h1 by default, alt on every image,
   focus-visible, prefers-reduced-motion respected.
 {% endcomment %}
@@ -35,6 +35,8 @@
 {% assign overlay_text_color = section.settings.overlay_text_color | default: '#ffffff' %}
 {% assign band_color = section.settings.band_color | default: '#ffffff' %}
 {% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
+{% assign solid_white_bottom_band = section.settings.solid_white_bottom_band %}
+{% assign bottom_scrim_strength = section.settings.bottom_scrim_strength | default: 52 %}
 {% assign image_min_height = section.settings.image_min_height | default: 720 %}
 {% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 %}
 {% assign band_height = section.settings.band_height | default: 220 %}
@@ -49,7 +51,7 @@
 {% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
 {% assign image_object_position = section.settings.image_object_position | default: 'center' %}
 {% assign image_fill_and_crop = section.settings.image_fill_and_crop %}
-{% assign overlay_name_color = section.settings.overlay_name_color | default: '#000000' %}
+{% assign overlay_name_color = section.settings.overlay_name_color | default: '#fde8ec' %}
 {% assign has_hero_image = false %}
 {% if image != blank or mobile_image != blank %}
   {% assign has_hero_image = true %}
@@ -83,6 +85,7 @@
 {% endcapture %}
 
 {% assign img_alt_resolved = image_alt | default: artist_name | default: 'Anne Klein Artist Series featured artist' %}
+{% assign scrim_alpha = bottom_scrim_strength | divided_by: 100.0 %}
 
 {% style %}
   /*
@@ -90,7 +93,8 @@
     Default `natural` layout: image keeps its aspect ratio (width 100%, height auto)
     so nothing is cropped; band + eyebrow/name are absolutely positioned over the photo.
     Optional `crop` layout: fixed min-height + object-fit cover (fills stage, crops image).
-    Artist name uses overlay_name_color so it stays readable on the white band (not white-on-white).
+    Default layout matches Figma: gradient scrim at bottom + transparent “logo strip”,
+    large name in overlay_name_color (typically light pink over scrim).
 
     Background images use image-element back_to_basics mode so Lazysizes’ aspect-ratio helper
     (data-aspectratio + padded .image-element__wrap) does not crop the uploaded asset.
@@ -159,6 +163,57 @@
     inset: auto;
     height: auto;
   }
+  /* Fallback when no image: split gradient + curve hint (matches comp, not gray SVG placeholder). */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--placeholder.ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+    position: relative;
+    min-height: {{ image_min_height }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--placeholder.ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder .ak-artist-series-hero__placeholder-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-height: {{ image_min_height }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder .ak-artist-series-hero__placeholder-fill {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__placeholder-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    box-sizing: border-box;
+    margin: 0;
+    aspect-ratio: auto;
+    pointer-events: none;
+    border: 0;
+    background-color: #1e281c;
+    background-image:
+      radial-gradient(
+        ellipse 118% 145% at 115% -8%,
+        rgba(148, 168, 138, 0.95) 0%,
+        rgba(84, 98, 74, 0.92) 38%,
+        rgba(46, 56, 42, 0.94) 56%,
+        transparent 56.5%
+      ),
+      linear-gradient(
+        104deg,
+        #243022 0%,
+        #243022 39.5%,
+        #374433 41%,
+        #596556 72%,
+        #8f9f8a 100%
+      );
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
   /* --- Crop-fill: fixed min-height + cover (optional) --- */
   #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
     min-height: {{ image_min_height }}px;
@@ -200,6 +255,13 @@
     width: 100%;
     height: 100%;
   }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__placeholder-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: none; }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-mobile-only { display: none !important; }
@@ -233,15 +295,33 @@
       font-size: {{ wordmark_size_mobile }}px;
     }
   }
+  #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    height: min(46vh, 340px);
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(12, 14, 11, {{ scrim_alpha }}) 0%,
+      rgba(12, 14, 11, {{ scrim_alpha | times: 0.55 }}) 52%,
+      rgba(12, 14, 11, 0) 100%
+    );
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
+      height: min(52vh, 280px);
+    }
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero__band {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 2;
-    height: {{ band_height }}px;
     min-height: 0;
-    background-color: {{ band_color }};
     color: {{ band_text_color }};
     width: 100%;
     max-width: 100%;
@@ -253,10 +333,24 @@
     padding: 1rem 1.5rem;
     pointer-events: none;
   }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band--solid {
+    height: {{ band_height }}px;
+    background-color: {{ band_color }};
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band--floating {
+    height: {{ band_height }}px;
+    background-color: transparent;
+    justify-content: flex-end;
+    padding-bottom: 1.25rem;
+    padding-top: 0.5rem;
+  }
   @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-artist-series-hero__band {
+    #shopify-section-{{ id }} .ak-artist-series-hero__band--solid {
       height: {{ band_height_mobile }}px;
-      padding: 1rem;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__band--floating {
+      height: {{ band_height_mobile }}px;
+      padding: 0.75rem 1rem 1rem;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
@@ -317,6 +411,10 @@
     max-width: 100%;
     color: {{ overlay_name_color }};
   }
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
+    text-shadow: 0 2px 18px rgba(5, 8, 6, 0.55), 0 1px 4px rgba(5, 8, 6, 0.92);
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
       font-size: clamp(2rem, 12vw, {{ name_size_mobile }}px);
@@ -337,7 +435,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter"
+  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter{% unless solid_white_bottom_band %} ak-artist-series-hero-section--scrim{% endunless %}"
   id="shopify-section-{{ id }}"
   role="region"
   {{ section_aria }}
@@ -348,7 +446,7 @@
         {% if image != blank %}
           {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'is-hidden-mobile-only ak-artist-series-hero__img' %}
         {% else %}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+          <div class="ak-artist-series-hero__placeholder-fill is-hidden-mobile-only" aria-hidden="true"></div>
         {% endif %}
         {% if mobile_image != blank %}
           <div class="is-hidden-desktop-only">
@@ -360,12 +458,16 @@
           </div>
         {% else %}
           <div class="is-hidden-desktop-only">
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="ak-artist-series-hero__placeholder-fill" aria-hidden="true"></div>
           </div>
         {% endif %}
       </div>
 
-      <div class="ak-artist-series-hero__band">
+      {% unless solid_white_bottom_band %}
+        <div class="ak-artist-series-hero__scrim" aria-hidden="true"></div>
+      {% endunless %}
+
+      <div class="ak-artist-series-hero__band {% if solid_white_bottom_band %}ak-artist-series-hero__band--solid{% else %}ak-artist-series-hero__band--floating{% endif %}">
         {% if ak_logo != blank %}
           <img
             class="ak-artist-series-hero__ak-logo"
@@ -410,7 +512,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Full-bleed hero with top-left wordmark text, large overlay (eyebrow + artist name) that overlaps a bottom band containing the AK logo. Bake decorative butterflies and signatures into the background image."
+      "content": "Full-bleed hero: top-left wordmark, eyebrow + artist name over a bottom gradient (default). AK logo sits on a transparent strip unless you enable a solid bottom band. Bake butterflies and signatures into the photo."
     },
     {
       "type": "header",
@@ -617,10 +719,29 @@
       "content": "Bottom band + AK logo (overlays photo)"
     },
     {
+      "type": "checkbox",
+      "id": "solid_white_bottom_band",
+      "label": "Solid bottom band (white bar)",
+      "default": false,
+      "info": "Off (default): matches campaign art — gradient scrim + transparent strip for the logo (no white bar). On: solid colored band behind the logo."
+    },
+    {
+      "type": "range",
+      "id": "bottom_scrim_strength",
+      "label": "Bottom gradient strength",
+      "min": 15,
+      "max": 85,
+      "step": 1,
+      "default": 52,
+      "unit": "%",
+      "info": "Only when solid band is off. Darkens the bottom of the hero behind eyebrow and name."
+    },
+    {
       "type": "color",
       "id": "band_color",
       "label": "Band background color",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "info": "Used only when “Solid bottom band” is on."
     },
     {
       "type": "color",
@@ -631,21 +752,22 @@
     {
       "type": "range",
       "id": "band_height",
-      "label": "Band min height (desktop)",
+      "label": "Band / logo strip height (desktop)",
       "min": 80,
       "max": 400,
       "step": 10,
-      "default": 220,
-      "unit": "px"
+      "default": 120,
+      "unit": "px",
+      "info": "Solid band: bar height. Transparent strip: space reserved for the AK logo above the bottom edge."
     },
     {
       "type": "range",
       "id": "band_height_mobile",
-      "label": "Band min height (mobile)",
+      "label": "Band / logo strip height (mobile)",
       "min": 60,
       "max": 320,
       "step": 10,
-      "default": 160,
+      "default": 120,
       "unit": "px"
     },
     {
@@ -719,8 +841,8 @@
       "type": "color",
       "id": "overlay_name_color",
       "label": "Artist name color",
-      "default": "#000000",
-      "info": "Large name often crosses the white band — use dark text (e.g. black) so it stays readable."
+      "default": "#fde8ec",
+      "info": "Default light pink over the gradient scrim. Use dark (e.g. black) only if you enable the solid white band."
     },
     {
       "type": "range",
@@ -731,7 +853,7 @@
       "step": 4,
       "default": 96,
       "unit": "px",
-      "info": "How far the bottom of the overlay sits inside the white band."
+      "info": "How far the overlay overlaps the bottom band or logo strip."
     },
     {
       "type": "range",
@@ -807,7 +929,7 @@
       "type": "select",
       "id": "name_font_family",
       "label": "Name font",
-      "default": "amiri",
+      "default": "helvetica",
       "options": [
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
@@ -844,7 +966,7 @@
       "type": "select",
       "id": "name_font_weight",
       "label": "Name weight",
-      "default": "400",
+      "default": "700",
       "options": [
         { "value": "300", "label": "Light" },
         { "value": "400", "label": "Normal" },
