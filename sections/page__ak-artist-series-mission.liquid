@@ -2,11 +2,11 @@
   AK Artist Series — mission band ("Where Style & Story Connect").
   Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
   Frames: AK_Artist Series_Desktop 351:1393, AK_Artist Series_Mobile 333:422
-  Composition: heading + multi-paragraph richtext body on a solid background,
-  with an optional Anne Klein signature image pinned to the bottom-right corner
-  of the band. Signature scales down on mobile and stacks below the body.
+  Composition: optional stacked Artist Series logo in a left column; heading +
+  richtext body; optional Anne Klein signature image bottom-right of the band.
+  Without a logo upload, layout is single-column text only.
   WCAG 2.2 AA: region landmark, configurable heading level (default h2),
-  alt on signature, focus-visible, prefers-reduced-motion.
+  alt on logo + signature, focus-visible, prefers-reduced-motion.
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -26,6 +26,10 @@
 {% assign padding_bottom = section.settings.padding_bottom | default: 120 %}
 {% assign padding_top_mobile = section.settings.padding_top_mobile | default: 64 %}
 {% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: 80 %}
+{% assign artist_series_logo = section.settings.artist_series_logo %}
+{% assign artist_series_logo_alt = section.settings.artist_series_logo_alt | default: 'Anne Klein Artist Series' %}
+{% assign artist_series_logo_max_width = section.settings.artist_series_logo_max_width | default: 280 %}
+{% assign artist_series_logo_max_width_mobile = section.settings.artist_series_logo_max_width_mobile | default: 220 %}
 {% assign signature = section.settings.signature %}
 {% assign signature_alt = section.settings.signature_alt | default: 'Anne Klein signature' %}
 {% assign signature_max_width = section.settings.signature_max_width | default: 320 %}
@@ -67,6 +71,23 @@
   {% endif %}
 {% endcapture %}
 
+{% capture mission_inner_block %}
+  {% if heading != blank %}
+    {% if heading_level == 'h1' %}
+      <h1 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h1>
+    {% elsif heading_level == 'h3' %}
+      <h3 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h3>
+    {% else %}
+      <h2 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h2>
+    {% endif %}
+  {% endif %}
+  {% if body_rt != blank %}
+    <div class="ak-artist-series-mission__rte rte">
+      {{ body_rt }}
+    </div>
+  {% endif %}
+{% endcapture %}
+
 {% style %}
   #shopify-section-{{ id }} {
     background-color: {{ background_color }};
@@ -83,6 +104,44 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission {
       padding: {{ padding_top_mobile }}px 1rem {{ padding_bottom_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-mission__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-mission__layout {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-mission__logo-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-mission__logo-col {
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-mission__brand-logo {
+    display: block;
+    width: min({{ artist_series_logo_max_width }}px, 100%);
+    height: auto;
+    max-width: 100%;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-mission__brand-logo {
+      width: min({{ artist_series_logo_max_width_mobile }}px, 85vw);
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__inner {
@@ -188,27 +247,32 @@
   {{ section_aria }}
 >
   <div class="ak-artist-series-mission">
-    <div class="ak-artist-series-mission__inner">
-      {% if heading != blank %}
-        {% if heading_level == 'h1' %}
-          <h1 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h1>
-        {% elsif heading_level == 'h3' %}
-          <h3 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h3>
-        {% else %}
-          <h2 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h2>
-        {% endif %}
-      {% endif %}
-      {% if body_rt != blank %}
-        <div class="ak-artist-series-mission__rte rte">
-          {{ body_rt }}
+    {% if artist_series_logo != blank %}
+      <div class="ak-artist-series-mission__layout">
+        <div class="ak-artist-series-mission__logo-col">
+          <img
+            class="ak-artist-series-mission__brand-logo"
+            src="{{ artist_series_logo | image_url: width: 800 }}"
+            alt="{{ artist_series_logo_alt | escape }}"
+            loading="lazy"
+            width="{{ artist_series_logo.width }}"
+            height="{{ artist_series_logo.height }}"
+          >
         </div>
-      {% endif %}
-    </div>
+        <div class="ak-artist-series-mission__inner">
+          {{ mission_inner_block }}
+        </div>
+      </div>
+    {% else %}
+      <div class="ak-artist-series-mission__inner">
+        {{ mission_inner_block }}
+      </div>
+    {% endif %}
 
     {% if signature != blank %}
       <img
         class="ak-artist-series-mission__signature"
-        src="{{ signature | img_url: '600x' }}"
+        src="{{ signature | image_url: width: 600 }}"
         alt="{{ signature_alt | escape }}"
         loading="lazy"
         width="{{ signature.width }}"
@@ -226,7 +290,43 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Mission/intro band: heading + multi-paragraph richtext, plus an optional Anne Klein signature pinned to the bottom-right (stacks below body on mobile)."
+      "content": "Mission band: optional Anne Klein Artist Series logo (left column on desktop), heading + richtext, and optional script signature bottom-right."
+    },
+    {
+      "type": "header",
+      "content": "Anne Klein Artist Series logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "artist_series_logo",
+      "label": "Anne Klein Artist Series logo",
+      "info": "Stacked wordmark for the left column (PNG or SVG). Leave empty for text-only layout."
+    },
+    {
+      "type": "text",
+      "id": "artist_series_logo_alt",
+      "label": "Logo alt text",
+      "default": "Anne Klein Artist Series"
+    },
+    {
+      "type": "range",
+      "id": "artist_series_logo_max_width",
+      "label": "Logo max width (desktop)",
+      "min": 120,
+      "max": 420,
+      "step": 10,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "artist_series_logo_max_width_mobile",
+      "label": "Logo max width (mobile)",
+      "min": 120,
+      "max": 360,
+      "step": 10,
+      "default": 220,
+      "unit": "px"
     },
     {
       "type": "header",
