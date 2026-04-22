@@ -160,6 +160,9 @@
     Default layout matches Figma: gradient scrim at bottom + transparent “logo strip”,
     large name in overlay_name_color (typically light pink over scrim).
 
+    Artist name font-size: min(setting max, max(2.5rem, fluid vw)) so the slider max can
+    actually render past ~120px on common desktop widths (11vw was too low).
+
     Background images use image-element back_to_basics mode so Lazysizes’ aspect-ratio helper
     (data-aspectratio + padded .image-element__wrap) does not crop the uploaded asset.
   */
@@ -519,7 +522,7 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    font-size: clamp(2.5rem, 11vw, {{ nm_sz }}px);
+    font-size: min({{ nm_sz }}px, max(2.5rem, 26vw));
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
@@ -538,7 +541,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
-      font-size: clamp(2rem, 12vw, {{ nm_sz_m }}px);
+      font-size: min({{ nm_sz_m }}px, max(2rem, 18vw));
       text-align: {{ nm_al_m }};
       padding: {{ nm_ptm }}px {{ nm_prm }}px {{ nm_pbm }}px {{ nm_plm }}px;
     }
@@ -1746,7 +1749,8 @@
       "max": 200,
       "step": 2,
       "default": 144,
-      "unit": "px"
+      "unit": "px",
+      "info": "Maximum pixel size; type also scales fluidly (vw) but never above this value."
     },
     {
       "type": "range",
@@ -1757,7 +1761,7 @@
       "step": 2,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop."
+      "info": "0 = same as desktop max. Lettering scales with viewport but never exceeds this."
     },
     {
       "type": "color",
