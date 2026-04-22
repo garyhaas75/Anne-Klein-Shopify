@@ -2,19 +2,31 @@
   AK Artist Series — hero band.
   Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
   Frames: AK_Artist Series_Desktop 351:1393, AK_Artist Series_Mobile 333:422
-  Composition: full-bleed photo (butterflies + AK signature baked in) with a small
-  top-left "Anne Klein Artist Series" wordmark, large eyebrow + artist name overlay
+  Composition: full-bleed photo (butterflies + AK signature baked in) with top-left
+  “Anne Klein Artist Series” as live text, large eyebrow + artist name overlay
   that overlaps a bottom white band, and a centered AK logo inside that band.
   WCAG 2.2 AA: region landmark, single h1 by default, alt on every image,
   focus-visible, prefers-reduced-motion respected.
 {% endcomment %}
 
+{% if section.settings.wordmark_font_family == 'amiri' or section.settings.eyebrow_font_family == 'amiri' or section.settings.name_font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
+
 {% assign id = section.id %}
 {% assign image = section.settings.image %}
 {% assign mobile_image = section.settings.mobile_image | default: image %}
 {% assign image_alt = section.settings.image_alt %}
-{% assign wordmark = section.settings.wordmark_image %}
-{% assign wordmark_alt = section.settings.wordmark_alt | default: 'Anne Klein Artist Series' %}
+{% assign wordmark_text = section.settings.wordmark_text | strip %}
+{% assign wordmark_color = section.settings.wordmark_color | default: '#ffe1e3' %}
+{% assign wordmark_size = section.settings.wordmark_font_size | default: 22 %}
+{% assign wordmark_size_mobile = section.settings.wordmark_font_size_mobile | default: 0 | plus: 0 %}
+{% if wordmark_size_mobile < 1 %}
+  {% assign wordmark_size_mobile = wordmark_size %}
+{% endif %}
+{% assign wordmark_weight = section.settings.wordmark_font_weight | default: '400' %}
+{% capture wordmark_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.wordmark_font_family %}{% endcapture %}
+{% assign wordmark_font_stack = wordmark_font_stack | strip %}
 {% assign ak_logo = section.settings.ak_logo %}
 {% assign ak_logo_alt = section.settings.ak_logo_alt | default: 'Anne Klein' %}
 {% assign eyebrow = section.settings.eyebrow %}
@@ -137,18 +149,28 @@
     position: absolute;
     top: {{ wordmark_offset_top }}px;
     left: {{ wordmark_offset_left }}px;
-    width: min({{ wordmark_max_width }}px, 28vw);
-    height: auto;
-    max-width: 60%;
+    width: min({{ wordmark_max_width }}px, 52vw);
+    max-width: 85%;
     z-index: 4;
-    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    font-family: {{ wordmark_font_stack }};
+    font-size: {{ wordmark_size }}px;
+    font-weight: {{ wordmark_weight }};
+    line-height: {{ section.settings.wordmark_line_height | default: 120 }}%;
+    letter-spacing: {{ section.settings.wordmark_letter_spacing | default: 0 }}px;
+    color: {{ wordmark_color }};
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    {% if section.settings.wordmark_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
       top: 16px;
       left: 16px;
-      width: min({{ wordmark_max_width_mobile }}px, 48vw);
-      max-width: 60%;
+      width: min({{ wordmark_max_width_mobile }}px, 85vw);
+      max-width: 90%;
+      font-size: {{ wordmark_size_mobile }}px;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__band {
@@ -314,15 +336,8 @@
         </div>
       {% endif %}
 
-      {% if wordmark != blank %}
-        <img
-          class="ak-artist-series-hero__wordmark"
-          src="{{ wordmark | img_url: '600x' }}"
-          alt="{{ wordmark_alt | escape }}"
-          loading="eager"
-          width="{{ wordmark.width }}"
-          height="{{ wordmark.height }}"
-        >
+      {% if wordmark_text != blank %}
+        <p class="ak-artist-series-hero__wordmark">{{ wordmark_text | escape }}</p>
       {% endif %}
     </div>
   </div>
@@ -336,7 +351,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Full-bleed hero with a top-left wordmark, large overlay (eyebrow + artist name) that overlaps a bottom band containing the AK logo. Bake decorative butterflies and signatures into the background image."
+      "content": "Full-bleed hero with top-left wordmark text, large overlay (eyebrow + artist name) that overlaps a bottom band containing the AK logo. Bake decorative butterflies and signatures into the background image."
     },
     {
       "type": "header",
@@ -397,19 +412,96 @@
     },
     {
       "type": "header",
-      "content": "Top-left wordmark (Anne Klein Artist Series)"
+      "content": "Top-left wordmark (live text)"
     },
     {
-      "type": "image_picker",
-      "id": "wordmark_image",
-      "label": "Wordmark image",
-      "info": "Recommended: SVG or transparent PNG."
+      "type": "textarea",
+      "id": "wordmark_text",
+      "label": "Wordmark text",
+      "default": "Anne Klein Artist Series",
+      "info": "Use line breaks for multiple lines (e.g. Anne Klein on one line, Artist Series on the next)."
     },
     {
-      "type": "text",
-      "id": "wordmark_alt",
-      "label": "Wordmark alt text",
-      "default": "Anne Klein Artist Series"
+      "type": "color",
+      "id": "wordmark_color",
+      "label": "Wordmark text color",
+      "default": "#ffe1e3"
+    },
+    {
+      "type": "select",
+      "id": "wordmark_font_family",
+      "label": "Wordmark font",
+      "default": "amiri",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "wordmark_font_size",
+      "label": "Wordmark size (desktop)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 22,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_font_size_mobile",
+      "label": "Wordmark size (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "select",
+      "id": "wordmark_font_weight",
+      "label": "Wordmark weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "wordmark_line_height",
+      "label": "Wordmark line height",
+      "min": 100,
+      "max": 160,
+      "step": 5,
+      "default": 120,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_letter_spacing",
+      "label": "Wordmark letter spacing",
+      "min": -2,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "wordmark_uppercase",
+      "label": "Wordmark uppercase + tracking",
+      "default": false
     },
     {
       "type": "range",
