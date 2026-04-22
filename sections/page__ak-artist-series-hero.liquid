@@ -1,0 +1,663 @@
+{% comment %}
+  AK Artist Series — hero band.
+  Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
+  Frames: AK_Artist Series_Desktop 351:1393, AK_Artist Series_Mobile 333:422
+  Composition: full-bleed photo (butterflies + AK signature baked in) with a small
+  top-left "Anne Klein Artist Series" wordmark, large eyebrow + artist name overlay
+  that overlaps a bottom white band, and a centered AK logo inside that band.
+  WCAG 2.2 AA: region landmark, single h1 by default, alt on every image,
+  focus-visible, prefers-reduced-motion respected.
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign image = section.settings.image %}
+{% assign mobile_image = section.settings.mobile_image | default: image %}
+{% assign image_alt = section.settings.image_alt %}
+{% assign wordmark = section.settings.wordmark_image %}
+{% assign wordmark_alt = section.settings.wordmark_alt | default: 'Anne Klein Artist Series' %}
+{% assign ak_logo = section.settings.ak_logo %}
+{% assign ak_logo_alt = section.settings.ak_logo_alt | default: 'Anne Klein' %}
+{% assign eyebrow = section.settings.eyebrow %}
+{% assign artist_name = section.settings.artist_name %}
+{% assign heading_level = section.settings.heading_level | default: 'h1' %}
+{% assign overlay_text_color = section.settings.overlay_text_color | default: '#ffffff' %}
+{% assign band_color = section.settings.band_color | default: '#ffffff' %}
+{% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
+{% assign image_min_height = section.settings.image_min_height | default: 720 %}
+{% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 %}
+{% assign band_height = section.settings.band_height | default: 220 %}
+{% assign band_height_mobile = section.settings.band_height_mobile | default: 160 %}
+{% assign overlay_overlap = section.settings.overlay_overlap | default: 96 %}
+{% assign overlay_overlap_mobile = section.settings.overlay_overlap_mobile | default: 56 %}
+{% assign wordmark_max_width = section.settings.wordmark_max_width | default: 320 %}
+{% assign wordmark_max_width_mobile = section.settings.wordmark_max_width_mobile | default: 180 %}
+{% assign wordmark_offset_top = section.settings.wordmark_offset_top | default: 32 %}
+{% assign wordmark_offset_left = section.settings.wordmark_offset_left | default: 32 %}
+{% assign ak_logo_max_width = section.settings.ak_logo_max_width | default: 320 %}
+{% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
+{% assign image_object_position = section.settings.image_object_position | default: 'center' %}
+
+{% capture eyebrow_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_font_family %}{% endcapture %}
+{% assign eyebrow_font_stack = eyebrow_font_stack | strip %}
+{% capture name_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.name_font_family %}{% endcapture %}
+{% assign name_font_stack = name_font_stack | strip %}
+
+{% assign eyebrow_size = section.settings.eyebrow_font_size | default: 24 %}
+{% assign eyebrow_size_mobile = section.settings.eyebrow_font_size_mobile | default: 0 | plus: 0 %}
+{% if eyebrow_size_mobile < 1 %}
+  {% assign eyebrow_size_mobile = eyebrow_size %}
+{% endif %}
+{% assign eyebrow_weight = section.settings.eyebrow_font_weight | default: '700' %}
+{% assign name_size = section.settings.name_font_size | default: 144 %}
+{% assign name_size_mobile = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
+{% if name_size_mobile < 1 %}
+  {% assign name_size_mobile = name_size %}
+{% endif %}
+{% assign name_weight = section.settings.name_font_weight | default: '400' %}
+{% assign name_letter_spacing = section.settings.name_letter_spacing | default: -4 %}
+
+{% capture section_aria %}
+  {% if artist_name != blank %}
+    aria-labelledby="ak-artist-series-hero-name-{{ id }}"
+  {% else %}
+    aria-label="Anne Klein Artist Series"
+  {% endif %}
+{% endcapture %}
+
+{% assign img_alt_resolved = image_alt | default: artist_name | default: 'Anne Klein Artist Series featured artist' %}
+
+{% style %}
+  #shopify-section-{{ id }} { display: block; }
+  #shopify-section-{{ id }} .ak-artist-series-hero {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media img,
+  #shopify-section-{{ id }} .ak-artist-series-hero__media .placeholder-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: {{ image_min_height }}px;
+    object-fit: cover;
+    object-position: {{ image_object_position }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__media img,
+    #shopify-section-{{ id }} .ak-artist-series-hero__media .placeholder-svg {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: block !important; }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
+    position: absolute;
+    top: {{ wordmark_offset_top }}px;
+    left: {{ wordmark_offset_left }}px;
+    width: min({{ wordmark_max_width }}px, 28vw);
+    height: auto;
+    max-width: 60%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
+      top: 16px;
+      left: 16px;
+      width: min({{ wordmark_max_width_mobile }}px, 48vw);
+      max-width: 60%;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band {
+    background-color: {{ band_color }};
+    color: {{ band_text_color }};
+    min-height: {{ band_height }}px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem 2rem;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__band {
+      min-height: {{ band_height_mobile }}px;
+      padding: 1rem 1rem 1.5rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
+    display: block;
+    width: min({{ ak_logo_max_width }}px, 60vw);
+    height: auto;
+    max-width: 100%;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
+      width: min({{ ak_logo_max_width_mobile }}px, 70vw);
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc({{ band_height }}px - {{ overlay_overlap }}px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 1.5rem;
+    z-index: 3;
+    pointer-events: none;
+    color: {{ overlay_text_color }};
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay {
+      bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
+      padding: 0 1rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+    font-family: {{ eyebrow_font_stack }};
+    font-size: {{ eyebrow_size }}px;
+    font-weight: {{ eyebrow_weight }};
+    line-height: 1.2;
+    margin: 0 0 0.5em;
+    {% if section.settings.eyebrow_uppercase %}text-transform: uppercase; letter-spacing: 0.12em;{% endif %}
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      font-size: {{ eyebrow_size_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__name {
+    font-family: {{ name_font_stack }};
+    font-size: clamp(2.5rem, 11vw, {{ name_size }}px);
+    font-weight: {{ name_weight }};
+    line-height: 1;
+    letter-spacing: {{ name_letter_spacing }}px;
+    margin: 0;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__name {
+      font-size: clamp(2rem, 12vw, {{ name_size_mobile }}px);
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible,
+  #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .ak-artist-series-hero,
+    #shopify-section-{{ id }} .ak-artist-series-hero * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-full ak-artist-series-hero-section has-no-side-gutter has-background"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {{ section_aria }}
+>
+  <div class="ak-artist-series-hero">
+    <div class="ak-artist-series-hero__media">
+      {% if image != blank %}
+        {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+      {% else %}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
+      {% endif %}
+      {% if mobile_image != blank %}
+        <div class="is-hidden-desktop-only">
+          {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true %}
+        </div>
+      {% elsif image != blank %}
+        <div class="is-hidden-desktop-only">
+          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true %}
+        </div>
+      {% else %}
+        <div class="is-hidden-desktop-only">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endif %}
+
+      {% if wordmark != blank %}
+        <img
+          class="ak-artist-series-hero__wordmark"
+          src="{{ wordmark | img_url: '600x' }}"
+          alt="{{ wordmark_alt | escape }}"
+          loading="eager"
+          width="{{ wordmark.width }}"
+          height="{{ wordmark.height }}"
+        >
+      {% endif %}
+    </div>
+
+    <div class="ak-artist-series-hero__band">
+      {% if ak_logo != blank %}
+        <img
+          class="ak-artist-series-hero__ak-logo"
+          src="{{ ak_logo | img_url: '800x' }}"
+          alt="{{ ak_logo_alt | escape }}"
+          loading="lazy"
+          width="{{ ak_logo.width }}"
+          height="{{ ak_logo.height }}"
+        >
+      {% endif %}
+    </div>
+
+    {% if eyebrow != blank or artist_name != blank %}
+      <div class="ak-artist-series-hero__overlay" aria-hidden="false">
+        {% if eyebrow != blank %}
+          <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
+        {% endif %}
+        {% if artist_name != blank %}
+          {% if heading_level == 'h2' %}
+            <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h2>
+          {% elsif heading_level == 'h3' %}
+            <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h3>
+          {% else %}
+            <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h1>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "AK Artist Series hero",
+  "class": "ak-artist-series-hero-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Full-bleed hero with a top-left wordmark, large overlay (eyebrow + artist name) that overlaps a bottom band containing the AK logo. Bake decorative butterflies and signatures into the background image."
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image (desktop)",
+      "info": "Decorative butterflies and Anne Klein signature should be baked into this image."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Hero image (mobile)",
+      "info": "Optional. Falls back to desktop image."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Hero image alt text",
+      "info": "Describe the photo (artist, setting). Falls back to the artist name."
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_min_height",
+      "label": "Hero min height (desktop)",
+      "min": 480,
+      "max": 1080,
+      "step": 20,
+      "default": 720,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_min_height_mobile",
+      "label": "Hero min height (mobile)",
+      "min": 320,
+      "max": 900,
+      "step": 20,
+      "default": 480,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Top-left wordmark (Anne Klein Artist Series)"
+    },
+    {
+      "type": "image_picker",
+      "id": "wordmark_image",
+      "label": "Wordmark image",
+      "info": "Recommended: SVG or transparent PNG."
+    },
+    {
+      "type": "text",
+      "id": "wordmark_alt",
+      "label": "Wordmark alt text",
+      "default": "Anne Klein Artist Series"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_max_width",
+      "label": "Wordmark max width (desktop)",
+      "min": 120,
+      "max": 480,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_max_width_mobile",
+      "label": "Wordmark max width (mobile)",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "default": 180,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_offset_top",
+      "label": "Wordmark offset from top (desktop)",
+      "min": 8,
+      "max": 120,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_offset_left",
+      "label": "Wordmark offset from left (desktop)",
+      "min": 8,
+      "max": 120,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Bottom band + AK logo"
+    },
+    {
+      "type": "color",
+      "id": "band_color",
+      "label": "Band background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "band_text_color",
+      "label": "Band text/logo color (for SVG fills that inherit currentColor)",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "band_height",
+      "label": "Band min height (desktop)",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "default": 220,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "band_height_mobile",
+      "label": "Band min height (mobile)",
+      "min": 60,
+      "max": 320,
+      "step": 10,
+      "default": 160,
+      "unit": "px"
+    },
+    {
+      "type": "image_picker",
+      "id": "ak_logo",
+      "label": "AK logo image",
+      "info": "Recommended: SVG or transparent PNG."
+    },
+    {
+      "type": "text",
+      "id": "ak_logo_alt",
+      "label": "AK logo alt text",
+      "default": "Anne Klein"
+    },
+    {
+      "type": "range",
+      "id": "ak_logo_max_width",
+      "label": "AK logo max width (desktop)",
+      "min": 120,
+      "max": 480,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ak_logo_max_width_mobile",
+      "label": "AK logo max width (mobile)",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Overlay text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "featured artist:"
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Artist name (heading)",
+      "default": "Anjelica Roselyn"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h1",
+      "info": "Use only one h1 per page. The page title is overridden by this hero, so h1 is appropriate.",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Overlay text color",
+      "default": "#ffffff",
+      "info": "Eyebrow + name. The name visually crosses into the white band; the band text color setting controls the overlay text below the image fold automatically via mix-blend or pick a color readable over both."
+    },
+    {
+      "type": "range",
+      "id": "overlay_overlap",
+      "label": "Overlay overlap into band (desktop)",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 96,
+      "unit": "px",
+      "info": "How far the bottom of the overlay sits inside the white band."
+    },
+    {
+      "type": "range",
+      "id": "overlay_overlap_mobile",
+      "label": "Overlay overlap into band (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 56,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Fonts"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_family",
+      "label": "Eyebrow font",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Eyebrow size (desktop)",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "label": "Eyebrow size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow weight",
+      "default": "700",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_uppercase",
+      "label": "Eyebrow uppercase + tracking",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "name_font_family",
+      "label": "Name font",
+      "default": "amiri",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_font_size",
+      "label": "Name size (desktop max)",
+      "min": 48,
+      "max": 200,
+      "step": 2,
+      "default": 144,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_font_size_mobile",
+      "label": "Name size (mobile max)",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop max."
+    },
+    {
+      "type": "select",
+      "id": "name_font_weight",
+      "label": "Name weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_letter_spacing",
+      "label": "Name letter spacing",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "default": -4,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Artist Series hero",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

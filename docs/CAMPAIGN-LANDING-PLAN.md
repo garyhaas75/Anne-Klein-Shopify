@@ -54,22 +54,32 @@ Work **one section per iteration**; update the **Status** row when something shi
 **Figma file key:** `0kmSuSntT1RaS2ElBXMw25` — **Canvas “Artist Series”** node **`333:421`**; frames **`AK_Artist Series_Desktop`** **`351:1393`**, **`AK_Artist Series_Mobile`** **`333:422`**.  
 **Template:** [`templates/page.anne-klein-artist-series.json`](../templates/page.anne-klein-artist-series.json).
 
-| Band (Figma, top → bottom) | Theme section (`page.anne-klein-artist-series.json`) |
-|----------------------------|------------------------------------------------------|
-| Hero — “Anne Klein Artist Series” + **Anjelica Roselyn** | `page__ak-campaign-intro` — `artist_series_hero` |
-| **Where Style & Story Connect** + mission copy | `page__ak-campaign-copy` — `artist_series_mission` |
-| Primary interview / film | `ak-video` (feature) — `artist_series_video_primary` |
-| **About the Artist** + bio | `page__ak-campaign-copy` — `artist_series_about` |
-| Horizontal motif strip (Figma **Group 63**) | `index__gallery` — `artist_series_icon_strip` — **horizontal scroll** via `css_class` **`ak-artist-series-icon-strip`** + section **Custom CSS** |
-| 4×2 product region + **SHOP THE COLLECTION** | `index__finishing-touches` — `artist_series_products` (8 hand-picked products) + `page__ak-campaign-cta` — `artist_series_mid_cta` |
-| Zigzag quotes + imagery | `page__ak-campaign-quote-zigzag` — `artist_series_zigzag` |
-| **The Invisible Thread with Anjelica Roselyn** | `page__ak-campaign-copy` — `artist_series_thread_heading` |
-| Secondary hero film | `ak-video` (hero) — `artist_series_video_secondary` |
-| Pull quote | `page__ak-campaign-copy` — `artist_series_quote` |
-| Large feature still | `page__ak-campaign-stills` — `artist_series_feature_still` |
-| Footer quote + ANNE KLEIN + CTA | `page__ak-campaign-cta` — `artist_series_footer_cta` |
+| # | Band (Figma, top → bottom) | Theme section (`page.anne-klein-artist-series.json`) |
+|---|----------------------------|------------------------------------------------------|
+| 1 | Hero — full-bleed photo (butterflies + AK signature **baked in**), top-left wordmark, **featured artist: Anjelica Roselyn** overlay, white band w/ centered AK logo | **NEW** [`sections/page__ak-artist-series-hero.liquid`](../sections/page__ak-artist-series-hero.liquid) — `artist_series_hero` |
+| 2 | **Where Style & Story Connect** — heading + 3-paragraph mission copy, optional Anne Klein signature pinned **bottom-right** | **NEW** [`sections/page__ak-artist-series-mission.liquid`](../sections/page__ak-artist-series-mission.liquid) — `artist_series_mission` |
+| 3 | Primary interview / film | `ak-video` (feature) — `artist_series_video_primary` |
+| 4 | **About the Artist** + bio (no button) | `page__ak-campaign-copy` — `artist_series_about` |
+| 5 | Tight horizontal product line-up — **single composed image** | `page__ak-campaign-stills` (1 still) — `artist_series_product_band_image` |
+| 6a | 4×2 product grid | `index__finishing-touches` — `artist_series_products` (8 hand-picked products) |
+| 6b | **SHOP THE COLLECTION** button | `page__ak-campaign-cta` (button only) — `artist_series_mid_cta` |
+| 7 | Zigzag stills (two photos + butterflies) — **single composed image** per design call | `page__ak-campaign-stills` (1 still) — `artist_series_zigzag_image` |
+| 8 | **The Invisible Thread with Anjelica Roselyn** title | `page__ak-campaign-copy` (heading-only) — `artist_series_thread_heading` |
+| 9 | Secondary campaign film | `ak-video` (hero) — `artist_series_video_secondary` |
+| 10 | Centered pull quote | `page__ak-campaign-copy` — `artist_series_quote` |
+| 11 | Large feature still | `page__ak-campaign-stills` (1 still) — `artist_series_feature_still` |
+| 12 | Footer CTA — centered photo, pull quote, **ANNE KLEIN** brand label, cursive **Anne Klein signature** image, SHOP THE COLLECTION button | **NEW** [`sections/page__ak-artist-series-footer-cta.liquid`](../sections/page__ak-artist-series-footer-cta.liquid) — `artist_series_footer_cta` |
 
-**Admin follow-up:** Assign **videos** on both `ak-video` sections; set **product** blocks or switch finishing touches to **From collection**; set **SHOP THE COLLECTION** URLs on CTAs; replace motif strip images / **alt** text as needed.
+**New Liquid sections (live in repo):** `page__ak-artist-series-hero`, `page__ak-artist-series-mission`, `page__ak-artist-series-footer-cta`. Existing campaign sections are reused as-is for all other bands.
+
+**Admin follow-up:**
+- **Hero:** upload background image (butterflies + AK signature baked in), top-left wordmark, AK logo for the bottom band; set alt text.
+- **Mission:** upload Anne Klein signature image for the bottom-right (or leave blank to hide).
+- **Section 5 / 7 / 11:** upload the single composed images (product line-up, zigzag stills, feature still); set alt text.
+- **Section 6a:** assign the 8 product handles (or switch `product_source` to `From collection` and pick the Artist Series collection).
+- **Sections 6b / 12 (CTAs):** set the button link URL to the Artist Series collection.
+- **Sections 3 / 9 (videos):** assign actual video files in the theme editor.
+- **Footer CTA:** upload the campaign image and the cursive Anne Klein signature image.
 
 ## Template
 
