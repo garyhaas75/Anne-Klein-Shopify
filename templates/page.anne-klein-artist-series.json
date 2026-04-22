@@ -695,16 +695,7 @@
         "still_y6AMtk": {
           "type": "still",
           "settings": {
-            "image_alt": "",
-            "caption": "",
-            "caption_placement": "none",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "still_3RBDwR": {
-          "type": "still",
-          "settings": {
+            "image": "shopify://shop_images/Screenshot_2026-04-22_at_3.46.46_PM.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -714,8 +705,7 @@
         }
       },
       "block_order": [
-        "still_y6AMtk",
-        "still_3RBDwR"
+        "still_y6AMtk"
       ],
       "name": "AK Campaign stills",
       "settings": {
@@ -769,20 +759,21 @@
         "quote": "<p>“Clothes won’t change the world. The women who wear them will.”</p>",
         "quote_level": "p",
         "brand_label": "ANNE KLEIN",
+        "signature": "shopify://shop_images/Anne_Signature.png",
         "signature_alt": "Anne Klein signature",
         "signature_max_width": 240,
         "signature_max_width_mobile": 180,
         "button_label": "SHOP THE COLLECTION",
-        "button_link": "",
+        "button_link": "shopify://collections",
         "button_new_tab": false,
         "button_style": "button--primary",
         "content_max_width": 56,
         "text_color": "#000000",
         "background_color": "#ffffff",
         "image_to_quote_gap": 32,
-        "quote_to_brand_gap": 24,
-        "brand_to_signature_gap": 8,
-        "signature_to_button_gap": 28,
+        "quote_to_brand_gap": 20,
+        "brand_to_signature_gap": 0,
+        "signature_to_button_gap": 44,
         "quote_font_family": "helvetica",
         "quote_font_size": 50,
         "quote_font_size_mobile": 0,
