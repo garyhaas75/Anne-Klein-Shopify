@@ -40,8 +40,35 @@
 
 {% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
 {% assign heading_font_stack = heading_font_stack | strip %}
+{% assign heading_ff_mobile_setting = section.settings.heading_font_family_mobile | default: 'same' %}
+{% if heading_ff_mobile_setting == 'same' %}
+  {% assign heading_font_stack_mobile = heading_font_stack %}
+{% else %}
+  {% capture heading_font_stack_mobile %}{% render 'ak-campaign-font-stack', font_key: heading_ff_mobile_setting %}{% endcapture %}
+  {% assign heading_font_stack_mobile = heading_font_stack_mobile | strip %}
+{% endif %}
+
 {% capture body_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.body_font_family %}{% endcapture %}
 {% assign body_font_stack = body_font_stack | strip %}
+{% assign body_ff_mobile_setting = section.settings.body_font_family_mobile | default: 'same' %}
+{% if body_ff_mobile_setting == 'same' %}
+  {% assign body_font_stack_mobile = body_font_stack %}
+{% else %}
+  {% capture body_font_stack_mobile %}{% render 'ak-campaign-font-stack', font_key: body_ff_mobile_setting %}{% endcapture %}
+  {% assign body_font_stack_mobile = body_font_stack_mobile | strip %}
+{% endif %}
+
+{% assign heading_ff_mobile_resolved = heading_ff_mobile_setting %}
+{% if heading_ff_mobile_resolved == 'same' %}
+  {% assign heading_ff_mobile_resolved = section.settings.heading_font_family | default: 'helvetica' %}
+{% endif %}
+{% assign body_ff_mobile_resolved = body_ff_mobile_setting %}
+{% if body_ff_mobile_resolved == 'same' %}
+  {% assign body_ff_mobile_resolved = section.settings.body_font_family | default: 'helvetica' %}
+{% endif %}
+{% if section.settings.heading_font_family == 'amiri' or heading_ff_mobile_resolved == 'amiri' or section.settings.body_font_family == 'amiri' or body_ff_mobile_resolved == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 
 {% assign heading_size = section.settings.heading_font_size | default: 46 %}
 {% assign heading_size_mobile = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
@@ -179,6 +206,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__heading {
+      font-family: {{ heading_font_stack_mobile }};
       font-size: clamp(1.5rem, 7vw, {{ heading_size_mobile }}px);
     }
   }
@@ -210,6 +238,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__rte {
+      font-family: {{ body_font_stack_mobile }};
       font-size: {{ body_size_mobile }}px;
       line-height: {{ body_lh_mobile }}%;
     }
@@ -477,9 +506,26 @@
     {
       "type": "select",
       "id": "heading_font_family",
-      "label": "Heading font",
+      "label": "Heading font (desktop)",
       "default": "helvetica",
       "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_font_family_mobile",
+      "label": "Heading font (mobile)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as desktop" },
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
@@ -531,9 +577,26 @@
     {
       "type": "select",
       "id": "body_font_family",
-      "label": "Body font",
+      "label": "Body font (desktop)",
       "default": "helvetica",
       "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_font_family_mobile",
+      "label": "Body font (mobile)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as desktop" },
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
         { "value": "arial", "label": "Arial" },
