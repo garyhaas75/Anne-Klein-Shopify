@@ -10,17 +10,14 @@
 {
   "layout": "theme",
   "sections": {
-    "artist_series_hero": {
+    "page_ak_artist_series_hero_aXDtmp": {
       "type": "page__ak-artist-series-hero",
-      "name": "Artist Series — Hero",
+      "name": "AK Artist Series hero",
       "settings": {
-        "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.jpg",
-        "mobile_image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_09_1292_1_3.png",
-        "image_alt": "Anjelica Roselyn for the Anne Klein Artist Series",
+        "image_alt": "",
         "image_object_position": "center",
         "image_min_height": 720,
         "image_min_height_mobile": 480,
-        "wordmark_image": "",
         "wordmark_alt": "Anne Klein Artist Series",
         "wordmark_max_width": 320,
         "wordmark_max_width_mobile": 180,
@@ -30,7 +27,6 @@
         "band_text_color": "#000000",
         "band_height": 220,
         "band_height_mobile": 160,
-        "ak_logo": "",
         "ak_logo_alt": "Anne Klein",
         "ak_logo_max_width": 320,
         "ak_logo_max_width_mobile": 200,
@@ -42,24 +38,23 @@
         "overlay_overlap_mobile": 56,
         "eyebrow_font_family": "helvetica",
         "eyebrow_font_size": 24,
-        "eyebrow_font_size_mobile": 18,
+        "eyebrow_font_size_mobile": 0,
         "eyebrow_font_weight": "700",
         "eyebrow_uppercase": false,
         "name_font_family": "amiri",
         "name_font_size": 144,
-        "name_font_size_mobile": 64,
+        "name_font_size_mobile": 0,
         "name_font_weight": "400",
         "name_letter_spacing": -4
       }
     },
-    "artist_series_mission": {
+    "page_ak_artist_series_mission_7nUAA6": {
       "type": "page__ak-artist-series-mission",
-      "name": "Where Style & Story Connect",
+      "name": "AK Artist Series mission",
       "settings": {
         "heading": "Where Style & Story Connect",
         "heading_level": "h2",
-        "body": "<p>Anne Klein is committed to empowering women who wear its brand by partnering with entrepreneurial women to develop a print capsule collection that connects with our consumers. Our commitment to diversity and the arts provides a platform to engage and enhance visibility.</p><p>Our mission is to spotlight entrepreneurial women in the arts, offering a platform for their creativity and empowering talented female print designers. This series is more than just a showcase of beautiful designs, it is a celebration of storytelling and representation. Each piece reflects the experiences, passions, and vision of the artist behind it.</p><p>We are proud to bring these voices to the forefront through the Anne Klein Artist Series Collection.</p>",
-        "signature": "",
+        "body": "<p>Anne Klein is committed to empowering women who wear its brand by partnering with entrepreneurial women to develop a print capsule collection that connects with our consumers.</p>",
         "signature_alt": "Anne Klein signature",
         "signature_max_width": 320,
         "signature_max_width_mobile": 200,
@@ -88,10 +83,14 @@
         "padding_bottom_mobile": 80
       }
     },
-    "artist_series_video_primary": {
+    "campaign_film": {
       "type": "ak-video",
-      "name": "Artist interview — primary",
       "settings": {
+        "layout": "feature",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "section_padding_top_mobile": 0,
+        "section_padding_bottom_mobile": 0,
         "font_family": "system",
         "font_overlay_line1": "",
         "font_overlay_heading": "",
@@ -121,6 +120,8 @@
         "overlay_heading_font_size": 48,
         "overlay_heading_font_weight": "700",
         "overlay_heading_underline": false,
+        "heading_letter_spacing": 0,
+        "heading_letter_spacing_mobile": -1,
         "overlay_cta": "",
         "overlay_cta_font_size": 14,
         "overlay_cta_font_weight": "700",
@@ -129,11 +130,22 @@
         "overlay_link_new_tab": false,
         "overlay_text": "",
         "text_color": "#ffffff",
-        "heading_level": "h2",
+        "heading_level": "h1",
         "show_logo_overlay": false,
+        "section_max_width": 0,
+        "section_max_width_mobile": 0,
+        "section_max_height": 0,
+        "section_max_height_mobile": 0,
+        "video_max_width": 0,
+        "video_max_width_mobile": 0,
+        "video_max_height": 0,
+        "video_max_height_mobile": 0,
         "video_fit": "cover",
         "video_fit_mobile": "same",
         "video_background_color": "#000000",
+        "video": "shopify://files/videos/compressed-desktop.mp4",
+        "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
+        "title": "Campaign film",
         "autoplay": true,
         "loop": true,
         "start_card_heading": "",
@@ -144,30 +156,16 @@
         "end_card_button_label": "Watch again",
         "end_card_heading_mobile": "",
         "end_card_button_label_mobile": "",
-        "transcript": "",
-        "layout": "feature",
-        "section_padding_top": 0,
-        "section_padding_bottom": 0,
-        "section_padding_top_mobile": 0,
-        "section_padding_bottom_mobile": 0,
-        "section_max_width": 0,
-        "section_max_width_mobile": 0,
-        "section_max_height": 0,
-        "section_max_height_mobile": 0,
-        "video_max_width": 0,
-        "video_max_width_mobile": 0,
-        "video_max_height": 0,
-        "video_max_height_mobile": 0,
-        "video": "shopify://files/videos/compressed-desktop.mp4",
-        "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
-        "title": "Artist interview — assign video in theme editor"
+        "transcript": ""
       }
     },
-    "artist_series_about": {
+    "page_ak_campaign_copy_Yra8yW": {
       "type": "page__ak-campaign-copy",
-      "name": "About the Artist",
+      "name": "AK Campaign copy",
       "settings": {
+        "heading": "The Film",
         "heading_level": "h2",
+        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
         "text_alignment": "center",
         "content_max_width": 48,
         "content_max_width_mobile": 0,
@@ -177,8 +175,8 @@
         "show_gutter": true,
         "text_color": "#000000",
         "background_color": "#ffffff",
-        "heading_font_family": "helvetica",
-        "heading_font_size": 46,
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
         "heading_font_size_mobile": 0,
         "heading_font_weight": "700",
         "heading_underline": false,
@@ -186,27 +184,32 @@
         "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
-        "body_line_height": 130,
+        "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_top_mobile": 40,
-        "padding_bottom_mobile": 40,
-        "heading": "About the Artist",
-        "body": "<p>Anjelica Roselyn is a London-based artist and illustrator known for her vibrant, expressive style. Her bold use of color and dynamic brushstrokes have made her a sought-after collaborator in the fashion and lifestyle industry. Anne Klein is bringing her work to life through this exclusive collaboration.</p>"
+        "padding_bottom_mobile": 40
       }
     },
-    "artist_series_product_band_image": {
+    "page_ak_campaign_stills_hjhnKR": {
       "type": "page__ak-campaign-stills",
-      "name": "Product line-up image",
       "blocks": {
-        "product_band_still": {
+        "still_LcftQe": {
           "type": "still",
           "settings": {
-            "image": "",
-            "mobile_image": "",
-            "image_alt": "Anne Klein Artist Series capsule line-up",
+            "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_Lx3tVw": {
+          "type": "still",
+          "settings": {
+            "image_alt": "",
             "caption": "",
             "caption_placement": "none",
             "link_url": "",
@@ -214,23 +217,28 @@
           }
         }
       },
-      "block_order": ["product_band_still"],
+      "block_order": [
+        "still_LcftQe",
+        "still_Lx3tVw"
+      ],
+      "name": "AK Campaign stills",
       "settings": {
         "heading": "",
+        "heading_level": "h2",
         "intro": "",
         "text_alignment": "center",
-        "heading_font_family": "helvetica",
-        "heading_font_weight": "700",
-        "heading_font_size": 36,
-        "heading_font_size_mobile": 0,
-        "intro_font_family": "system",
-        "intro_font_size": 17,
-        "intro_font_size_mobile": 0,
-        "heading_color": "#000000",
-        "body_color": "#000000",
-        "header_background": "#ffffff",
         "header_max_width": 48,
         "header_max_width_mobile": 0,
+        "header_background": "#ffffff",
+        "heading_color": "#000000",
+        "body_color": "#000000",
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
+        "heading_font_size_mobile": 0,
+        "heading_font_weight": "400",
+        "body_font_family": "system",
+        "intro_font_size": 17,
+        "intro_font_size_mobile": 0,
         "caption_font_family": "system",
         "caption_below_alignment": "center",
         "caption_font_size": 15,
@@ -241,79 +249,105 @@
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
-        "image_behavior": "fixed_frame",
+        "image_behavior": "natural",
         "image_object_fit": "cover",
         "image_object_position": "center",
-        "crop_min_height_desktop": 320,
-        "crop_min_height_mobile": 200,
-        "letterbox_color": "#ffffff",
+        "crop_min_height_desktop": 480,
+        "crop_min_height_mobile": 400,
+        "letterbox_color": "#1a1a1a",
+        "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "section_aria_label": "Artist Series capsule product line-up"
+        "padding_bottom_mobile": 0
       }
     },
-    "artist_series_products": {
+    "index_finishing_touches_r89aBe": {
       "type": "index__finishing-touches",
-      "name": "Artist Series — capsule grid",
       "blocks": {
-        "product_0": { "type": "product", "settings": { "product": "" } },
-        "product_1": { "type": "product", "settings": { "product": "" } },
-        "product_2": { "type": "product", "settings": { "product": "" } },
-        "product_3": { "type": "product", "settings": { "product": "" } },
-        "product_4": { "type": "product", "settings": { "product": "" } },
-        "product_5": { "type": "product", "settings": { "product": "" } },
-        "product_6": { "type": "product", "settings": { "product": "" } },
-        "product_7": { "type": "product", "settings": { "product": "" } }
+        "product_BkETDU": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_6BDiqW": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_a9nxy7": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_Y6mDBh": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_qPzFFL": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
+        "product_UKzHNT": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        }
       },
       "block_order": [
-        "product_0",
-        "product_1",
-        "product_2",
-        "product_3",
-        "product_4",
-        "product_5",
-        "product_6",
-        "product_7"
+        "product_BkETDU",
+        "product_6BDiqW",
+        "product_a9nxy7",
+        "product_Y6mDBh",
+        "product_qPzFFL",
+        "product_UKzHNT"
       ],
+      "name": "AK Finishing Touches",
       "settings": {
-        "title": "",
+        "title": "FINISHING TOUCHES",
         "heading_alignment": "center",
-        "font_family": "helvetica",
-        "heading_font_size": 24,
-        "heading_font_weight": "700",
-        "heading_underline": false,
-        "heading_font_size_mobile": 0,
         "heading_alignment_mobile": "",
+        "font_family": "system",
+        "heading_font_size": 24,
+        "heading_font_size_mobile": 0,
+        "heading_font_weight": "400",
+        "heading_underline": false,
         "product_source": "blocks",
         "collection": "",
-        "products_limit": 8,
+        "products_limit": 12,
         "products_per": 4,
-        "align_height": true,
-        "collection_height": 420,
+        "align_height": false,
+        "collection_height": 320,
         "width": "wide",
         "show_gutter": true,
-        "padding_top": 32,
-        "padding_bottom": 16,
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 16,
-        "section_aria_label": "Shop the Artist Series capsule"
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "section_aria_label": ""
       }
     },
-    "artist_series_mid_cta": {
+    "page_ak_campaign_cta_FztAAp": {
       "type": "page__ak-campaign-cta",
-      "name": "Shop the collection — mid page",
+      "name": "AK Campaign CTA",
       "settings": {
-        "heading": "",
+        "heading": "Anne Klein Spring-Summer 2026",
         "heading_use_line_2": false,
-        "heading_line_2": "",
+        "heading_line_2": "Spring-Summer 2026",
         "heading_separate_mobile": false,
-        "heading_mobile": "",
+        "heading_mobile": "Anne Klein Spring-Summer 2026",
         "heading_use_line_2_mobile": false,
-        "heading_line_2_mobile": "",
+        "heading_line_2_mobile": "Spring-Summer 2026",
         "heading_level": "h2",
-        "body": "",
+        "body": "<p>Explore the full campaign and shop new arrivals from the season.</p>",
         "button_label": "SHOP THE COLLECTION",
         "button_link": "",
         "button_new_tab": false,
@@ -323,40 +357,47 @@
         "content_max_width_mobile": 0,
         "heading_max_width_desktop": 0,
         "heading_max_width_mobile": 0,
-        "cta_spacing": 12,
+        "cta_spacing": 28,
         "cta_spacing_mobile": 0,
         "width": "wide",
         "show_gutter": true,
         "text_color": "#000000",
         "background_color": "#ffffff",
-        "heading_font_family": "helvetica",
-        "heading_font_size": 24,
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
         "heading_font_size_mobile": 0,
         "heading_font_weight": "700",
         "heading_underline": false,
         "body_font_family": "system",
-        "body_font_size": 14,
+        "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
         "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 16,
+        "padding_top": 48,
         "padding_bottom": 48,
-        "padding_top_mobile": 12,
+        "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
     },
-    "artist_series_zigzag_image": {
+    "page_ak_campaign_stills_pnTPed": {
       "type": "page__ak-campaign-stills",
-      "name": "Zigzag stills (composed image)",
       "blocks": {
-        "zigzag_composed": {
+        "still_kHrTwa": {
           "type": "still",
           "settings": {
-            "image": "",
-            "mobile_image": "",
-            "image_alt": "Anjelica Roselyn campaign stills with decorative butterflies",
+            "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_PVcneL": {
+          "type": "still",
+          "settings": {
+            "image_alt": "",
             "caption": "",
             "caption_placement": "none",
             "link_url": "",
@@ -364,23 +405,28 @@
           }
         }
       },
-      "block_order": ["zigzag_composed"],
+      "block_order": [
+        "still_kHrTwa",
+        "still_PVcneL"
+      ],
+      "name": "AK Campaign stills",
       "settings": {
         "heading": "",
+        "heading_level": "h2",
         "intro": "",
         "text_alignment": "center",
-        "heading_font_family": "amiri",
-        "heading_font_weight": "400",
-        "heading_font_size": 36,
-        "heading_font_size_mobile": 0,
-        "intro_font_family": "system",
-        "intro_font_size": 17,
-        "intro_font_size_mobile": 0,
-        "heading_color": "#000000",
-        "body_color": "#000000",
-        "header_background": "#ffffff",
         "header_max_width": 48,
         "header_max_width_mobile": 0,
+        "header_background": "#ffffff",
+        "heading_color": "#000000",
+        "body_color": "#000000",
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
+        "heading_font_size_mobile": 0,
+        "heading_font_weight": "400",
+        "body_font_family": "system",
+        "intro_font_size": 17,
+        "intro_font_size_mobile": 0,
         "caption_font_family": "system",
         "caption_below_alignment": "center",
         "caption_font_size": 15,
@@ -391,24 +437,26 @@
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
-        "image_behavior": "fixed_frame",
-        "image_object_fit": "contain",
+        "image_behavior": "natural",
+        "image_object_fit": "cover",
         "image_object_position": "center",
-        "crop_min_height_desktop": 720,
-        "crop_min_height_mobile": 480,
-        "letterbox_color": "#ffffff",
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "padding_top_mobile": 32,
-        "padding_bottom_mobile": 32,
-        "section_aria_label": "Artist Series campaign stills"
+        "crop_min_height_desktop": 480,
+        "crop_min_height_mobile": 400,
+        "letterbox_color": "#1a1a1a",
+        "section_aria_label": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
       }
     },
-    "artist_series_thread_heading": {
+    "page_ak_campaign_copy_JnVKQU": {
       "type": "page__ak-campaign-copy",
-      "name": "The Invisible Thread — title",
+      "name": "AK Campaign copy",
       "settings": {
+        "heading": "The Film",
         "heading_level": "h2",
+        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
         "text_alignment": "center",
         "content_max_width": 48,
         "content_max_width_mobile": 0,
@@ -418,8 +466,8 @@
         "show_gutter": true,
         "text_color": "#000000",
         "background_color": "#ffffff",
-        "heading_font_family": "helvetica",
-        "heading_font_size": 46,
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
         "heading_font_size_mobile": 0,
         "heading_font_weight": "700",
         "heading_underline": false,
@@ -427,21 +475,24 @@
         "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
-        "body_line_height": 130,
+        "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 24,
-        "padding_bottom": 16,
+        "padding_top": 48,
+        "padding_bottom": 48,
         "padding_top_mobile": 40,
-        "padding_bottom_mobile": 40,
-        "heading": "The Invisible Thread with Anjelica Roselyn",
-        "body": ""
+        "padding_bottom_mobile": 40
       }
     },
-    "artist_series_video_secondary": {
+    "ak_video_E8CV4B": {
       "type": "ak-video",
-      "name": "Campaign film — secondary",
+      "name": "AK Video",
       "settings": {
+        "layout": "hero",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "section_padding_top_mobile": 0,
+        "section_padding_bottom_mobile": 0,
         "font_family": "system",
         "font_overlay_line1": "",
         "font_overlay_heading": "",
@@ -471,6 +522,8 @@
         "overlay_heading_font_size": 48,
         "overlay_heading_font_weight": "700",
         "overlay_heading_underline": false,
+        "heading_letter_spacing": 0,
+        "heading_letter_spacing_mobile": -1,
         "overlay_cta": "",
         "overlay_cta_font_size": 14,
         "overlay_cta_font_weight": "700",
@@ -479,11 +532,20 @@
         "overlay_link_new_tab": false,
         "overlay_text": "",
         "text_color": "#ffffff",
-        "heading_level": "h2",
+        "heading_level": "h1",
         "show_logo_overlay": false,
+        "section_max_width": 0,
+        "section_max_width_mobile": 0,
+        "section_max_height": 0,
+        "section_max_height_mobile": 0,
+        "video_max_width": 0,
+        "video_max_width_mobile": 0,
+        "video_max_height": 0,
+        "video_max_height_mobile": 0,
         "video_fit": "cover",
         "video_fit_mobile": "same",
         "video_background_color": "#000000",
+        "title": "Video",
         "autoplay": true,
         "loop": true,
         "start_card_heading": "",
@@ -494,29 +556,16 @@
         "end_card_button_label": "Watch again",
         "end_card_heading_mobile": "",
         "end_card_button_label_mobile": "",
-        "transcript": "",
-        "layout": "hero",
-        "section_padding_top": 0,
-        "section_padding_bottom": 0,
-        "section_padding_top_mobile": 0,
-        "section_padding_bottom_mobile": 0,
-        "section_max_width": 0,
-        "section_max_width_mobile": 0,
-        "section_max_height": 0,
-        "section_max_height_mobile": 0,
-        "video_max_width": 0,
-        "video_max_width_mobile": 0,
-        "video_max_height": 0,
-        "video_max_height_mobile": 0,
-        "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO (1).mp4",
-        "title": "The Invisible Thread — assign video in theme editor"
+        "transcript": ""
       }
     },
-    "artist_series_quote": {
+    "page_ak_campaign_copy_NgcWpA": {
       "type": "page__ak-campaign-copy",
-      "name": "Artist quote — pull quote",
+      "name": "AK Campaign copy",
       "settings": {
+        "heading": "The Film",
         "heading_level": "h2",
+        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
         "text_alignment": "center",
         "content_max_width": 48,
         "content_max_width_mobile": 0,
@@ -526,36 +575,41 @@
         "show_gutter": true,
         "text_color": "#000000",
         "background_color": "#ffffff",
-        "heading_font_family": "helvetica",
+        "heading_font_family": "amiri",
         "heading_font_size": 36,
         "heading_font_size_mobile": 0,
         "heading_font_weight": "700",
         "heading_underline": false,
-        "body_font_family": "amiri",
-        "body_font_size": 22,
+        "body_font_family": "system",
+        "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
-        "body_line_height": 130,
+        "body_line_height": 165,
         "body_line_height_mobile": 0,
-        "section_aria_label": "Quote from Anjelica Roselyn",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_top_mobile": 24,
-        "padding_bottom_mobile": 24,
-        "heading": "",
-        "body": "<p>&ldquo;I think all women have the ability to connect with one another, whether you live in America or in London. We meet up, and we have so much in common.&rdquo;</p>"
+        "section_aria_label": "",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
       }
     },
-    "artist_series_feature_still": {
+    "page_ak_campaign_stills_FtVVTx": {
       "type": "page__ak-campaign-stills",
-      "name": "Feature still",
       "blocks": {
-        "feature_1": {
+        "still_y6AMtk": {
           "type": "still",
           "settings": {
-            "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_14_1781_5.png",
-            "mobile_image": "",
-            "image_alt": "Anne Klein Artist Series campaign photography",
+            "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_3RBDwR": {
+          "type": "still",
+          "settings": {
+            "image_alt": "",
             "caption": "",
             "caption_placement": "none",
             "link_url": "",
@@ -563,23 +617,28 @@
           }
         }
       },
-      "block_order": ["feature_1"],
+      "block_order": [
+        "still_y6AMtk",
+        "still_3RBDwR"
+      ],
+      "name": "AK Campaign stills",
       "settings": {
         "heading": "",
+        "heading_level": "h2",
         "intro": "",
         "text_alignment": "center",
-        "heading_font_family": "amiri",
-        "heading_font_weight": "400",
-        "heading_font_size": 36,
-        "heading_font_size_mobile": 0,
-        "intro_font_family": "system",
-        "intro_font_size": 17,
-        "intro_font_size_mobile": 0,
-        "heading_color": "#000000",
-        "body_color": "#000000",
-        "header_background": "#ffffff",
         "header_max_width": 48,
         "header_max_width_mobile": 0,
+        "header_background": "#ffffff",
+        "heading_color": "#000000",
+        "body_color": "#000000",
+        "heading_font_family": "amiri",
+        "heading_font_size": 36,
+        "heading_font_size_mobile": 0,
+        "heading_font_weight": "400",
+        "body_font_family": "system",
+        "intro_font_size": 17,
+        "intro_font_size_mobile": 0,
         "caption_font_family": "system",
         "caption_below_alignment": "center",
         "caption_font_size": 15,
@@ -590,32 +649,29 @@
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
-        "image_behavior": "fixed_frame",
+        "image_behavior": "natural",
         "image_object_fit": "cover",
         "image_object_position": "center",
-        "crop_min_height_desktop": 720,
-        "crop_min_height_mobile": 480,
+        "crop_min_height_desktop": 480,
+        "crop_min_height_mobile": 400,
         "letterbox_color": "#1a1a1a",
+        "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "section_aria_label": "Featured campaign photography"
+        "padding_bottom_mobile": 0
       }
     },
-    "artist_series_footer_cta": {
+    "page_ak_artist_series_footer_cta_Li7kig": {
       "type": "page__ak-artist-series-footer-cta",
-      "name": "Anne Klein signature + shop",
+      "name": "Artist Series footer CTA",
       "settings": {
-        "image": "",
-        "mobile_image": "",
-        "image_alt": "Anne Klein Artist Series campaign image with decorative butterflies",
+        "image_alt": "Anne Klein Artist Series campaign image",
         "image_max_width": 480,
         "image_max_width_mobile": 320,
-        "quote": "<p>&ldquo;Clothes won&rsquo;t change the world. The women who wear them will.&rdquo;</p>",
+        "quote": "<p>“Clothes won’t change the world. The women who wear them will.”</p>",
         "quote_level": "p",
         "brand_label": "ANNE KLEIN",
-        "signature": "",
         "signature_alt": "Anne Klein signature",
         "signature_max_width": 240,
         "signature_max_width_mobile": 180,
@@ -647,18 +703,18 @@
     }
   },
   "order": [
-    "artist_series_hero",
-    "artist_series_mission",
-    "artist_series_video_primary",
-    "artist_series_about",
-    "artist_series_product_band_image",
-    "artist_series_products",
-    "artist_series_mid_cta",
-    "artist_series_zigzag_image",
-    "artist_series_thread_heading",
-    "artist_series_video_secondary",
-    "artist_series_quote",
-    "artist_series_feature_still",
-    "artist_series_footer_cta"
+    "page_ak_artist_series_hero_aXDtmp",
+    "page_ak_artist_series_mission_7nUAA6",
+    "campaign_film",
+    "page_ak_campaign_copy_Yra8yW",
+    "page_ak_campaign_stills_hjhnKR",
+    "index_finishing_touches_r89aBe",
+    "page_ak_campaign_cta_FztAAp",
+    "page_ak_campaign_stills_pnTPed",
+    "page_ak_campaign_copy_JnVKQU",
+    "ak_video_E8CV4B",
+    "page_ak_campaign_copy_NgcWpA",
+    "page_ak_campaign_stills_FtVVTx",
+    "page_ak_artist_series_footer_cta_Li7kig"
   ]
 }
