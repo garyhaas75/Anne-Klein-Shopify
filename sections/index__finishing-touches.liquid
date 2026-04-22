@@ -7,6 +7,12 @@
 {% assign id = section.id %}
 {% assign title = section.settings.title %}
 {% assign products_per_row = section.settings.products_per | default: 4 | plus: 0 %}
+{% assign products_per_row_mobile = section.settings.products_per_mobile | default: 2 | plus: 0 %}
+{% if products_per_row_mobile < 1 %}{% assign products_per_row_mobile = 2 %}{% endif %}
+{% assign layout_style = section.settings.layout_style | default: 'carousel' %}
+{% assign grid_gap = section.settings.grid_gap | default: 16 | plus: 0 %}
+{% assign grid_gap_mobile = section.settings.grid_gap_mobile | default: 0 | plus: 0 %}
+{% if grid_gap_mobile < 1 %}{% assign grid_gap_mobile = grid_gap %}{% endif %}
 {% assign align_height = section.settings.align_height %}
 {% assign height = section.settings.collection_height | default: 320 | plus: 0 %}
 {% assign width = section.settings.width | default: 'wide' %}
@@ -188,6 +194,38 @@
       scroll-behavior: auto;
     }
   }
+  /* Static grid layout (no carousel, no horizontal scroll). */
+  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list {
+    display: grid;
+    grid-template-columns: repeat({{ products_per_row }}, minmax(0, 1fr));
+    gap: {{ grid_gap }}px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    float: none;
+  }
+  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .product-wrap,
+  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .product-image__wrapper,
+  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .image__container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list {
+      grid-template-columns: repeat({{ products_per_row_mobile }}, minmax(0, 1fr));
+      gap: {{ grid_gap_mobile }}px;
+    }
+  }
+
   /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px). !important overrides theme global .flickity-page-dots { display: block !important } on medium-down. */
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
@@ -211,7 +249,7 @@
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
-<section class="section is-width-{{ width }} ak-finishing-touches-section {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
+<section class="section is-width-{{ width }} ak-finishing-touches-section {% if layout_style == 'grid' %}ak-ft--grid{% endif %} {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
   {% if title != blank %}
     <div class="container ak-finishing-touches__heading-wrap">
       <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}" tabindex="0">{{ title }}</h2>
@@ -221,17 +259,21 @@
     {% comment %} No layout--slider: global jsFeaturedCollection would init a second Flickity here. Desktop uses native overflow-x scroll for real trackpad behavior. {% endcomment %}
     <div class="one-whole column has-column-padding-bottom featured-collection ak-ft-carousel-host is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
+        {% if layout_style == 'grid' %}
+        <div class="ak-finishing-touches__grid-list" role="list" aria-label="{{ title | default: 'Finishing touches' | escape }} product grid">
+        {% else %}
         <div class="ak-finishing-touches__carousel-wrap">
         {% comment %} data-mobile-columns must match gallery-cell medium-down--one-half (2 cols ≤798px). {% endcomment %}
         <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
              data-products-per-slide="{{ products_per_row }}"
              data-products-limit="{{ products_count }}"
              data-products-available="{{ products_count }}"
-             data-mobile-columns="2"
+             data-mobile-columns="{{ products_per_row_mobile }}"
              role="region"
              aria-roledescription="carousel"
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
              >
+        {% endif %}
           {% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
             {% for product in collections[collection_ref].products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
@@ -350,8 +392,12 @@
               {% endif %}
             {% endfor %}
           {% endif %}
+        {% if layout_style == 'grid' %}
+        </div>
+        {% else %}
         </div>
         </div>
+        {% endif %}
       {% else %}
         <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}Select a collection above, or switch to "Hand-picked products" and add Product blocks below.{% else %}Add products using the "Product" blocks below.{% endif %}</p>
       {% endif %}
@@ -824,6 +870,21 @@
     },
     {
       "type": "header",
+      "content": "Layout style"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout style",
+      "default": "carousel",
+      "options": [
+        { "value": "carousel", "label": "Carousel (scrolls)" },
+        { "value": "grid", "label": "Static grid (no scroll)" }
+      ],
+      "info": "Carousel shows arrows/dots and scrolls horizontally. Static grid shows ALL products in a fixed columns × rows grid with no scrolling."
+    },
+    {
+      "type": "header",
       "content": "Carousel"
     },
     {
@@ -856,11 +917,44 @@
     {
       "type": "range",
       "id": "products_per",
-      "label": "Products visible at once",
-      "min": 2,
+      "label": "Products per row (desktop)",
+      "min": 1,
       "max": 6,
+      "step": 1,
       "default": 4,
-      "info": "Number of product cards visible in the carousel."
+      "info": "Carousel: products visible at once. Static grid: columns on desktop (≥799px)."
+    },
+    {
+      "type": "range",
+      "id": "products_per_mobile",
+      "label": "Products per row (mobile)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "info": "Number of columns on mobile (≤798px). Applies to both carousel and static grid."
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 16,
+      "unit": "px",
+      "info": "Spacing between cells in Static grid mode."
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "label": "Grid gap (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop. Static grid mode only."
     },
     {
       "type": "checkbox",
