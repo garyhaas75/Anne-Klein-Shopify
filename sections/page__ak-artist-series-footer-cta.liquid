@@ -114,9 +114,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote {
     font-family: {{ quote_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop. Cap = 3x slider so growth is only limited
-       at extreme widths or extreme slider values. */
-    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.4 + 2.4vw), calc({{ quote_size }}px * 3));
+    /* Smooth linear ramp: ≈ slider @ ~1024px → ≈ 2.2× slider @ ~3000px. */
+    font-size: clamp({{ quote_size | times: 0.85 }}px, calc({{ quote_size | times: 0.31 }}px + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 }}px);
     font-weight: {{ quote_weight }};
     line-height: {{ quote_lh }}%;
     color: {{ text_color }};
@@ -133,7 +132,7 @@
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote li,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote blockquote {
-    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.4 + 2.4vw), calc({{ quote_size }}px * 3)) !important;
+    font-size: clamp({{ quote_size | times: 0.85 }}px, calc({{ quote_size | times: 0.31 }}px + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 }}px) !important;
     line-height: {{ quote_lh }}%;
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p span,
@@ -155,8 +154,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
     font-family: {{ brand_font_stack }};
-    /* Fluid scaling for brand label on wide screens. Cap = 3x slider. */
-    font-size: clamp(0.75rem, calc({{ brand_size }}px * 0.7 + 0.4vw), calc({{ brand_size }}px * 3));
+    /* Smooth linear ramp: ≈ slider @ ~1024px → ≈ 2× slider @ ~3000px. */
+    font-size: clamp({{ brand_size | times: 0.85 }}px, calc({{ brand_size | times: 0.36 }}px + {{ brand_size | times: 0.0625 }}vw), {{ brand_size | times: 3 }}px);
     font-weight: {{ brand_weight }};
     letter-spacing: 0.18em;
     text-transform: uppercase;

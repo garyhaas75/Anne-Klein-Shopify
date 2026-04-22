@@ -360,8 +360,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
     font-family: {{ wm1_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports. Cap = 3x slider. */
-    font-size: clamp(0.875rem, calc({{ wm1_sz }}px * 0.6 + 0.7vw), calc({{ wm1_sz }}px * 3));
+    /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
+    font-size: clamp({{ wm1_sz | times: 0.85 }}px, calc({{ wm1_sz | times: 0.31 }}px + {{ wm1_sz | times: 0.0675 }}vw), {{ wm1_sz | times: 3 }}px);
     font-weight: {{ wm1_wt }};
     line-height: {{ wm1_lh }}%;
     color: {{ wm1_co }};
@@ -376,8 +376,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
     font-family: {{ wm2_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports. Cap = 3x slider. */
-    font-size: clamp(0.875rem, calc({{ wm2_sz }}px * 0.6 + 0.7vw), calc({{ wm2_sz }}px * 3));
+    /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
+    font-size: clamp({{ wm2_sz | times: 0.85 }}px, calc({{ wm2_sz | times: 0.31 }}px + {{ wm2_sz | times: 0.0675 }}vw), {{ wm2_sz | times: 3 }}px);
     font-weight: {{ wm2_wt }};
     line-height: {{ wm2_lh }}%;
     color: {{ wm2_co }};
@@ -499,9 +499,10 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop and grows on wider viewports.
-       Cap raised to 3x the slider so growth is only limited at extreme widths or extreme slider values. */
-    font-size: clamp(1rem, calc({{ eb_sz }}px * 0.5 + 1vw), calc({{ eb_sz }}px * 3));
+    /* Smooth linear ramp across desktop widths.
+       Anchor points: at ~1024px viewport ≈ slider value; at ~3000px viewport ≈ 2.2× slider.
+       Between those it interpolates linearly via vw — no breakpoints, no plateaus. */
+    font-size: clamp({{ eb_sz | times: 0.85 }}px, calc({{ eb_sz | times: 0.31 }}px + {{ eb_sz | times: 0.0675 }}vw), {{ eb_sz | times: 3 }}px);
     font-weight: {{ eb_wt }};
     line-height: {{ eb_lh }}%;
     margin: 0;
@@ -526,10 +527,12 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop; aggressive vw growth keeps the name
-       visually edge-to-edge as the viewport widens. Cap = slider × 3, so growth is only limited
-       at extreme widths (the parent has overflow: hidden + overflow-wrap to handle long names). */
-    font-size: clamp(2.5rem, calc({{ nm_sz }}px * 0.2 + 9vw), calc({{ nm_sz }}px * 3));
+    /* Smooth linear ramp across desktop widths.
+       Anchor: at ~1024px viewport ≈ slider value, at ~3000px viewport ≈ 2.5× slider.
+       Pure linear (no plateaus): font-size = A + B×vw. The clamp min/max are loose guard rails
+       (0.85× / 3.5× slider), set wide so the linear ramp drives the size at every typical width.
+       Parent has overflow: hidden + overflow-wrap so the container governs the practical max. */
+    font-size: clamp({{ nm_sz | times: 0.85 }}px, calc({{ nm_sz | times: 0.235 }}px + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 }}px);
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
