@@ -17,7 +17,12 @@
 {% assign image = section.settings.image %}
 {% assign mobile_image = section.settings.mobile_image | default: image %}
 {% assign image_alt = section.settings.image_alt %}
-{% assign wordmark_text = section.settings.wordmark_text | strip %}
+{% assign wordmark_line_1 = section.settings.wordmark_line_1 | strip %}
+{% assign wordmark_line_2 = section.settings.wordmark_line_2 | strip %}
+{% assign wordmark_pl1 = section.settings.wordmark_line_1_padding_left | default: 0 %}
+{% assign wordmark_pl2 = section.settings.wordmark_line_2_padding_left | default: 28 %}
+{% assign wordmark_pl1_m = section.settings.wordmark_line_1_padding_left_mobile | default: 0 %}
+{% assign wordmark_pl2_m = section.settings.wordmark_line_2_padding_left_mobile | default: 20 %}
 {% assign wordmark_color = section.settings.wordmark_color | default: '#ffe1e3' %}
 {% assign wordmark_size = section.settings.wordmark_font_size | default: 22 %}
 {% assign wordmark_size_mobile = section.settings.wordmark_font_size_mobile | default: 0 | plus: 0 %}
@@ -76,9 +81,16 @@
 {% assign name_weight = section.settings.name_font_weight | default: '400' %}
 {% assign name_letter_spacing = section.settings.name_letter_spacing | default: -4 %}
 
+{% capture wordmark_aria %}
+  {% if wordmark_line_1 != blank %}{{ wordmark_line_1 | strip }}{% endif %}{% if wordmark_line_1 != blank and wordmark_line_2 != blank %} {% endif %}{% if wordmark_line_2 != blank %}{{ wordmark_line_2 | strip }}{% endif %}
+{% endcapture %}
+{% assign wordmark_aria = wordmark_aria | strip %}
+
 {% capture section_aria %}
   {% if artist_name != blank %}
     aria-labelledby="ak-artist-series-hero-name-{{ id }}"
+  {% elsif wordmark_aria != blank %}
+    aria-label="{{ wordmark_aria | escape }}"
   {% else %}
     aria-label="Anne Klein Artist Series"
   {% endif %}
@@ -282,9 +294,29 @@
     line-height: {{ section.settings.wordmark_line_height | default: 120 }}%;
     letter-spacing: {{ section.settings.wordmark_letter_spacing | default: 0 }}px;
     color: {{ wordmark_color }};
-    white-space: pre-line;
     overflow-wrap: break-word;
     {% if section.settings.wordmark_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% endif %}
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line {
+    display: block;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line + .ak-artist-series-hero__wordmark-line {
+    margin-top: 0.08em;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
+    padding-left: {{ wordmark_pl1 }}px;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
+    padding-left: {{ wordmark_pl2 }}px;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
@@ -293,6 +325,12 @@
       width: min({{ wordmark_max_width_mobile }}px, 85vw);
       max-width: 90%;
       font-size: {{ wordmark_size_mobile }}px;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
+      padding-left: {{ wordmark_pl1_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
+      padding-left: {{ wordmark_pl2_m }}px;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
@@ -497,8 +535,19 @@
         </div>
       {% endif %}
 
-      {% if wordmark_text != blank %}
-        <p class="ak-artist-series-hero__wordmark">{{ wordmark_text | escape }}</p>
+      {% if wordmark_line_1 != blank or wordmark_line_2 != blank %}
+        <div class="ak-artist-series-hero__wordmark">
+          {% if wordmark_line_1 != blank %}
+            <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
+              {{- wordmark_line_1 | escape -}}
+            </p>
+          {% endif %}
+          {% if wordmark_line_2 != blank %}
+            <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
+              {{- wordmark_line_2 | escape -}}
+            </p>
+          {% endif %}
+        </div>
       {% endif %}
     </div>
   </div>
@@ -586,11 +635,61 @@
       "content": "Top-left wordmark (live text)"
     },
     {
-      "type": "textarea",
-      "id": "wordmark_text",
-      "label": "Wordmark text",
-      "default": "Anne Klein Artist Series",
-      "info": "Use line breaks for multiple lines (e.g. Anne Klein on one line, Artist Series on the next)."
+      "type": "text",
+      "id": "wordmark_line_1",
+      "label": "Wordmark line 1",
+      "default": "Anne Klein",
+      "info": "Top line (e.g. brand name)."
+    },
+    {
+      "type": "text",
+      "id": "wordmark_line_2",
+      "label": "Wordmark line 2",
+      "default": "Artist Series",
+      "info": "Second line. Increase “padding left line 2” below for a stair-step indent."
+    },
+    {
+      "type": "range",
+      "id": "wordmark_line_1_padding_left",
+      "label": "Line 1 padding left (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "Adds to the wordmark offset from the left edge."
+    },
+    {
+      "type": "range",
+      "id": "wordmark_line_2_padding_left",
+      "label": "Line 2 padding left (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 28,
+      "unit": "px",
+      "info": "Set higher than line 1 for the stair-step look."
+    },
+    {
+      "type": "range",
+      "id": "wordmark_line_1_padding_left_mobile",
+      "label": "Line 1 padding left (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "wordmark_line_2_padding_left_mobile",
+      "label": "Line 2 padding left (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "info": "Typically slightly less stair-step than desktop."
     },
     {
       "type": "color",
