@@ -88,6 +88,40 @@
   {% assign body_lh_mobile = body_lh %}
 {% endif %}
 
+{% assign heading_container_max_width = section.settings.heading_container_max_width | default: 0 | plus: 0 %}
+{% assign heading_container_max_width_m0 = section.settings.heading_container_max_width_mobile | default: 0 | plus: 0 %}
+{% if heading_container_max_width_m0 < 0.001 %}
+  {% assign heading_container_max_width_mobile = heading_container_max_width %}
+{% else %}
+  {% assign heading_container_max_width_mobile = heading_container_max_width_m0 %}
+{% endif %}
+
+{% assign heading_padding_top = section.settings.heading_padding_top | default: 0 %}
+{% assign heading_padding_right = section.settings.heading_padding_right | default: 0 %}
+{% assign heading_padding_bottom = section.settings.heading_padding_bottom | default: 20 %}
+{% assign heading_padding_left = section.settings.heading_padding_left | default: 0 %}
+{% assign heading_padding_top_m = section.settings.heading_padding_top_mobile | default: 0 %}
+{% assign heading_padding_right_m = section.settings.heading_padding_right_mobile | default: 0 %}
+{% assign heading_padding_bottom_m = section.settings.heading_padding_bottom_mobile | default: 20 %}
+{% assign heading_padding_left_m = section.settings.heading_padding_left_mobile | default: 0 %}
+
+{% assign body_container_max_width = section.settings.body_container_max_width | default: 0 | plus: 0 %}
+{% assign body_container_max_width_m0 = section.settings.body_container_max_width_mobile | default: 0 | plus: 0 %}
+{% if body_container_max_width_m0 < 0.001 %}
+  {% assign body_container_max_width_mobile = body_container_max_width %}
+{% else %}
+  {% assign body_container_max_width_mobile = body_container_max_width_m0 %}
+{% endif %}
+
+{% assign body_padding_top = section.settings.body_padding_top | default: 0 %}
+{% assign body_padding_right = section.settings.body_padding_right | default: 0 %}
+{% assign body_padding_bottom = section.settings.body_padding_bottom | default: 0 %}
+{% assign body_padding_left = section.settings.body_padding_left | default: 0 %}
+{% assign body_padding_top_m = section.settings.body_padding_top_mobile | default: 0 %}
+{% assign body_padding_right_m = section.settings.body_padding_right_mobile | default: 0 %}
+{% assign body_padding_bottom_m = section.settings.body_padding_bottom_mobile | default: 0 %}
+{% assign body_padding_left_m = section.settings.body_padding_left_mobile | default: 0 %}
+
 {% capture section_aria %}
   {% if heading != blank %}
     aria-labelledby="ak-artist-series-mission-heading-{{ id }}"
@@ -200,7 +234,23 @@
     font-size: clamp(1.75rem, 5vw, {{ heading_size }}px);
     font-weight: {{ heading_weight }};
     line-height: 1.15;
-    margin: 0 0 1.25rem;
+    margin: 0;
+    padding: {{ heading_padding_top }}px {{ heading_padding_right }}px {{ heading_padding_bottom }}px {{ heading_padding_left }}px;
+    box-sizing: border-box;
+    width: 100%;
+    {% if heading_container_max_width > 0 %}
+      max-width: {{ heading_container_max_width }}rem;
+    {% endif %}
+    {% if text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif text_alignment == 'right' %}
+      margin-left: auto;
+      margin-right: 0;
+    {% else %}
+      margin-left: 0;
+      margin-right: auto;
+    {% endif %}
     color: {{ text_color }};
     overflow-wrap: break-word;
   }
@@ -208,6 +258,12 @@
     #shopify-section-{{ id }} .ak-artist-series-mission__heading {
       font-family: {{ heading_font_stack_mobile }};
       font-size: clamp(1.5rem, 7vw, {{ heading_size_mobile }}px);
+      padding: {{ heading_padding_top_m }}px {{ heading_padding_right_m }}px {{ heading_padding_bottom_m }}px {{ heading_padding_left_m }}px;
+      {% if heading_container_max_width_mobile > 0 %}
+        max-width: {{ heading_container_max_width_mobile }}rem;
+      {% else %}
+        max-width: none;
+      {% endif %}
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__heading:focus-visible {
@@ -219,6 +275,23 @@
     font-size: {{ body_size }}px;
     font-weight: {{ body_weight }};
     line-height: {{ body_lh }}%;
+    margin: 0;
+    padding: {{ body_padding_top }}px {{ body_padding_right }}px {{ body_padding_bottom }}px {{ body_padding_left }}px;
+    box-sizing: border-box;
+    width: 100%;
+    {% if body_container_max_width > 0 %}
+      max-width: {{ body_container_max_width }}rem;
+    {% endif %}
+    {% if text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif text_alignment == 'right' %}
+      margin-left: auto;
+      margin-right: 0;
+    {% else %}
+      margin-left: 0;
+      margin-right: auto;
+    {% endif %}
     color: {{ text_color }};
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__rte p {
@@ -241,6 +314,12 @@
       font-family: {{ body_font_stack_mobile }};
       font-size: {{ body_size_mobile }}px;
       line-height: {{ body_lh_mobile }}%;
+      padding: {{ body_padding_top_m }}px {{ body_padding_right_m }}px {{ body_padding_bottom_m }}px {{ body_padding_left_m }}px;
+      {% if body_container_max_width_mobile > 0 %}
+        max-width: {{ body_container_max_width_mobile }}rem;
+      {% else %}
+        max-width: none;
+      {% endif %}
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__signature {
@@ -486,6 +565,219 @@
       "default": 0,
       "unit": "rem",
       "info": "Push the content block in from the right edge to leave room for the signature."
+    },
+    {
+      "type": "header",
+      "content": "Title (heading) container"
+    },
+    {
+      "type": "range",
+      "id": "heading_container_max_width",
+      "label": "Title max width (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = full width of the content column."
+    },
+    {
+      "type": "range",
+      "id": "heading_container_max_width_mobile",
+      "label": "Title max width (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = same as desktop title width."
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_top",
+      "label": "Title padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_right",
+      "label": "Title padding right (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_bottom",
+      "label": "Title padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 20,
+      "unit": "px",
+      "info": "Space below the title before the body."
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_left",
+      "label": "Title padding left (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_top_mobile",
+      "label": "Title padding top (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_right_mobile",
+      "label": "Title padding right (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_bottom_mobile",
+      "label": "Title padding bottom (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_padding_left_mobile",
+      "label": "Title padding left (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Body container"
+    },
+    {
+      "type": "range",
+      "id": "body_container_max_width",
+      "label": "Body max width (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = full width of the content column."
+    },
+    {
+      "type": "range",
+      "id": "body_container_max_width_mobile",
+      "label": "Body max width (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 0,
+      "unit": "rem",
+      "info": "0 = same as desktop body width."
+    },
+    {
+      "type": "range",
+      "id": "body_padding_top",
+      "label": "Body padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_right",
+      "label": "Body padding right (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_bottom",
+      "label": "Body padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_left",
+      "label": "Body padding left (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_top_mobile",
+      "label": "Body padding top (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_right_mobile",
+      "label": "Body padding right (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_bottom_mobile",
+      "label": "Body padding bottom (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_padding_left_mobile",
+      "label": "Body padding left (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
     },
     {
       "type": "color",
