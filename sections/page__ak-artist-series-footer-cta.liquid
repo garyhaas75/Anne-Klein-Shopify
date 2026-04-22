@@ -114,8 +114,9 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote {
     font-family: {{ quote_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows up to 1.6x on ultra-wide */
-    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.55 + 1.6vw), calc({{ quote_size }}px * 1.6));
+    /* Fluid scale: slider value matches ~1280px desktop. Cap = 3x slider so growth is only limited
+       at extreme widths or extreme slider values. */
+    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.4 + 2.4vw), calc({{ quote_size }}px * 3));
     font-weight: {{ quote_weight }};
     line-height: {{ quote_lh }}%;
     color: {{ text_color }};
@@ -132,7 +133,7 @@
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote li,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote blockquote {
-    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.55 + 1.6vw), calc({{ quote_size }}px * 1.6)) !important;
+    font-size: clamp(1.25rem, calc({{ quote_size }}px * 0.4 + 2.4vw), calc({{ quote_size }}px * 3)) !important;
     line-height: {{ quote_lh }}%;
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p span,
@@ -154,8 +155,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
     font-family: {{ brand_font_stack }};
-    /* Slight fluid scaling for brand label on wide screens */
-    font-size: clamp(0.75rem, calc({{ brand_size }}px * 0.85 + 0.2vw), calc({{ brand_size }}px * 1.4));
+    /* Fluid scaling for brand label on wide screens. Cap = 3x slider. */
+    font-size: clamp(0.75rem, calc({{ brand_size }}px * 0.7 + 0.4vw), calc({{ brand_size }}px * 3));
     font-weight: {{ brand_weight }};
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -509,20 +510,21 @@
     {
       "type": "range",
       "id": "quote_font_size",
-      "label": "Quote size (desktop max)",
+      "label": "Quote size (desktop base)",
       "min": 18,
-      "max": 80,
-      "step": 1,
+      "max": 218,
+      "step": 2,
       "default": 50,
-      "unit": "px"
+      "unit": "px",
+      "info": "Base size at ~1280px viewport. Type also grows with viewport width, capped at 3× this value."
     },
     {
       "type": "range",
       "id": "quote_font_size_mobile",
-      "label": "Quote size (mobile max)",
+      "label": "Quote size (mobile base)",
       "min": 0,
-      "max": 80,
-      "step": 1,
+      "max": 200,
+      "step": 2,
       "default": 0,
       "unit": "px",
       "info": "0 = same as desktop max."
@@ -575,10 +577,11 @@
       "id": "brand_font_size",
       "label": "Brand label size",
       "min": 10,
-      "max": 24,
+      "max": 64,
       "step": 1,
       "default": 14,
-      "unit": "px"
+      "unit": "px",
+      "info": "Base size at ~1280px viewport. Grows fluidly on wider viewports."
     },
     {
       "type": "select",

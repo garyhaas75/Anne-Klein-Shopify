@@ -360,8 +360,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
     font-family: {{ wm1_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports, capped at 1.6x */
-    font-size: clamp(0.875rem, calc({{ wm1_sz }}px * 0.7 + 0.5vw), calc({{ wm1_sz }}px * 1.6));
+    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports. Cap = 3x slider. */
+    font-size: clamp(0.875rem, calc({{ wm1_sz }}px * 0.6 + 0.7vw), calc({{ wm1_sz }}px * 3));
     font-weight: {{ wm1_wt }};
     line-height: {{ wm1_lh }}%;
     color: {{ wm1_co }};
@@ -376,8 +376,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
     font-family: {{ wm2_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports, capped at 1.6x */
-    font-size: clamp(0.875rem, calc({{ wm2_sz }}px * 0.7 + 0.5vw), calc({{ wm2_sz }}px * 1.6));
+    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports. Cap = 3x slider. */
+    font-size: clamp(0.875rem, calc({{ wm2_sz }}px * 0.6 + 0.7vw), calc({{ wm2_sz }}px * 3));
     font-weight: {{ wm2_wt }};
     line-height: {{ wm2_lh }}%;
     color: {{ wm2_co }};
@@ -499,8 +499,9 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows ~1.4x at 1920px, capped at 1.8x */
-    font-size: clamp(1rem, calc({{ eb_sz }}px * 0.5 + 1vw), calc({{ eb_sz }}px * 1.8));
+    /* Fluid scale: slider value matches ~1280px desktop and grows on wider viewports.
+       Cap raised to 3x the slider so growth is only limited at extreme widths or extreme slider values. */
+    font-size: clamp(1rem, calc({{ eb_sz }}px * 0.5 + 1vw), calc({{ eb_sz }}px * 3));
     font-weight: {{ eb_wt }};
     line-height: {{ eb_lh }}%;
     margin: 0;
@@ -525,9 +526,10 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop; aggressive growth so the name stays visually
-       edge-to-edge as the viewport widens (1920px ≈ 1.4×, 2560px ≈ 1.8×, capped at 2.5×). */
-    font-size: clamp(2.5rem, calc({{ nm_sz }}px * 0.2 + 9vw), calc({{ nm_sz }}px * 2.5));
+    /* Fluid scale: slider value matches ~1280px desktop; aggressive vw growth keeps the name
+       visually edge-to-edge as the viewport widens. Cap = slider × 3, so growth is only limited
+       at extreme widths (the parent has overflow: hidden + overflow-wrap to handle long names). */
+    font-size: clamp(2.5rem, calc({{ nm_sz }}px * 0.2 + 9vw), calc({{ nm_sz }}px * 3));
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
@@ -862,7 +864,7 @@
         "id": "wordmark_line_1_font_size",
         "label": "Line 1 size (desktop)",
         "min": 10,
-        "max": 40,
+        "max": 96,
         "step": 1,
         "default": 22,
         "unit": "px"
@@ -872,7 +874,7 @@
         "id": "wordmark_line_1_font_size_mobile",
         "label": "Line 1 size (mobile)",
         "min": 0,
-        "max": 40,
+        "max": 96,
         "step": 1,
         "default": 0,
         "unit": "px",
@@ -1107,7 +1109,7 @@
         "id": "wordmark_line_2_font_size",
         "label": "Line 2 size (desktop)",
         "min": 10,
-        "max": 40,
+        "max": 96,
         "step": 1,
         "default": 22,
         "unit": "px"
@@ -1117,7 +1119,7 @@
         "id": "wordmark_line_2_font_size_mobile",
         "label": "Line 2 size (mobile)",
         "min": 0,
-        "max": 40,
+        "max": 96,
         "step": 1,
         "default": 0,
         "unit": "px",
@@ -1479,7 +1481,7 @@
       "id": "eyebrow_font_size",
       "label": "Eyebrow size (desktop)",
       "min": 12,
-      "max": 36,
+      "max": 96,
       "step": 1,
       "default": 24,
       "unit": "px"
@@ -1489,7 +1491,7 @@
       "id": "eyebrow_font_size_mobile",
       "label": "Eyebrow size (mobile)",
       "min": 0,
-      "max": 36,
+      "max": 96,
       "step": 1,
       "default": 0,
       "unit": "px",
@@ -1749,24 +1751,24 @@
     {
       "type": "range",
       "id": "name_font_size",
-      "label": "Name size max (desktop)",
+      "label": "Name size (desktop base)",
       "min": 48,
-      "max": 200,
-      "step": 2,
+      "max": 480,
+      "step": 6,
       "default": 144,
       "unit": "px",
-      "info": "Maximum pixel size; type also scales fluidly (vw) but never above this value."
+      "info": "Base size at ~1280px viewport. Type also grows with viewport width, capped at 3× this value."
     },
     {
       "type": "range",
       "id": "name_font_size_mobile",
-      "label": "Name size max (mobile)",
+      "label": "Name size (mobile base)",
       "min": 0,
-      "max": 200,
-      "step": 2,
+      "max": 320,
+      "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop max. Lettering scales with viewport but never exceeds this."
+      "info": "0 = same as desktop. Type grows with viewport, capped at 3× this value."
     },
     {
       "type": "color",

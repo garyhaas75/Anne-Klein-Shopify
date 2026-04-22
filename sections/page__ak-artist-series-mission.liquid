@@ -231,8 +231,9 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__heading {
     font-family: {{ heading_font_stack }};
-    /* Fluid scale: slider value matches ~1280px desktop, grows ~1.4x at 1920px, capped at 2.2x */
-    font-size: clamp(1.75rem, calc({{ heading_size }}px * 0.3 + 2.6vw), calc({{ heading_size }}px * 2.2));
+    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports.
+       Cap = 3x slider so growth is only limited at extreme widths or extreme slider values. */
+    font-size: clamp(1.75rem, calc({{ heading_size }}px * 0.3 + 2.6vw), calc({{ heading_size }}px * 3));
     font-weight: {{ heading_weight }};
     line-height: 1.15;
     margin: 0;
@@ -876,20 +877,21 @@
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading size (desktop max)",
+      "label": "Heading size (desktop base)",
       "min": 24,
-      "max": 80,
-      "step": 1,
+      "max": 200,
+      "step": 2,
       "default": 46,
-      "unit": "px"
+      "unit": "px",
+      "info": "Base size at ~1280px viewport. Type also grows with viewport width, capped at 3× this value."
     },
     {
       "type": "range",
       "id": "heading_font_size_mobile",
-      "label": "Heading size (mobile max)",
+      "label": "Heading size (mobile base)",
       "min": 0,
-      "max": 80,
-      "step": 1,
+      "max": 200,
+      "step": 2,
       "default": 0,
       "unit": "px",
       "info": "0 = same as desktop max."
@@ -947,20 +949,20 @@
     {
       "type": "range",
       "id": "body_font_size",
-      "label": "Body size (desktop)",
+      "label": "Body size (desktop base)",
       "min": 14,
-      "max": 28,
+      "max": 48,
       "step": 1,
       "default": 18,
       "unit": "px",
-      "info": "Applies to paragraph and list text. Inline font sizes from the rich text editor are matched to this value so the control is accurate."
+      "info": "Base body size at ~1280px viewport. Grows slightly on wider viewports (capped at 1.6× to keep paragraphs readable). Inline font sizes from the rich text editor are normalized to this value."
     },
     {
       "type": "range",
       "id": "body_font_size_mobile",
       "label": "Body size (mobile)",
       "min": 0,
-      "max": 28,
+      "max": 48,
       "step": 1,
       "default": 0,
       "unit": "px",
