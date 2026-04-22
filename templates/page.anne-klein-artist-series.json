@@ -427,7 +427,7 @@
         "products_limit": 12,
         "products_per": 4,
         "products_per_mobile": 2,
-        "grid_gap": 16,
+        "grid_gap": 0,
         "grid_gap_mobile": 0,
         "align_height": false,
         "collection_height": 320,
