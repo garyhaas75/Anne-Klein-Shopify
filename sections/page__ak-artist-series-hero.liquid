@@ -91,6 +91,9 @@
     so nothing is cropped; band + eyebrow/name are absolutely positioned over the photo.
     Optional `crop` layout: fixed min-height + object-fit cover (fills stage, crops image).
     Artist name uses overlay_name_color so it stays readable on the white band (not white-on-white).
+
+    Background images use image-element back_to_basics mode so Lazysizes’ aspect-ratio helper
+    (data-aspectratio + padded .image-element__wrap) does not crop the uploaded asset.
   */
   #shopify-section-{{ id }} {
     display: block;
@@ -343,17 +346,17 @@
     <div class="ak-artist-series-hero__stage{% if image_fill_and_crop %} ak-artist-series-hero__stage--crop{% else %} ak-artist-series-hero__stage--natural{% endif %}{% unless has_hero_image %} ak-artist-series-hero__stage--placeholder{% endunless %}">
       <div class="ak-artist-series-hero__media">
         {% if image != blank %}
-          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
+          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'is-hidden-mobile-only ak-artist-series-hero__img' %}
         {% else %}
           {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg is-hidden-mobile-only' }}
         {% endif %}
         {% if mobile_image != blank %}
           <div class="is-hidden-desktop-only">
-            {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true %}
+            {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'ak-artist-series-hero__img' %}
           </div>
         {% elsif image != blank %}
           <div class="is-hidden-desktop-only">
-            {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true %}
+            {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'ak-artist-series-hero__img' %}
           </div>
         {% else %}
           <div class="is-hidden-desktop-only">
@@ -417,13 +420,13 @@
       "type": "image_picker",
       "id": "image",
       "label": "Hero image (desktop)",
-      "info": "Decorative butterflies and Anne Klein signature should be baked into this image."
+      "info": "Wide landscape recommended. With “Fill stage and crop image” off, the full image is shown (width 100%, no cropping). Bake butterflies and signature into the file."
     },
     {
       "type": "image_picker",
       "id": "mobile_image",
       "label": "Hero image (mobile)",
-      "info": "Optional. Falls back to desktop image."
+      "info": "Optional; falls back to desktop. Same full-frame behavior when crop is off."
     },
     {
       "type": "text",
