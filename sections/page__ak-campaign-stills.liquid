@@ -37,7 +37,7 @@
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
 {% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
-{% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
+{% assign letterbox = section.settings.letterbox_color | default: 'rgba(0,0,0,0)' %}
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign sec_heading = section.settings.heading %}
 {% assign sec_intro = section.settings.intro %}
@@ -139,7 +139,9 @@
     display: block;
     width: 100%;
     overflow: hidden;
-    background-color: {{ letterbox }};
+    {% if letterbox != 'rgba(0,0,0,0)' and letterbox != blank %}
+      background-color: {{ letterbox }};
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-campaign-stills__media-shell {
     position: relative;
@@ -773,8 +775,9 @@
     {
       "type": "color",
       "id": "letterbox_color",
-      "label": "Background (letterbox / loading)",
-      "default": "#1a1a1a"
+      "label": "Frame background (only shows where the image doesn't fill)",
+      "default": "rgba(0,0,0,0)",
+      "info": "Used as the letterbox color in Fixed-frame mode with Contain fit, and as the placeholder color while the image loads. Leave transparent if you don't want any color showing."
     },
     {
       "type": "text",
