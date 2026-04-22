@@ -291,16 +291,7 @@
         "still_LcftQe": {
           "type": "still",
           "settings": {
-            "image_alt": "",
-            "caption": "",
-            "caption_placement": "none",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "still_Lx3tVw": {
-          "type": "still",
-          "settings": {
+            "image": "shopify://shop_images/product_strip.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -310,8 +301,7 @@
         }
       },
       "block_order": [
-        "still_LcftQe",
-        "still_Lx3tVw"
+        "still_LcftQe"
       ],
       "name": "AK Campaign stills",
       "settings": {
