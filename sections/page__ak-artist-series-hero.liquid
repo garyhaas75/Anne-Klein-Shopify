@@ -67,7 +67,17 @@
 {% assign img_alt_resolved = image_alt | default: artist_name | default: 'Anne Klein Artist Series featured artist' %}
 
 {% style %}
-  #shopify-section-{{ id }} { display: block; }
+  /*
+    Theme Flex: only `.section.is-width-wide` breaks out of $site-max-width.
+    There is no `.is-width-full` — using it left the hero stuck at the default
+    `.section` width. Skip `has-background` on the root so we don't inherit
+    horizontal padding from `.section.has-background`.
+  */
+  #shopify-section-{{ id }} {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero {
     position: relative;
     width: 100%;
@@ -215,7 +225,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-full ak-artist-series-hero-section has-no-side-gutter has-background"
+  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter"
   id="shopify-section-{{ id }}"
   role="region"
   {{ section_aria }}
