@@ -48,6 +48,12 @@
 {% assign ak_logo_max_width = section.settings.ak_logo_max_width | default: 320 %}
 {% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
 {% assign image_object_position = section.settings.image_object_position | default: 'center' %}
+{% assign image_fill_and_crop = section.settings.image_fill_and_crop %}
+{% assign overlay_name_color = section.settings.overlay_name_color | default: '#000000' %}
+{% assign has_hero_image = false %}
+{% if image != blank or mobile_image != blank %}
+  {% assign has_hero_image = true %}
+{% endif %}
 
 {% capture eyebrow_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_font_family %}{% endcapture %}
 {% assign eyebrow_font_stack = eyebrow_font_stack | strip %}
@@ -80,10 +86,11 @@
 
 {% style %}
   /*
-    Theme Flex: `.section.is-width-wide` = full content width (no `.is-width-full`).
-    Hero layout: one `__stage` with fixed min-height; `__media` is absolute fill;
-    `__band` is absolute bottom (over the photo, not below it); eyebrow + name
-    overlay with z-index above band so all type sits on the image/band stack.
+    Theme Flex: `.section.is-width-wide` = full content width.
+    Default `natural` layout: image keeps its aspect ratio (width 100%, height auto)
+    so nothing is cropped; band + eyebrow/name are absolutely positioned over the photo.
+    Optional `crop` layout: fixed min-height + object-fit cover (fills stage, crops image).
+    Artist name uses overlay_name_color so it stays readable on the white band (not white-on-white).
   */
   #shopify-section-{{ id }} {
     display: block;
@@ -93,23 +100,73 @@
   #shopify-section-{{ id }} .ak-artist-series-hero {
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__stage {
     position: relative;
     width: 100%;
     max-width: 100%;
-    min-height: {{ image_min_height }}px;
-    overflow: hidden;
     box-sizing: border-box;
   }
+  /* --- Natural height: show full photo (no cover crop) --- */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural {
+    overflow: visible;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder {
+    min-height: {{ image_min_height }}px;
+    overflow: hidden;
+  }
   @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-artist-series-hero__stage {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder {
       min-height: {{ image_min_height_mobile }}px;
     }
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__media {
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media .image-element__wrap {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    padding-bottom: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media img,
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media .placeholder-svg {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    vertical-align: middle;
+    position: relative !important;
+    object-fit: unset !important;
+    object-position: unset !important;
+    min-height: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only {
+    position: relative;
+    width: 100%;
+    inset: auto;
+    height: auto;
+  }
+  /* --- Crop-fill: fixed min-height + cover (optional) --- */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+    min-height: {{ image_min_height }}px;
+    overflow: hidden;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media {
     position: absolute;
     inset: 0;
     z-index: 0;
@@ -117,7 +174,7 @@
     height: 100%;
     line-height: 0;
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__media .image-element__wrap {
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media .image-element__wrap {
     position: absolute;
     inset: 0;
     width: 100% !important;
@@ -125,8 +182,8 @@
     max-width: none !important;
     margin: 0 !important;
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__media img,
-  #shopify-section-{{ id }} .ak-artist-series-hero__media .placeholder-svg {
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media img,
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media .placeholder-svg {
     display: block;
     width: 100%;
     height: 100%;
@@ -134,7 +191,7 @@
     object-position: {{ image_object_position }};
     min-height: 0 !important;
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__media > .is-hidden-desktop-only {
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media > .is-hidden-desktop-only {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -222,7 +279,6 @@
     padding: 0 1.5rem;
     z-index: 3;
     pointer-events: none;
-    color: {{ overlay_text_color }};
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -256,7 +312,7 @@
     margin: 0;
     overflow-wrap: break-word;
     max-width: 100%;
-    color: {{ overlay_text_color }};
+    color: {{ overlay_name_color }};
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
@@ -284,7 +340,7 @@
   {{ section_aria }}
 >
   <div class="ak-artist-series-hero">
-    <div class="ak-artist-series-hero__stage">
+    <div class="ak-artist-series-hero__stage{% if image_fill_and_crop %} ak-artist-series-hero__stage--crop{% else %} ak-artist-series-hero__stage--natural{% endif %}{% unless has_hero_image %} ak-artist-series-hero__stage--placeholder{% endunless %}">
       <div class="ak-artist-series-hero__media">
         {% if image != blank %}
           {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, additional_classes: 'is-hidden-mobile-only' %}
@@ -380,6 +436,7 @@
       "id": "image_object_position",
       "label": "Image focal point",
       "default": "center",
+      "info": "Used when “Fill stage and crop image” is enabled.",
       "options": [
         { "value": "center", "label": "Center" },
         { "value": "top", "label": "Top" },
@@ -391,6 +448,13 @@
       ]
     },
     {
+      "type": "checkbox",
+      "id": "image_fill_and_crop",
+      "label": "Fill stage and crop image",
+      "default": false,
+      "info": "Off (default): full image is visible at natural aspect ratio (width 100%). On: fixed min-height with object-fit cover (may crop edges)."
+    },
+    {
       "type": "range",
       "id": "image_min_height",
       "label": "Hero min height (desktop)",
@@ -398,7 +462,8 @@
       "max": 1080,
       "step": 20,
       "default": 720,
-      "unit": "px"
+      "unit": "px",
+      "info": "Crop mode: minimum stage height. Natural mode: used only when no image is set (placeholder)."
     },
     {
       "type": "range",
@@ -408,7 +473,8 @@
       "max": 900,
       "step": 20,
       "default": 480,
-      "unit": "px"
+      "unit": "px",
+      "info": "Crop mode: minimum stage height. Natural mode: placeholder only."
     },
     {
       "type": "header",
@@ -642,9 +708,16 @@
     {
       "type": "color",
       "id": "overlay_text_color",
-      "label": "Overlay text color",
+      "label": "Eyebrow color",
       "default": "#ffffff",
-      "info": "Eyebrow + name. The name visually crosses into the white band; the band text color setting controls the overlay text below the image fold automatically via mix-blend or pick a color readable over both."
+      "info": "“featured artist:” line — usually light over the photo."
+    },
+    {
+      "type": "color",
+      "id": "overlay_name_color",
+      "label": "Artist name color",
+      "default": "#000000",
+      "info": "Large name often crosses the white band — use dark text (e.g. black) so it stays readable."
     },
     {
       "type": "range",

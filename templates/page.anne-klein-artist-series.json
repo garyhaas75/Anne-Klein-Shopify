@@ -42,6 +42,7 @@
         "artist_name": "Anjelica Roselyn",
         "heading_level": "h1",
         "overlay_text_color": "#ffffff",
+        "overlay_name_color": "#000000",
         "overlay_overlap": 96,
         "overlay_overlap_mobile": 56,
         "eyebrow_font_family": "helvetica",
