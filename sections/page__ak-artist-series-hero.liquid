@@ -360,7 +360,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
     font-family: {{ wm1_stack }};
-    font-size: {{ wm1_sz }}px;
+    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports, capped at 1.6x */
+    font-size: clamp(0.875rem, calc({{ wm1_sz }}px * 0.7 + 0.5vw), calc({{ wm1_sz }}px * 1.6));
     font-weight: {{ wm1_wt }};
     line-height: {{ wm1_lh }}%;
     color: {{ wm1_co }};
@@ -375,7 +376,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
     font-family: {{ wm2_stack }};
-    font-size: {{ wm2_sz }}px;
+    /* Fluid scale: slider value matches ~1280px desktop, grows on wider viewports, capped at 1.6x */
+    font-size: clamp(0.875rem, calc({{ wm2_sz }}px * 0.7 + 0.5vw), calc({{ wm2_sz }}px * 1.6));
     font-weight: {{ wm2_wt }};
     line-height: {{ wm2_lh }}%;
     color: {{ wm2_co }};
