@@ -13,6 +13,14 @@
 {% assign grid_gap = section.settings.grid_gap | default: 16 | plus: 0 %}
 {% assign grid_gap_mobile = section.settings.grid_gap_mobile | default: 0 | plus: 0 %}
 {% if grid_gap_mobile < 1 %}{% assign grid_gap_mobile = grid_gap %}{% endif %}
+{% assign show_title = section.settings.show_title %}
+{% if section.settings.show_title == nil %}{% assign show_title = true %}{% endif %}
+{% assign show_price = section.settings.show_price %}
+{% if section.settings.show_price == nil %}{% assign show_price = true %}{% endif %}
+{% assign show_more_colors = section.settings.show_more_colors %}
+{% if section.settings.show_more_colors == nil %}{% assign show_more_colors = true %}{% endif %}
+{% assign show_stickers = section.settings.show_stickers %}
+{% if section.settings.show_stickers == nil %}{% assign show_stickers = true %}{% endif %}
 {% assign align_height = section.settings.align_height %}
 {% assign height = section.settings.collection_height | default: 320 | plus: 0 %}
 {% assign width = section.settings.width | default: 'wide' %}
@@ -194,6 +202,32 @@
       scroll-behavior: auto;
     }
   }
+  /* Show / hide product info inside this section only (does not affect other sections). */
+  {% unless show_title %}
+  #shopify-section-{{ id }} .product-thumbnail__title,
+  #shopify-section-{{ id }} .product-thumbnail__vendor {
+    display: none !important;
+  }
+  {% endunless %}
+  {% unless show_price %}
+  #shopify-section-{{ id }} .product-thumbnail__price,
+  #shopify-section-{{ id }} .product-thumbnail__was-price {
+    display: none !important;
+  }
+  {% endunless %}
+  {% unless show_more_colors %}
+  #shopify-section-{{ id }} .thumbnail-swatch,
+  #shopify-section-{{ id }} .more_color {
+    display: none !important;
+  }
+  {% endunless %}
+  {% unless show_stickers %}
+  #shopify-section-{{ id }} .sticker-holder,
+  #shopify-section-{{ id }} .thumbnail-sticker {
+    display: none !important;
+  }
+  {% endunless %}
+
   /* Static grid layout (no carousel, no horizontal scroll). */
   #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list {
     display: grid;
@@ -867,6 +901,36 @@
       "id": "heading_underline",
       "label": "Heading underline",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Product card display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show product title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_more_colors",
+      "label": "Show \"+ More Colors\"",
+      "default": true,
+      "info": "Hides the color-count link below each product when off."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stickers",
+      "label": "Show product tags / stickers",
+      "default": true,
+      "info": "Best seller, New, Sale, Coming Soon, Pre-order, AK Sport / Jeans, etc."
     },
     {
       "type": "header",
