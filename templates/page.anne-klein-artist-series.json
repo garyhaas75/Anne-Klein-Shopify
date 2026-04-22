@@ -434,7 +434,7 @@
         "width": "wide",
         "show_gutter": true,
         "padding_top": 10,
-        "padding_bottom": 40,
+        "padding_bottom": 10,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40,
         "section_aria_label": ""
@@ -492,16 +492,7 @@
         "still_kHrTwa": {
           "type": "still",
           "settings": {
-            "image_alt": "",
-            "caption": "",
-            "caption_placement": "none",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "still_PVcneL": {
-          "type": "still",
-          "settings": {
+            "image": "shopify://shop_images/Image_cluster_with_flower.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -511,8 +502,7 @@
         }
       },
       "block_order": [
-        "still_kHrTwa",
-        "still_PVcneL"
+        "still_kHrTwa"
       ],
       "name": "AK Campaign stills",
       "settings": {
@@ -560,9 +550,9 @@
       "type": "page__ak-campaign-copy",
       "name": "AK Campaign copy",
       "settings": {
-        "heading": "The Film",
+        "heading": "The Invisible Thread with Anjelica Roselyn",
         "heading_level": "h2",
-        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
+        "body": "",
         "text_alignment": "center",
         "content_max_width": 48,
         "content_max_width_mobile": 0,
@@ -572,10 +562,10 @@
         "show_gutter": true,
         "text_color": "#000000",
         "background_color": "#ffffff",
-        "heading_font_family": "amiri",
+        "heading_font_family": "helvetica",
         "heading_font_size": 36,
         "heading_font_size_mobile": 0,
-        "heading_font_weight": "700",
+        "heading_font_weight": "500",
         "heading_underline": false,
         "body_font_family": "system",
         "body_font_size": 18,
@@ -584,8 +574,8 @@
         "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 48,
-        "padding_bottom": 48,
+        "padding_top": 20,
+        "padding_bottom": 20,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
@@ -669,11 +659,11 @@
       "type": "page__ak-campaign-copy",
       "name": "AK Campaign copy",
       "settings": {
-        "heading": "The Film",
+        "heading": "",
         "heading_level": "h2",
-        "body": "<p>Our campaign takes a joyful look at what we share. Shot in one take, this high-energy film celebrates the intuition, recognition, and magnetism between women—as seen through the implicit knowing and unexpected mirroring of two models who've never met before: <strong>Tina Kunakey</strong> and <strong>Caroline Kelley Rosen</strong>. As they draw us into the rhythms of interconnection, we realize we are all more alike than we imagine.</p>",
+        "body": "<p>“I think all women have the ability to connect with one another, whether you live in America or in London. We meet up, and we have so much in common.”</p>",
         "text_alignment": "center",
-        "content_max_width": 48,
+        "content_max_width": 60,
         "content_max_width_mobile": 0,
         "content_padding_x": 0,
         "content_padding_x_mobile": 24,
@@ -682,11 +672,11 @@
         "text_color": "#000000",
         "background_color": "#ffffff",
         "heading_font_family": "amiri",
-        "heading_font_size": 36,
+        "heading_font_size": 20,
         "heading_font_size_mobile": 0,
         "heading_font_weight": "700",
         "heading_underline": false,
-        "body_font_family": "system",
+        "body_font_family": "helvetica",
         "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
