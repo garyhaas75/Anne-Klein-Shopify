@@ -9,7 +9,9 @@
   focus-visible, prefers-reduced-motion respected.
 {% endcomment %}
 
-{% if section.settings.wordmark_font_family == 'amiri' or section.settings.eyebrow_font_family == 'amiri' or section.settings.name_font_family == 'amiri' %}
+{% assign wm1_ff = section.settings.wordmark_line_1_font_family | default: section.settings.wordmark_font_family | default: 'amiri' %}
+{% assign wm2_ff = section.settings.wordmark_line_2_font_family | default: section.settings.wordmark_font_family | default: 'amiri' %}
+{% if wm1_ff == 'amiri' or wm2_ff == 'amiri' or section.settings.eyebrow_font_family == 'amiri' or section.settings.name_font_family == 'amiri' %}
   {% render 'ak-campaign-fonts' %}
 {% endif %}
 
@@ -19,25 +21,55 @@
 {% assign image_alt = section.settings.image_alt %}
 {% assign wordmark_line_1 = section.settings.wordmark_line_1 | strip %}
 {% assign wordmark_line_2 = section.settings.wordmark_line_2 | strip %}
-{% assign wordmark_pl1 = section.settings.wordmark_line_1_padding_left | default: 0 %}
-{% assign wordmark_pl2 = section.settings.wordmark_line_2_padding_left | default: 28 %}
-{% assign wordmark_pl1_m = section.settings.wordmark_line_1_padding_left_mobile | default: 0 %}
-{% assign wordmark_pl2_m = section.settings.wordmark_line_2_padding_left_mobile | default: 20 %}
-{% assign wordmark_color = section.settings.wordmark_color | default: '#ffe1e3' %}
-{% assign wordmark_size = section.settings.wordmark_font_size | default: 22 %}
-{% assign wordmark_size_mobile = section.settings.wordmark_font_size_mobile | default: 0 | plus: 0 %}
-{% if wordmark_size_mobile < 1 %}
-  {% assign wordmark_size_mobile = wordmark_size %}
-{% endif %}
-{% assign wordmark_weight = section.settings.wordmark_font_weight | default: '400' %}
-{% capture wordmark_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.wordmark_font_family %}{% endcapture %}
-{% assign wordmark_font_stack = wordmark_font_stack | strip %}
+
+{% capture wm1_stack %}{% render 'ak-campaign-font-stack', font_key: wm1_ff %}{% endcapture %}
+{% assign wm1_stack = wm1_stack | strip %}
+{% capture wm2_stack %}{% render 'ak-campaign-font-stack', font_key: wm2_ff %}{% endcapture %}
+{% assign wm2_stack = wm2_stack | strip %}
+
+{% assign wm1_sz = section.settings.wordmark_line_1_font_size | default: section.settings.wordmark_font_size | default: 22 %}
+{% assign wm1_sz_m0 = section.settings.wordmark_line_1_font_size_mobile | default: 0 | plus: 0 %}
+{% if wm1_sz_m0 < 1 %}{% assign wm1_sz_m = wm1_sz %}{% else %}{% assign wm1_sz_m = wm1_sz_m0 %}{% endif %}
+{% assign wm1_wt = section.settings.wordmark_line_1_font_weight | default: section.settings.wordmark_font_weight | default: '400' %}
+{% assign wm1_co = section.settings.wordmark_line_1_color | default: section.settings.wordmark_color | default: '#ffe1e3' %}
+{% assign wm1_lh = section.settings.wordmark_line_1_line_height | default: section.settings.wordmark_line_height | default: 120 %}
+{% assign wm1_ls = section.settings.wordmark_line_1_letter_spacing | default: section.settings.wordmark_letter_spacing | default: 0 %}
+{% assign wm1_al = section.settings.wordmark_line_1_text_align | default: 'left' %}
+{% assign wm1_al_m = section.settings.wordmark_line_1_text_align_mobile | default: wm1_al %}
+{% assign wm1_pt = section.settings.wordmark_line_1_padding_top | default: 0 %}
+{% assign wm1_pr = section.settings.wordmark_line_1_padding_right | default: 0 %}
+{% assign wm1_pb = section.settings.wordmark_line_1_padding_bottom | default: 0 %}
+{% assign wm1_pl = section.settings.wordmark_line_1_padding_left | default: 0 %}
+{% assign wm1_ptm = section.settings.wordmark_line_1_padding_top_mobile | default: wm1_pt %}
+{% assign wm1_prm = section.settings.wordmark_line_1_padding_right_mobile | default: wm1_pr %}
+{% assign wm1_pbm = section.settings.wordmark_line_1_padding_bottom_mobile | default: wm1_pb %}
+{% assign wm1_plm = section.settings.wordmark_line_1_padding_left_mobile | default: wm1_pl %}
+
+{% assign wm2_sz = section.settings.wordmark_line_2_font_size | default: section.settings.wordmark_font_size | default: 22 %}
+{% assign wm2_sz_m0 = section.settings.wordmark_line_2_font_size_mobile | default: 0 | plus: 0 %}
+{% if wm2_sz_m0 < 1 %}{% assign wm2_sz_m = wm2_sz %}{% else %}{% assign wm2_sz_m = wm2_sz_m0 %}{% endif %}
+{% assign wm2_wt = section.settings.wordmark_line_2_font_weight | default: section.settings.wordmark_font_weight | default: '400' %}
+{% assign wm2_co = section.settings.wordmark_line_2_color | default: section.settings.wordmark_color | default: '#ffe1e3' %}
+{% assign wm2_lh = section.settings.wordmark_line_2_line_height | default: section.settings.wordmark_line_height | default: 120 %}
+{% assign wm2_ls = section.settings.wordmark_line_2_letter_spacing | default: section.settings.wordmark_letter_spacing | default: 0 %}
+{% assign wm2_al = section.settings.wordmark_line_2_text_align | default: 'left' %}
+{% assign wm2_al_m = section.settings.wordmark_line_2_text_align_mobile | default: wm2_al %}
+{% assign wm2_pt = section.settings.wordmark_line_2_padding_top | default: 0 %}
+{% assign wm2_pr = section.settings.wordmark_line_2_padding_right | default: 0 %}
+{% assign wm2_pb = section.settings.wordmark_line_2_padding_bottom | default: 0 %}
+{% assign wm2_pl = section.settings.wordmark_line_2_padding_left | default: 28 %}
+{% assign wm2_ptm = section.settings.wordmark_line_2_padding_top_mobile | default: wm2_pt %}
+{% assign wm2_prm = section.settings.wordmark_line_2_padding_right_mobile | default: wm2_pr %}
+{% assign wm2_pbm = section.settings.wordmark_line_2_padding_bottom_mobile | default: wm2_pb %}
+{% assign wm2_plm = section.settings.wordmark_line_2_padding_left_mobile | default: wm2_pl %}
+{% assign wm1_uc = section.settings.wordmark_line_1_uppercase %}
+{% assign wm2_uc = section.settings.wordmark_line_2_uppercase %}
 {% assign ak_logo = section.settings.ak_logo %}
 {% assign ak_logo_alt = section.settings.ak_logo_alt | default: 'Anne Klein' %}
 {% assign eyebrow = section.settings.eyebrow %}
 {% assign artist_name = section.settings.artist_name %}
 {% assign heading_level = section.settings.heading_level | default: 'h1' %}
-{% assign overlay_text_color = section.settings.overlay_text_color | default: '#ffffff' %}
+{% assign eyebrow_co = section.settings.eyebrow_color | default: section.settings.overlay_text_color | default: '#ffffff' %}
 {% assign band_color = section.settings.band_color | default: '#ffffff' %}
 {% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
 {% assign solid_white_bottom_band = section.settings.solid_white_bottom_band %}
@@ -56,7 +88,7 @@
 {% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
 {% assign image_object_position = section.settings.image_object_position | default: 'center' %}
 {% assign image_fill_and_crop = section.settings.image_fill_and_crop %}
-{% assign overlay_name_color = section.settings.overlay_name_color | default: '#fde8ec' %}
+{% assign name_co = section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
 {% assign has_hero_image = false %}
 {% if image != blank or mobile_image != blank %}
   {% assign has_hero_image = true %}
@@ -67,19 +99,39 @@
 {% capture name_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.name_font_family %}{% endcapture %}
 {% assign name_font_stack = name_font_stack | strip %}
 
-{% assign eyebrow_size = section.settings.eyebrow_font_size | default: 24 %}
-{% assign eyebrow_size_mobile = section.settings.eyebrow_font_size_mobile | default: 0 | plus: 0 %}
-{% if eyebrow_size_mobile < 1 %}
-  {% assign eyebrow_size_mobile = eyebrow_size %}
-{% endif %}
-{% assign eyebrow_weight = section.settings.eyebrow_font_weight | default: '700' %}
-{% assign name_size = section.settings.name_font_size | default: 144 %}
-{% assign name_size_mobile = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
-{% if name_size_mobile < 1 %}
-  {% assign name_size_mobile = name_size %}
-{% endif %}
-{% assign name_weight = section.settings.name_font_weight | default: '400' %}
-{% assign name_letter_spacing = section.settings.name_letter_spacing | default: -4 %}
+{% assign eb_sz = section.settings.eyebrow_font_size | default: 24 %}
+{% assign eb_sz_m0 = section.settings.eyebrow_font_size_mobile | default: 0 | plus: 0 %}
+{% if eb_sz_m0 < 1 %}{% assign eb_sz_m = eb_sz %}{% else %}{% assign eb_sz_m = eb_sz_m0 %}{% endif %}
+{% assign eb_wt = section.settings.eyebrow_font_weight | default: '700' %}
+{% assign eb_lh = section.settings.eyebrow_line_height | default: 120 %}
+{% assign eb_ls = section.settings.eyebrow_letter_spacing | default: 0 %}
+{% assign eb_al = section.settings.eyebrow_text_align | default: 'center' %}
+{% assign eb_al_m = section.settings.eyebrow_text_align_mobile | default: eb_al %}
+{% assign eb_pt = section.settings.eyebrow_padding_top | default: 0 %}
+{% assign eb_pr = section.settings.eyebrow_padding_right | default: 24 %}
+{% assign eb_pb = section.settings.eyebrow_padding_bottom | default: 12 %}
+{% assign eb_pl = section.settings.eyebrow_padding_left | default: 24 %}
+{% assign eb_ptm = section.settings.eyebrow_padding_top_mobile | default: eb_pt %}
+{% assign eb_prm = section.settings.eyebrow_padding_right_mobile | default: 16 %}
+{% assign eb_pbm = section.settings.eyebrow_padding_bottom_mobile | default: eb_pb %}
+{% assign eb_plm = section.settings.eyebrow_padding_left_mobile | default: 16 %}
+
+{% assign nm_sz = section.settings.name_font_size | default: 144 %}
+{% assign nm_sz_m0 = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
+{% if nm_sz_m0 < 1 %}{% assign nm_sz_m = nm_sz %}{% else %}{% assign nm_sz_m = nm_sz_m0 %}{% endif %}
+{% assign nm_wt = section.settings.name_font_weight | default: '700' %}
+{% assign nm_lh = section.settings.name_line_height | default: 100 %}
+{% assign nm_ls = section.settings.name_letter_spacing | default: -4 %}
+{% assign nm_al = section.settings.name_text_align | default: 'center' %}
+{% assign nm_al_m = section.settings.name_text_align_mobile | default: nm_al %}
+{% assign nm_pt = section.settings.name_padding_top | default: 4 %}
+{% assign nm_pr = section.settings.name_padding_right | default: 24 %}
+{% assign nm_pb = section.settings.name_padding_bottom | default: 0 %}
+{% assign nm_pl = section.settings.name_padding_left | default: 24 %}
+{% assign nm_ptm = section.settings.name_padding_top_mobile | default: nm_pt %}
+{% assign nm_prm = section.settings.name_padding_right_mobile | default: 16 %}
+{% assign nm_pbm = section.settings.name_padding_bottom_mobile | default: nm_pb %}
+{% assign nm_plm = section.settings.name_padding_left_mobile | default: 16 %}
 
 {% capture wordmark_aria %}
   {% if wordmark_line_1 != blank %}{{ wordmark_line_1 | strip }}{% endif %}{% if wordmark_line_1 != blank and wordmark_line_2 != blank %} {% endif %}{% if wordmark_line_2 != blank %}{{ wordmark_line_2 | strip }}{% endif %}
@@ -288,35 +340,50 @@
     z-index: 4;
     margin: 0;
     padding: 0;
-    font-family: {{ wordmark_font_stack }};
-    font-size: {{ wordmark_size }}px;
-    font-weight: {{ wordmark_weight }};
-    line-height: {{ section.settings.wordmark_line_height | default: 120 }}%;
-    letter-spacing: {{ section.settings.wordmark_letter_spacing | default: 0 }}px;
-    color: {{ wordmark_color }};
     overflow-wrap: break-word;
-    {% if section.settings.wordmark_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% endif %}
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line {
     display: block;
     margin: 0;
-    padding: 0;
     max-width: 100%;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    letter-spacing: inherit;
-    color: inherit;
+    box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line + .ak-artist-series-hero__wordmark-line {
     margin-top: 0.08em;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
-    padding-left: {{ wordmark_pl1 }}px;
+    font-family: {{ wm1_stack }};
+    font-size: {{ wm1_sz }}px;
+    font-weight: {{ wm1_wt }};
+    line-height: {{ wm1_lh }}%;
+    color: {{ wm1_co }};
+    text-align: {{ wm1_al }};
+    padding: {{ wm1_pt }}px {{ wm1_pr }}px {{ wm1_pb }}px {{ wm1_pl }}px;
+    {% if wm1_uc %}
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    {% else %}
+      letter-spacing: {{ wm1_ls }}px;
+    {% endif %}
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
-    padding-left: {{ wordmark_pl2 }}px;
+    font-family: {{ wm2_stack }};
+    font-size: {{ wm2_sz }}px;
+    font-weight: {{ wm2_wt }};
+    line-height: {{ wm2_lh }}%;
+    color: {{ wm2_co }};
+    text-align: {{ wm2_al }};
+    padding: {{ wm2_pt }}px {{ wm2_pr }}px {{ wm2_pb }}px {{ wm2_pl }}px;
+    {% if wm2_uc %}
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    {% else %}
+      letter-spacing: {{ wm2_ls }}px;
+    {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
@@ -324,13 +391,16 @@
       left: 16px;
       width: min({{ wordmark_max_width_mobile }}px, 85vw);
       max-width: 90%;
-      font-size: {{ wordmark_size_mobile }}px;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
-      padding-left: {{ wordmark_pl1_m }}px;
+      font-size: {{ wm1_sz_m }}px;
+      text-align: {{ wm1_al_m }};
+      padding: {{ wm1_ptm }}px {{ wm1_prm }}px {{ wm1_pbm }}px {{ wm1_plm }}px;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
-      padding-left: {{ wordmark_pl2_m }}px;
+      font-size: {{ wm2_sz_m }}px;
+      text-align: {{ wm2_al_m }};
+      padding: {{ wm2_ptm }}px {{ wm2_prm }}px {{ wm2_pbm }}px {{ wm2_plm }}px;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
@@ -409,9 +479,8 @@
     bottom: calc({{ band_height }}px - {{ overlay_overlap }}px);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 1.5rem;
+    align-items: stretch;
+    padding: 0;
     z-index: 3;
     pointer-events: none;
     width: 100%;
@@ -421,33 +490,47 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__overlay {
       bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
-      padding: 0 1rem;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
-    font-size: {{ eyebrow_size }}px;
-    font-weight: {{ eyebrow_weight }};
-    line-height: 1.2;
-    margin: 0 0 0.5em;
-    color: {{ overlay_text_color }};
-    {% if section.settings.eyebrow_uppercase %}text-transform: uppercase; letter-spacing: 0.12em;{% endif %}
+    font-size: {{ eb_sz }}px;
+    font-weight: {{ eb_wt }};
+    line-height: {{ eb_lh }}%;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    color: {{ eyebrow_co }};
+    text-align: {{ eb_al }};
+    padding: {{ eb_pt }}px {{ eb_pr }}px {{ eb_pb }}px {{ eb_pl }}px;
+    {% if section.settings.eyebrow_uppercase %}
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    {% else %}
+      letter-spacing: {{ eb_ls }}px;
+    {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
-      font-size: {{ eyebrow_size_mobile }}px;
+      font-size: {{ eb_sz_m }}px;
+      text-align: {{ eb_al_m }};
+      padding: {{ eb_ptm }}px {{ eb_prm }}px {{ eb_pbm }}px {{ eb_plm }}px;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    font-size: clamp(2.5rem, 11vw, {{ name_size }}px);
-    font-weight: {{ name_weight }};
-    line-height: 1;
-    letter-spacing: {{ name_letter_spacing }}px;
+    font-size: clamp(2.5rem, 11vw, {{ nm_sz }}px);
+    font-weight: {{ nm_wt }};
+    line-height: {{ nm_lh }}%;
+    letter-spacing: {{ nm_ls }}px;
     margin: 0;
     overflow-wrap: break-word;
     max-width: 100%;
-    color: {{ overlay_name_color }};
+    box-sizing: border-box;
+    width: 100%;
+    color: {{ name_co }};
+    text-align: {{ nm_al }};
+    padding: {{ nm_pt }}px {{ nm_pr }}px {{ nm_pb }}px {{ nm_pl }}px;
   }
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
@@ -455,7 +538,9 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
-      font-size: clamp(2rem, 12vw, {{ name_size_mobile }}px);
+      font-size: clamp(2rem, 12vw, {{ nm_sz_m }}px);
+      text-align: {{ nm_al_m }};
+      padding: {{ nm_ptm }}px {{ nm_prm }}px {{ nm_pbm }}px {{ nm_plm }}px;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible,
@@ -561,7 +646,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Full-bleed hero: top-left wordmark, eyebrow + artist name over a bottom gradient (default). AK logo sits on a transparent strip unless you enable a solid bottom band. Bake butterflies and signatures into the photo."
+      "content": "Full-bleed hero. Wordmark (2 lines), eyebrow, and artist name each have their own font, size, color, desktop/mobile alignment, and padding. Optional solid bottom band; otherwise a gradient scrim. Bake butterflies and signatures into the photo."
     },
     {
       "type": "header",
@@ -632,187 +717,556 @@
     },
     {
       "type": "header",
-      "content": "Top-left wordmark (live text)"
+      "content": "Top-left wordmark"
     },
-    {
-      "type": "text",
-      "id": "wordmark_line_1",
-      "label": "Wordmark line 1",
-      "default": "Anne Klein",
-      "info": "Top line (e.g. brand name)."
-    },
-    {
-      "type": "text",
-      "id": "wordmark_line_2",
-      "label": "Wordmark line 2",
-      "default": "Artist Series",
-      "info": "Second line. Increase “padding left line 2” below for a stair-step indent."
-    },
-    {
-      "type": "range",
-      "id": "wordmark_line_1_padding_left",
-      "label": "Line 1 padding left (desktop)",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 0,
-      "unit": "px",
-      "info": "Adds to the wordmark offset from the left edge."
-    },
-    {
-      "type": "range",
-      "id": "wordmark_line_2_padding_left",
-      "label": "Line 2 padding left (desktop)",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 28,
-      "unit": "px",
-      "info": "Set higher than line 1 for the stair-step look."
-    },
-    {
-      "type": "range",
-      "id": "wordmark_line_1_padding_left_mobile",
-      "label": "Line 1 padding left (mobile)",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 0,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_line_2_padding_left_mobile",
-      "label": "Line 2 padding left (mobile)",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 20,
-      "unit": "px",
-      "info": "Typically slightly less stair-step than desktop."
-    },
-    {
-      "type": "color",
-      "id": "wordmark_color",
-      "label": "Wordmark text color",
-      "default": "#ffe1e3"
-    },
-    {
-      "type": "select",
-      "id": "wordmark_font_family",
-      "label": "Wordmark font",
-      "default": "amiri",
-      "options": [
-        { "value": "system", "label": "System sans" },
-        { "value": "amiri", "label": "Amiri" },
-        { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" },
-        { "value": "times", "label": "Times New Roman" },
-        { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" },
-        { "value": "helvetica", "label": "Helvetica Neue" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "wordmark_font_size",
-      "label": "Wordmark size (desktop)",
-      "min": 10,
-      "max": 40,
-      "step": 1,
-      "default": 22,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_font_size_mobile",
-      "label": "Wordmark size (mobile)",
-      "min": 0,
-      "max": 40,
-      "step": 1,
-      "default": 0,
-      "unit": "px",
-      "info": "0 = same as desktop."
-    },
-    {
-      "type": "select",
-      "id": "wordmark_font_weight",
-      "label": "Wordmark weight",
-      "default": "400",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "wordmark_line_height",
-      "label": "Wordmark line height",
-      "min": 100,
-      "max": 160,
-      "step": 5,
-      "default": 120,
-      "unit": "%"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_letter_spacing",
-      "label": "Wordmark letter spacing",
-      "min": -2,
-      "max": 8,
-      "step": 1,
-      "default": 0,
-      "unit": "px"
-    },
-    {
-      "type": "checkbox",
-      "id": "wordmark_uppercase",
-      "label": "Wordmark uppercase + tracking",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "wordmark_max_width",
-      "label": "Wordmark max width (desktop)",
-      "min": 120,
-      "max": 480,
-      "step": 10,
-      "default": 320,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_max_width_mobile",
-      "label": "Wordmark max width (mobile)",
-      "min": 80,
-      "max": 320,
-      "step": 10,
-      "default": 180,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_offset_top",
-      "label": "Wordmark offset from top (desktop)",
-      "min": 8,
-      "max": 120,
-      "step": 4,
-      "default": 32,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "wordmark_offset_left",
-      "label": "Wordmark offset from left (desktop)",
-      "min": 8,
-      "max": 120,
-      "step": 4,
-      "default": 32,
-      "unit": "px"
-    },
+      {
+        "type": "text",
+        "id": "wordmark_line_1",
+        "label": "Wordmark line 1",
+        "default": "Anne Klein",
+        "info": "First line (e.g. Anne Klein)."
+      },
+      {
+        "type": "text",
+        "id": "wordmark_line_2",
+        "label": "Wordmark line 2",
+        "default": "Artist Series",
+        "info": "Second line (e.g. Artist Series). Extra left padding creates the stair-step."
+      },
+      {
+        "type": "header",
+        "content": "Wordmark layout"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_max_width",
+        "label": "Wordmark box max width (desktop)",
+        "min": 120,
+        "max": 480,
+        "step": 10,
+        "default": 320,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_max_width_mobile",
+        "label": "Wordmark box max width (mobile)",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "default": 180,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_offset_top",
+        "label": "Wordmark offset from top",
+        "min": 8,
+        "max": 120,
+        "step": 4,
+        "default": 32,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_offset_left",
+        "label": "Wordmark offset from left",
+        "min": 8,
+        "max": 120,
+        "step": 4,
+        "default": 32,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Wordmark \u2014 line 1"
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_font_family",
+        "label": "Line 1 font",
+        "default": "amiri",
+        "options": [
+          {
+            "value": "system",
+            "label": "System sans"
+          },
+          {
+            "value": "amiri",
+            "label": "Amiri"
+          },
+          {
+            "value": "arial",
+            "label": "Arial"
+          },
+          {
+            "value": "georgia",
+            "label": "Georgia"
+          },
+          {
+            "value": "times",
+            "label": "Times New Roman"
+          },
+          {
+            "value": "verdana",
+            "label": "Verdana"
+          },
+          {
+            "value": "trebuchet",
+            "label": "Trebuchet MS"
+          },
+          {
+            "value": "helvetica",
+            "label": "Helvetica Neue"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_font_weight",
+        "label": "Line 1 weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi-bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_font_size",
+        "label": "Line 1 size (desktop)",
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_font_size_mobile",
+        "label": "Line 1 size (mobile)",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
+      },
+      {
+        "type": "color",
+        "id": "wordmark_line_1_color",
+        "label": "Line 1 color",
+        "default": "#ffe1e3"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_line_height",
+        "label": "Line 1 line height",
+        "min": 100,
+        "max": 160,
+        "step": 5,
+        "default": 120,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_letter_spacing",
+        "label": "Line 1 letter spacing",
+        "min": -2,
+        "max": 8,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "wordmark_line_1_uppercase",
+        "label": "Line 1 uppercase + tracking",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_text_align",
+        "label": "Line 1 alignment (desktop)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_text_align_mobile",
+        "label": "Line 1 alignment (mobile)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_top",
+        "label": "Line 1 padding top (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_right",
+        "label": "Line 1 padding right (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_bottom",
+        "label": "Line 1 padding bottom (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_left",
+        "label": "Line 1 padding left (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_top_mobile",
+        "label": "Line 1 padding top (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_right_mobile",
+        "label": "Line 1 padding right (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_bottom_mobile",
+        "label": "Line 1 padding bottom (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_left_mobile",
+        "label": "Line 1 padding left (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Wordmark \u2014 line 2"
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_font_family",
+        "label": "Line 2 font",
+        "default": "amiri",
+        "options": [
+          {
+            "value": "system",
+            "label": "System sans"
+          },
+          {
+            "value": "amiri",
+            "label": "Amiri"
+          },
+          {
+            "value": "arial",
+            "label": "Arial"
+          },
+          {
+            "value": "georgia",
+            "label": "Georgia"
+          },
+          {
+            "value": "times",
+            "label": "Times New Roman"
+          },
+          {
+            "value": "verdana",
+            "label": "Verdana"
+          },
+          {
+            "value": "trebuchet",
+            "label": "Trebuchet MS"
+          },
+          {
+            "value": "helvetica",
+            "label": "Helvetica Neue"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_font_weight",
+        "label": "Line 2 weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi-bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_font_size",
+        "label": "Line 2 size (desktop)",
+        "min": 10,
+        "max": 40,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_font_size_mobile",
+        "label": "Line 2 size (mobile)",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
+      },
+      {
+        "type": "color",
+        "id": "wordmark_line_2_color",
+        "label": "Line 2 color",
+        "default": "#ffe1e3"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_line_height",
+        "label": "Line 2 line height",
+        "min": 100,
+        "max": 160,
+        "step": 5,
+        "default": 120,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_letter_spacing",
+        "label": "Line 2 letter spacing",
+        "min": -2,
+        "max": 8,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "wordmark_line_2_uppercase",
+        "label": "Line 2 uppercase + tracking",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_text_align",
+        "label": "Line 2 alignment (desktop)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_text_align_mobile",
+        "label": "Line 2 alignment (mobile)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_top",
+        "label": "Line 2 padding top (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_right",
+        "label": "Line 2 padding right (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_bottom",
+        "label": "Line 2 padding bottom (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_left",
+        "label": "Line 2 padding left (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 28,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_top_mobile",
+        "label": "Line 2 padding top (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_right_mobile",
+        "label": "Line 2 padding right (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_bottom_mobile",
+        "label": "Line 2 padding bottom (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_left_mobile",
+        "label": "Line 2 padding left (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 20,
+        "unit": "px"
+      },
     {
       "type": "header",
       "content": "Bottom band + AK logo (overlays photo)"
@@ -903,45 +1357,7 @@
     },
     {
       "type": "header",
-      "content": "Overlay text"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "featured artist:"
-    },
-    {
-      "type": "text",
-      "id": "artist_name",
-      "label": "Artist name (heading)",
-      "default": "Anjelica Roselyn"
-    },
-    {
-      "type": "select",
-      "id": "heading_level",
-      "label": "Heading level",
-      "default": "h1",
-      "info": "Use only one h1 per page. The page title is overridden by this hero, so h1 is appropriate.",
-      "options": [
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
-      ]
-    },
-    {
-      "type": "color",
-      "id": "overlay_text_color",
-      "label": "Eyebrow color",
-      "default": "#ffffff",
-      "info": "“featured artist:” line — usually light over the photo."
-    },
-    {
-      "type": "color",
-      "id": "overlay_name_color",
-      "label": "Artist name color",
-      "default": "#fde8ec",
-      "info": "Default light pink over the gradient scrim. Use dark (e.g. black) only if you enable the solid white band."
+      "content": "Hero overlay positioning"
     },
     {
       "type": "range",
@@ -952,7 +1368,7 @@
       "step": 4,
       "default": 96,
       "unit": "px",
-      "info": "How far the overlay overlaps the bottom band or logo strip."
+      "info": "How far the eyebrow and name overlap the bottom band or logo strip."
     },
     {
       "type": "range",
@@ -966,7 +1382,21 @@
     },
     {
       "type": "header",
-      "content": "Fonts"
+      "content": "Hero overlay text"
+    },
+    {
+      "type": "paragraph",
+      "content": "Eyebrow and artist name sit above the bottom band. Each has its own font, color, alignment (desktop/mobile), and padding."
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "featured artist:"
     },
     {
       "type": "select",
@@ -974,14 +1404,66 @@
       "label": "Eyebrow font",
       "default": "helvetica",
       "options": [
-        { "value": "system", "label": "System sans" },
-        { "value": "amiri", "label": "Amiri" },
-        { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" },
-        { "value": "times", "label": "Times New Roman" },
-        { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" },
-        { "value": "helvetica", "label": "Helvetica Neue" }
+        {
+          "value": "system",
+          "label": "System sans"
+        },
+        {
+          "value": "amiri",
+          "label": "Amiri"
+        },
+        {
+          "value": "arial",
+          "label": "Arial"
+        },
+        {
+          "value": "georgia",
+          "label": "Georgia"
+        },
+        {
+          "value": "times",
+          "label": "Times New Roman"
+        },
+        {
+          "value": "verdana",
+          "label": "Verdana"
+        },
+        {
+          "value": "trebuchet",
+          "label": "Trebuchet MS"
+        },
+        {
+          "value": "helvetica",
+          "label": "Helvetica Neue"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow weight",
+      "default": "700",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ]
     },
     {
@@ -1006,17 +1488,30 @@
       "info": "0 = same as desktop."
     },
     {
-      "type": "select",
-      "id": "eyebrow_font_weight",
-      "label": "Eyebrow weight",
-      "default": "700",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
-      ]
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height",
+      "label": "Eyebrow line height",
+      "min": 100,
+      "max": 160,
+      "step": 5,
+      "default": 120,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "label": "Eyebrow letter spacing",
+      "min": -2,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
     },
     {
       "type": "checkbox",
@@ -1026,24 +1521,227 @@
     },
     {
       "type": "select",
+      "id": "eyebrow_text_align",
+      "label": "Eyebrow alignment (desktop)",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_align_mobile",
+      "label": "Eyebrow alignment (mobile)",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_top",
+      "label": "Eyebrow padding top (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_right",
+      "label": "Eyebrow padding right (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_bottom",
+      "label": "Eyebrow padding bottom (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_left",
+      "label": "Eyebrow padding left (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_top_mobile",
+      "label": "Eyebrow padding top (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_right_mobile",
+      "label": "Eyebrow padding right (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_bottom_mobile",
+      "label": "Eyebrow padding bottom (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_left_mobile",
+      "label": "Eyebrow padding left (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Artist name"
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Artist name (heading text)",
+      "default": "Anjelica Roselyn"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "default": "h1",
+      "info": "Use only one h1 per page.",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ]
+    },
+    {
+      "type": "select",
       "id": "name_font_family",
       "label": "Name font",
       "default": "helvetica",
       "options": [
-        { "value": "system", "label": "System sans" },
-        { "value": "amiri", "label": "Amiri" },
-        { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" },
-        { "value": "times", "label": "Times New Roman" },
-        { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" },
-        { "value": "helvetica", "label": "Helvetica Neue" }
+        {
+          "value": "system",
+          "label": "System sans"
+        },
+        {
+          "value": "amiri",
+          "label": "Amiri"
+        },
+        {
+          "value": "arial",
+          "label": "Arial"
+        },
+        {
+          "value": "georgia",
+          "label": "Georgia"
+        },
+        {
+          "value": "times",
+          "label": "Times New Roman"
+        },
+        {
+          "value": "verdana",
+          "label": "Verdana"
+        },
+        {
+          "value": "trebuchet",
+          "label": "Trebuchet MS"
+        },
+        {
+          "value": "helvetica",
+          "label": "Helvetica Neue"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "name_font_weight",
+      "label": "Name weight",
+      "default": "700",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
       ]
     },
     {
       "type": "range",
       "id": "name_font_size",
-      "label": "Name size (desktop max)",
+      "label": "Name size max (desktop)",
       "min": 48,
       "max": 200,
       "step": 2,
@@ -1053,26 +1751,29 @@
     {
       "type": "range",
       "id": "name_font_size_mobile",
-      "label": "Name size (mobile max)",
+      "label": "Name size max (mobile)",
       "min": 0,
       "max": 200,
       "step": 2,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop max."
+      "info": "0 = same as desktop."
     },
     {
-      "type": "select",
-      "id": "name_font_weight",
-      "label": "Name weight",
-      "default": "700",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
-      ]
+      "type": "color",
+      "id": "name_color",
+      "label": "Name color",
+      "default": "#fde8ec"
+    },
+    {
+      "type": "range",
+      "id": "name_line_height",
+      "label": "Name line height",
+      "min": 80,
+      "max": 140,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
     },
     {
       "type": "range",
@@ -1082,6 +1783,126 @@
       "max": 10,
       "step": 1,
       "default": -4,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "name_text_align",
+      "label": "Name alignment (desktop)",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "name_text_align_mobile",
+      "label": "Name alignment (mobile)",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_padding_top",
+      "label": "Name padding top (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_right",
+      "label": "Name padding right (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_bottom",
+      "label": "Name padding bottom (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_left",
+      "label": "Name padding left (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_top_mobile",
+      "label": "Name padding top (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_right_mobile",
+      "label": "Name padding right (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_bottom_mobile",
+      "label": "Name padding bottom (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_left_mobile",
+      "label": "Name padding left (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
       "unit": "px"
     }
   ],
