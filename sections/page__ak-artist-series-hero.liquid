@@ -499,8 +499,8 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
-    /* Fluid scale: base size at ~1280px desktop, grows on wider viewports, capped at 1.5x */
-    font-size: clamp(1rem, calc({{ eb_sz }}px * 0.7 + 0.5vw), calc({{ eb_sz }}px * 1.5));
+    /* Fluid scale: slider value matches ~1280px desktop, grows ~1.4x at 1920px, capped at 1.8x */
+    font-size: clamp(1rem, calc({{ eb_sz }}px * 0.5 + 1vw), calc({{ eb_sz }}px * 1.8));
     font-weight: {{ eb_wt }};
     line-height: {{ eb_lh }}%;
     margin: 0;
@@ -525,8 +525,9 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
     font-family: {{ name_font_stack }};
-    /* Fluid scale: slider value approximates ~1280px desktop, grows up to 1.6x on ultra-wide */
-    font-size: clamp(2.5rem, calc({{ nm_sz }}px * 0.55 + 4.6vw), calc({{ nm_sz }}px * 1.6));
+    /* Fluid scale: slider value matches ~1280px desktop; aggressive growth so the name stays visually
+       edge-to-edge as the viewport widens (1920px ≈ 1.4×, 2560px ≈ 1.8×, capped at 2.5×). */
+    font-size: clamp(2.5rem, calc({{ nm_sz }}px * 0.2 + 9vw), calc({{ nm_sz }}px * 2.5));
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
