@@ -6546,7 +6546,7 @@
           "capsule_outer_ring_width": 3,
           "capsule_ring_gap": -8,
           "capsule_min_height_desktop": 0,
-          "capsule_min_height_mobile": 230,
+          "capsule_min_height_mobile": 210,
           "capsule_uniform_vertical_gap": false,
           "capsule_uniform_gap_desktop": 12,
           "capsule_uniform_gap_mobile": 0,
