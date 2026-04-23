@@ -6179,43 +6179,50 @@
           "product_gD7CjU": {
             "type": "product",
             "settings": {
-              "product": "15mm-twisted-hoop-earrings-gold-tone"
+              "product": "15mm-twisted-hoop-earrings-gold-tone",
+              "image_alt": ""
             }
           },
           "product_HVTa4c": {
             "type": "product",
             "settings": {
-              "product": "large-printed-tote-with-detachable-strap-natural-hazelnut"
+              "product": "large-printed-tote-with-detachable-strap-natural-hazelnut",
+              "image_alt": ""
             }
           },
           "product_mW7Hga": {
             "type": "product",
             "settings": {
-              "product": "puffy-fan-button-earrings-gold-tone"
+              "product": "puffy-fan-button-earrings-gold-tone",
+              "image_alt": ""
             }
           },
           "product_gjMQgV": {
             "type": "product",
             "settings": {
-              "product": "belted-flap-bag-with-convertible-strap-buttercup"
+              "product": "belted-flap-bag-with-convertible-strap-buttercup",
+              "image_alt": ""
             }
           },
           "product_B7dVaJ": {
             "type": "product",
             "settings": {
-              "product": "medium-belted-satchel-with-convertible-strap-distant-mountain"
+              "product": "medium-belted-satchel-with-convertible-strap-distant-mountain",
+              "image_alt": ""
             }
           },
           "product_37GMnC": {
             "type": "product",
             "settings": {
-              "product": "trendy-oversized-square-sunglasses-blue-lilac"
+              "product": "trendy-oversized-square-sunglasses-blue-lilac",
+              "image_alt": ""
             }
           },
           "product_z9Emf3": {
             "type": "product",
             "settings": {
-              "product": "faux-snake-sculpted-plaque-east-west-shoulder-bag-mink-tonal"
+              "product": "faux-snake-sculpted-plaque-east-west-shoulder-bag-mink-tonal",
+              "image_alt": ""
             }
           }
         },
@@ -6238,10 +6245,18 @@
           "heading_font_size_mobile": 0,
           "heading_font_weight": "700",
           "heading_underline": false,
+          "show_title": true,
+          "show_price": true,
+          "show_more_colors": true,
+          "show_stickers": true,
+          "layout_style": "carousel",
           "product_source": "collection",
           "collection": "jewelry-accessories",
           "products_limit": 20,
           "products_per": 6,
+          "products_per_mobile": 2,
+          "grid_gap": 16,
+          "grid_gap_mobile": 0,
           "align_height": false,
           "collection_height": 200,
           "width": "wide",
@@ -6575,6 +6590,15 @@
         "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa",
         "disabled": false,
         "settings": {}
+      },
+      "9765019387669295980": {
+        "type": "shopify://apps/flock-whp/blocks/flock-vton-global-embed/019db5f5-42b9-7f9e-b8ac-6361d86643f3",
+        "disabled": false,
+        "settings": {
+          "api_base": "https://api.flockshop.ai",
+          "tenant_id": "226",
+          "widget_base_url": "https://vton-widget.s3.us-east-1.amazonaws.com/widget"
+        }
       }
     }
   }
