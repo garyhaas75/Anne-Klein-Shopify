@@ -12,6 +12,7 @@
 {% assign capsule_bg = section.settings.capsule_background %}
 {% assign capsule_border = section.settings.capsule_border_color %}
 {% assign text_color = section.settings.text_color %}
+{% assign headline_color = section.settings.headline_color %}
 {% assign eyebrow = section.settings.eyebrow %}
 {% assign line1 = section.settings.headline_line_1 %}
 {% assign line2 = section.settings.headline_line_2 %}
@@ -239,6 +240,7 @@
     }
   }
   #shopify-section-{{ id }} .sale-banner__headline {
+    color: {{ headline_color }};
     margin: 0 0 {{ section.settings.capsule_gap_headline_to_code_desktop }}px;
     {% if section.settings.headline_font %}
     font-family: {{ section.settings.headline_font.family }}, 'Helvetica', {{ section.settings.headline_font.fallback_families }};
@@ -508,7 +510,15 @@
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      "default": "#000000",
+      "info": "Eyebrow, promo code line, and CTA. Headline uses Headline color."
+    },
+    {
+      "type": "color",
+      "id": "headline_color",
+      "label": "Headline color",
+      "default": "#000000",
+      "info": "Main headline (line 1 and line 2)."
     },
     {
       "type": "range",
