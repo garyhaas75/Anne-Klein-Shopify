@@ -6604,6 +6604,8 @@
           "cta_label_color": "#000000",
           "cta_size_desktop": 18,
           "cta_size_mobile": 18,
+          "cta_match_x_height": true,
+          "cta_x_height_ratio": 45,
           "cta_line_height": 130,
           "cta_line_height_mobile": 0,
           "cta_letter_spacing": 0,
