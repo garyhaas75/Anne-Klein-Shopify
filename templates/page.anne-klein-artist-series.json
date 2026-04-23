@@ -131,6 +131,7 @@
         "signature_offset_right": 80,
         "signature_offset_bottom": 68,
         "text_alignment": "left",
+        "text_alignment_mobile": "same",
         "content_max_width": 58,
         "content_max_width_mobile": 0,
         "content_offset_right": 0,
@@ -279,8 +280,8 @@
         "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 48,
-        "padding_bottom": 48,
+        "padding_top": 20,
+        "padding_bottom": 20,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
@@ -351,49 +352,57 @@
         "product_BkETDU": {
           "type": "product",
           "settings": {
-            "product": "3-piece-work-tote-black"
+            "product": "3-piece-work-tote-black",
+            "image_alt": ""
           }
         },
         "product_6BDiqW": {
           "type": "product",
           "settings": {
-            "product": "2-piece-gift-set-with-sculpted-buckle-wallet-and-removeable-card-organizer-black"
+            "product": "2-piece-gift-set-with-sculpted-buckle-wallet-and-removeable-card-organizer-black",
+            "image_alt": ""
           }
         },
         "product_a9nxy7": {
           "type": "product",
           "settings": {
-            "product": "able-flat-wide-grey"
+            "product": "able-flat-wide-grey",
+            "image_alt": ""
           }
         },
         "product_Y6mDBh": {
           "type": "product",
           "settings": {
-            "product": "belinda-sand"
+            "product": "belinda-sand",
+            "image_alt": ""
           }
         },
         "product_qPzFFL": {
           "type": "product",
           "settings": {
-            "product": "bevel-oval-drop-earrings-gold-tone"
+            "product": "bevel-oval-drop-earrings-gold-tone",
+            "image_alt": ""
           }
         },
         "product_UKzHNT": {
           "type": "product",
           "settings": {
-            "product": "better-loafer-camel"
+            "product": "better-loafer-camel",
+            "image_alt": ""
           }
         },
         "product_ixUDWV": {
           "type": "product",
           "settings": {
-            "product": "bevel-oval-drop-earrings-gold-tone"
+            "product": "bevel-oval-drop-earrings-gold-tone",
+            "image_alt": ""
           }
         },
         "product_Eq3HgY": {
           "type": "product",
           "settings": {
-            "product": "belinda-black"
+            "product": "belinda-black",
+            "image_alt": ""
           }
         }
       },
@@ -575,7 +584,7 @@
         "body_line_height_mobile": 0,
         "section_aria_label": "",
         "padding_top": 20,
-        "padding_bottom": 20,
+        "padding_bottom": 12,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
@@ -660,7 +669,7 @@
       "name": "AK Campaign copy",
       "settings": {
         "heading": "",
-        "heading_level": "h2",
+        "heading_level": "p",
         "body": "<p>“I think all women have the ability to connect with one another, whether you live in America or in London. We meet up, and we have so much in common.”</p>",
         "text_alignment": "center",
         "content_max_width": 60,
@@ -683,8 +692,8 @@
         "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 48,
-        "padding_bottom": 48,
+        "padding_top": 28,
+        "padding_bottom": 0,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40
       }
