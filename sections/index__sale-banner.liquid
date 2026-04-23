@@ -24,6 +24,22 @@
 {% assign sr_title = section.settings.section_title %}
 {% assign sr_fallback = section.settings.section_aria_label %}
 
+{% comment %} Inner border vs outer outline ring. New: capsule_inner_border_width + capsule_outer_ring_width. Legacy: capsule_inner_w (optional) from old capsule_border_width. {% endcomment %}
+{% assign capsule_inner_w = section.settings.capsule_inner_border_width %}
+{% assign capsule_outer_w = section.settings.capsule_outer_ring_width %}
+{% if capsule_inner_w == blank %}
+  {% assign capsule_inner_w = section.settings.capsule_border_width %}
+{% endif %}
+{% if capsule_inner_w == blank %}
+  {% assign capsule_inner_w = 1 %}
+{% endif %}
+{% if capsule_outer_w == blank %}
+  {% assign capsule_outer_w = section.settings.capsule_border_width %}
+{% endif %}
+{% if capsule_outer_w == blank %}
+  {% assign capsule_outer_w = 1 %}
+{% endif %}
+
 {% comment %} Map editor “fit” to CSS background-size (not object-fit on <img> — avoids global img rules in styles.scss.liquid and sizing quirks). {% endcomment %}
 {% case section.settings.background_image_fit %}
   {% when 'fill' %}
@@ -163,12 +179,15 @@
     padding-left: {{ section.settings.capsule_padding_left }}px;
     padding-right: {{ section.settings.capsule_padding_right }}px;
     background-color: {{ capsule_bg }};
-    {% if section.settings.capsule_border_width > 0 %}
-    border: {{ section.settings.capsule_border_width }}px solid {{ capsule_border }};
-    outline: {{ section.settings.capsule_border_width }}px solid {{ capsule_border }};
-    outline-offset: {{ section.settings.capsule_ring_gap }}px;
+    {% if capsule_inner_w > 0 %}
+    border: {{ capsule_inner_w }}px solid {{ capsule_border }};
     {% else %}
     border: none;
+    {% endif %}
+    {% if capsule_outer_w > 0 %}
+    outline: {{ capsule_outer_w }}px solid {{ capsule_border }};
+    outline-offset: {{ section.settings.capsule_ring_gap }}px;
+    {% else %}
     outline: none;
     {% endif %}
     {% case section.settings.capsule_shape %}
@@ -629,14 +648,25 @@
     },
     {
       "type": "range",
-      "id": "capsule_border_width",
+      "id": "capsule_inner_border_width",
       "min": 0,
       "max": 4,
       "step": 1,
       "default": 1,
       "unit": "px",
-      "label": "Border width",
-      "info": "Thickness of the inner border and outer ring together. Set to 0 to hide both rings."
+      "label": "Inner border width",
+      "info": "Stroke on the capsule edge. Set to 0 to hide only the inner ring."
+    },
+    {
+      "type": "range",
+      "id": "capsule_outer_ring_width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Outer ring width",
+      "info": "Second ring outside the capsule (CSS outline). Set to 0 to hide only the outer ring."
     },
     {
       "type": "range",
@@ -647,7 +677,7 @@
       "default": 3,
       "unit": "px",
       "label": "Double-ring gap / outline offset",
-      "info": "Only when border width is 1px or more. Space between the inner border and outer outline. Positive pushes the outer ring outward; negative pulls it inward (inset). Very negative values may clip inside the capsule."
+      "info": "Only when outer ring width is at least 1px. Space between the inner border and outer outline. Positive pushes the outer ring outward; negative pulls it inward (inset). Very negative values may clip inside the capsule."
     },
     {
       "type": "header",
