@@ -68,15 +68,11 @@
   {% assign sale_bg_mobile_img = bg_image %}
 {% endif %}
 
-{% comment %} Mobile stack spacing: 0 uses the matching desktop slider for that row {% endcomment %}
+{% comment %} Mobile stack spacing: each px value is literal (0 = no extra margin for that band). Previously 0 incorrectly inherited desktop. {% endcomment %}
 {% assign cap_gap_eh_m = section.settings.capsule_gap_eyebrow_headline_mobile %}
-{% if cap_gap_eh_m == 0 %}{% assign cap_gap_eh_m = section.settings.capsule_gap_eyebrow_headline_desktop %}{% endif %}
 {% assign cap_gap_hc_m = section.settings.capsule_gap_headline_to_code_mobile %}
-{% if cap_gap_hc_m == 0 %}{% assign cap_gap_hc_m = section.settings.capsule_gap_headline_to_code_desktop %}{% endif %}
 {% assign cap_gap_cc_m = section.settings.capsule_gap_code_to_cta_mobile %}
-{% if cap_gap_cc_m == 0 %}{% assign cap_gap_cc_m = section.settings.capsule_gap_code_to_cta_desktop %}{% endif %}
 {% assign cap_gap_hl_m = section.settings.capsule_gap_headline_lines_mobile %}
-{% if cap_gap_hl_m == 0 %}{% assign cap_gap_hl_m = section.settings.capsule_gap_headline_lines_desktop %}{% endif %}
 {% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_mobile %}
 {% if cap_stack_pt_m == 0 %}{% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_desktop %}{% endif %}
 {% assign cap_stack_pb_m = section.settings.capsule_stack_pad_bottom_mobile %}
@@ -724,7 +720,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Stack spacing: each slider controls one band (desktop vs mobile). Mobile value 0 = use the matching desktop slider for that band."
+      "content": "Stack spacing: desktop and mobile sliders are independent. Use the same number on both if you want matching gaps. Sliders add margin only—loose text lines come from each band’s line height (Typography)."
     },
     {
       "type": "range",
@@ -742,9 +738,10 @@
       "min": 0,
       "max": 48,
       "step": 1,
-      "default": 0,
+      "default": 12,
       "unit": "px",
-      "label": "Space: eyebrow → headline (mobile)"
+      "label": "Space: eyebrow → headline (mobile)",
+      "info": "Pixels below eyebrow before headline. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
@@ -762,9 +759,10 @@
       "min": 0,
       "max": 48,
       "step": 1,
-      "default": 0,
+      "default": 12,
       "unit": "px",
-      "label": "Space: headline → promo line (mobile)"
+      "label": "Space: headline → promo line (mobile)",
+      "info": "Pixels below headline before promo / discount line. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
@@ -782,9 +780,10 @@
       "min": 0,
       "max": 48,
       "step": 1,
-      "default": 0,
+      "default": 12,
       "unit": "px",
-      "label": "Space: promo line → CTA (mobile)"
+      "label": "Space: promo line → CTA (mobile)",
+      "info": "Pixels below promo line before CTA. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
@@ -806,7 +805,7 @@
       "default": 0,
       "unit": "px",
       "label": "Space between headline line 1 and line 2 (mobile)",
-      "info": "Vertical gap when line 2 stacks under line 1 (row-gap)."
+      "info": "Vertical gap between headline spans when stacked (row-gap). 0 = no gap (not inherited from desktop)."
     },
     {
       "type": "range",
@@ -1250,7 +1249,8 @@
       "step": 5,
       "default": 140,
       "unit": "%",
-      "label": "Promo code line height"
+      "label": "Promo code line height",
+      "info": "Space between wrapped lines of the discount / promo text (not the margin to the headline or CTA). Lower to ~100–115% if lines feel too far apart."
     },
     {
       "type": "range",
