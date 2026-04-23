@@ -6530,6 +6530,7 @@
           "capsule_background": "#f0ede3",
           "capsule_border_color": "#df4d0a",
           "text_color": "#df4d0a",
+          "headline_color": "#df4d0a",
           "capsule_max_width_percent": 88,
           "capsule_padding_top": 28,
           "capsule_padding_bottom": 28,
