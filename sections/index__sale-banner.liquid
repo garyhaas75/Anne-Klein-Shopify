@@ -1,0 +1,1308 @@
+{% comment %}
+  Homepage sale / promo capsule — pattern background + double-outline oval + type + CTA.
+  Ported from isaac-mizrahi-shopify-theme (sections/index__sale-banner.liquid). Original Figma refs (Isaac SS26): ElBlsfaoybShYgXX41ly3S — desktop `1:4`, mobile `1:15`.
+  WCAG: semantic headings, visible focus on CTA, sufficient contrast (verify capsule vs text in editor).
+  Isaac theme doc SALE-BANNER-AGENT-CHECKLIST.md applies conceptually (background + color on same .sale-banner element).
+{% endcomment %}
+
+{% assign id = section.id %}
+{% assign bg_image = section.settings.background_image %}
+{% assign bg_mobile = section.settings.background_image_mobile %}
+{% assign bg_color = section.settings.background_color %}
+{% assign capsule_bg = section.settings.capsule_background %}
+{% assign capsule_border = section.settings.capsule_border_color %}
+{% assign text_color = section.settings.text_color %}
+{% assign eyebrow = section.settings.eyebrow %}
+{% assign line1 = section.settings.headline_line_1 %}
+{% assign line2 = section.settings.headline_line_2 %}
+{% assign code_prefix = section.settings.promo_code_prefix %}
+{% assign code_value = section.settings.promo_code_value %}
+{% assign cta_label = section.settings.cta_label %}
+{% assign cta_url = section.settings.cta_link %}
+{% assign sr_title = section.settings.section_title %}
+{% assign sr_fallback = section.settings.section_aria_label %}
+
+{% comment %} Map editor “fit” to CSS background-size (not object-fit on <img> — avoids global img rules in styles.scss.liquid and sizing quirks). {% endcomment %}
+{% case section.settings.background_image_fit %}
+  {% when 'fill' %}
+    {% assign sale_bg_size = '100% 100%' %}
+  {% when 'contain' %}
+    {% assign sale_bg_size = 'contain' %}
+  {% when 'none' %}
+    {% assign sale_bg_size = 'auto' %}
+  {% when 'scale-down' %}
+    {% assign sale_bg_size = 'contain' %}
+  {% else %}
+    {% assign sale_bg_size = 'cover' %}
+{% endcase %}
+{% assign sale_bg_pos = section.settings.background_image_position | default: 'center' %}
+{% if bg_mobile != blank %}
+  {% assign sale_bg_mobile_img = bg_mobile %}
+{% else %}
+  {% assign sale_bg_mobile_img = bg_image %}
+{% endif %}
+
+{% comment %} Mobile stack spacing: 0 uses the matching desktop slider for that row {% endcomment %}
+{% assign cap_gap_eh_m = section.settings.capsule_gap_eyebrow_headline_mobile %}
+{% if cap_gap_eh_m == 0 %}{% assign cap_gap_eh_m = section.settings.capsule_gap_eyebrow_headline_desktop %}{% endif %}
+{% assign cap_gap_hc_m = section.settings.capsule_gap_headline_to_code_mobile %}
+{% if cap_gap_hc_m == 0 %}{% assign cap_gap_hc_m = section.settings.capsule_gap_headline_to_code_desktop %}{% endif %}
+{% assign cap_gap_cc_m = section.settings.capsule_gap_code_to_cta_mobile %}
+{% if cap_gap_cc_m == 0 %}{% assign cap_gap_cc_m = section.settings.capsule_gap_code_to_cta_desktop %}{% endif %}
+{% assign cap_gap_hl_m = section.settings.capsule_gap_headline_lines_mobile %}
+{% if cap_gap_hl_m == 0 %}{% assign cap_gap_hl_m = section.settings.capsule_gap_headline_lines_desktop %}{% endif %}
+{% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_mobile %}
+{% if cap_stack_pt_m == 0 %}{% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_desktop %}{% endif %}
+{% assign cap_stack_pb_m = section.settings.capsule_stack_pad_bottom_mobile %}
+{% if cap_stack_pb_m == 0 %}{% assign cap_stack_pb_m = section.settings.capsule_stack_pad_bottom_desktop %}{% endif %}
+
+{% capture sale_aria %}
+  {% if sr_title != blank %}
+    aria-label="{{ sr_title | escape }}"
+  {% elsif line1 != blank or line2 != blank or eyebrow != blank %}
+    aria-labelledby="sale-banner-heading-{{ id }}"
+  {% elsif sr_fallback != blank %}
+    aria-label="{{ sr_fallback | escape }}"
+  {% else %}
+    aria-label="Promotion"
+  {% endif %}
+{% endcapture %}
+
+{% style %}
+  {% if section.settings.eyebrow_font %}{{ section.settings.eyebrow_font | font_face }}{% endif %}
+  {% if section.settings.headline_font %}{{ section.settings.headline_font | font_face }}{% endif %}
+  {% if section.settings.code_font %}{{ section.settings.code_font | font_face }}{% endif %}
+  {% if section.settings.cta_font %}{{ section.settings.cta_font | font_face }}{% endif %}
+
+  /*
+    Layout chain (homepage):
+    - templates/index.liquid: <main class="shopify-section index-sections">
+    - assets/styles.scss.liquid: .index-sections { display:flex; flex-wrap:wrap; justify-content:center; width:100%; }
+    - Child section wrappers are flex items (default flex: 0 1 auto; min-width:auto). With justify-content:center, any flex line
+      shorter than the main inner width is centered → equal side gaps (often read as “white gutters” beside the band).
+    Fix: (1) force this section to occupy a full flex row; (2) viewport breakout (same math as snippets/content.*.builder.liquid)
+    so the band is not limited by a narrower ancestor (e.g. .is-beside-vertical-header width 80% in styles.scss.liquid ~13644).
+  */
+  #shopify-section-{{ id }} {
+    flex: 0 0 100%;
+    min-width: 0;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    position: relative;
+    padding-top: {{ section.settings.section_spacing_top }}px;
+    padding-bottom: {{ section.settings.section_spacing_bottom }}px;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} {
+      padding-top: {{ section.settings.section_spacing_top_mobile }}px;
+      padding-bottom: {{ section.settings.section_spacing_bottom_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner-section {
+    display: block;
+    width: 100%;
+  }
+  /*
+    Background color + background image MUST live on the same element (.sale-banner).
+    If the image lived on a separate absolutely positioned child, any box mismatch (flex, rounding, stacking)
+    exposed the parent’s solid background — looked like “color fills but image doesn’t” (e.g. one vertical strip).
+  */
+  #shopify-section-{{ id }} .sale-banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: {{ section.settings.min_height_desktop }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ bg_color }};
+    background-repeat: no-repeat;
+    background-size: {{ sale_bg_size }};
+    background-position: {{ sale_bg_pos }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner {
+      min-height: {{ section.settings.min_height_mobile }}px;
+    }
+  }
+  {% if bg_image != blank %}
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .sale-banner {
+      background-image: url('{{ bg_image | image_url: width: 2400 }}');
+    }
+  }
+  {% endif %}
+  {% if sale_bg_mobile_img != blank %}
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner {
+      background-image: url('{{ sale_bg_mobile_img | image_url: width: 2000 }}');
+    }
+  }
+  {% endif %}
+  #shopify-section-{{ id }} .sale-banner__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    padding: {{ section.settings.padding_top }}px 1.25rem {{ section.settings.padding_bottom }}px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .sale-banner__capsule {
+    width: 100%;
+    max-width: {{ section.settings.capsule_max_width_percent }}%;
+    margin: 0 auto;
+    padding-top: {{ section.settings.capsule_padding_top }}px;
+    padding-bottom: {{ section.settings.capsule_padding_bottom }}px;
+    padding-left: {{ section.settings.capsule_padding_left }}px;
+    padding-right: {{ section.settings.capsule_padding_right }}px;
+    background-color: {{ capsule_bg }};
+    border: {{ section.settings.capsule_border_width }}px solid {{ capsule_border }};
+    outline: {{ section.settings.capsule_border_width }}px solid {{ capsule_border }};
+    outline-offset: {{ section.settings.capsule_ring_gap }}px;
+    {% case section.settings.capsule_shape %}
+      {% when 'ellipse' %}
+    border-radius: 50%;
+      {% when 'pill' %}
+    border-radius: 9999px;
+      {% when 'rounded' %}
+    border-radius: {{ section.settings.capsule_corner_radius }}px;
+    {% endcase %}
+    text-align: {{ section.settings.text_alignment }};
+    color: {{ text_color }};
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  }
+  @media only screen and (min-width: 799px) {
+    {% if section.settings.capsule_min_height_desktop > 0 %}
+    #shopify-section-{{ id }} .sale-banner__capsule {
+      min-height: {{ section.settings.capsule_min_height_desktop }}px;
+    }
+    {% endif %}
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__capsule {
+      {% if section.settings.capsule_max_width_mobile > 0 %}
+      max-width: {{ section.settings.capsule_max_width_mobile }}%;
+      {% endif %}
+      padding-top: {{ section.settings.capsule_padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.capsule_padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.capsule_padding_left_mobile }}px;
+      padding-right: {{ section.settings.capsule_padding_right_mobile }}px;
+      {% if section.settings.capsule_min_height_mobile > 0 %}
+      min-height: {{ section.settings.capsule_min_height_mobile }}px;
+      {% endif %}
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner__capsule-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding-top: {{ section.settings.capsule_stack_pad_top_desktop }}px;
+    padding-bottom: {{ section.settings.capsule_stack_pad_bottom_desktop }}px;
+    transform: translateY({{ section.settings.capsule_content_offset_desktop }}px);
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__capsule-stack {
+      padding-top: {{ cap_stack_pt_m }}px;
+      padding-bottom: {{ cap_stack_pb_m }}px;
+      transform: translateY({{ section.settings.capsule_content_offset_mobile }}px);
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner__eyebrow {
+    margin: 0 0 {{ section.settings.capsule_gap_eyebrow_headline_desktop }}px;
+    {% if section.settings.eyebrow_font %}
+    font-family: {{ section.settings.eyebrow_font.family }}, 'Helvetica', {{ section.settings.eyebrow_font.fallback_families }};
+    font-weight: {{ section.settings.eyebrow_font.weight }};
+    font-style: {{ section.settings.eyebrow_font.style }};
+    {% endif %}
+    font-size: {{ section.settings.eyebrow_size }}px;
+    line-height: {{ section.settings.eyebrow_line_height | divided_by: 100.0 }};
+    letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
+    text-transform: {{ section.settings.eyebrow_text_transform }};
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__eyebrow {
+      margin-bottom: {{ cap_gap_eh_m }}px;
+      {% if section.settings.eyebrow_size_mobile > 0 %}font-size: {{ section.settings.eyebrow_size_mobile }}px;{% endif %}
+      {% if section.settings.eyebrow_line_height_mobile > 0 %}line-height: {{ section.settings.eyebrow_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.eyebrow_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.eyebrow_letter_spacing_mobile }}px;{% endif %}
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner__headline {
+    margin: 0 0 {{ section.settings.capsule_gap_headline_to_code_desktop }}px;
+    {% if section.settings.headline_font %}
+    font-family: {{ section.settings.headline_font.family }}, 'Helvetica', {{ section.settings.headline_font.fallback_families }};
+    font-weight: {{ section.settings.headline_font.weight }};
+    font-style: {{ section.settings.headline_font.style }};
+    {% endif %}
+    line-height: {{ section.settings.headline_line_height | divided_by: 100.0 }};
+    letter-spacing: {{ section.settings.headline_letter_spacing }}px;
+    text-transform: {{ section.settings.headline_text_transform }};
+    font-size: {{ section.settings.headline_size_desktop }}px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    {% case section.settings.text_alignment %}
+      {% when 'left' %}justify-content: flex-start;
+      {% when 'right' %}justify-content: flex-end;
+      {% else %}justify-content: center;
+    {% endcase %}
+    align-items: baseline;
+    gap: 0 {{ section.settings.capsule_gap_headline_lines_desktop }}px;
+    max-width: 100%;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__headline {
+      margin-bottom: {{ cap_gap_hc_m }}px;
+      flex-direction: column;
+      {% if section.settings.text_alignment_mobile != 'inherit' %}
+        {% case section.settings.text_alignment_mobile %}
+          {% when 'left' %}align-items: flex-start;
+          {% when 'right' %}align-items: flex-end;
+          {% else %}align-items: center;
+        {% endcase %}
+      {% else %}
+        align-items: center;
+      {% endif %}
+      gap: {{ cap_gap_hl_m }}px 0;
+      font-size: {{ section.settings.headline_size_mobile }}px;
+      {% if section.settings.headline_line_height_mobile > 0 %}line-height: {{ section.settings.headline_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.headline_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.headline_letter_spacing_mobile }}px;{% else %}letter-spacing: 0px;{% endif %}
+      max-width: 100%;
+    }
+    {% if section.settings.text_alignment_mobile != 'inherit' %}
+    #shopify-section-{{ id }} .sale-banner__capsule {
+      text-align: {{ section.settings.text_alignment_mobile }};
+    }
+    {% endif %}
+  }
+  #shopify-section-{{ id }} .sale-banner__code {
+    margin: 0 0 {{ section.settings.capsule_gap_code_to_cta_desktop }}px;
+    {% if section.settings.code_font %}
+    font-family: {{ section.settings.code_font.family }}, 'Helvetica', {{ section.settings.code_font.fallback_families }};
+    font-weight: {{ section.settings.code_font.weight }};
+    font-style: {{ section.settings.code_font.style }};
+    {% endif %}
+    font-size: {{ section.settings.code_size }}px;
+    line-height: {{ section.settings.code_line_height | divided_by: 100.0 }};
+    letter-spacing: {{ section.settings.code_letter_spacing }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__code {
+      margin-bottom: {{ cap_gap_cc_m }}px;
+      {% if section.settings.code_size_mobile > 0 %}font-size: {{ section.settings.code_size_mobile }}px;{% endif %}
+      {% if section.settings.code_line_height_mobile > 0 %}line-height: {{ section.settings.code_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.code_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.code_letter_spacing_mobile }}px;{% endif %}
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner__code strong {
+    font-weight: 600;
+  }
+  #shopify-section-{{ id }} .sale-banner__cta {
+    display: inline-block;
+    {% if section.settings.cta_font %}
+    font-family: {{ section.settings.cta_font.family }}, 'Helvetica', {{ section.settings.cta_font.fallback_families }};
+    font-weight: {{ section.settings.cta_font.weight }};
+    font-style: {{ section.settings.cta_font.style }};
+    {% endif %}
+    font-size: {{ section.settings.cta_size_desktop }}px;
+    line-height: {{ section.settings.cta_line_height | divided_by: 100.0 }};
+    letter-spacing: {{ section.settings.cta_letter_spacing }}px;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    color: {{ text_color }};
+    padding: 0.35em 0.5em;
+    margin: 0 -0.5em;
+    border-radius: 2px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .sale-banner__cta {
+      font-size: {{ section.settings.cta_size_mobile }}px;
+      {% if section.settings.cta_line_height_mobile > 0 %}line-height: {{ section.settings.cta_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.cta_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.cta_letter_spacing_mobile }}px;{% endif %}
+    }
+  }
+  #shopify-section-{{ id }} .sale-banner__cta:focus {
+    outline: none;
+  }
+  #shopify-section-{{ id }} .sale-banner__cta:focus-visible {
+    outline: 2px solid {{ text_color }};
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .sale-banner__cta {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="sale-banner-section {{ section.settings.css_class }}"
+  {{ sale_aria }}
+>
+  <div class="sale-banner">
+    <div class="sale-banner__inner">
+      <div class="sale-banner__capsule">
+        <div class="sale-banner__capsule-stack">
+        {% if eyebrow != blank %}
+          {% if line1 != blank or line2 != blank %}
+            <p class="sale-banner__eyebrow">{{ eyebrow | escape }}</p>
+          {% else %}
+            <h2 class="sale-banner__eyebrow" id="sale-banner-heading-{{ id }}">{{ eyebrow | escape }}</h2>
+          {% endif %}
+        {% endif %}
+
+        {% if line1 != blank or line2 != blank %}
+          <h2 class="sale-banner__headline" id="sale-banner-heading-{{ id }}">
+            {% if line1 != blank %}<span class="sale-banner__hl sale-banner__hl--1">{{ line1 | escape }}</span>{% endif %}
+            {% if line2 != blank %}<span class="sale-banner__hl sale-banner__hl--2">{{ line2 | escape }}</span>{% endif %}
+          </h2>
+        {% endif %}
+
+        {% if code_prefix != blank or code_value != blank %}
+          <p class="sale-banner__code">
+            {% if code_prefix != blank %}{{ code_prefix | escape }}{% endif %}
+            {% if code_value != blank %}<strong>{{ code_value | escape }}</strong>{% endif %}
+          </p>
+        {% endif %}
+
+        {% if cta_label != blank and cta_url != blank %}
+          <a href="{{ cta_url }}" class="sale-banner__cta" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            {{ cta_label | escape }}
+          </a>
+        {% elsif cta_label != blank %}
+          <span class="sale-banner__cta" role="text">{{ cta_label | escape }}</span>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% comment %}
+  CTA copy (cta_label): do not add a schema default or preset value.
+  Shopify disallows blank text defaults; any non-blank default repopulates the CTA on the storefront.
+  Merchants opt in in the editor. After git pull --rebase, verify conflict resolutions did not restore old preset defaults.
+{% endcomment %}
+{% schema %}
+{
+  "name": "Sale banner",
+  "class": "index-sale-banner-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Promo strip with patterned background and centered capsule (Spring SS26 sale band). Search: sale, promo, banner."
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section name (optional)",
+      "info": "If set, sets the section region aria-label for assistive tech (in addition to visible headings)."
+    },
+    {
+      "type": "text",
+      "id": "section_aria_label",
+      "label": "Section label (fallback)",
+      "info": "Used when title and headlines are empty."
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile)",
+      "info": "Falls back to desktop image if empty."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color (fallback)",
+      "default": "#5c3d5c"
+    },
+    {
+      "type": "select",
+      "id": "background_image_fit",
+      "label": "Background image fit",
+      "default": "cover",
+      "info": "Uses CSS background-size (not an <img>). Cover = zoom/crop to band (best for patterns). Fill = true stretch (100%×100%, may look “squashed”). Contain = whole image visible (may letterbox). If the band still has side gaps, see theme doc Sale banner checklist (flex parent / editor frame).",
+      "options": [
+        { "value": "cover", "label": "Cover (fill band, crop edges)" },
+        { "value": "contain", "label": "Contain (full image, may letterbox)" },
+        { "value": "fill", "label": "Fill (stretch non-proportionally)" },
+        { "value": "none", "label": "None (natural size, may clip)" },
+        { "value": "scale-down", "label": "Scale down" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "background_image_position",
+      "label": "Background image position",
+      "default": "center",
+      "info": "Focal point when the image is cropped (Cover) or letterboxed (Contain).",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Capsule"
+    },
+    {
+      "type": "select",
+      "id": "capsule_shape",
+      "label": "Capsule shape",
+      "default": "ellipse",
+      "info": "Ellipse: curvature scales with width (wide = flat oval). Pill: semicircle ends. Rounded: custom corner radius.",
+      "options": [
+        { "value": "ellipse", "label": "Ellipse (flat oval)" },
+        { "value": "pill", "label": "Pill (semicircle ends)" },
+        { "value": "rounded", "label": "Rounded rectangle" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "capsule_corner_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20,
+      "unit": "px",
+      "label": "Corner radius (rounded mode)",
+      "info": "Only applies when capsule shape is set to 'Rounded rectangle'."
+    },
+    {
+      "type": "color",
+      "id": "capsule_background",
+      "label": "Capsule background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "capsule_border_color",
+      "label": "Capsule border",
+      "default": "#4a3050"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "capsule_max_width_percent",
+      "min": 50,
+      "max": 100,
+      "step": 2,
+      "default": 88,
+      "unit": "%",
+      "label": "Capsule max width"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 28,
+      "unit": "px",
+      "label": "Capsule padding top (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 28,
+      "unit": "px",
+      "label": "Capsule padding bottom (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_left",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 48,
+      "unit": "px",
+      "label": "Capsule padding left (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_right",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 48,
+      "unit": "px",
+      "label": "Capsule padding right (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_max_width_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "unit": "%",
+      "label": "Capsule max width (mobile)",
+      "info": "0 = use desktop value. Applies below 798px."
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "label": "Capsule padding top (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "label": "Capsule padding bottom (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_left_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 24,
+      "unit": "px",
+      "label": "Capsule padding left (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_padding_right_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 24,
+      "unit": "px",
+      "label": "Capsule padding right (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_border_width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Border width"
+    },
+    {
+      "type": "range",
+      "id": "capsule_ring_gap",
+      "min": -12,
+      "max": 14,
+      "step": 1,
+      "default": 3,
+      "unit": "px",
+      "label": "Double-ring gap / outline offset",
+      "info": "Space between the inner border and outer outline. Positive pushes the outer ring outward; negative pulls it inward (inset). Very negative values may clip inside the capsule."
+    },
+    {
+      "type": "header",
+      "content": "Capsule size & text stack"
+    },
+    {
+      "type": "range",
+      "id": "capsule_min_height_desktop",
+      "min": 0,
+      "max": 700,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "Capsule min height (desktop)",
+      "info": "Taller pill/ellipse so all copy fits (try 240–420 with Ellipse). 0 = height from content and padding only. 799px and up."
+    },
+    {
+      "type": "range",
+      "id": "capsule_min_height_mobile",
+      "min": 0,
+      "max": 700,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "Capsule min height (mobile)",
+      "info": "0 = no min height on small screens. Below 798px."
+    },
+    {
+      "type": "paragraph",
+      "content": "Stack spacing: each slider controls one band (desktop vs mobile). Mobile value 0 = use the matching desktop slider for that band."
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_eyebrow_headline_desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Space: eyebrow → headline (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_eyebrow_headline_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Space: eyebrow → headline (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_headline_to_code_desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Space: headline → promo line (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_headline_to_code_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Space: headline → promo line (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_code_to_cta_desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Space: promo line → CTA (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_code_to_cta_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Space: promo line → CTA (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_headline_lines_desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 6,
+      "unit": "px",
+      "label": "Space: headline line 1 ↔ line 2 (desktop)",
+      "info": "Horizontal gap when both lines sit on one row."
+    },
+    {
+      "type": "range",
+      "id": "capsule_gap_headline_lines_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Space: headline line 1 ↔ line 2 (mobile)",
+      "info": "Vertical gap when line 2 wraps below line 1."
+    },
+    {
+      "type": "range",
+      "id": "capsule_content_offset_desktop",
+      "min": -80,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Nudge copy vertically (desktop)",
+      "info": "Negative moves the whole stack up in the capsule; positive moves it down. 799px and up."
+    },
+    {
+      "type": "range",
+      "id": "capsule_content_offset_mobile",
+      "min": -80,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Nudge copy vertically (mobile)",
+      "info": "Independent from desktop. Below 798px."
+    },
+    {
+      "type": "range",
+      "id": "capsule_stack_pad_top_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Inner padding top — text stack (desktop)",
+      "info": "Adds space above the text inside the capsule (in addition to capsule padding). Use with min height to balance top/bottom."
+    },
+    {
+      "type": "range",
+      "id": "capsule_stack_pad_top_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Inner padding top — text stack (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "capsule_stack_pad_bottom_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Inner padding bottom — text stack (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "capsule_stack_pad_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Inner padding bottom — text stack (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "SPRING BREAK SALE"
+    },
+    {
+      "type": "text",
+      "id": "headline_line_1",
+      "label": "Headline line 1",
+      "default": "20% OFF"
+    },
+    {
+      "type": "text",
+      "id": "headline_line_2",
+      "label": "Headline line 2",
+      "default": "SPRING",
+      "info": "Desktop: shown after line 1 with a space. Mobile: shown on its own line."
+    },
+    {
+      "type": "text",
+      "id": "promo_code_prefix",
+      "label": "Promo code prefix",
+      "default": "Use code: "
+    },
+    {
+      "type": "text",
+      "id": "promo_code_value",
+      "label": "Promo code",
+      "default": "SPRINGBREAK"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "info": "Leave blank to hide the CTA."
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open CTA in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Typography — Eyebrow"
+    },
+    {
+      "type": "font_picker",
+      "id": "eyebrow_font",
+      "label": "Eyebrow font",
+      "default": "open_sans_n6"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "default": 30,
+      "unit": "px",
+      "label": "Eyebrow size (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Eyebrow size (mobile)",
+      "info": "0 = use desktop value. Applies below 798px."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height",
+      "min": 80,
+      "max": 200,
+      "step": 5,
+      "default": 125,
+      "unit": "%",
+      "label": "Eyebrow line height"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "label": "Eyebrow line height (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 2,
+      "unit": "px",
+      "label": "Eyebrow letter spacing"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing_mobile",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Eyebrow letter spacing (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_transform",
+      "label": "Eyebrow text transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Typography — Headline"
+    },
+    {
+      "type": "font_picker",
+      "id": "headline_font",
+      "label": "Headline font",
+      "default": "open_sans_n7"
+    },
+    {
+      "type": "range",
+      "id": "headline_size_desktop",
+      "min": 32,
+      "max": 96,
+      "step": 2,
+      "default": 72,
+      "unit": "px",
+      "label": "Headline size (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "headline_size_mobile",
+      "min": 32,
+      "max": 120,
+      "step": 4,
+      "default": 80,
+      "unit": "px",
+      "label": "Headline size (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "headline_line_height",
+      "min": 80,
+      "max": 200,
+      "step": 5,
+      "default": 105,
+      "unit": "%",
+      "label": "Headline line height"
+    },
+    {
+      "type": "range",
+      "id": "headline_line_height_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "label": "Headline line height (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "headline_letter_spacing",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 2,
+      "unit": "px",
+      "label": "Headline letter spacing"
+    },
+    {
+      "type": "range",
+      "id": "headline_letter_spacing_mobile",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Headline letter spacing (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "select",
+      "id": "headline_text_transform",
+      "label": "Headline text transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Typography — Promo code"
+    },
+    {
+      "type": "font_picker",
+      "id": "code_font",
+      "label": "Promo code font",
+      "default": "open_sans_n4"
+    },
+    {
+      "type": "range",
+      "id": "code_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px",
+      "label": "Promo code size (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "code_size_mobile",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Promo code size (mobile)",
+      "info": "0 = use desktop value. Applies below 798px."
+    },
+    {
+      "type": "range",
+      "id": "code_line_height",
+      "min": 80,
+      "max": 200,
+      "step": 5,
+      "default": 140,
+      "unit": "%",
+      "label": "Promo code line height"
+    },
+    {
+      "type": "range",
+      "id": "code_line_height_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "label": "Promo code line height (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "code_letter_spacing",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Promo code letter spacing"
+    },
+    {
+      "type": "range",
+      "id": "code_letter_spacing_mobile",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Promo code letter spacing (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "header",
+      "content": "Typography — CTA"
+    },
+    {
+      "type": "font_picker",
+      "id": "cta_font",
+      "label": "CTA font",
+      "default": "open_sans_n6"
+    },
+    {
+      "type": "range",
+      "id": "cta_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px",
+      "label": "CTA size (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "cta_size_mobile",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "default": 36,
+      "unit": "px",
+      "label": "CTA size (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "cta_line_height",
+      "min": 80,
+      "max": 200,
+      "step": 5,
+      "default": 130,
+      "unit": "%",
+      "label": "CTA line height"
+    },
+    {
+      "type": "range",
+      "id": "cta_line_height_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "label": "CTA line height (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "cta_letter_spacing",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 4,
+      "unit": "px",
+      "label": "CTA letter spacing"
+    },
+    {
+      "type": "range",
+      "id": "cta_letter_spacing_mobile",
+      "min": -10,
+      "max": 50,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "CTA letter spacing (mobile)",
+      "info": "0 = use desktop value."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Text alignment (mobile)",
+      "default": "inherit",
+      "options": [
+        { "value": "inherit", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Spacing above section",
+      "info": "Space between this band and the section above (outside the background)."
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Spacing below section",
+      "info": "Space between this band and the section below (outside the background)."
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Spacing above (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "section_spacing_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Spacing below (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "min_height_desktop",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 400,
+      "unit": "px",
+      "label": "Min height (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "min": 200,
+      "max": 700,
+      "step": 10,
+      "default": 440,
+      "unit": "px",
+      "label": "Min height (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Inner padding top",
+      "info": "Padding inside the banner, around the capsule."
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "label": "Inner padding bottom",
+      "info": "Padding inside the banner, around the capsule."
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "css_class",
+      "label": "CSS class"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale banner",
+      "settings": {
+        "capsule_shape": "ellipse"
+      }
+    }
+  ]
+}
+{% endschema %}
