@@ -68,11 +68,34 @@
   {% assign sale_bg_mobile_img = bg_image %}
 {% endif %}
 
-{% comment %} Mobile stack spacing: each px value is literal (0 = no extra margin for that band). Previously 0 incorrectly inherited desktop. {% endcomment %}
+{% comment %} Stack spacing: literal px per band. Optional uniform gaps override all three vertical bands. {% endcomment %}
+{% assign cap_gap_eh_d = section.settings.capsule_gap_eyebrow_headline_desktop %}
+{% assign cap_gap_hc_d = section.settings.capsule_gap_headline_to_code_desktop %}
+{% assign cap_gap_cc_d = section.settings.capsule_gap_code_to_cta_desktop %}
+{% if section.settings.capsule_uniform_vertical_gap %}
+  {% assign cap_gap_eh_d = section.settings.capsule_uniform_gap_desktop %}
+  {% assign cap_gap_hc_d = section.settings.capsule_uniform_gap_desktop %}
+  {% assign cap_gap_cc_d = section.settings.capsule_uniform_gap_desktop %}
+{% endif %}
 {% assign cap_gap_eh_m = section.settings.capsule_gap_eyebrow_headline_mobile %}
 {% assign cap_gap_hc_m = section.settings.capsule_gap_headline_to_code_mobile %}
 {% assign cap_gap_cc_m = section.settings.capsule_gap_code_to_cta_mobile %}
+{% if section.settings.capsule_uniform_vertical_gap %}
+  {% assign cap_gap_eh_m = section.settings.capsule_uniform_gap_mobile %}
+  {% assign cap_gap_hc_m = section.settings.capsule_uniform_gap_mobile %}
+  {% assign cap_gap_cc_m = section.settings.capsule_uniform_gap_mobile %}
+{% endif %}
 {% assign cap_gap_hl_m = section.settings.capsule_gap_headline_lines_mobile %}
+{% assign cta_fs_d = section.settings.cta_size_desktop %}
+{% assign cta_fs_m = section.settings.cta_size_mobile %}
+{% if section.settings.cta_match_eyebrow_font_size %}
+  {% assign cta_fs_d = section.settings.eyebrow_size %}
+  {% if section.settings.eyebrow_size_mobile > 0 %}
+    {% assign cta_fs_m = section.settings.eyebrow_size_mobile %}
+  {% else %}
+    {% assign cta_fs_m = section.settings.eyebrow_size %}
+  {% endif %}
+{% endif %}
 {% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_mobile %}
 {% if cap_stack_pt_m == 0 %}{% assign cap_stack_pt_m = section.settings.capsule_stack_pad_top_desktop %}{% endif %}
 {% assign cap_stack_pb_m = section.settings.capsule_stack_pad_bottom_mobile %}
@@ -244,10 +267,14 @@
     }
   }
   #shopify-section-{{ id }} .sale-banner__eyebrow {
-    margin: 0 0 {{ section.settings.capsule_gap_eyebrow_headline_desktop }}px;
+    margin: 0 0 {{ cap_gap_eh_d }}px;
     font-family: {{ ak_sale_ff_eyebrow | strip }};
     font-weight: {{ section.settings.eyebrow_font_weight | default: '600' }};
     font-style: normal;
+    font-synthesis: none;
+    {% if section.settings.cta_match_x_height %}
+    font-size-adjust: {{ section.settings.cta_x_height_ratio | divided_by: 100.0 }};
+    {% endif %}
     font-size: {{ section.settings.eyebrow_size }}px;
     line-height: {{ section.settings.eyebrow_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
@@ -263,7 +290,7 @@
   }
   #shopify-section-{{ id }} .sale-banner__headline {
     color: {{ headline_color }};
-    margin: 0 0 {{ section.settings.capsule_gap_headline_to_code_desktop }}px;
+    margin: 0 0 {{ cap_gap_hc_d }}px;
     font-family: {{ ak_sale_ff_headline | strip }};
     font-weight: {{ section.settings.headline_font_weight | default: '700' }};
     font-style: normal;
@@ -319,19 +346,25 @@
     {% endif %}
   }
   #shopify-section-{{ id }} .sale-banner__code {
-    margin: 0 0 {{ section.settings.capsule_gap_code_to_cta_desktop }}px;
+    margin: 0 0 {{ cap_gap_cc_d }}px;
     font-family: {{ ak_sale_ff_code | strip }};
     font-weight: {{ section.settings.code_font_weight | default: '400' }};
     font-style: normal;
     font-size: {{ section.settings.code_size }}px;
+    {% if section.settings.promo_discount_tight_lines %}
+    line-height: 1.2;
+    {% else %}
     line-height: {{ section.settings.code_line_height | divided_by: 100.0 }};
+    {% endif %}
     letter-spacing: {{ section.settings.code_letter_spacing }}px;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__code {
       margin-bottom: {{ cap_gap_cc_m }}px;
       {% if section.settings.code_size_mobile > 0 %}font-size: {{ section.settings.code_size_mobile }}px;{% endif %}
-      {% if section.settings.code_line_height_mobile > 0 %}line-height: {{ section.settings.code_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.promo_discount_tight_lines %}
+      line-height: 1.2;
+      {% elsif section.settings.code_line_height_mobile > 0 %}line-height: {{ section.settings.code_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.code_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.code_letter_spacing_mobile }}px;{% endif %}
     }
   }
@@ -344,7 +377,7 @@
     font-weight: {{ section.settings.cta_font_weight | default: '600' }};
     font-style: normal;
     font-synthesis: none;
-    font-size: {{ section.settings.cta_size_desktop }}px !important;
+    font-size: {{ cta_fs_d }}px !important;
     line-height: {{ section.settings.cta_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.cta_letter_spacing }}px;
     {% if section.settings.cta_match_x_height %}
@@ -360,7 +393,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__cta {
-      font-size: {{ section.settings.cta_size_mobile }}px !important;
+      font-size: {{ cta_fs_m }}px !important;
       {% if section.settings.cta_line_height_mobile > 0 %}line-height: {{ section.settings.cta_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.cta_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.cta_letter_spacing_mobile }}px;{% endif %}
     }
@@ -720,7 +753,36 @@
     },
     {
       "type": "paragraph",
-      "content": "Stack spacing: desktop and mobile sliders are independent. Use the same number on both if you want matching gaps. Sliders add margin only—loose text lines come from each band’s line height (Typography)."
+      "content": "Stack spacing: desktop and mobile sliders are independent. Sliders add margin only—loose wrapped lines inside a band come from that band’s line height (Typography). Turn on uniform gaps to make eyebrow→headline, headline→promo, and promo→CTA use the same px."
+    },
+    {
+      "type": "checkbox",
+      "id": "capsule_uniform_vertical_gap",
+      "label": "Use one vertical gap for eyebrow, headline, and promo blocks",
+      "default": false,
+      "info": "When enabled, the three “Space: …” margin sliders below are ignored; use Uniform gap instead so spacing matches between bands."
+    },
+    {
+      "type": "range",
+      "id": "capsule_uniform_gap_desktop",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Uniform vertical gap (desktop)",
+      "info": "Used for eyebrow→headline, headline→promo, and promo→CTA when uniform mode is on. 799px and up."
+    },
+    {
+      "type": "range",
+      "id": "capsule_uniform_gap_mobile",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Uniform vertical gap (mobile)",
+      "info": "Same, below 798px. Only applies when uniform mode is on."
     },
     {
       "type": "range",
@@ -1253,6 +1315,13 @@
       "info": "Space between wrapped lines of the discount / promo text (not the margin to the headline or CTA). Lower to ~100–115% if lines feel too far apart."
     },
     {
+      "type": "checkbox",
+      "id": "promo_discount_tight_lines",
+      "label": "Tighter lines when discount text wraps",
+      "default": false,
+      "info": "Sets promo/discount copy to a compact line height (1.2) so two-line sentences sit closer. Overrides Promo code line height % when on."
+    },
+    {
       "type": "range",
       "id": "code_line_height_mobile",
       "min": 0,
@@ -1348,10 +1417,17 @@
     },
     {
       "type": "checkbox",
-      "id": "cta_match_x_height",
-      "label": "Match x-height across CTA fonts",
+      "id": "cta_match_eyebrow_font_size",
+      "label": "Match CTA font size to eyebrow",
       "default": false,
-      "info": "Same px can look larger or smaller when you switch font (CSS sizes the em square, not cap height). When enabled, font-size-adjust nudges fonts toward a shared x-height so Amiri vs Helvetica etc. look closer at the same setting. Fine-tune with X-height ratio."
+      "info": "Uses Eyebrow size (desktop / mobile) for the CTA so caps match the eyebrow line when both use the same font. Overrides CTA size sliders."
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_match_x_height",
+      "label": "Match x-height (eyebrow + CTA)",
+      "default": false,
+      "info": "Applies the same font-size-adjust to eyebrow and CTA so serif/sans at the same px look closer (CSS “px” is the em square, not letter height). Turn off if either line looks wrong; tune with X-height ratio."
     },
     {
       "type": "range",
@@ -1360,8 +1436,8 @@
       "max": 62,
       "step": 1,
       "default": 52,
-      "label": "CTA x-height ratio (when matching)",
-      "info": "Used as font-size-adjust (e.g. 52 → 0.52). Lower slightly shrinks tall serifs; raise if matched text looks too small. Only applies when “Match x-height” is on."
+      "label": "X-height ratio (when matching)",
+      "info": "font-size-adjust value (52 → 0.52). Lower shrinks tall serifs; raise if text looks too small. Applies to eyebrow and CTA when matching is on."
     },
     {
       "type": "range",
