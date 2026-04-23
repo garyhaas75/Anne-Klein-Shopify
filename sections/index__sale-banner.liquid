@@ -1,8 +1,8 @@
 {% comment %}
   Homepage sale / promo capsule — pattern background + double-outline oval + type + CTA.
-  Ported from isaac-mizrahi-shopify-theme (sections/index__sale-banner.liquid). Original Figma refs (Isaac SS26): ElBlsfaoybShYgXX41ly3S — desktop `1:4`, mobile `1:15`.
+  Ported from isaac-mizrahi-shopify-theme (sections/index__sale-banner.liquid). Isaac SS26 refs: ElBlsfaoybShYgXX41ly3S — desktop `1:4`, mobile `1:15`.
+  AK Homepage 2026 sale treatment: figma.com/design/7xTpsAXro8e8zKFbWnm5Dd — nodes `1217:20740` (20% Off Sitewide), `1217:20741` (Mother’s Day Gifting Sale): Amiri, ~90px display / 80px leading, tuned letter/word spacing.
   WCAG: semantic headings, visible focus on CTA, sufficient contrast (verify capsule vs text in editor).
-  Isaac theme doc SALE-BANNER-AGENT-CHECKLIST.md applies conceptually (background + color on same .sale-banner element).
 {% endcomment %}
 
 {% assign id = section.id %}
@@ -271,8 +271,13 @@
     font-family: {{ ak_sale_ff_headline | strip }};
     font-weight: {{ section.settings.headline_font_weight | default: '700' }};
     font-style: normal;
+    {% if section.settings.headline_line_height_px_desktop > 0 %}
+    line-height: {{ section.settings.headline_line_height_px_desktop }}px;
+    {% else %}
     line-height: {{ section.settings.headline_line_height | divided_by: 100.0 }};
+    {% endif %}
     letter-spacing: {{ section.settings.headline_letter_spacing }}px;
+    word-spacing: {{ section.settings.headline_word_spacing_desktop }}px;
     text-transform: {{ section.settings.headline_text_transform }};
     font-size: {{ section.settings.headline_size_desktop }}px;
     display: flex;
@@ -304,8 +309,17 @@
       row-gap: {{ cap_gap_hl_m }}px;
       column-gap: 0;
       font-size: {{ section.settings.headline_size_mobile }}px;
-      {% if section.settings.headline_line_height_mobile > 0 %}line-height: {{ section.settings.headline_line_height_mobile | divided_by: 100.0 }};{% endif %}
+      {% if section.settings.headline_line_height_px_mobile > 0 %}
+      line-height: {{ section.settings.headline_line_height_px_mobile }}px;
+      {% elsif section.settings.headline_line_height_mobile > 0 %}
+      line-height: {{ section.settings.headline_line_height_mobile | divided_by: 100.0 }};
+      {% elsif section.settings.headline_line_height_px_desktop > 0 %}
+      line-height: {{ section.settings.headline_line_height_px_desktop }}px;
+      {% else %}
+      line-height: {{ section.settings.headline_line_height | divided_by: 100.0 }};
+      {% endif %}
       {% if section.settings.headline_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.headline_letter_spacing_mobile }}px;{% else %}letter-spacing: 0px;{% endif %}
+      word-spacing: {{ section.settings.headline_word_spacing_mobile }}px;
       max-width: 100%;
     }
     {% if section.settings.text_alignment_mobile != 'inherit' %}
@@ -1084,7 +1098,8 @@
       "step": 5,
       "default": 105,
       "unit": "%",
-      "label": "Headline line height"
+      "label": "Headline line height",
+      "info": "Used when Fixed headline line height (desktop px) is 0."
     },
     {
       "type": "range",
@@ -1095,7 +1110,29 @@
       "default": 0,
       "unit": "%",
       "label": "Headline line height (mobile)",
-      "info": "0 = use desktop value."
+      "info": "0 = use desktop %. Ignored when Fixed line height (mobile px) is set."
+    },
+    {
+      "type": "range",
+      "id": "headline_line_height_px_desktop",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Fixed headline line height (desktop)",
+      "info": "0 = use Headline line height (%). Set to match design leading in px (e.g. Figma AK sale: 90px type / 80px leading → set 80). Overrides % when greater than 0."
+    },
+    {
+      "type": "range",
+      "id": "headline_line_height_px_mobile",
+      "min": 0,
+      "max": 140,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Fixed headline line height (mobile)",
+      "info": "0 = use mobile % if set, else desktop fixed px, else desktop %."
     },
     {
       "type": "range",
@@ -1117,6 +1154,28 @@
       "unit": "px",
       "label": "Headline letter spacing (mobile)",
       "info": "0 = use desktop value."
+    },
+    {
+      "type": "range",
+      "id": "headline_word_spacing_desktop",
+      "min": -6,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Headline word spacing (desktop)",
+      "info": "Space between words inside each headline line when text wraps (CSS word-spacing). Figma AK sale uses slight positive spacing; tune with letter spacing."
+    },
+    {
+      "type": "range",
+      "id": "headline_word_spacing_mobile",
+      "min": -6,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Headline word spacing (mobile)",
+      "info": "0 = normal word spacing on small screens (set to match desktop if needed)."
     },
     {
       "type": "select",
