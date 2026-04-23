@@ -13,6 +13,7 @@
 {% assign capsule_border = section.settings.capsule_border_color %}
 {% assign text_color = section.settings.text_color %}
 {% assign headline_color = section.settings.headline_color %}
+{% assign cta_label_color = section.settings.cta_label_color %}
 {% assign eyebrow = section.settings.eyebrow %}
 {% assign line1 = section.settings.headline_line_1 %}
 {% assign line2 = section.settings.headline_line_2 %}
@@ -323,7 +324,7 @@
     text-transform: uppercase;
     text-decoration: underline;
     text-underline-offset: 0.2em;
-    color: {{ text_color }};
+    color: {{ cta_label_color }};
     padding: 0.35em 0.5em;
     margin: 0 -0.5em;
     border-radius: 2px;
@@ -339,7 +340,7 @@
     outline: none;
   }
   #shopify-section-{{ id }} .sale-banner__cta:focus-visible {
-    outline: 2px solid {{ text_color }};
+    outline: 2px solid {{ cta_label_color }};
     outline-offset: 3px;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -511,7 +512,7 @@
       "id": "text_color",
       "label": "Text color",
       "default": "#000000",
-      "info": "Eyebrow, promo code line, and CTA. Headline uses Headline color."
+      "info": "Eyebrow and promo code line. Headline: Headline color. CTA: CTA label color."
     },
     {
       "type": "color",
@@ -1122,6 +1123,13 @@
       "id": "cta_font",
       "label": "CTA font",
       "default": "open_sans_n6"
+    },
+    {
+      "type": "color",
+      "id": "cta_label_color",
+      "label": "CTA label color",
+      "default": "#000000",
+      "info": "Link or text-only CTA. Keyboard focus ring uses this color."
     },
     {
       "type": "range",
