@@ -69,6 +69,7 @@
 {% assign eyebrow = section.settings.eyebrow %}
 {% assign artist_name = section.settings.artist_name %}
 {% assign heading_level = section.settings.heading_level | default: 'h1' %}
+{% assign wordmark_heading_level = section.settings.wordmark_heading_level | default: 'p' %}
 {% assign eyebrow_co = section.settings.eyebrow_color | default: section.settings.overlay_text_color | default: '#ffffff' %}
 {% assign band_color = section.settings.band_color | default: '#ffffff' %}
 {% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
@@ -645,6 +646,8 @@
               <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h2>
             {% elsif heading_level == 'h3' %}
               <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h3>
+            {% elsif heading_level == 'p' %}
+              <p class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</p>
             {% else %}
               <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h1>
             {% endif %}
@@ -653,18 +656,51 @@
       {% endif %}
 
       {% if wordmark_line_1 != blank or wordmark_line_2 != blank %}
-        <div class="ak-artist-series-hero__wordmark">
-          {% if wordmark_line_1 != blank %}
-            <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
-              {{- wordmark_line_1 | escape -}}
-            </p>
+        {%- comment -%}
+          When the wordmark is a heading (h1/h2/h3) we wrap BOTH lines in a single
+          heading element (with span sub-lines) so screen readers announce one
+          coherent heading instead of two consecutive ones. When set to "p" we
+          keep the original two-paragraph structure.
+        {%- endcomment -%}
+        {% if wordmark_heading_level == 'h1' or wordmark_heading_level == 'h2' or wordmark_heading_level == 'h3' %}
+          {% if wordmark_heading_level == 'h2' %}
+            <h2 class="ak-artist-series-hero__wordmark">
+          {% elsif wordmark_heading_level == 'h3' %}
+            <h3 class="ak-artist-series-hero__wordmark">
+          {% else %}
+            <h1 class="ak-artist-series-hero__wordmark">
           {% endif %}
-          {% if wordmark_line_2 != blank %}
-            <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
-              {{- wordmark_line_2 | escape -}}
-            </p>
+            {% if wordmark_line_1 != blank %}
+              <span class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
+                {{- wordmark_line_1 | escape -}}
+              </span>
+            {% endif %}
+            {% if wordmark_line_2 != blank %}
+              <span class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
+                {{- wordmark_line_2 | escape -}}
+              </span>
+            {% endif %}
+          {% if wordmark_heading_level == 'h2' %}
+            </h2>
+          {% elsif wordmark_heading_level == 'h3' %}
+            </h3>
+          {% else %}
+            </h1>
           {% endif %}
-        </div>
+        {% else %}
+          <div class="ak-artist-series-hero__wordmark">
+            {% if wordmark_line_1 != blank %}
+              <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
+                {{- wordmark_line_1 | escape -}}
+              </p>
+            {% endif %}
+            {% if wordmark_line_2 != blank %}
+              <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
+                {{- wordmark_line_2 | escape -}}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
       {% endif %}
     </div>
   </div>
@@ -816,6 +852,19 @@
         "label": "Wordmark line 2",
         "default": "Artist Series",
         "info": "Second line (e.g. Artist Series). Extra left padding creates the stair-step."
+      },
+      {
+        "type": "select",
+        "id": "wordmark_heading_level",
+        "label": "Wordmark heading level",
+        "default": "p",
+        "info": "Use H1 if the wordmark is the page's primary heading (recommended for the Artist Series cover page). Both lines render inside one heading element. If you set this to H1, set the Artist name heading level below to H2 so the page only has one H1.",
+        "options": [
+          { "value": "p", "label": "Paragraph (no heading)" },
+          { "value": "h1", "label": "H1" },
+          { "value": "h2", "label": "H2" },
+          { "value": "h3", "label": "H3" }
+        ]
       },
       {
         "type": "header",
@@ -1768,9 +1817,9 @@
     {
       "type": "select",
       "id": "heading_level",
-      "label": "Heading level",
+      "label": "Artist name heading level",
       "default": "h1",
-      "info": "Use only one h1 per page.",
+      "info": "Use only one H1 per page. If you set the wordmark above to H1, drop this to H2 or Paragraph.",
       "options": [
         {
           "value": "h1",
@@ -1783,6 +1832,10 @@
         {
           "value": "h3",
           "label": "H3"
+        },
+        {
+          "value": "p",
+          "label": "Paragraph (no heading)"
         }
       ]
     },
@@ -1874,7 +1927,7 @@
       "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop. This value is the rendered size at ~390px viewport; scales smoothly up to ~1.5× near the tablet breakpoint. Auto-fit shrinks if it would overflow."
+      "info": "0 = same as desktop. This value is the rendered size at ~390px viewport; scales up to ~1.5× near the tablet breakpoint. The auto-fit script then shrinks the name so it fits container width minus its left/right padding — so to get truly edge-to-edge text, set Name padding left/right (mobile) below to 0."
     },
     {
       "type": "color",
@@ -2009,8 +2062,9 @@
       "min": 0,
       "max": 96,
       "step": 4,
-      "default": 16,
-      "unit": "px"
+      "default": 0,
+      "unit": "px",
+      "info": "Auto-fit shrinks the name to fit container width minus this padding. Lower = closer to the viewport edge."
     },
     {
       "type": "range",
@@ -2029,8 +2083,9 @@
       "min": 0,
       "max": 96,
       "step": 4,
-      "default": 16,
-      "unit": "px"
+      "default": 0,
+      "unit": "px",
+      "info": "Auto-fit shrinks the name to fit container width minus this padding. Lower = closer to the viewport edge."
     },
     {
       "type": "range",
