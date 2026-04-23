@@ -14,6 +14,12 @@
 {% assign body_rt = section.settings.body %}
 {% assign heading_level = section.settings.heading_level | default: 'h2' %}
 {% assign text_alignment = section.settings.text_alignment | default: 'left' %}
+{% assign text_alignment_mobile_setting = section.settings.text_alignment_mobile | default: 'same' %}
+{% if text_alignment_mobile_setting == 'same' or text_alignment_mobile_setting == blank %}
+  {% assign text_alignment_mobile = text_alignment %}
+{% else %}
+  {% assign text_alignment_mobile = text_alignment_mobile_setting %}
+{% endif %}
 {% assign content_max_width = section.settings.content_max_width | default: 58 %}
 {% assign content_max_width_mobile = section.settings.content_max_width_mobile | default: 0 | plus: 0 %}
 {% if content_max_width_mobile < 1 %}
@@ -226,7 +232,17 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__inner {
       max-width: {{ content_max_width_mobile }}rem;
-      margin-right: auto;
+      text-align: {{ text_alignment_mobile }};
+      {% if text_alignment_mobile == 'right' %}
+        margin-left: auto;
+        margin-right: 0;
+      {% elsif text_alignment_mobile == 'center' %}
+        margin-left: auto;
+        margin-right: auto;
+      {% else %}
+        margin-left: 0;
+        margin-right: auto;
+      {% endif %}
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__heading {
@@ -266,6 +282,17 @@
         max-width: {{ heading_container_max_width_mobile }}rem;
       {% else %}
         max-width: none;
+      {% endif %}
+      text-align: {{ text_alignment_mobile }};
+      {% if text_alignment_mobile == 'center' %}
+        margin-left: auto;
+        margin-right: auto;
+      {% elsif text_alignment_mobile == 'right' %}
+        margin-left: auto;
+        margin-right: 0;
+      {% else %}
+        margin-left: 0;
+        margin-right: auto;
       {% endif %}
     }
   }
@@ -347,6 +374,17 @@
         max-width: {{ body_container_max_width_mobile }}rem;
       {% else %}
         max-width: none;
+      {% endif %}
+      text-align: {{ text_alignment_mobile }};
+      {% if text_alignment_mobile == 'center' %}
+        margin-left: auto;
+        margin-right: auto;
+      {% elsif text_alignment_mobile == 'right' %}
+        margin-left: auto;
+        margin-right: 0;
+      {% else %}
+        margin-left: 0;
+        margin-right: auto;
       {% endif %}
     }
     #shopify-section-{{ id }} .ak-artist-series-mission__rte p,
@@ -573,9 +611,21 @@
     {
       "type": "select",
       "id": "text_alignment",
-      "label": "Text alignment",
+      "label": "Text alignment (desktop)",
       "default": "left",
       "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment_mobile",
+      "label": "Text alignment (mobile)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as desktop" },
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
