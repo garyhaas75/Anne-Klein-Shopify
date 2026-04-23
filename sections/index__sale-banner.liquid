@@ -24,6 +24,14 @@
 {% assign sr_title = section.settings.section_title %}
 {% assign sr_fallback = section.settings.section_aria_label %}
 
+{% if section.settings.eyebrow_font_family == 'amiri' or section.settings.headline_font_family == 'amiri' or section.settings.code_font_family == 'amiri' or section.settings.cta_font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
+{% capture ak_sale_ff_eyebrow %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_font_family %}{% endcapture %}
+{% capture ak_sale_ff_headline %}{% render 'ak-campaign-font-stack', font_key: section.settings.headline_font_family %}{% endcapture %}
+{% capture ak_sale_ff_code %}{% render 'ak-campaign-font-stack', font_key: section.settings.code_font_family %}{% endcapture %}
+{% capture ak_sale_ff_cta %}{% render 'ak-campaign-font-stack', font_key: section.settings.cta_font_family %}{% endcapture %}
+
 {% comment %} Inner border vs outer outline ring. New: capsule_inner_border_width + capsule_outer_ring_width. Legacy: capsule_inner_w (optional) from old capsule_border_width. {% endcomment %}
 {% assign capsule_inner_w = section.settings.capsule_inner_border_width %}
 {% assign capsule_outer_w = section.settings.capsule_outer_ring_width %}
@@ -87,11 +95,6 @@
 {% endcapture %}
 
 {% style %}
-  {% if section.settings.eyebrow_font %}{{ section.settings.eyebrow_font | font_face }}{% endif %}
-  {% if section.settings.headline_font %}{{ section.settings.headline_font | font_face }}{% endif %}
-  {% if section.settings.code_font %}{{ section.settings.code_font | font_face }}{% endif %}
-  {% if section.settings.cta_font %}{{ section.settings.cta_font | font_face }}{% endif %}
-
   /*
     Layout chain (homepage):
     - templates/index.liquid: <main class="shopify-section index-sections">
@@ -246,11 +249,9 @@
   }
   #shopify-section-{{ id }} .sale-banner__eyebrow {
     margin: 0 0 {{ section.settings.capsule_gap_eyebrow_headline_desktop }}px;
-    {% if section.settings.eyebrow_font %}
-    font-family: {{ section.settings.eyebrow_font.family }}, 'Helvetica', {{ section.settings.eyebrow_font.fallback_families }};
-    font-weight: {{ section.settings.eyebrow_font.weight }};
-    font-style: {{ section.settings.eyebrow_font.style }};
-    {% endif %}
+    font-family: {{ ak_sale_ff_eyebrow | strip }};
+    font-weight: {{ section.settings.eyebrow_font_weight | default: '600' }};
+    font-style: normal;
     font-size: {{ section.settings.eyebrow_size }}px;
     line-height: {{ section.settings.eyebrow_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
@@ -267,11 +268,9 @@
   #shopify-section-{{ id }} .sale-banner__headline {
     color: {{ headline_color }};
     margin: 0 0 {{ section.settings.capsule_gap_headline_to_code_desktop }}px;
-    {% if section.settings.headline_font %}
-    font-family: {{ section.settings.headline_font.family }}, 'Helvetica', {{ section.settings.headline_font.fallback_families }};
-    font-weight: {{ section.settings.headline_font.weight }};
-    font-style: {{ section.settings.headline_font.style }};
-    {% endif %}
+    font-family: {{ ak_sale_ff_headline | strip }};
+    font-weight: {{ section.settings.headline_font_weight | default: '700' }};
+    font-style: normal;
     line-height: {{ section.settings.headline_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.headline_letter_spacing }}px;
     text-transform: {{ section.settings.headline_text_transform }};
@@ -315,11 +314,9 @@
   }
   #shopify-section-{{ id }} .sale-banner__code {
     margin: 0 0 {{ section.settings.capsule_gap_code_to_cta_desktop }}px;
-    {% if section.settings.code_font %}
-    font-family: {{ section.settings.code_font.family }}, 'Helvetica', {{ section.settings.code_font.fallback_families }};
-    font-weight: {{ section.settings.code_font.weight }};
-    font-style: {{ section.settings.code_font.style }};
-    {% endif %}
+    font-family: {{ ak_sale_ff_code | strip }};
+    font-weight: {{ section.settings.code_font_weight | default: '400' }};
+    font-style: normal;
     font-size: {{ section.settings.code_size }}px;
     line-height: {{ section.settings.code_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.code_letter_spacing }}px;
@@ -337,11 +334,9 @@
   }
   #shopify-section-{{ id }} .sale-banner__cta {
     display: inline-block;
-    {% if section.settings.cta_font %}
-    font-family: {{ section.settings.cta_font.family }}, 'Helvetica', {{ section.settings.cta_font.fallback_families }};
-    font-weight: {{ section.settings.cta_font.weight }};
-    font-style: {{ section.settings.cta_font.style }};
-    {% endif %}
+    font-family: {{ ak_sale_ff_cta | strip }};
+    font-weight: {{ section.settings.cta_font_weight | default: '600' }};
+    font-style: normal;
     font-size: {{ section.settings.cta_size_desktop }}px;
     line-height: {{ section.settings.cta_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.cta_letter_spacing }}px;
@@ -913,10 +908,34 @@
       "content": "Typography — Eyebrow"
     },
     {
-      "type": "font_picker",
-      "id": "eyebrow_font",
-      "label": "Eyebrow font",
-      "default": "open_sans_n6"
+      "type": "select",
+      "id": "eyebrow_font_family",
+      "label": "Eyebrow font family",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ],
+      "info": "Same font list as other homepage sections. Amiri loads Google Fonts when selected."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow font weight",
+      "default": "600",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "range",
@@ -998,10 +1017,34 @@
       "content": "Typography — Headline"
     },
     {
-      "type": "font_picker",
-      "id": "headline_font",
-      "label": "Headline font",
-      "default": "open_sans_n7"
+      "type": "select",
+      "id": "headline_font_family",
+      "label": "Headline font family",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ],
+      "info": "Same font list as other homepage sections. Amiri loads Google Fonts when selected."
+    },
+    {
+      "type": "select",
+      "id": "headline_font_weight",
+      "label": "Headline font weight",
+      "default": "700",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "range",
@@ -1082,10 +1125,34 @@
       "content": "Typography — Promo code"
     },
     {
-      "type": "font_picker",
-      "id": "code_font",
-      "label": "Promo code font",
-      "default": "open_sans_n4"
+      "type": "select",
+      "id": "code_font_family",
+      "label": "Promo code font family",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ],
+      "info": "Same font list as other homepage sections. Amiri loads Google Fonts when selected."
+    },
+    {
+      "type": "select",
+      "id": "code_font_weight",
+      "label": "Promo code font weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "range",
@@ -1155,10 +1222,34 @@
       "content": "Typography — CTA"
     },
     {
-      "type": "font_picker",
-      "id": "cta_font",
-      "label": "CTA font",
-      "default": "open_sans_n6"
+      "type": "select",
+      "id": "cta_font_family",
+      "label": "CTA font family",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System (default)" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ],
+      "info": "Same font list as other homepage sections. Amiri loads Google Fonts when selected."
+    },
+    {
+      "type": "select",
+      "id": "cta_font_weight",
+      "label": "CTA font weight",
+      "default": "600",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ]
     },
     {
       "type": "color",
