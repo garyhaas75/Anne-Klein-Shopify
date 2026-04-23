@@ -115,7 +115,7 @@
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote {
     font-family: {{ quote_font_stack }};
     /* Smooth linear ramp: ≈ slider @ ~1024px → ≈ 2.2× slider @ ~3000px. */
-    font-size: clamp({{ quote_size | times: 0.85 }}px, calc({{ quote_size | times: 0.31 }}px + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 }}px);
+    font-size: clamp({{ quote_size | times: 0.85 | divided_by: 16.0 }}rem, calc({{ quote_size | times: 0.31 | divided_by: 16.0 }}rem + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 | divided_by: 16.0 }}rem);
     font-weight: {{ quote_weight }};
     line-height: {{ quote_lh }}%;
     color: {{ text_color }};
@@ -125,14 +125,14 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote {
-      font-size: clamp(1.125rem, calc({{ quote_size_mobile }}px * 0.65 + 2vw), {{ quote_size_mobile }}px);
+      font-size: clamp(1.125rem, calc({{ quote_size_mobile | times: 0.65 | divided_by: 16.0 }}rem + 2vw), {{ quote_size_mobile | divided_by: 16.0 }}rem);
     }
   }
   /* Normalize RTE inline font-size on quote children */
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote li,
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote blockquote {
-    font-size: clamp({{ quote_size | times: 0.85 }}px, calc({{ quote_size | times: 0.31 }}px + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 }}px) !important;
+    font-size: clamp({{ quote_size | times: 0.85 | divided_by: 16.0 }}rem, calc({{ quote_size | times: 0.31 | divided_by: 16.0 }}rem + {{ quote_size | times: 0.0675 }}vw), {{ quote_size | times: 3 | divided_by: 16.0 }}rem) !important;
     line-height: {{ quote_lh }}%;
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p span,
@@ -143,7 +143,7 @@
     #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p,
     #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote li,
     #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote blockquote {
-      font-size: clamp(1.125rem, calc({{ quote_size_mobile }}px * 0.65 + 2vw), {{ quote_size_mobile }}px) !important;
+      font-size: clamp(1.125rem, calc({{ quote_size_mobile | times: 0.65 | divided_by: 16.0 }}rem + 2vw), {{ quote_size_mobile | divided_by: 16.0 }}rem) !important;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__quote p {
@@ -155,7 +155,7 @@
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
     font-family: {{ brand_font_stack }};
     /* Smooth linear ramp: ≈ slider @ ~1024px → ≈ 2× slider @ ~3000px. */
-    font-size: clamp({{ brand_size | times: 0.85 }}px, calc({{ brand_size | times: 0.36 }}px + {{ brand_size | times: 0.0625 }}vw), {{ brand_size | times: 3 }}px);
+    font-size: clamp({{ brand_size | times: 0.85 | divided_by: 16.0 }}rem, calc({{ brand_size | times: 0.36 | divided_by: 16.0 }}rem + {{ brand_size | times: 0.0625 }}vw), {{ brand_size | times: 3 | divided_by: 16.0 }}rem);
     font-weight: {{ brand_weight }};
     letter-spacing: 0.18em;
     text-transform: uppercase;

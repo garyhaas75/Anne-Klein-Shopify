@@ -361,7 +361,7 @@
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
     font-family: {{ wm1_stack }};
     /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
-    font-size: clamp({{ wm1_sz | times: 0.85 }}px, calc({{ wm1_sz | times: 0.31 }}px + {{ wm1_sz | times: 0.0675 }}vw), {{ wm1_sz | times: 3 }}px);
+    font-size: clamp({{ wm1_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ wm1_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ wm1_sz | times: 0.0675 }}vw), {{ wm1_sz | times: 3 | divided_by: 16.0 }}rem);
     font-weight: {{ wm1_wt }};
     line-height: {{ wm1_lh }}%;
     color: {{ wm1_co }};
@@ -377,7 +377,7 @@
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
     font-family: {{ wm2_stack }};
     /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
-    font-size: clamp({{ wm2_sz | times: 0.85 }}px, calc({{ wm2_sz | times: 0.31 }}px + {{ wm2_sz | times: 0.0675 }}vw), {{ wm2_sz | times: 3 }}px);
+    font-size: clamp({{ wm2_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ wm2_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ wm2_sz | times: 0.0675 }}vw), {{ wm2_sz | times: 3 | divided_by: 16.0 }}rem);
     font-weight: {{ wm2_wt }};
     line-height: {{ wm2_lh }}%;
     color: {{ wm2_co }};
@@ -398,12 +398,12 @@
       max-width: 90%;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
-      font-size: {{ wm1_sz_m }}px;
+      font-size: {{ wm1_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ wm1_al_m }};
       padding: {{ wm1_ptm }}px {{ wm1_prm }}px {{ wm1_pbm }}px {{ wm1_plm }}px;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
-      font-size: {{ wm2_sz_m }}px;
+      font-size: {{ wm2_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ wm2_al_m }};
       padding: {{ wm2_ptm }}px {{ wm2_prm }}px {{ wm2_pbm }}px {{ wm2_plm }}px;
     }
@@ -502,7 +502,7 @@
     /* Smooth linear ramp across desktop widths.
        Anchor points: at ~1024px viewport ≈ slider value; at ~3000px viewport ≈ 2.2× slider.
        Between those it interpolates linearly via vw — no breakpoints, no plateaus. */
-    font-size: clamp({{ eb_sz | times: 0.85 }}px, calc({{ eb_sz | times: 0.31 }}px + {{ eb_sz | times: 0.0675 }}vw), {{ eb_sz | times: 3 }}px);
+    font-size: clamp({{ eb_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ eb_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ eb_sz | times: 0.0675 }}vw), {{ eb_sz | times: 3 | divided_by: 16.0 }}rem);
     font-weight: {{ eb_wt }};
     line-height: {{ eb_lh }}%;
     margin: 0;
@@ -520,7 +520,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
-      font-size: {{ eb_sz_m }}px;
+      font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
       padding: {{ eb_ptm }}px {{ eb_prm }}px {{ eb_pbm }}px {{ eb_plm }}px;
     }
@@ -531,7 +531,7 @@
        (slider value ≈ size at ~1024px viewport, ≈ 2.5× slider at ~3000px).
        The auto-fit script below scales DOWN from this size when needed so the
        artist name always fits on a single line within its container. */
-    font-size: clamp({{ nm_sz | times: 0.85 }}px, calc({{ nm_sz | times: 0.235 }}px + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 }}px);
+    font-size: clamp({{ nm_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ nm_sz | times: 0.235 | divided_by: 16.0 }}rem + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 | divided_by: 16.0 }}rem);
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
     letter-spacing: {{ nm_ls }}px;
@@ -551,7 +551,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
-      font-size: min({{ nm_sz_m }}px, max(2rem, 18vw));
+      font-size: min({{ nm_sz_m | divided_by: 16.0 }}rem, max(2rem, 18vw));
       text-align: {{ nm_al_m }};
       padding: {{ nm_ptm }}px {{ nm_prm }}px {{ nm_pbm }}px {{ nm_plm }}px;
     }
