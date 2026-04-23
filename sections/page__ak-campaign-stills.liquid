@@ -318,7 +318,9 @@
           <div class="ak-campaign-stills__header-inner">
             {% if sec_heading != blank %}
               {% assign hl = section.settings.heading_level | default: 'h2' %}
-              {% if hl == 'h1' %}
+              {% if hl == 'p' %}
+                <p class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</p>
+              {% elsif hl == 'h1' %}
                 <h1 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h1>
               {% elsif hl == 'h3' %}
                 <h3 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h3>
@@ -461,10 +463,12 @@
       "id": "heading_level",
       "label": "Heading level",
       "default": "h2",
+      "info": "Choose Paragraph when this is body copy or a pull quote (not a real document heading).",
       "options": [
         { "value": "h1", "label": "H1" },
         { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "Paragraph (no heading)" }
       ]
     },
     {

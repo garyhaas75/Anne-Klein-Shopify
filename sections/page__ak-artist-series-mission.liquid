@@ -140,7 +140,9 @@
 
 {% capture mission_inner_block %}
   {% if heading != blank %}
-    {% if heading_level == 'h1' %}
+    {% if heading_level == 'p' %}
+      <p class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</p>
+    {% elsif heading_level == 'h1' %}
       <h1 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h1>
     {% elsif heading_level == 'h3' %}
       <h3 class="ak-artist-series-mission__heading" id="ak-artist-series-mission-heading-{{ id }}">{{ heading }}</h3>
@@ -536,10 +538,12 @@
       "id": "heading_level",
       "label": "Heading level",
       "default": "h2",
+      "info": "Choose Paragraph when this is body copy or a pull quote (not a real document heading).",
       "options": [
         { "value": "h1", "label": "H1" },
         { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" }
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "Paragraph (no heading)" }
       ]
     },
     {
