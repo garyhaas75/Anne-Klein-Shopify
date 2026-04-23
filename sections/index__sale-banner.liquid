@@ -68,7 +68,7 @@
   {% assign sale_bg_mobile_img = bg_image %}
 {% endif %}
 
-{% comment %} Stack spacing: literal px per band. Optional uniform gaps override all three vertical bands. {% endcomment %}
+{% comment %} Stack spacing: margin-bottom per band (can be negative). Uniform mode sets the same px for all three bands. {% endcomment %}
 {% assign cap_gap_eh_d = section.settings.capsule_gap_eyebrow_headline_desktop %}
 {% assign cap_gap_hc_d = section.settings.capsule_gap_headline_to_code_desktop %}
 {% assign cap_gap_cc_d = section.settings.capsule_gap_code_to_cta_desktop %}
@@ -258,33 +258,21 @@
     padding-top: {{ section.settings.capsule_stack_pad_top_desktop }}px;
     padding-bottom: {{ section.settings.capsule_stack_pad_bottom_desktop }}px;
     transform: translateY({{ section.settings.capsule_content_offset_desktop }}px);
-    {% if section.settings.capsule_uniform_vertical_gap %}
-    gap: {{ cap_gap_eh_d }}px;
-    {% else %}
     gap: 0;
-    {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__capsule-stack {
       padding-top: {{ cap_stack_pt_m }}px;
       padding-bottom: {{ cap_stack_pb_m }}px;
       transform: translateY({{ section.settings.capsule_content_offset_mobile }}px);
-      {% if section.settings.capsule_uniform_vertical_gap %}
-      gap: {{ cap_gap_eh_m }}px;
-      {% else %}
-      gap: 0;
-      {% endif %}
     }
   }
   #shopify-section-{{ id }} .sale-banner__eyebrow {
-    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_eh_d }}{% endif %}px;
+    margin: 0 0 {{ cap_gap_eh_d }}px;
     font-family: {{ ak_sale_ff_eyebrow | strip }};
     font-weight: {{ section.settings.eyebrow_font_weight | default: '600' }};
     font-style: normal;
     font-synthesis: none;
-    {% if section.settings.cta_match_x_height %}
-    font-size-adjust: {{ section.settings.cta_x_height_ratio | divided_by: 100.0 }};
-    {% endif %}
     font-size: {{ section.settings.eyebrow_size }}px;
     line-height: {{ section.settings.eyebrow_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
@@ -292,7 +280,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__eyebrow {
-      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_eh_m }}{% endif %}px;
+      margin-bottom: {{ cap_gap_eh_m }}px;
       {% if section.settings.eyebrow_size_mobile > 0 %}font-size: {{ section.settings.eyebrow_size_mobile }}px;{% endif %}
       {% if section.settings.eyebrow_line_height_mobile > 0 %}line-height: {{ section.settings.eyebrow_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.eyebrow_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.eyebrow_letter_spacing_mobile }}px;{% endif %}
@@ -300,7 +288,7 @@
   }
   #shopify-section-{{ id }} .sale-banner__headline {
     color: {{ headline_color }};
-    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_hc_d }}{% endif %}px;
+    margin: 0 0 {{ cap_gap_hc_d }}px;
     font-family: {{ ak_sale_ff_headline | strip }};
     font-weight: {{ section.settings.headline_font_weight | default: '700' }};
     font-style: normal;
@@ -328,7 +316,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__headline {
-      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_hc_m }}{% endif %}px;
+      margin-bottom: {{ cap_gap_hc_m }}px;
       flex-direction: column;
       align-items: stretch;
       width: 100%;
@@ -356,7 +344,7 @@
     {% endif %}
   }
   #shopify-section-{{ id }} .sale-banner__code {
-    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_cc_d }}{% endif %}px;
+    margin: 0 0 {{ cap_gap_cc_d }}px;
     font-family: {{ ak_sale_ff_code | strip }};
     font-weight: {{ section.settings.code_font_weight | default: '400' }};
     font-style: normal;
@@ -370,7 +358,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__code {
-      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_cc_m }}{% endif %}px;
+      margin-bottom: {{ cap_gap_cc_m }}px;
       {% if section.settings.code_size_mobile > 0 %}font-size: {{ section.settings.code_size_mobile }}px;{% endif %}
       {% if section.settings.promo_discount_tight_lines %}
       line-height: 1.2;
@@ -763,99 +751,102 @@
     },
     {
       "type": "paragraph",
-      "content": "Stack spacing: for identical gaps between eyebrow, headline, promo, and CTA, turn on “Use one vertical gap” and set Uniform gap (desktop/mobile)—that uses flex gap so bands align evenly. Otherwise each “Space: …” slider is independent (margins can look uneven next to different line heights)."
+      "content": "Stack spacing: margin below each band (negative pulls the next band up—optical tuning). Uniform mode sets one px value for all three bands; otherwise use each “Space: …” slider independently."
     },
     {
       "type": "checkbox",
       "id": "capsule_uniform_vertical_gap",
       "label": "Use one vertical gap for eyebrow, headline, and promo blocks",
       "default": false,
-      "info": "When enabled, the three “Space: …” margin sliders below are ignored. Spacing uses CSS flex gap (same px between blocks even when line heights differ)."
+      "info": "When enabled, the three “Space: …” sliders below are ignored; Uniform gap applies the same bottom margin after eyebrow, headline, and promo. Use negative values to tighten."
     },
     {
       "type": "range",
       "id": "capsule_uniform_gap_desktop",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
       "label": "Uniform vertical gap (desktop)",
-      "info": "Used for eyebrow→headline, headline→promo, and promo→CTA when uniform mode is on. 799px and up."
+      "info": "Bottom margin after eyebrow, headline, and promo when uniform mode is on. Negative pulls bands closer. 799px and up."
     },
     {
       "type": "range",
       "id": "capsule_uniform_gap_mobile",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
       "label": "Uniform vertical gap (mobile)",
-      "info": "Same, below 798px. Only applies when uniform mode is on."
+      "info": "Same when uniform mode is on; negative allowed. Below 798px."
     },
     {
       "type": "range",
       "id": "capsule_gap_eyebrow_headline_desktop",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
-      "label": "Space: eyebrow → headline (desktop)"
+      "label": "Space: eyebrow → headline (desktop)",
+      "info": "Margin below eyebrow. Negative pulls the headline closer."
     },
     {
       "type": "range",
       "id": "capsule_gap_eyebrow_headline_mobile",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
       "label": "Space: eyebrow → headline (mobile)",
-      "info": "Pixels below eyebrow before headline. 0 = no margin (not inherited from desktop)."
+      "info": "Margin below eyebrow; negative pulls headline up. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
       "id": "capsule_gap_headline_to_code_desktop",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
-      "label": "Space: headline → promo line (desktop)"
+      "label": "Space: headline → promo line (desktop)",
+      "info": "Margin below headline. Negative pulls promo closer."
     },
     {
       "type": "range",
       "id": "capsule_gap_headline_to_code_mobile",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
       "label": "Space: headline → promo line (mobile)",
-      "info": "Pixels below headline before promo / discount line. 0 = no margin (not inherited from desktop)."
+      "info": "Margin below headline; negative OK. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
       "id": "capsule_gap_code_to_cta_desktop",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
-      "label": "Space: promo line → CTA (desktop)"
+      "label": "Space: promo line → CTA (desktop)",
+      "info": "Margin below promo line. Negative pulls CTA closer."
     },
     {
       "type": "range",
       "id": "capsule_gap_code_to_cta_mobile",
-      "min": 0,
+      "min": -32,
       "max": 48,
       "step": 1,
       "default": 12,
       "unit": "px",
       "label": "Space: promo line → CTA (mobile)",
-      "info": "Pixels below promo line before CTA. 0 = no margin (not inherited from desktop)."
+      "info": "Margin below promo; negative OK. 0 = no margin (not inherited from desktop)."
     },
     {
       "type": "range",
@@ -1435,9 +1426,9 @@
     {
       "type": "checkbox",
       "id": "cta_match_x_height",
-      "label": "Match x-height (eyebrow + CTA)",
+      "label": "Adjust CTA x-height (font-size-adjust)",
       "default": false,
-      "info": "Applies the same font-size-adjust to eyebrow and CTA so serif/sans at the same px look closer (CSS “px” is the em square, not letter height). Turn off if either line looks wrong; tune with X-height ratio."
+      "info": "Only affects the CTA link—shrinks or balances its optical size vs the eyebrow when the CTA looks too large at the same px (does not change eyebrow typography). Turn off if the CTA looks wrong; tune with X-height ratio."
     },
     {
       "type": "range",
@@ -1446,8 +1437,8 @@
       "max": 62,
       "step": 1,
       "default": 52,
-      "label": "X-height ratio (when matching)",
-      "info": "font-size-adjust as hundredths (52 → 0.52). Go lower (e.g. 0.28–0.40) to shrink Amiri vs sans; raise if text looks too small. Applies to eyebrow and CTA when matching is on."
+      "label": "CTA x-height ratio (when adjusting)",
+      "info": "Applied to the CTA only as font-size-adjust (52 → 0.52). Lower shrinks the CTA’s cap height toward the eyebrow; raise if the CTA gets too small."
     },
     {
       "type": "range",
