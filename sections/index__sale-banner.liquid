@@ -347,7 +347,7 @@
     font-family: {{ ak_sale_ff_cta | strip }};
     font-weight: {{ section.settings.cta_font_weight | default: '600' }};
     font-style: normal;
-    font-size: {{ section.settings.cta_size_desktop }}px;
+    font-size: {{ section.settings.cta_size_desktop }}px !important;
     line-height: {{ section.settings.cta_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.cta_letter_spacing }}px;
     text-transform: uppercase;
@@ -360,7 +360,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__cta {
-      font-size: {{ section.settings.cta_size_mobile }}px;
+      font-size: {{ section.settings.cta_size_mobile }}px !important;
       {% if section.settings.cta_line_height_mobile > 0 %}line-height: {{ section.settings.cta_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.cta_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.cta_letter_spacing_mobile }}px;{% endif %}
     }
@@ -1337,9 +1337,10 @@
       "min": 14,
       "max": 40,
       "step": 2,
-      "default": 36,
+      "default": 18,
       "unit": "px",
-      "label": "CTA size (mobile)"
+      "label": "CTA size (mobile)",
+      "info": "Defaults to 18px (same as desktop). Use a larger value only if you want a bigger tap target."
     },
     {
       "type": "range",
