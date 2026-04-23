@@ -20,6 +20,31 @@
 {% else %}
   {% assign text_alignment_mobile = text_alignment_mobile_setting %}
 {% endif %}
+{% comment %} Per-element alignment overrides; each cascades from the section text alignment when left as 'same'. {% endcomment %}
+{% assign heading_alignment_setting = section.settings.heading_alignment | default: 'same' %}
+{% if heading_alignment_setting == 'same' or heading_alignment_setting == blank %}
+  {% assign heading_alignment = text_alignment %}
+{% else %}
+  {% assign heading_alignment = heading_alignment_setting %}
+{% endif %}
+{% assign heading_alignment_mobile_setting = section.settings.heading_alignment_mobile | default: 'same' %}
+{% if heading_alignment_mobile_setting == 'same' or heading_alignment_mobile_setting == blank %}
+  {% assign heading_alignment_mobile = heading_alignment %}
+{% else %}
+  {% assign heading_alignment_mobile = heading_alignment_mobile_setting %}
+{% endif %}
+{% assign body_alignment_setting = section.settings.body_alignment | default: 'same' %}
+{% if body_alignment_setting == 'same' or body_alignment_setting == blank %}
+  {% assign body_alignment = text_alignment %}
+{% else %}
+  {% assign body_alignment = body_alignment_setting %}
+{% endif %}
+{% assign body_alignment_mobile_setting = section.settings.body_alignment_mobile | default: 'same' %}
+{% if body_alignment_mobile_setting == 'same' or body_alignment_mobile_setting == blank %}
+  {% assign body_alignment_mobile = body_alignment %}
+{% else %}
+  {% assign body_alignment_mobile = body_alignment_mobile_setting %}
+{% endif %}
 {% assign content_max_width = section.settings.content_max_width | default: 58 %}
 {% assign content_max_width_mobile = section.settings.content_max_width_mobile | default: 0 | plus: 0 %}
 {% if content_max_width_mobile < 1 %}
@@ -262,10 +287,11 @@
     {% if heading_container_max_width > 0 %}
       max-width: {{ heading_container_max_width }}rem;
     {% endif %}
-    {% if text_alignment == 'center' %}
+    text-align: {{ heading_alignment }};
+    {% if heading_alignment == 'center' %}
       margin-left: auto;
       margin-right: auto;
-    {% elsif text_alignment == 'right' %}
+    {% elsif heading_alignment == 'right' %}
       margin-left: auto;
       margin-right: 0;
     {% else %}
@@ -285,11 +311,11 @@
       {% else %}
         max-width: none;
       {% endif %}
-      text-align: {{ text_alignment_mobile }};
-      {% if text_alignment_mobile == 'center' %}
+      text-align: {{ heading_alignment_mobile }};
+      {% if heading_alignment_mobile == 'center' %}
         margin-left: auto;
         margin-right: auto;
-      {% elsif text_alignment_mobile == 'right' %}
+      {% elsif heading_alignment_mobile == 'right' %}
         margin-left: auto;
         margin-right: 0;
       {% else %}
@@ -315,10 +341,11 @@
     {% if body_container_max_width > 0 %}
       max-width: {{ body_container_max_width }}rem;
     {% endif %}
-    {% if text_alignment == 'center' %}
+    text-align: {{ body_alignment }};
+    {% if body_alignment == 'center' %}
       margin-left: auto;
       margin-right: auto;
-    {% elsif text_alignment == 'right' %}
+    {% elsif body_alignment == 'right' %}
       margin-left: auto;
       margin-right: 0;
     {% else %}
@@ -377,11 +404,11 @@
       {% else %}
         max-width: none;
       {% endif %}
-      text-align: {{ text_alignment_mobile }};
-      {% if text_alignment_mobile == 'center' %}
+      text-align: {{ body_alignment_mobile }};
+      {% if body_alignment_mobile == 'center' %}
         margin-left: auto;
         margin-right: auto;
-      {% elsif text_alignment_mobile == 'right' %}
+      {% elsif body_alignment_mobile == 'right' %}
         margin-left: auto;
         margin-right: 0;
       {% else %}
@@ -630,6 +657,58 @@
       "default": "same",
       "options": [
         { "value": "same", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Heading and body inherit the section text alignment above unless overridden below."
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment (desktop)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as section text alignment" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment_mobile",
+      "label": "Heading alignment (mobile)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as heading desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_alignment",
+      "label": "Body alignment (desktop)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as section text alignment" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "body_alignment_mobile",
+      "label": "Body alignment (mobile)",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as body desktop" },
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
