@@ -105,6 +105,7 @@
 {% assign eb_wt = section.settings.eyebrow_font_weight | default: '700' %}
 {% assign eb_lh = section.settings.eyebrow_line_height | default: 120 %}
 {% assign eb_ls = section.settings.eyebrow_letter_spacing | default: 0 %}
+{% assign eb_ls_m = section.settings.eyebrow_letter_spacing_mobile | default: eb_ls %}
 {% assign eb_al = section.settings.eyebrow_text_align | default: 'center' %}
 {% assign eb_al_m = section.settings.eyebrow_text_align_mobile | default: eb_al %}
 {% assign eb_pt = section.settings.eyebrow_padding_top | default: 0 %}
@@ -115,6 +116,8 @@
 {% assign eb_prm = section.settings.eyebrow_padding_right_mobile | default: 16 %}
 {% assign eb_pbm = section.settings.eyebrow_padding_bottom_mobile | default: eb_pb %}
 {% assign eb_plm = section.settings.eyebrow_padding_left_mobile | default: 16 %}
+{% assign eb_nudge = section.settings.eyebrow_vertical_nudge | default: 0 %}
+{% assign eb_nudge_m = section.settings.eyebrow_vertical_nudge_mobile | default: 0 %}
 
 {% assign nm_sz = section.settings.name_font_size | default: 144 %}
 {% assign nm_sz_m0 = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
@@ -122,6 +125,7 @@
 {% assign nm_wt = section.settings.name_font_weight | default: '700' %}
 {% assign nm_lh = section.settings.name_line_height | default: 100 %}
 {% assign nm_ls = section.settings.name_letter_spacing | default: -4 %}
+{% assign nm_ls_m = section.settings.name_letter_spacing_mobile | default: nm_ls %}
 {% assign nm_al = section.settings.name_text_align | default: 'center' %}
 {% assign nm_al_m = section.settings.name_text_align_mobile | default: nm_al %}
 {% assign nm_pt = section.settings.name_padding_top | default: 4 %}
@@ -132,6 +136,8 @@
 {% assign nm_prm = section.settings.name_padding_right_mobile | default: 16 %}
 {% assign nm_pbm = section.settings.name_padding_bottom_mobile | default: nm_pb %}
 {% assign nm_plm = section.settings.name_padding_left_mobile | default: 16 %}
+{% assign nm_nudge = section.settings.name_vertical_nudge | default: 0 %}
+{% assign nm_nudge_m = section.settings.name_vertical_nudge_mobile | default: 0 %}
 
 {% capture wordmark_aria %}
   {% if wordmark_line_1 != blank %}{{ wordmark_line_1 | strip }}{% endif %}{% if wordmark_line_1 != blank and wordmark_line_2 != blank %} {% endif %}{% if wordmark_line_2 != blank %}{{ wordmark_line_2 | strip }}{% endif %}
@@ -511,6 +517,7 @@
     color: {{ eyebrow_co }};
     text-align: {{ eb_al }};
     padding: {{ eb_pt }}px {{ eb_pr }}px {{ eb_pb }}px {{ eb_pl }}px;
+    transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
       text-transform: uppercase;
       letter-spacing: 0.12em;
@@ -523,6 +530,10 @@
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
       padding: {{ eb_ptm }}px {{ eb_prm }}px {{ eb_pbm }}px {{ eb_plm }}px;
+      transform: translateY({{ eb_nudge_m }}px);
+      {% unless section.settings.eyebrow_uppercase %}
+        letter-spacing: {{ eb_ls_m }}px;
+      {% endunless %}
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name {
@@ -544,6 +555,7 @@
     color: {{ name_co }};
     text-align: {{ nm_al }};
     padding: {{ nm_pt }}px {{ nm_pr }}px {{ nm_pb }}px {{ nm_pl }}px;
+    transform: translateY({{ nm_nudge }}px);
   }
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
@@ -554,6 +566,8 @@
       font-size: min({{ nm_sz_m | divided_by: 16.0 }}rem, max(2rem, 18vw));
       text-align: {{ nm_al_m }};
       padding: {{ nm_ptm }}px {{ nm_prm }}px {{ nm_pbm }}px {{ nm_plm }}px;
+      letter-spacing: {{ nm_ls_m }}px;
+      transform: translateY({{ nm_nudge_m }}px);
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible,
@@ -1571,7 +1585,17 @@
     {
       "type": "range",
       "id": "eyebrow_letter_spacing",
-      "label": "Eyebrow letter spacing",
+      "label": "Eyebrow letter spacing (desktop)",
+      "min": -2,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing_mobile",
+      "label": "Eyebrow letter spacing (mobile)",
       "min": -2,
       "max": 8,
       "step": 1,
@@ -1703,6 +1727,28 @@
       "step": 4,
       "default": 16,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_vertical_nudge",
+      "label": "Eyebrow vertical position (desktop)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_vertical_nudge_mobile",
+      "label": "Eyebrow vertical position (mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
     },
     {
       "type": "header",
@@ -1844,7 +1890,17 @@
     {
       "type": "range",
       "id": "name_letter_spacing",
-      "label": "Name letter spacing",
+      "label": "Name letter spacing (desktop)",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "default": -4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_letter_spacing_mobile",
+      "label": "Name letter spacing (mobile)",
       "min": -10,
       "max": 10,
       "step": 1,
@@ -1970,6 +2026,28 @@
       "step": 4,
       "default": 16,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_vertical_nudge",
+      "label": "Name vertical position (desktop)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    },
+    {
+      "type": "range",
+      "id": "name_vertical_nudge_mobile",
+      "label": "Name vertical position (mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
     }
   ],
   "presets": [
