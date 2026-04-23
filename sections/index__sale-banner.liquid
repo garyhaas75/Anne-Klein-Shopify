@@ -347,9 +347,13 @@
     font-family: {{ ak_sale_ff_cta | strip }};
     font-weight: {{ section.settings.cta_font_weight | default: '600' }};
     font-style: normal;
+    font-synthesis: none;
     font-size: {{ section.settings.cta_size_desktop }}px !important;
     line-height: {{ section.settings.cta_line_height | divided_by: 100.0 }};
     letter-spacing: {{ section.settings.cta_letter_spacing }}px;
+    {% if section.settings.cta_match_x_height %}
+    font-size-adjust: {{ section.settings.cta_x_height_ratio | divided_by: 100.0 }};
+    {% endif %}
     text-transform: uppercase;
     text-decoration: underline;
     text-underline-offset: 0.2em;
@@ -1341,6 +1345,23 @@
       "unit": "px",
       "label": "CTA size (mobile)",
       "info": "Defaults to 18px (same as desktop). Use a larger value only if you want a bigger tap target."
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_match_x_height",
+      "label": "Match x-height across CTA fonts",
+      "default": false,
+      "info": "Same px can look larger or smaller when you switch font (CSS sizes the em square, not cap height). When enabled, font-size-adjust nudges fonts toward a shared x-height so Amiri vs Helvetica etc. look closer at the same setting. Fine-tune with X-height ratio."
+    },
+    {
+      "type": "range",
+      "id": "cta_x_height_ratio",
+      "min": 45,
+      "max": 62,
+      "step": 1,
+      "default": 52,
+      "label": "CTA x-height ratio (when matching)",
+      "info": "Used as font-size-adjust (e.g. 52 → 0.52). Lower slightly shrinks tall serifs; raise if matched text looks too small. Only applies when “Match x-height” is on."
     },
     {
       "type": "range",
