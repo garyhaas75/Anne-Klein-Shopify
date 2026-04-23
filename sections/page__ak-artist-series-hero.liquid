@@ -554,7 +554,9 @@
     width: 100%;
     color: {{ name_co }};
     text-align: {{ nm_al }};
-    padding: {{ nm_pt }}px {{ nm_pr }}px {{ nm_pb }}px {{ nm_pl }}px;
+    /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
+       from being clipped by overflow: hidden when line-height is tight. */
+    padding: {{ nm_pt }}px {{ nm_pr }}px calc({{ nm_pb }}px + 0.2em) {{ nm_pl }}px;
     transform: translateY({{ nm_nudge }}px);
   }
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
@@ -563,9 +565,12 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
-      font-size: min({{ nm_sz_m | divided_by: 16.0 }}rem, max(2rem, 18vw));
+      /* Mobile linear ramp: slider value ≈ size at ~390px viewport,
+         scaling smoothly up toward ~1.5× slider near the 798px breakpoint.
+         Auto-fit script shrinks from this if it ever overflows the container. */
+      font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.522 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.1225 }}vw), {{ nm_sz_m | times: 1.7 | divided_by: 16.0 }}rem);
       text-align: {{ nm_al_m }};
-      padding: {{ nm_ptm }}px {{ nm_prm }}px {{ nm_pbm }}px {{ nm_plm }}px;
+      padding: {{ nm_ptm }}px {{ nm_prm }}px calc({{ nm_pbm }}px + 0.2em) {{ nm_plm }}px;
       letter-spacing: {{ nm_ls_m }}px;
       transform: translateY({{ nm_nudge_m }}px);
     }
@@ -1863,13 +1868,13 @@
     {
       "type": "range",
       "id": "name_font_size_mobile",
-      "label": "Name size (mobile base)",
+      "label": "Name size (mobile)",
       "min": 0,
       "max": 320,
       "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop. Type grows with viewport, capped at 3× this value."
+      "info": "0 = same as desktop. This value is the rendered size at ~390px viewport; scales smoothly up to ~1.5× near the tablet breakpoint. Auto-fit shrinks if it would overflow."
     },
     {
       "type": "color",
