@@ -258,16 +258,26 @@
     padding-top: {{ section.settings.capsule_stack_pad_top_desktop }}px;
     padding-bottom: {{ section.settings.capsule_stack_pad_bottom_desktop }}px;
     transform: translateY({{ section.settings.capsule_content_offset_desktop }}px);
+    {% if section.settings.capsule_uniform_vertical_gap %}
+    gap: {{ cap_gap_eh_d }}px;
+    {% else %}
+    gap: 0;
+    {% endif %}
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__capsule-stack {
       padding-top: {{ cap_stack_pt_m }}px;
       padding-bottom: {{ cap_stack_pb_m }}px;
       transform: translateY({{ section.settings.capsule_content_offset_mobile }}px);
+      {% if section.settings.capsule_uniform_vertical_gap %}
+      gap: {{ cap_gap_eh_m }}px;
+      {% else %}
+      gap: 0;
+      {% endif %}
     }
   }
   #shopify-section-{{ id }} .sale-banner__eyebrow {
-    margin: 0 0 {{ cap_gap_eh_d }}px;
+    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_eh_d }}{% endif %}px;
     font-family: {{ ak_sale_ff_eyebrow | strip }};
     font-weight: {{ section.settings.eyebrow_font_weight | default: '600' }};
     font-style: normal;
@@ -282,7 +292,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__eyebrow {
-      margin-bottom: {{ cap_gap_eh_m }}px;
+      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_eh_m }}{% endif %}px;
       {% if section.settings.eyebrow_size_mobile > 0 %}font-size: {{ section.settings.eyebrow_size_mobile }}px;{% endif %}
       {% if section.settings.eyebrow_line_height_mobile > 0 %}line-height: {{ section.settings.eyebrow_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.eyebrow_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.eyebrow_letter_spacing_mobile }}px;{% endif %}
@@ -290,7 +300,7 @@
   }
   #shopify-section-{{ id }} .sale-banner__headline {
     color: {{ headline_color }};
-    margin: 0 0 {{ cap_gap_hc_d }}px;
+    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_hc_d }}{% endif %}px;
     font-family: {{ ak_sale_ff_headline | strip }};
     font-weight: {{ section.settings.headline_font_weight | default: '700' }};
     font-style: normal;
@@ -318,7 +328,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__headline {
-      margin-bottom: {{ cap_gap_hc_m }}px;
+      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_hc_m }}{% endif %}px;
       flex-direction: column;
       align-items: stretch;
       width: 100%;
@@ -346,7 +356,7 @@
     {% endif %}
   }
   #shopify-section-{{ id }} .sale-banner__code {
-    margin: 0 0 {{ cap_gap_cc_d }}px;
+    margin: 0 0 {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_cc_d }}{% endif %}px;
     font-family: {{ ak_sale_ff_code | strip }};
     font-weight: {{ section.settings.code_font_weight | default: '400' }};
     font-style: normal;
@@ -360,7 +370,7 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .sale-banner__code {
-      margin-bottom: {{ cap_gap_cc_m }}px;
+      margin-bottom: {% if section.settings.capsule_uniform_vertical_gap %}0{% else %}{{ cap_gap_cc_m }}{% endif %}px;
       {% if section.settings.code_size_mobile > 0 %}font-size: {{ section.settings.code_size_mobile }}px;{% endif %}
       {% if section.settings.promo_discount_tight_lines %}
       line-height: 1.2;
@@ -753,14 +763,14 @@
     },
     {
       "type": "paragraph",
-      "content": "Stack spacing: desktop and mobile sliders are independent. Sliders add margin only—loose wrapped lines inside a band come from that band’s line height (Typography). Turn on uniform gaps to make eyebrow→headline, headline→promo, and promo→CTA use the same px."
+      "content": "Stack spacing: for identical gaps between eyebrow, headline, promo, and CTA, turn on “Use one vertical gap” and set Uniform gap (desktop/mobile)—that uses flex gap so bands align evenly. Otherwise each “Space: …” slider is independent (margins can look uneven next to different line heights)."
     },
     {
       "type": "checkbox",
       "id": "capsule_uniform_vertical_gap",
       "label": "Use one vertical gap for eyebrow, headline, and promo blocks",
       "default": false,
-      "info": "When enabled, the three “Space: …” margin sliders below are ignored; use Uniform gap instead so spacing matches between bands."
+      "info": "When enabled, the three “Space: …” margin sliders below are ignored. Spacing uses CSS flex gap (same px between blocks even when line heights differ)."
     },
     {
       "type": "range",
@@ -1432,12 +1442,12 @@
     {
       "type": "range",
       "id": "cta_x_height_ratio",
-      "min": 45,
+      "min": 28,
       "max": 62,
       "step": 1,
       "default": 52,
       "label": "X-height ratio (when matching)",
-      "info": "font-size-adjust value (52 → 0.52). Lower shrinks tall serifs; raise if text looks too small. Applies to eyebrow and CTA when matching is on."
+      "info": "font-size-adjust as hundredths (52 → 0.52). Go lower (e.g. 0.28–0.40) to shrink Amiri vs sans; raise if text looks too small. Applies to eyebrow and CTA when matching is on."
     },
     {
       "type": "range",
