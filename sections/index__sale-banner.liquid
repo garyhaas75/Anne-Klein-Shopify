@@ -297,15 +297,9 @@
     #shopify-section-{{ id }} .sale-banner__headline {
       margin-bottom: {{ cap_gap_hc_m }}px;
       flex-direction: column;
-      {% if section.settings.text_alignment_mobile != 'inherit' %}
-        {% case section.settings.text_alignment_mobile %}
-          {% when 'left' %}align-items: flex-start;
-          {% when 'right' %}align-items: flex-end;
-          {% else %}align-items: center;
-        {% endcase %}
-      {% else %}
-        align-items: center;
-      {% endif %}
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
       row-gap: {{ cap_gap_hl_m }}px;
       column-gap: 0;
       font-size: {{ section.settings.headline_size_mobile }}px;
@@ -896,7 +890,7 @@
       "id": "headline_line_2",
       "label": "Headline line 2",
       "default": "SPRING",
-      "info": "Desktop: shown after line 1 with a space. Mobile: shown on its own line."
+      "info": "Optional second line. Desktop: same row as line 1 with horizontal gap. Mobile: below line 1 (full-width lines use the capsule width for wrapping)."
     },
     {
       "type": "text",
