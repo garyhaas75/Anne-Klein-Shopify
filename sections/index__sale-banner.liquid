@@ -284,7 +284,8 @@
       {% else %}justify-content: center;
     {% endcase %}
     align-items: baseline;
-    gap: 0 {{ section.settings.capsule_gap_headline_lines_desktop }}px;
+    row-gap: 0;
+    column-gap: {{ section.settings.capsule_gap_headline_lines_desktop }}px;
     max-width: 100%;
   }
   @media only screen and (max-width: 798px) {
@@ -300,7 +301,8 @@
       {% else %}
         align-items: center;
       {% endif %}
-      gap: {{ cap_gap_hl_m }}px 0;
+      row-gap: {{ cap_gap_hl_m }}px;
+      column-gap: 0;
       font-size: {{ section.settings.headline_size_mobile }}px;
       {% if section.settings.headline_line_height_mobile > 0 %}line-height: {{ section.settings.headline_line_height_mobile | divided_by: 100.0 }};{% endif %}
       {% if section.settings.headline_letter_spacing_mobile != 0 %}letter-spacing: {{ section.settings.headline_letter_spacing_mobile }}px;{% else %}letter-spacing: 0px;{% endif %}
@@ -386,9 +388,17 @@
         {% endif %}
 
         {% if line1 != blank or line2 != blank %}
-          <h2 class="sale-banner__headline" id="sale-banner-heading-{{ id }}">
-            {% if line1 != blank %}<span class="sale-banner__hl sale-banner__hl--1">{{ line1 | escape }}</span>{% endif %}
-            {% if line2 != blank %}<span class="sale-banner__hl sale-banner__hl--2">{{ line2 | escape }}</span>{% endif %}
+          <h2
+            class="sale-banner__headline"
+            id="sale-banner-heading-{{ id }}"
+            {% if line1 != blank and line2 != blank %}aria-label="{{ line1 | escape }} {{ line2 | escape }}"{% endif %}
+          >
+            {% if line1 != blank %}
+              <span class="sale-banner__hl sale-banner__hl--1" {% if line2 != blank %}aria-hidden="true"{% endif %}>{{ line1 | escape }}</span>
+            {% endif %}
+            {% if line2 != blank %}
+              <span class="sale-banner__hl sale-banner__hl--2" {% if line1 != blank %}aria-hidden="true"{% endif %}>{{ line2 | escape }}</span>
+            {% endif %}
           </h2>
         {% endif %}
 
@@ -768,12 +778,12 @@
       "type": "range",
       "id": "capsule_gap_headline_lines_desktop",
       "min": 0,
-      "max": 48,
+      "max": 80,
       "step": 1,
       "default": 6,
       "unit": "px",
-      "label": "Space: headline line 1 ↔ line 2 (desktop)",
-      "info": "Horizontal gap when both lines sit on one row."
+      "label": "Space between headline line 1 and line 2 (desktop)",
+      "info": "Horizontal space between the two headline spans when they sit on one row (column-gap). Increase if they read like one word (e.g. “OFF” + “Site Wide”). Visual only; assistive tech uses a spaced label."
     },
     {
       "type": "range",
@@ -783,8 +793,8 @@
       "step": 1,
       "default": 0,
       "unit": "px",
-      "label": "Space: headline line 1 ↔ line 2 (mobile)",
-      "info": "Vertical gap when line 2 wraps below line 1."
+      "label": "Space between headline line 1 and line 2 (mobile)",
+      "info": "Vertical gap when line 2 stacks under line 1 (row-gap)."
     },
     {
       "type": "range",
