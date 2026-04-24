@@ -410,7 +410,6 @@
             {% endfor %}
           {% else %}
             {% assign output_index = 0 %}
-            {% assign ft_img_eager = request.design_mode %}
             {% for block in section.blocks %}
               {% if block.type == 'product' and block.settings.product != blank %}
                 {% if output_index < product_limit %}
@@ -454,11 +453,11 @@
                             {% if tile_desktop == blank and override_image_mobile == blank %}
                               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                             {% else %}
-                              {% render 'ak-finishing-touches-responsive-img', desktop_img: tile_desktop, mobile_img: override_image_mobile, alt: alt_text, object_fit: align_height, max_height: height, eager: ft_img_eager %}
+                              {% render 'ak-finishing-touches-responsive-img', desktop_img: tile_desktop, mobile_img: override_image_mobile, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% endif %}
                             {% if settings.show_secondary_image %}
                               {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
-                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible', eager: ft_img_eager %}
+                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                               {% endif %}
                             {% endif %}
                           </div>
@@ -520,10 +519,10 @@
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
                           <div class="image__container product__imageContainer">
-                            {% render 'ak-finishing-touches-responsive-img', desktop_img: ov_tile_d, mobile_img: ov_tile_m, alt: alt_text, object_fit: align_height, max_height: height, eager: ft_img_eager %}
+                            {% render 'ak-finishing-touches-responsive-img', desktop_img: ov_tile_d, mobile_img: ov_tile_m, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% if settings.show_secondary_image %}
                               {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
-                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible', eager: ft_img_eager %}
+                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                               {% endif %}
                             {% endif %}
                           </div>
