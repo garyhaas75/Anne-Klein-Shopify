@@ -52,8 +52,8 @@
 {% assign product_source = section.settings.product_source | default: 'blocks' %}
 {% assign product_limit_setting = section.settings.products_limit | default: 12 | plus: 0 %}
 {% comment %}
-  Collection picker returns a collection object (not a handle). Do not use collections[setting] — that fails and drops product_count to 0.
-  Legacy: if a handle string is ever stored, resolve via collections[handle].
+  Collection picker returns a collection object. Resolve through collections[handle] when possible.
+  If Product source is From collection but that collection has 0 products, we fall back to hand-picked Product blocks so the section does not render empty while blocks exist.
 {% endcomment %}
 {% assign ft_collection = section.settings.collection %}
 {% if ft_collection != blank %}
@@ -62,10 +62,20 @@
     {% assign ft_collection = collections[_ft_col_handle] %}
   {% endif %}
 {% endif %}
-{% assign products_count = 0 %}
 
+{% assign use_collection_loop = false %}
+{% assign collection_size = 0 %}
 {% if product_source == 'collection' and ft_collection != blank %}
   {% assign collection_size = ft_collection.products_count | plus: 0 %}
+  {% if collection_size > 0 %}
+    {% assign use_collection_loop = true %}
+  {% endif %}
+{% endif %}
+
+{% assign products_count = 0 %}
+{% assign product_limit = product_limit_setting %}
+
+{% if use_collection_loop %}
   {% assign products_count = product_limit_setting %}
   {% if collection_size < product_limit_setting %}
     {% assign products_count = collection_size %}
@@ -343,7 +353,7 @@
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
              >
         {% endif %}
-          {% if product_source == 'collection' and ft_collection != blank %}
+          {% if use_collection_loop %}
             {% for product in ft_collection.products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
               {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
@@ -571,7 +581,7 @@
         </div>
         {% endif %}
       {% else %}
-        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}{% if ft_collection == blank %}Choose a collection above, or switch Product source to Hand-picked products and add Product blocks.{% else %}Nothing to show yet — add products to this collection or lower Product limit so it matches how many are available. You can also switch to Hand-picked products.{% endif %}{% else %}Add Product blocks with a product selected, or clear the product and add an Override image for a preview or coming-soon tile (optional title and link in the block).{% endif %}</p>
+        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' and ft_collection == blank %}Choose a collection, or set Product source to Hand-picked products and add Product blocks.{% else %}Nothing to display. Add a product or override image to each Product block (Hand-picked), or choose a collection that contains products — when the collection is empty, Product blocks below are used automatically.{% endif %}</p>
       {% endif %}
     </div>
   </div>
@@ -1098,7 +1108,7 @@
         { "value": "blocks", "label": "Hand-picked products" },
         { "value": "collection", "label": "From collection" }
       ],
-      "info": "Hand-picked: use Product blocks below. From collection: choose a collection and limit."
+      "info": "Hand-picked: Product blocks below drive the carousel. From collection: uses that collection’s products when it has at least one; if the collection is empty, Product blocks are used instead so the section is not blank."
     },
     {
       "type": "collection",
