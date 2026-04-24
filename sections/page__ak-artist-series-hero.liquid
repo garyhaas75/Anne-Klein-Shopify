@@ -572,6 +572,25 @@
       bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
     }
   }
+  /* Single horizontal inset: eyebrow + name share the same left/right (name padding in theme) */
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+      padding-left: {{ nm_pl }}px;
+      padding-right: {{ nm_pr }}px;
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+      padding-left: {{ nm_plm }}px;
+      padding-right: {{ nm_prm }}px;
+    }
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
     /* Smooth linear ramp across desktop widths.
@@ -584,7 +603,7 @@
     width: 100%;
     box-sizing: border-box;
     text-align: {{ eb_al }};
-    padding: {{ eb_pt }}px {{ eb_pr }}px {{ eb_pb }}px {{ eb_pl }}px;
+    padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
       text-transform: uppercase;
@@ -603,7 +622,7 @@
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
-      padding: {{ eb_ptm }}px {{ eb_prm }}px {{ eb_pbm }}px {{ eb_plm }}px;
+      padding: {{ eb_ptm }}px 0 {{ eb_pbm }}px 0;
       transform: translateY({{ eb_nudge_m }}px);
       {% unless section.settings.eyebrow_uppercase %}
         letter-spacing: {{ eb_ls_m }}px;
@@ -628,8 +647,9 @@
     width: 100%;
     text-align: {{ nm_al }};
     /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
-       from being clipped by overflow: hidden when line-height is tight. */
-    padding: {{ nm_pt }}px {{ nm_pr }}px calc({{ nm_pb }}px + 0.2em) {{ nm_pl }}px;
+       from being clipped by overflow: hidden when line-height is tight.
+       Left/right: zero — horizontal inset is on .ak-artist-series-hero__overlay-inset. */
+    padding: {{ nm_pt }}px 0 calc({{ nm_pb }}px + 0.2em) 0;
     transform: translateY({{ nm_nudge }}px);
   }
   /* Scrim: shadow on eyebrow only. Name colors are set per word; a dark text-shadow
@@ -660,7 +680,7 @@
          the range setting can read larger before wrapping). */
       font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.45 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.15 }}vw), {{ nm_sz_m | times: 2.8 | divided_by: 16.0 }}rem);
       text-align: {{ nm_al_m }};
-      padding: {{ nm_ptm }}px {{ nm_prm }}px calc({{ nm_pbm }}px + 0.2em) {{ nm_plm }}px;
+      padding: {{ nm_ptm }}px 0 calc({{ nm_pbm }}px + 0.2em) 0;
       letter-spacing: {{ nm_ls_m }}px;
       transform: translateY({{ nm_nudge_m }}px);
       white-space: normal;
@@ -739,6 +759,7 @@
 
       {% if eyebrow != blank or artist_name != blank %}
         <div class="ak-artist-series-hero__overlay" aria-hidden="false">
+          <div class="ak-artist-series-hero__overlay-inset">
           {% if eyebrow != blank %}
             <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
           {% endif %}
@@ -770,6 +791,7 @@
               <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h1>
             {% endif %}
           {% endif %}
+          </div>
         </div>
       {% endif %}
 
@@ -847,7 +869,8 @@
           }
           var style = window.getComputedStyle(el);
           var paddingX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
-          var available = parent.clientWidth - paddingX;
+          /* Inset is on a wrapper; measure the name box width (content area). */
+          var available = el.clientWidth - paddingX;
           if (available <= 0) return;
           var current = parseFloat(style.fontSize);
           if (!current) return;
@@ -1663,7 +1686,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Eyebrow and artist name sit above the bottom band. Each has its own font, size, and color (separate desktop and mobile swatches for the eyebrow and the name), alignment, and padding."
+      "content": "Eyebrow and artist name sit above the bottom band. Left/right spacing for both is one shared inset: use Name padding left/right (not Eyebrow left/right, which is unused). Each line has its own font, size, and color, alignment, and top/bottom padding."
     },
     {
       "type": "header",
@@ -1872,7 +1895,8 @@
       "max": 96,
       "step": 4,
       "default": 24,
-      "unit": "px"
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
     },
     {
       "type": "range",
@@ -1892,7 +1916,8 @@
       "max": 96,
       "step": 4,
       "default": 24,
-      "unit": "px"
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
     },
     {
       "type": "range",
@@ -1912,7 +1937,8 @@
       "max": 96,
       "step": 4,
       "default": 16,
-      "unit": "px"
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
     },
     {
       "type": "range",
@@ -1932,7 +1958,8 @@
       "max": 96,
       "step": 4,
       "default": 16,
-      "unit": "px"
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
     },
     {
       "type": "range",
@@ -2213,7 +2240,8 @@
       "max": 96,
       "step": 4,
       "default": 24,
-      "unit": "px"
+      "unit": "px",
+      "info": "Shared: sets the right inset for both the eyebrow and the name."
     },
     {
       "type": "range",
@@ -2233,7 +2261,8 @@
       "max": 96,
       "step": 4,
       "default": 24,
-      "unit": "px"
+      "unit": "px",
+      "info": "Shared: sets the left inset for both the eyebrow and the name (aligns the left edge)."
     },
     {
       "type": "range",
@@ -2254,7 +2283,7 @@
       "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "Auto-fit shrinks the name to fit container width minus this padding. Lower = closer to the viewport edge."
+      "info": "Shared horizontal inset (with the eyebrow)."
     },
     {
       "type": "range",
@@ -2275,7 +2304,7 @@
       "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "Auto-fit shrinks the name to fit container width minus this padding. Lower = closer to the viewport edge."
+      "info": "Shared horizontal inset (with the eyebrow)."
     },
     {
       "type": "range",
