@@ -20,7 +20,7 @@
         "image_object_position": "right",
         "image_fill_and_crop": true,
         "image_min_height": 780,
-        "image_min_height_mobile": 380,
+        "image_min_height_mobile": 560,
         "image_max_height": 0,
         "image_max_height_mobile": 0,
         "wordmark_line_1": "Anne Klein",
