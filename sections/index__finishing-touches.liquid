@@ -68,7 +68,7 @@
   {% if block.type == 'product' %}
     {% if block.settings.product != blank %}
       {% assign block_product_count = block_product_count | plus: 1 %}
-    {% elsif block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
+    {% elsif block.settings.override_image != blank %}
       {% assign block_product_count = block_product_count | plus: 1 %}
     {% endif %}
   {% endif %}
@@ -416,36 +416,30 @@
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
                   {% assign override_image = block.settings.override_image %}
-                  {% assign override_image_mobile = block.settings.override_image_mobile %}
                   {% assign override_image_hover = block.settings.override_image_hover %}
-                  {% assign override_image_hover_mobile = block.settings.override_image_hover_mobile %}
                   {% assign override_alt = block.settings.image_alt | strip %}
                   {% if override_image != blank %}
-                    {% assign primary_tile_image = override_image %}
-                  {% elsif override_image_mobile != blank %}
-                    {% assign primary_tile_image = override_image_mobile %}
+                    {% assign primary_image = override_image %}
                   {% elsif product.featured_media != blank %}
-                    {% assign primary_tile_image = product.featured_media.preview_image %}
+                    {% assign primary_image = product.featured_media.preview_image %}
                   {% else %}
-                    {% assign primary_tile_image = blank %}
+                    {% assign primary_image = blank %}
                   {% endif %}
                   {% if override_alt != blank %}
                     {% assign alt_text = override_alt %}
-                  {% elsif primary_tile_image != blank and primary_tile_image.alt != blank %}
-                    {% assign alt_text = primary_tile_image.alt %}
+                  {% elsif primary_image != blank and primary_image.alt != blank %}
+                    {% assign alt_text = primary_image.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
                   {% endif %}
                   {% if override_image_hover != blank %}
-                    {% assign hover_tile_image = override_image_hover %}
-                  {% elsif override_image_hover_mobile != blank %}
-                    {% assign hover_tile_image = override_image_hover_mobile %}
-                  {% elsif override_image == blank and override_image_mobile == blank and product.media[1] != blank %}
-                    {% assign hover_tile_image = product.media[1] %}
+                    {% assign hover_image = override_image_hover %}
+                  {% elsif override_image == blank and product.media[1] != blank %}
+                    {% assign hover_image = product.media[1] %}
                   {% else %}
-                    {% assign hover_tile_image = blank %}
+                    {% assign hover_image = blank %}
                   {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_tile_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
                     <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
@@ -453,13 +447,13 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% if primary_tile_image != blank %}
-                              {% render 'ak-finishing-touches-override-img', image: primary_tile_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if primary_image != blank %}
+                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% else %}
                               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                             {% endif %}
-                            {% if hover_tile_image != blank and settings.show_secondary_image %}
-                              {% render 'ak-finishing-touches-override-img', image: hover_tile_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% if hover_image != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
                           </div>
                           {% if hover_enabled or settings.enable_quickshop %}
@@ -493,28 +487,11 @@
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
                 {% endif %}
-              {% elsif block.type == 'product' and block.settings.product == blank %}
-                {% if block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
+              {% elsif block.type == 'product' and block.settings.product == blank and block.settings.override_image != blank %}
                 {% if output_index < product_limit %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% assign ft_od = block.settings.override_image %}
-                  {% assign ft_om = block.settings.override_image_mobile %}
-                  {% assign ft_ohd = block.settings.override_image_hover %}
-                  {% assign ft_ohm = block.settings.override_image_hover_mobile %}
-                  {% if ft_od != blank %}
-                    {% assign primary_tile_image = ft_od %}
-                  {% elsif ft_om != blank %}
-                    {% assign primary_tile_image = ft_om %}
-                  {% else %}
-                    {% assign primary_tile_image = blank %}
-                  {% endif %}
-                  {% if ft_ohd != blank %}
-                    {% assign hover_tile_image = ft_ohd %}
-                  {% elsif ft_ohm != blank %}
-                    {% assign hover_tile_image = ft_ohm %}
-                  {% else %}
-                    {% assign hover_tile_image = blank %}
-                  {% endif %}
+                  {% assign primary_image = block.settings.override_image %}
+                  {% assign hover_image = block.settings.override_image_hover %}
                   {% assign tile_title = block.settings.tile_title | strip %}
                   {% assign tile_link = block.settings.tile_link %}
                   {% assign alt_text = block.settings.image_alt | strip %}
@@ -525,7 +502,7 @@
                       {% assign alt_text = 'Featured image' %}
                     {% endif %}
                   {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_tile_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
                     {% if tile_link != blank %}
                       <a href="{{ tile_link }}" class="ak-ft__product-link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
                     {% else %}
@@ -534,11 +511,11 @@
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
                           <div class="image__container product__imageContainer">
-                            {% if primary_tile_image != blank %}
-                              {% render 'ak-finishing-touches-override-img', image: primary_tile_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% if primary_image != blank %}
+                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% endif %}
-                            {% if hover_tile_image != blank and settings.show_secondary_image %}
-                              {% render 'ak-finishing-touches-override-img', image: hover_tile_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% if hover_image != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
                           </div>
                         </div>
@@ -555,7 +532,6 @@
                     {% endif %}
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
-                {% endif %}
                 {% endif %}
               {% endif %}
             {% endfor %}
@@ -1266,31 +1242,19 @@
         },
         {
           "type": "paragraph",
-          "content": "One main image per tile: Override image (desktop) is used first; Override image (mobile) is only used when desktop is blank. Same fallback order for hover images. With no product, set at least one override image so the tile shows."
+          "content": "With a product selected: leave blank to use its featured image, or upload art to replace it. With no product: upload at least Override image — use Title / Link below for caption and destination (no swatches or live price)."
         },
         {
           "type": "image_picker",
           "id": "override_image",
-          "label": "Override image (desktop)",
-          "info": "Primary override when set. With a product, replaces the featured image. If blank, the mobile override (below) or product image is used."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image_mobile",
-          "label": "Override image (mobile)",
-          "info": "Fallback when Override image (desktop) is blank. Does not show a separate mobile-only crop."
+          "label": "Override image",
+          "info": "Used in place of the product's featured image. Crop / size all override images to the same dimensions for an even grid."
         },
         {
           "type": "image_picker",
           "id": "override_image_hover",
-          "label": "Override hover image (desktop)",
-          "info": "Optional. Secondary swap when enabled. If blank, mobile hover below or second product image may be used."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image_hover_mobile",
-          "label": "Override hover image (mobile)",
-          "info": "Fallback when Override hover image (desktop) is blank."
+          "label": "Override hover image",
+          "info": "Optional. Shown on hover when the theme's secondary-image swap is enabled. Falls back to the product's second media if blank and no override image is set."
         },
         {
           "type": "text",
