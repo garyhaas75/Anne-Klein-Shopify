@@ -1,26 +1,12 @@
 {% comment %}
   AK Homepage 2026 – Finishing Touches
-  Product carousel/grid: blocks can be a product tile, or override-image-only (cleared product, e.g. coming soon).
+  Product carousel: title + individually selected products (blocks). Each block = one product.
   Uses theme's slider markup/JS so carousel behavior matches Featured collection.
 {% endcomment %}
 
 {% assign id = section.id %}
 {% assign title = section.settings.title %}
 {% assign products_per_row = section.settings.products_per | default: 4 | plus: 0 %}
-{% assign products_per_row_mobile = section.settings.products_per_mobile | default: 2 | plus: 0 %}
-{% if products_per_row_mobile < 1 %}{% assign products_per_row_mobile = 2 %}{% endif %}
-{% assign layout_style = section.settings.layout_style | default: 'carousel' %}
-{% assign grid_gap = section.settings.grid_gap | default: 16 | plus: 0 %}
-{% assign grid_gap_mobile = section.settings.grid_gap_mobile | default: 0 | plus: 0 %}
-{% if grid_gap_mobile < 1 %}{% assign grid_gap_mobile = grid_gap %}{% endif %}
-{% assign show_title = section.settings.show_title %}
-{% if section.settings.show_title == nil %}{% assign show_title = true %}{% endif %}
-{% assign show_price = section.settings.show_price %}
-{% if section.settings.show_price == nil %}{% assign show_price = true %}{% endif %}
-{% assign show_more_colors = section.settings.show_more_colors %}
-{% if section.settings.show_more_colors == nil %}{% assign show_more_colors = true %}{% endif %}
-{% assign show_stickers = section.settings.show_stickers %}
-{% if section.settings.show_stickers == nil %}{% assign show_stickers = true %}{% endif %}
 {% assign align_height = section.settings.align_height %}
 {% assign height = section.settings.collection_height | default: 320 | plus: 0 %}
 {% assign width = section.settings.width | default: 'wide' %}
@@ -51,48 +37,23 @@
 
 {% assign product_source = section.settings.product_source | default: 'blocks' %}
 {% assign product_limit_setting = section.settings.products_limit | default: 12 | plus: 0 %}
-{% comment %}
-  Collection picker returns a collection object. Resolve through collections[handle] when possible.
-  Product blocks always win when any block has a product or an override image: "From collection" only drives the carousel when there are zero configured Product blocks. Otherwise merchants configure blocks (e.g. override-only coming-soon tiles) and never see them while collection mode is on.
-{% endcomment %}
-{% assign ft_collection = section.settings.collection %}
-{% if ft_collection != blank %}
-  {% assign _ft_col_handle = ft_collection.handle | default: ft_collection %}
-  {% if collections[_ft_col_handle] != blank %}
-    {% assign ft_collection = collections[_ft_col_handle] %}
-  {% endif %}
-{% endif %}
-
-{% assign block_product_count = 0 %}
-{% for block in section.blocks %}
-  {% if block.type == 'product' %}
-    {% if block.settings.product != blank %}
-      {% assign block_product_count = block_product_count | plus: 1 %}
-    {% elsif block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
-      {% assign block_product_count = block_product_count | plus: 1 %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
-
-{% assign use_collection_loop = false %}
-{% assign collection_size = 0 %}
-{% if product_source == 'collection' and ft_collection != blank and block_product_count == 0 %}
-  {% assign collection_size = ft_collection.products_count | plus: 0 %}
-  {% if collection_size > 0 %}
-    {% assign use_collection_loop = true %}
-  {% endif %}
-{% endif %}
-
+{% assign collection_ref = section.settings.collection %}
 {% assign products_count = 0 %}
-{% assign product_limit = product_limit_setting %}
 
-{% if use_collection_loop %}
+{% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
+  {% assign collection_size = collections[collection_ref].products.size | plus: 0 %}
   {% assign products_count = product_limit_setting %}
   {% if collection_size < product_limit_setting %}
     {% assign products_count = collection_size %}
   {% endif %}
   {% assign product_limit = products_count %}
 {% else %}
+  {% assign block_product_count = 0 %}
+  {% for block in section.blocks %}
+    {% if block.type == 'product' and block.settings.product != blank %}
+      {% assign block_product_count = block_product_count | plus: 1 %}
+    {% endif %}
+  {% endfor %}
   {% assign product_limit = product_limit_setting %}
   {% if block_product_count < product_limit_setting %}
     {% assign product_limit = block_product_count %}
@@ -153,7 +114,6 @@
     outline: 2px solid currentColor; outline-offset: 4px;
   }
   #shopify-section-{{ id }} .ak-ft__product-link { text-decoration: none; color: inherit; display: block; }
-  #shopify-section-{{ id }} .ak-ft__image-only-tile { display: block; color: inherit; }
   #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }
   /* Nav under slider: wrap + flex layout */
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
@@ -228,83 +188,6 @@
       scroll-behavior: auto;
     }
   }
-  /* If init JS never runs (e.g. bad config parse), still show a horizontal product row on desktop. */
-  @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }}:not(.ak-ft--native-desktop) .ak-finishing-touches__carousel-wrap .slider-gallery:not(.flickity-enabled) {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: stretch;
-      width: 100%;
-      min-height: 200px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-    #shopify-section-{{ id }}:not(.ak-ft--native-desktop) .ak-finishing-touches__carousel-wrap .slider-gallery:not(.flickity-enabled) .gallery-cell {
-      flex: 0 0 auto;
-      min-width: 0;
-      box-sizing: border-box;
-    }
-  }
-  /* Show / hide product info inside this section only (does not affect other sections). */
-  {% unless show_title %}
-  #shopify-section-{{ id }} .product-thumbnail__title,
-  #shopify-section-{{ id }} .product-thumbnail__vendor {
-    display: none !important;
-  }
-  {% endunless %}
-  {% unless show_price %}
-  #shopify-section-{{ id }} .product-thumbnail__price,
-  #shopify-section-{{ id }} .product-thumbnail__was-price {
-    display: none !important;
-  }
-  {% endunless %}
-  {% unless show_more_colors %}
-  #shopify-section-{{ id }} .thumbnail-swatch,
-  #shopify-section-{{ id }} .more_color {
-    display: none !important;
-  }
-  {% endunless %}
-  {% unless show_stickers %}
-  #shopify-section-{{ id }} .sticker-holder,
-  #shopify-section-{{ id }} .thumbnail-sticker {
-    display: none !important;
-  }
-  {% endunless %}
-
-  /* Static grid layout (no carousel, no horizontal scroll). */
-  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list {
-    display: grid;
-    grid-template-columns: repeat({{ products_per_row }}, minmax(0, 1fr));
-    gap: {{ grid_gap }}px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    float: none;
-  }
-  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .product-wrap,
-  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .product-image__wrapper,
-  #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list .gallery-cell .image__container {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }}.ak-ft--grid .ak-finishing-touches__grid-list {
-      grid-template-columns: repeat({{ products_per_row_mobile }}, minmax(0, 1fr));
-      gap: {{ grid_gap_mobile }}px;
-    }
-  }
-
   /* Mobile: arrows only (hide dots), smaller arrow buttons (touch target ≥ 24px). !important overrides theme global .flickity-page-dots { display: block !important } on medium-down. */
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap .ak-finishing-touches__nav .flickity-page-dots {
@@ -328,7 +211,7 @@
 {% endstyle %}
 
 {% assign section_aria_label = section.settings.section_aria_label %}
-<section class="section is-width-{{ width }} ak-finishing-touches-section {% if layout_style == 'grid' %}ak-ft--grid{% endif %} {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
+<section class="section is-width-{{ width }} ak-finishing-touches-section {% if show_gutter %}has-gutter-enabled{% else %}has-no-side-gutter has-background{% endif %}" id="shopify-section-{{ id }}" {% if title != blank %}aria-labelledby="finishing-heading-{{ id }}"{% elsif section_aria_label != blank %}aria-label="{{ section_aria_label | escape }}"{% else %}aria-label="Finishing touches"{% endif %}>
   {% if title != blank %}
     <div class="container ak-finishing-touches__heading-wrap">
       <h2 class="ak-finishing-touches__heading" id="finishing-heading-{{ id }}" tabindex="0">{{ title }}</h2>
@@ -338,23 +221,19 @@
     {% comment %} No layout--slider: global jsFeaturedCollection would init a second Flickity here. Desktop uses native overflow-x scroll for real trackpad behavior. {% endcomment %}
     <div class="one-whole column has-column-padding-bottom featured-collection ak-ft-carousel-host is-justify-center is-flex is-flex-wrap is-flex-row">
       {% if products_count > 0 %}
-        {% if layout_style == 'grid' %}
-        <div class="ak-finishing-touches__grid-list" role="list" aria-label="{{ title | default: 'Finishing touches' | escape }} product grid">
-        {% else %}
         <div class="ak-finishing-touches__carousel-wrap">
         {% comment %} data-mobile-columns must match gallery-cell medium-down--one-half (2 cols ≤798px). {% endcomment %}
         <div class="slider-gallery {% if show_gutter == false %}has-no-side-gutter{% endif %} products-slider products-length-{{ products_count }} transparentBackground--{{ settings.slideshow_button_style }}"
              data-products-per-slide="{{ products_per_row }}"
              data-products-limit="{{ products_count }}"
              data-products-available="{{ products_count }}"
-             data-mobile-columns="{{ products_per_row_mobile }}"
+             data-mobile-columns="2"
              role="region"
              aria-roledescription="carousel"
              aria-label="{{ title | default: 'Finishing touches' | escape }} product carousel"
              >
-        {% endif %}
-          {% if use_collection_loop %}
-            {% for product in ft_collection.products limit: product_limit %}
+          {% if product_source == 'collection' and collection_ref != blank and collections[collection_ref] != blank %}
+            {% for product in collections[collection_ref].products limit: product_limit %}
               {% assign hover_enabled = settings.thumbnail_hover_enabled %}
               {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
                 {% assign alt_text = product.featured_media.preview_image.alt %}
@@ -415,34 +294,12 @@
                 {% if output_index < product_limit %}
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% assign override_image = block.settings.override_image %}
-                  {% assign override_image_mobile = block.settings.override_image_mobile %}
-                  {% assign override_image_hover = block.settings.override_image_hover %}
-                  {% assign override_image_hover_mobile = block.settings.override_image_hover_mobile %}
-                  {% assign override_alt = block.settings.image_alt | strip %}
-                  {% if override_image != blank %}
-                    {% assign tile_desktop = override_image %}
-                  {% elsif product.featured_media != blank %}
-                    {% assign tile_desktop = product.featured_media.preview_image %}
-                  {% else %}
-                    {% assign tile_desktop = blank %}
-                  {% endif %}
-                  {% if override_alt != blank %}
-                    {% assign alt_text = override_alt %}
-                  {% elsif tile_desktop != blank and tile_desktop.alt != blank %}
-                    {% assign alt_text = tile_desktop.alt %}
+                  {% if product.featured_media != blank and product.featured_media.preview_image.alt != blank %}
+                    {% assign alt_text = product.featured_media.preview_image.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
                   {% endif %}
-                  {% if override_image_hover != blank %}
-                    {% assign hover_tile_desktop = override_image_hover %}
-                  {% elsif override_image == blank and product.media[1] != blank %}
-                    {% assign hover_tile_desktop = product.media[1] %}
-                  {% else %}
-                    {% assign hover_tile_desktop = blank %}
-                  {% endif %}
-                  {% assign hover_tile_mobile = override_image_hover_mobile %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}{% if settings.show_secondary_image %}has-secondary-image-swap{% endif %}{% endif %}" {{ block.shopify_attributes }}>
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if product.media[1] != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
                     <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
@@ -450,15 +307,13 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% if tile_desktop == blank and override_image_mobile == blank %}
-                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% if product.featured_media != blank %}
+                              {% include 'image-element', image: product.featured_media.preview_image, alt: alt_text, object_fit: align_height, max_height: height %}
                             {% else %}
-                              {% render 'ak-finishing-touches-responsive-img', desktop_img: tile_desktop, mobile_img: override_image_mobile, alt: alt_text, object_fit: align_height, max_height: height %}
+                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                             {% endif %}
-                            {% if settings.show_secondary_image %}
-                              {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
-                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
-                              {% endif %}
+                            {% if product.media[1] != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
                             {% endif %}
                           </div>
                           {% if hover_enabled or settings.enable_quickshop %}
@@ -492,72 +347,19 @@
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
                 {% endif %}
-              {% elsif block.type == 'product' and block.settings.product == blank %}
-                {% if block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
-                {% if output_index < product_limit %}
-                  {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% assign ov_tile_d = block.settings.override_image %}
-                  {% assign ov_tile_m = block.settings.override_image_mobile %}
-                  {% assign hover_tile_desktop = block.settings.override_image_hover %}
-                  {% assign hover_tile_mobile = block.settings.override_image_hover_mobile %}
-                  {% assign tile_title = block.settings.tile_title | strip %}
-                  {% assign tile_link = block.settings.tile_link %}
-                  {% assign alt_text = block.settings.image_alt | strip %}
-                  {% if alt_text == blank %}
-                    {% if tile_title != blank %}
-                      {% assign alt_text = tile_title %}
-                    {% else %}
-                      {% assign alt_text = 'Featured image' %}
-                    {% endif %}
-                  {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}{% if settings.show_secondary_image %}has-secondary-image-swap{% endif %}{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
-                    {% if tile_link != blank %}
-                      <a href="{{ tile_link }}" class="ak-ft__product-link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
-                    {% else %}
-                      <div class="ak-ft__image-only-tile" role="group" {% if tile_title != blank %}aria-label="{{ tile_title | escape }}"{% elsif alt_text != blank %}aria-label="{{ alt_text | escape }}"{% endif %}>
-                    {% endif %}
-                      <div class="product-wrap">
-                        <div class="product-image__wrapper">
-                          <div class="image__container product__imageContainer">
-                            {% render 'ak-finishing-touches-responsive-img', desktop_img: ov_tile_d, mobile_img: ov_tile_m, alt: alt_text, object_fit: align_height, max_height: height %}
-                            {% if settings.show_secondary_image %}
-                              {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
-                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
-                              {% endif %}
-                            {% endif %}
-                          </div>
-                        </div>
-                        {% if hover_enabled == false and show_title and tile_title != blank %}
-                          <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">
-                            <span class="product-thumbnail__title">{{ tile_title | escape }}</span>
-                          </div>
-                        {% endif %}
-                      </div>
-                    {% if tile_link != blank %}
-                      </a>
-                    {% else %}
-                      </div>
-                    {% endif %}
-                  </div>
-                  {% assign output_index = output_index | plus: 1 %}
-                {% endif %}
-                {% endif %}
               {% endif %}
             {% endfor %}
           {% endif %}
-        {% if layout_style == 'grid' %}
-        </div>
-        {% else %}
         </div>
         </div>
-        {% endif %}
       {% else %}
-        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' and ft_collection == blank %}Choose a collection, or set Product source to Hand-picked products and add Product blocks.{% else %}Nothing to display. Add a product or override image to each Product block (Hand-picked), or choose a collection that contains products — when the collection is empty, Product blocks below are used automatically.{% endif %}</p>
+        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}Select a collection above, or switch to "Hand-picked products" and add Product blocks below.{% else %}Add products using the "Product" blocks below.{% endif %}</p>
       {% endif %}
     </div>
   </div>
-  {% comment %} Keep this script inside the section element: readFinishingTouchesSectionData uses $section.find(). A sibling script after closing </section> is not a descendant and was never found. {% endcomment %}
-  <script type="application/json" data-section-id="{{ id }}" class="ak-ft__section-json">
+</section>
+
+<script type="application/json" data-section-id="{{ id }}" data-section-data>
   {
     "collection_style": "slider",
     "products_per": {{ products_per_row }},
@@ -565,30 +367,13 @@
     "products_limit": {{ products_count }},
     "align_height": {{ align_height | json }}
   }
-  </script>
-</section>
+</script>
 <script>
 (function() {
   var sectionId = '{{ id }}';
   var arrowShape = 'M95.04 46 21.68 46 48.18 22.8 42.91 16.78 4.96 50 42.91 83.22 48.18 77.2 21.68 54 95.04 54 95.04 46z';
   var carouselLabel = {{ title | default: 'Finishing touches' | json }};
   var MOBILE_MQ = window.matchMedia('(max-width: 798px)');
-
-  /** Config JSON must be read from script text only — jQuery .data() on data-section-data (boolean attr) breaks JSON.parse. */
-  function readFinishingTouchesSectionData($section) {
-    var $dataEl = $section.find('script.ak-ft__section-json[type="application/json"]').filter(function() {
-      return String(jQuery(this).attr('data-section-id')) === String(sectionId);
-    }).first();
-    if (!$dataEl.length) return null;
-    try {
-      var el = $dataEl[0];
-      var raw = (el && el.textContent ? el.textContent : ($dataEl.html() || '')).trim();
-      if (!raw) return null;
-      return JSON.parse(raw);
-    } catch (e) {
-      return null;
-    }
-  }
 
   function getMobileColumns($gallery) {
     var n = parseInt($gallery.attr('data-mobile-columns'), 10);
@@ -743,8 +528,13 @@
     if (typeof jQuery === 'undefined') return;
     var $section = jQuery('#shopify-section-' + sectionId);
     if (!$section.length) return;
-    var data = readFinishingTouchesSectionData($section);
-    if (!data) return;
+    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
+    if (!$dataEl.length) return;
+    var data = {};
+    try {
+      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
+      data = typeof raw === 'object' ? raw : JSON.parse(raw);
+    } catch (e) { return; }
     if (data.collection_style !== 'slider') return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
@@ -815,8 +605,14 @@
     if (!$section.length) return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
-    var data = readFinishingTouchesSectionData($section);
-    if (!data || data.collection_style !== 'slider') return;
+    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
+    if (!$dataEl.length) return;
+    var data = {};
+    try {
+      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
+      data = typeof raw === 'object' ? raw : JSON.parse(raw);
+    } catch (e) { return; }
+    if (data.collection_style !== 'slider') return;
 
     var isMobile = MOBILE_MQ.matches;
     var hasFlickity = $gallery.hasClass('flickity-enabled');
@@ -925,8 +721,7 @@
     setTimeout(initFinishingTouchesCarousel, 100);
   }
   document.addEventListener('shopify:section:load', function(e) {
-    if (String(e.detail.sectionId) !== String(sectionId)) return;
-    setTimeout(initFinishingTouchesCarousel, 150);
+    if (e.detail.sectionId === sectionId) setTimeout(initFinishingTouchesCarousel, 150);
   });
 })();
 </script>
@@ -1029,51 +824,6 @@
     },
     {
       "type": "header",
-      "content": "Product card display"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_title",
-      "label": "Show product title",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_price",
-      "label": "Show price",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_more_colors",
-      "label": "Show \"+ More Colors\"",
-      "default": true,
-      "info": "Hides the color-count link below each product when off."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_stickers",
-      "label": "Show product tags / stickers",
-      "default": true,
-      "info": "Best seller, New, Sale, Coming Soon, Pre-order, AK Sport / Jeans, etc."
-    },
-    {
-      "type": "header",
-      "content": "Layout style"
-    },
-    {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layout style",
-      "default": "carousel",
-      "options": [
-        { "value": "carousel", "label": "Carousel (scrolls)" },
-        { "value": "grid", "label": "Static grid (no scroll)" }
-      ],
-      "info": "Carousel shows arrows/dots and scrolls horizontally. Static grid shows ALL products in a fixed columns × rows grid with no scrolling."
-    },
-    {
-      "type": "header",
       "content": "Carousel"
     },
     {
@@ -1085,7 +835,7 @@
         { "value": "blocks", "label": "Hand-picked products" },
         { "value": "collection", "label": "From collection" }
       ],
-      "info": "Hand-picked: Product blocks drive the carousel. From collection: uses that collection only when no Product block has a product or override image. If any block is configured, blocks win (so override-only tiles work even when a collection is selected)."
+      "info": "Hand-picked: use Product blocks below. From collection: choose a collection and limit."
     },
     {
       "type": "collection",
@@ -1106,44 +856,11 @@
     {
       "type": "range",
       "id": "products_per",
-      "label": "Products per row (desktop)",
-      "min": 1,
+      "label": "Products visible at once",
+      "min": 2,
       "max": 6,
-      "step": 1,
       "default": 4,
-      "info": "Carousel: products visible at once. Static grid: columns on desktop (≥799px)."
-    },
-    {
-      "type": "range",
-      "id": "products_per_mobile",
-      "label": "Products per row (mobile)",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 2,
-      "info": "Number of columns on mobile (≤798px). Applies to both carousel and static grid."
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap (desktop)",
-      "min": 0,
-      "max": 48,
-      "step": 4,
-      "default": 16,
-      "unit": "px",
-      "info": "Spacing between cells in Static grid mode."
-    },
-    {
-      "type": "range",
-      "id": "grid_gap_mobile",
-      "label": "Grid gap (mobile)",
-      "min": 0,
-      "max": 48,
-      "step": 4,
-      "default": 0,
-      "unit": "px",
-      "info": "0 = same as desktop. Static grid mode only."
+      "info": "Number of product cards visible in the carousel."
     },
     {
       "type": "checkbox",
@@ -1243,61 +960,7 @@
           "type": "product",
           "id": "product",
           "label": "Product",
-          "info": "Optional when you upload an Override image below (e.g. coming-soon): clear this product and use Override image only, plus optional title/link. Otherwise pick a product for PDP link, swatches, and price."
-        },
-        {
-          "type": "header",
-          "content": "Image override (optional)"
-        },
-        {
-          "type": "paragraph",
-          "content": "Different desktop vs mobile art: fill Override image (desktop) and Override image (mobile). Uses the theme breakpoint (≤798px = mobile). When mobile is blank, desktop art is shown at all widths. With no product, set at least one override."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image",
-          "label": "Override image (desktop)",
-          "info": "Shown from 799px up when a separate mobile override exists; otherwise at all widths. With a product, replaces the featured image unless blank."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image_mobile",
-          "label": "Override image (mobile)",
-          "info": "Optional. Shown at ≤798px when set. If blank, desktop override or product featured image is used everywhere."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image_hover",
-          "label": "Override hover image (desktop)",
-          "info": "Optional. Hover swap when enabled. Falls back to second product media when overrides are blank."
-        },
-        {
-          "type": "image_picker",
-          "id": "override_image_hover_mobile",
-          "label": "Override hover image (mobile)",
-          "info": "Optional. Separate hover art at ≤798px. If blank, desktop hover (or product second image) is used."
-        },
-        {
-          "type": "text",
-          "id": "image_alt",
-          "label": "Image alt text (override)",
-          "info": "Describe the image for accessibility. With a product, falls back to product alt/title. Image-only tiles use this or Title below."
-        },
-        {
-          "type": "header",
-          "content": "When no product (override image only)"
-        },
-        {
-          "type": "text",
-          "id": "tile_title",
-          "label": "Title",
-          "info": "Shown under the image when Product is cleared and Section setting “Show product title” is on (e.g. Coming soon)."
-        },
-        {
-          "type": "url",
-          "id": "tile_link",
-          "label": "Link",
-          "info": "Optional. Makes the whole tile a link (e.g. collection or campaign page). Leave empty for a non-clickable preview."
+          "info": "Select a product to show in the carousel. Add more blocks to add more products; order is the display order."
         }
       ]
     }
