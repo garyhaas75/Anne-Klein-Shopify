@@ -71,6 +71,7 @@
 {% assign heading_level = section.settings.heading_level | default: 'h1' %}
 {% assign wordmark_heading_level = section.settings.wordmark_heading_level | default: 'p' %}
 {% assign eyebrow_co = section.settings.eyebrow_color | default: section.settings.overlay_text_color | default: '#ffffff' %}
+{% assign eyebrow_co_m = section.settings.eyebrow_color_mobile | default: eyebrow_co %}
 {% assign band_color = section.settings.band_color | default: '#ffffff' %}
 {% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
 {% assign solid_white_bottom_band = section.settings.solid_white_bottom_band %}
@@ -582,7 +583,6 @@
     margin: 0;
     width: 100%;
     box-sizing: border-box;
-    color: {{ eyebrow_co }};
     text-align: {{ eb_al }};
     padding: {{ eb_pt }}px {{ eb_pr }}px {{ eb_pb }}px {{ eb_pl }}px;
     transform: translateY({{ eb_nudge }}px);
@@ -593,8 +593,14 @@
       letter-spacing: {{ eb_ls }}px;
     {% endif %}
   }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      color: {{ eyebrow_co }};
+    }
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
       padding: {{ eb_ptm }}px {{ eb_prm }}px {{ eb_pbm }}px {{ eb_plm }}px;
@@ -1657,7 +1663,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Eyebrow and artist name sit above the bottom band. Each has its own font, color, alignment (desktop/mobile), and padding."
+      "content": "Eyebrow and artist name sit above the bottom band. Each has its own font, size, and color (separate desktop and mobile swatches for the eyebrow and the name), alignment, and padding."
     },
     {
       "type": "header",
@@ -1761,8 +1767,16 @@
     {
       "type": "color",
       "id": "eyebrow_color",
-      "label": "Eyebrow color",
-      "default": "#ffffff"
+      "label": "Eyebrow color (desktop)",
+      "default": "#ffffff",
+      "info": "799px and up. When unset, the overlay fallback text color in this section is still used (same as before)."
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color_mobile",
+      "label": "Eyebrow color (mobile)",
+      "default": "#ffffff",
+      "info": "0–798px. Defaults to the desktop eyebrow color; set a different swatch for small screens."
     },
     {
       "type": "range",
