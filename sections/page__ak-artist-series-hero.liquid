@@ -661,7 +661,7 @@
     line-height: {{ eb_lh }}%;
     margin: 0;
     box-sizing: border-box;
-    width: 100%;
+    /* Mobile: avoid width:100% here; it was sizing the text block to the full inset. */
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
@@ -673,12 +673,15 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      width: 100%;
       color: {{ eyebrow_co }};
       text-align: {{ eb_al }};
     }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      width: auto;
+      /* Column flex: line width = max(eyebrow, name); cross-axis stretch then fills that */
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
