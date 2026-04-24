@@ -724,6 +724,20 @@
       transition: none !important;
     }
   }
+  {% comment %}
+    Theme editor: preview is usually >798px wide, so @media (max-width: 798px) never matches and
+    "mobile" name/eyebrow text-align + padding look broken. Re-apply mobile values here only in
+    design mode unless the merchant turns on "Use desktop text in theme editor" below.
+  {% endcomment %}
+  {% if request.design_mode %}
+    {% unless section.settings.editor_hero_text_use_desktop_in_editor %}
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+    text-align: {{ nm_al_m }} !important;
+    padding-left: {{ nm_plm }}px !important;
+    padding-right: {{ nm_prm }}px !important;
+  }
+    {% endunless %}
+  {% endif %}
 {% endstyle %}
 
 <section
@@ -1711,6 +1725,21 @@
     },
     {
       "type": "header",
+      "content": "Theme editor (name + eyebrow text)"
+    },
+    {
+      "type": "paragraph",
+      "content": "The customizer window is almost always wider than 798px, so normal “mobile” CSS does not run there. This section can copy your mobile alignment and left/right padding into the editor so you can see them without resizing. Turn the option below on if you need to preview desktop text in a wide window instead."
+    },
+    {
+      "type": "checkbox",
+      "id": "editor_hero_text_use_desktop_in_editor",
+      "label": "Use desktop name + eyebrow text in the theme editor",
+      "default": false,
+      "info": "Off (default): in the theme editor, mobile “Name + eyebrow alignment” and “Name padding left/right (mobile)” are applied to the text block. On: use the desktop settings while editing (wide preview). The live storefront still uses real screen width (≤798px = mobile, ≥799px = desktop)."
+    },
+    {
+      "type": "header",
       "content": "Eyebrow"
     },
     {
@@ -2231,7 +2260,7 @@
       "id": "name_text_align_mobile",
       "label": "Name + eyebrow alignment (mobile)",
       "default": "center",
-      "info": "Applies at max-width: 798px. Uses text-align to move the eyebrow+name block; text inside the block stays left. Resize the theme preview to phone width. If the name spans almost the full width, the three options may look similar.",
+      "info": "Storefront: max-width 798px. In the theme editor, this is also applied to the text block (see “Theme editor” above) unless you turn on “Use desktop name + eyebrow text in the theme editor.”",
       "options": [
         {
           "value": "left",
