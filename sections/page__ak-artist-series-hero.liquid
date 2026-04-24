@@ -1,0 +1,2408 @@
+{% comment %}
+  AK Artist Series — hero band.
+  Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
+  Frames: AK_Artist Series_Desktop 351:1393, AK_Artist Series_Mobile 333:422
+  Composition: full-bleed photo (butterflies + AK signature baked in), top-left
+  wordmark, eyebrow + large artist name near the bottom with a gradient scrim (no
+  solid white bar by default), optional solid bottom band + centered AK logo.
+  WCAG 2.2 AA: region landmark, single h1 by default, alt on every image,
+  focus-visible, prefers-reduced-motion respected.
+{% endcomment %}
+
+{% assign wm1_ff = section.settings.wordmark_line_1_font_family | default: section.settings.wordmark_font_family | default: 'amiri' %}
+{% assign wm2_ff = section.settings.wordmark_line_2_font_family | default: section.settings.wordmark_font_family | default: 'amiri' %}
+{% if wm1_ff == 'amiri' or wm2_ff == 'amiri' or section.settings.eyebrow_font_family == 'amiri' or section.settings.name_font_family == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
+
+{% assign id = section.id %}
+{% assign image = section.settings.image %}
+{% assign mobile_image = section.settings.mobile_image | default: image %}
+{% assign image_alt = section.settings.image_alt %}
+{% assign wordmark_line_1 = section.settings.wordmark_line_1 | strip %}
+{% assign wordmark_line_2 = section.settings.wordmark_line_2 | strip %}
+
+{% capture wm1_stack %}{% render 'ak-campaign-font-stack', font_key: wm1_ff %}{% endcapture %}
+{% assign wm1_stack = wm1_stack | strip %}
+{% capture wm2_stack %}{% render 'ak-campaign-font-stack', font_key: wm2_ff %}{% endcapture %}
+{% assign wm2_stack = wm2_stack | strip %}
+
+{% assign wm1_sz = section.settings.wordmark_line_1_font_size | default: section.settings.wordmark_font_size | default: 22 %}
+{% assign wm1_sz_m0 = section.settings.wordmark_line_1_font_size_mobile | default: 0 | plus: 0 %}
+{% if wm1_sz_m0 < 1 %}{% assign wm1_sz_m = wm1_sz %}{% else %}{% assign wm1_sz_m = wm1_sz_m0 %}{% endif %}
+{% assign wm1_wt = section.settings.wordmark_line_1_font_weight | default: section.settings.wordmark_font_weight | default: '400' %}
+{% assign wm1_co = section.settings.wordmark_line_1_color | default: section.settings.wordmark_color | default: '#ffe1e3' %}
+{% assign wm1_lh = section.settings.wordmark_line_1_line_height | default: section.settings.wordmark_line_height | default: 120 %}
+{% assign wm1_ls = section.settings.wordmark_line_1_letter_spacing | default: section.settings.wordmark_letter_spacing | default: 0 %}
+{% assign wm1_al = section.settings.wordmark_line_1_text_align | default: 'left' %}
+{% assign wm1_al_m = section.settings.wordmark_line_1_text_align_mobile | default: wm1_al %}
+{% assign wm1_pt = section.settings.wordmark_line_1_padding_top | default: 0 %}
+{% assign wm1_pr = section.settings.wordmark_line_1_padding_right | default: 0 %}
+{% assign wm1_pb = section.settings.wordmark_line_1_padding_bottom | default: 0 %}
+{% assign wm1_pl = section.settings.wordmark_line_1_padding_left | default: 0 %}
+{% assign wm1_ptm = section.settings.wordmark_line_1_padding_top_mobile | default: wm1_pt %}
+{% assign wm1_prm = section.settings.wordmark_line_1_padding_right_mobile | default: wm1_pr %}
+{% assign wm1_pbm = section.settings.wordmark_line_1_padding_bottom_mobile | default: wm1_pb %}
+{% assign wm1_plm = section.settings.wordmark_line_1_padding_left_mobile | default: wm1_pl %}
+
+{% assign wm2_sz = section.settings.wordmark_line_2_font_size | default: section.settings.wordmark_font_size | default: 22 %}
+{% assign wm2_sz_m0 = section.settings.wordmark_line_2_font_size_mobile | default: 0 | plus: 0 %}
+{% if wm2_sz_m0 < 1 %}{% assign wm2_sz_m = wm2_sz %}{% else %}{% assign wm2_sz_m = wm2_sz_m0 %}{% endif %}
+{% assign wm2_wt = section.settings.wordmark_line_2_font_weight | default: section.settings.wordmark_font_weight | default: '400' %}
+{% assign wm2_co = section.settings.wordmark_line_2_color | default: section.settings.wordmark_color | default: '#ffe1e3' %}
+{% assign wm2_lh = section.settings.wordmark_line_2_line_height | default: section.settings.wordmark_line_height | default: 120 %}
+{% assign wm2_ls = section.settings.wordmark_line_2_letter_spacing | default: section.settings.wordmark_letter_spacing | default: 0 %}
+{% assign wm2_al = section.settings.wordmark_line_2_text_align | default: 'left' %}
+{% assign wm2_al_m = section.settings.wordmark_line_2_text_align_mobile | default: wm2_al %}
+{% assign wm2_pt = section.settings.wordmark_line_2_padding_top | default: 0 %}
+{% assign wm2_pr = section.settings.wordmark_line_2_padding_right | default: 0 %}
+{% assign wm2_pb = section.settings.wordmark_line_2_padding_bottom | default: 0 %}
+{% assign wm2_pl = section.settings.wordmark_line_2_padding_left | default: 28 %}
+{% assign wm2_ptm = section.settings.wordmark_line_2_padding_top_mobile | default: wm2_pt %}
+{% assign wm2_prm = section.settings.wordmark_line_2_padding_right_mobile | default: wm2_pr %}
+{% assign wm2_pbm = section.settings.wordmark_line_2_padding_bottom_mobile | default: wm2_pb %}
+{% assign wm2_plm = section.settings.wordmark_line_2_padding_left_mobile | default: wm2_pl %}
+{% assign wm1_uc = section.settings.wordmark_line_1_uppercase %}
+{% assign wm2_uc = section.settings.wordmark_line_2_uppercase %}
+{% assign ak_logo = section.settings.ak_logo %}
+{% assign ak_logo_alt = section.settings.ak_logo_alt | default: 'Anne Klein' %}
+{% assign eyebrow = section.settings.eyebrow %}
+{% assign artist_name = section.settings.artist_name %}
+{% assign heading_level = section.settings.heading_level | default: 'h1' %}
+{% assign wordmark_heading_level = section.settings.wordmark_heading_level | default: 'p' %}
+{% assign eyebrow_co = section.settings.eyebrow_color | default: section.settings.overlay_text_color | default: '#ffffff' %}
+{% assign eyebrow_co_m = section.settings.eyebrow_color_mobile | default: eyebrow_co %}
+{% assign band_color = section.settings.band_color | default: '#ffffff' %}
+{% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
+{% assign solid_white_bottom_band = section.settings.solid_white_bottom_band %}
+{% assign bottom_scrim_strength = section.settings.bottom_scrim_strength | default: 52 | plus: 0 %}
+{% comment %} Dark bottom gradient: only when not using the solid bar and strength &gt; 0. {% endcomment %}
+{% assign show_bottom_gradient_scrim = false %}
+{% if solid_white_bottom_band == false and bottom_scrim_strength > 0 %}
+  {% assign show_bottom_gradient_scrim = true %}
+{% endif %}
+{% assign image_min_height = section.settings.image_min_height | default: 720 | plus: 0 %}
+{% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 | plus: 0 %}
+{% assign image_max_height = section.settings.image_max_height | default: 0 | plus: 0 %}
+{% assign image_max_height_mobile = section.settings.image_max_height_mobile | default: 0 | plus: 0 %}
+{% assign band_height = section.settings.band_height | default: 220 %}
+{% assign band_height_mobile = section.settings.band_height_mobile | default: 160 %}
+{% assign overlay_overlap = section.settings.overlay_overlap | default: 96 %}
+{% assign overlay_overlap_mobile = section.settings.overlay_overlap_mobile | default: 56 %}
+{% assign wordmark_max_width = section.settings.wordmark_max_width | default: 320 %}
+{% assign wordmark_max_width_mobile = section.settings.wordmark_max_width_mobile | default: 180 %}
+{% assign wordmark_offset_top = section.settings.wordmark_offset_top | default: 32 %}
+{% assign wordmark_offset_left = section.settings.wordmark_offset_left | default: 32 %}
+{% assign ak_logo_max_width = section.settings.ak_logo_max_width | default: 320 %}
+{% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
+{% assign image_object_position = section.settings.image_object_position | default: 'center' %}
+{% assign image_fill_and_crop = section.settings.image_fill_and_crop %}
+{% comment %} Legacy `name_color` in older section JSON: fallback if new keys are missing. {% endcomment %}
+{% assign name_co_first = section.settings.name_color_first | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
+{% assign name_co_last = section.settings.name_color_last | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
+{% assign name_co_first_m = section.settings.name_color_first_mobile | default: name_co_first %}
+{% assign name_co_last_m = section.settings.name_color_last_mobile | default: name_co_last %}
+{% assign has_hero_image = false %}
+{% if image != blank or mobile_image != blank %}
+  {% assign has_hero_image = true %}
+{% endif %}
+
+{% capture eyebrow_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_font_family %}{% endcapture %}
+{% assign eyebrow_font_stack = eyebrow_font_stack | strip %}
+{% capture name_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.name_font_family %}{% endcapture %}
+{% assign name_font_stack = name_font_stack | strip %}
+
+{% assign eb_sz = section.settings.eyebrow_font_size | default: 24 %}
+{% assign eb_sz_m0 = section.settings.eyebrow_font_size_mobile | default: 0 | plus: 0 %}
+{% if eb_sz_m0 < 1 %}{% assign eb_sz_m = eb_sz %}{% else %}{% assign eb_sz_m = eb_sz_m0 %}{% endif %}
+{% assign eb_wt = section.settings.eyebrow_font_weight | default: '700' %}
+{% assign eb_lh = section.settings.eyebrow_line_height | default: 120 %}
+{% assign eb_ls = section.settings.eyebrow_letter_spacing | default: 0 %}
+{% assign eb_ls_m = section.settings.eyebrow_letter_spacing_mobile | default: eb_ls %}
+{% comment %} name_text_align: L/C/R for the shrink-wrapped .overlay-content block. Eyebrow: eyebrow_text_align. {% endcomment %}
+{% assign eb_pt = section.settings.eyebrow_padding_top | default: 0 %}
+{% assign eb_pr = section.settings.eyebrow_padding_right | default: 24 %}
+{% assign eb_pb = section.settings.eyebrow_padding_bottom | default: 12 %}
+{% assign eb_pl = section.settings.eyebrow_padding_left | default: 24 %}
+{% assign eb_ptm = section.settings.eyebrow_padding_top_mobile | default: eb_pt %}
+{% assign eb_prm = section.settings.eyebrow_padding_right_mobile | default: 16 %}
+{% assign eb_pbm = section.settings.eyebrow_padding_bottom_mobile | default: eb_pb %}
+{% assign eb_plm = section.settings.eyebrow_padding_left_mobile | default: 16 %}
+{% assign eb_nudge = section.settings.eyebrow_vertical_nudge | default: 0 %}
+{% assign eb_nudge_m = section.settings.eyebrow_vertical_nudge_mobile | default: 0 %}
+{% comment %} Text block: nm_al_*. Eyebrow line in block: eb_al_*. (schema defaults match.) {% endcomment %}
+{% assign eb_al = section.settings.eyebrow_text_align | default: 'center' | strip | downcase %}
+{% assign eb_al_m = section.settings.eyebrow_text_align_mobile | default: eb_al | strip | downcase %}
+{% if eb_al != 'left' and eb_al != 'right' and eb_al != 'center' %}
+  {% assign eb_al = 'left' %}
+{% endif %}
+{% if eb_al_m != 'left' and eb_al_m != 'right' and eb_al_m != 'center' %}
+  {% assign eb_al_m = 'left' %}
+{% endif %}
+
+{% assign nm_sz = section.settings.name_font_size | default: 144 %}
+{% assign nm_sz_m0 = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
+{% if nm_sz_m0 < 1 %}{% assign nm_sz_m = nm_sz %}{% else %}{% assign nm_sz_m = nm_sz_m0 %}{% endif %}
+{% assign nm_wt = section.settings.name_font_weight | default: '700' %}
+{% assign nm_lh = section.settings.name_line_height | default: 100 %}
+{% assign nm_ls = section.settings.name_letter_spacing | default: -4 %}
+{% assign nm_ls_m = section.settings.name_letter_spacing_mobile | default: nm_ls %}
+{% assign nm_al = section.settings.name_text_align | default: 'center' | strip | downcase %}
+{% assign nm_al_m = section.settings.name_text_align_mobile | default: nm_al | strip | downcase %}
+{% if nm_al != 'left' and nm_al != 'right' and nm_al != 'center' %}
+  {% assign nm_al = 'center' %}
+{% endif %}
+{% if nm_al_m != 'left' and nm_al_m != 'right' and nm_al_m != 'center' %}
+  {% assign nm_al_m = 'center' %}
+{% endif %}
+{% if nm_al == 'left' %}
+  {% assign nm_justify = 'flex-start' %}
+{% elsif nm_al == 'right' %}
+  {% assign nm_justify = 'flex-end' %}
+{% else %}
+  {% assign nm_justify = 'center' %}
+{% endif %}
+{% if nm_al_m == 'left' %}
+  {% assign nm_justify_m = 'flex-start' %}
+{% elsif nm_al_m == 'right' %}
+  {% assign nm_justify_m = 'flex-end' %}
+{% else %}
+  {% assign nm_justify_m = 'center' %}
+{% endif %}
+{% assign nm_pt = section.settings.name_padding_top | default: 4 %}
+{% assign nm_pr = section.settings.name_padding_right | default: 24 %}
+{% assign nm_pb = section.settings.name_padding_bottom | default: 0 %}
+{% assign nm_pl = section.settings.name_padding_left | default: 24 %}
+{% assign nm_ptm = section.settings.name_padding_top_mobile | default: nm_pt %}
+{% assign nm_prm = section.settings.name_padding_right_mobile | default: 16 %}
+{% assign nm_pbm = section.settings.name_padding_bottom_mobile | default: nm_pb %}
+{% assign nm_plm = section.settings.name_padding_left_mobile | default: 16 %}
+{% assign nm_nudge = section.settings.name_vertical_nudge | default: 0 %}
+{% assign nm_nudge_m = section.settings.name_vertical_nudge_mobile | default: 0 %}
+
+{% capture wordmark_aria %}
+  {% if wordmark_line_1 != blank %}{{ wordmark_line_1 | strip }}{% endif %}{% if wordmark_line_1 != blank and wordmark_line_2 != blank %} {% endif %}{% if wordmark_line_2 != blank %}{{ wordmark_line_2 | strip }}{% endif %}
+{% endcapture %}
+{% assign wordmark_aria = wordmark_aria | strip %}
+
+{% capture section_aria %}
+  {% if artist_name != blank %}
+    aria-labelledby="ak-artist-series-hero-name-{{ id }}"
+  {% elsif wordmark_aria != blank %}
+    aria-label="{{ wordmark_aria | escape }}"
+  {% else %}
+    aria-label="Anne Klein Artist Series"
+  {% endif %}
+{% endcapture %}
+
+{% assign img_alt_resolved = image_alt | default: artist_name | default: 'Anne Klein Artist Series featured artist' %}
+{% assign scrim_alpha = bottom_scrim_strength | divided_by: 100.0 %}
+
+{% style %}
+  /*
+    Theme Flex: `.section.is-width-wide` = full content width.
+    Default `natural` layout: image keeps its aspect ratio (width 100%, height auto)
+    so nothing is cropped; band + eyebrow/name are absolutely positioned over the photo.
+    Optional `crop` layout: fixed min-height + object-fit cover (fills stage, crops image).
+    Default layout matches Figma: gradient scrim at bottom + transparent “logo strip”,
+    large name in overlay_name_color (typically light pink over scrim).
+
+    Artist name font-size: min(setting max, max(2.5rem, fluid vw)) so the slider max can
+    actually render past ~120px on common desktop widths (11vw was too low).
+
+    Background images use image-element back_to_basics mode so Lazysizes’ aspect-ratio helper
+    (data-aspectratio + padded .image-element__wrap) does not crop the uploaded asset.
+  */
+  #shopify-section-{{ id }} {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  /* --- Natural height: show full photo (no cover crop) --- */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural {
+    overflow: visible;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder {
+    min-height: {{ image_min_height }}px;
+    overflow: hidden;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media .image-element__wrap {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    padding-bottom: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media img,
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media .placeholder-svg {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    vertical-align: middle;
+    position: relative !important;
+    object-fit: unset !important;
+    object-position: unset !important;
+    min-height: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only {
+    position: relative;
+    width: 100%;
+    inset: auto;
+    height: auto;
+  }
+  /* Fallback when no image: split gradient + curve hint (matches comp, not gray SVG placeholder). */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--placeholder.ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+    position: relative;
+    min-height: {{ image_min_height }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--placeholder.ak-artist-series-hero__stage--natural .ak-artist-series-hero__media {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder .ak-artist-series-hero__placeholder-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-height: {{ image_min_height }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural.ak-artist-series-hero__stage--placeholder .ak-artist-series-hero__placeholder-fill {
+      min-height: {{ image_min_height_mobile }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__placeholder-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    box-sizing: border-box;
+    margin: 0;
+    aspect-ratio: auto;
+    pointer-events: none;
+    border: 0;
+    background-color: #1e281c;
+    background-image:
+      radial-gradient(
+        ellipse 118% 145% at 115% -8%,
+        rgba(148, 168, 138, 0.95) 0%,
+        rgba(84, 98, 74, 0.92) 38%,
+        rgba(46, 56, 42, 0.94) 56%,
+        transparent 56.5%
+      ),
+      linear-gradient(
+        104deg,
+        #243022 0%,
+        #243022 39.5%,
+        #374433 41%,
+        #596556 72%,
+        #8f9f8a 100%
+      );
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  /* --- Crop-fill: min-height + cover; min() keeps short viewports from forced overflow --- */
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+    min-height: min({{ image_min_height }}px, 92vh);
+    overflow: hidden;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: min({{ image_min_height_mobile }}px, 88vh);
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media .image-element__wrap {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media img,
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media .placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ image_object_position }};
+    min-height: 0 !important;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media > .is-hidden-desktop-only {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__placeholder-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: none; }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-mobile-only { display: none !important; }
+    #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: block !important; }
+  }
+  {% comment %}
+    Natural + max height: desktop art uses img.is-hidden-mobile-only (see image-element); it is not
+    a direct child of .ak-artist-series-hero__media, so old `> .is-hidden-mobile-only` never matched.
+    min(px, vh) keeps tall caps from overflowing short desktop viewports.
+  {% endcomment %}
+  {% if image_fill_and_crop == false and image_max_height > 0 %}
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media img.is-hidden-mobile-only {
+      max-height: min({{ image_max_height }}px, 92vh) !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain;
+      object-position: {{ image_object_position }};
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop == false and image_max_height_mobile > 0 %}
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only {
+      max-height: min({{ image_max_height_mobile }}px, 88vh);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only .image-element__wrap {
+      max-height: inherit;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only img,
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only .placeholder-svg {
+      max-width: 100% !important;
+      width: 100% !important;
+      max-height: min({{ image_max_height_mobile }}px, 88vh) !important;
+      height: auto !important;
+      object-fit: contain;
+      object-position: {{ image_object_position }};
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop and image_max_height > 0 %}
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: min({{ image_min_height }}px, 92vh);
+      max-height: min({{ image_max_height | at_least: image_min_height }}px, 95vh);
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop and image_max_height_mobile > 0 %}
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: min({{ image_min_height_mobile }}px, 88vh);
+      max-height: min({{ image_max_height_mobile | at_least: image_min_height_mobile }}px, 92vh);
+    }
+  }
+  {% endif %}
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
+    position: absolute;
+    top: {{ wordmark_offset_top }}px;
+    left: {{ wordmark_offset_left }}px;
+    width: min({{ wordmark_max_width }}px, 52vw);
+    max-width: 85%;
+    z-index: 4;
+    margin: 0;
+    padding: 0;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line {
+    display: block;
+    margin: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line + .ak-artist-series-hero__wordmark-line {
+    margin-top: 0.08em;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
+    font-family: {{ wm1_stack }};
+    /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
+    font-size: clamp({{ wm1_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ wm1_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ wm1_sz | times: 0.0675 }}vw), {{ wm1_sz | times: 3 | divided_by: 16.0 }}rem);
+    font-weight: {{ wm1_wt }};
+    line-height: {{ wm1_lh }}%;
+    color: {{ wm1_co }};
+    text-align: {{ wm1_al }};
+    padding: {{ wm1_pt }}px {{ wm1_pr }}px {{ wm1_pb }}px {{ wm1_pl }}px;
+    {% if wm1_uc %}
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    {% else %}
+      letter-spacing: {{ wm1_ls }}px;
+    {% endif %}
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
+    font-family: {{ wm2_stack }};
+    /* Smooth linear ramp across desktop widths (slider = base @ ~1024px → 2.2× @ ~3000px). */
+    font-size: clamp({{ wm2_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ wm2_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ wm2_sz | times: 0.0675 }}vw), {{ wm2_sz | times: 3 | divided_by: 16.0 }}rem);
+    font-weight: {{ wm2_wt }};
+    line-height: {{ wm2_lh }}%;
+    color: {{ wm2_co }};
+    text-align: {{ wm2_al }};
+    padding: {{ wm2_pt }}px {{ wm2_pr }}px {{ wm2_pb }}px {{ wm2_pl }}px;
+    {% if wm2_uc %}
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    {% else %}
+      letter-spacing: {{ wm2_ls }}px;
+    {% endif %}
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
+      top: 16px;
+      left: 16px;
+      width: min({{ wordmark_max_width_mobile }}px, 85vw);
+      max-width: 90%;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--1 {
+      font-size: {{ wm1_sz_m | divided_by: 16.0 }}rem;
+      text-align: {{ wm1_al_m }};
+      padding: {{ wm1_ptm }}px {{ wm1_prm }}px {{ wm1_pbm }}px {{ wm1_plm }}px;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__wordmark-line--2 {
+      font-size: {{ wm2_sz_m | divided_by: 16.0 }}rem;
+      text-align: {{ wm2_al_m }};
+      padding: {{ wm2_ptm }}px {{ wm2_prm }}px {{ wm2_pbm }}px {{ wm2_plm }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    height: min(46vh, 340px);
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(12, 14, 11, {{ scrim_alpha }}) 0%,
+      rgba(12, 14, 11, {{ scrim_alpha | times: 0.55 }}) 52%,
+      rgba(12, 14, 11, 0) 100%
+    );
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__scrim {
+      height: min(52vh, 280px);
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    min-height: 0;
+    color: {{ band_text_color }};
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    pointer-events: none;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band--solid {
+    height: {{ band_height }}px;
+    background-color: {{ band_color }};
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__band--floating {
+    height: {{ band_height }}px;
+    background-color: transparent;
+    justify-content: flex-end;
+    padding-bottom: 1.25rem;
+    padding-top: 0.5rem;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__band--solid {
+      height: {{ band_height_mobile }}px;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__band--floating {
+      height: {{ band_height_mobile }}px;
+      padding: 0.75rem 1rem 1rem;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
+    display: block;
+    width: min({{ ak_logo_max_width }}px, 60vw);
+    height: auto;
+    max-width: 100%;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__ak-logo {
+      width: min({{ ak_logo_max_width_mobile }}px, 70vw);
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc({{ band_height }}px - {{ overlay_overlap }}px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    z-index: 3;
+    pointer-events: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay {
+      bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
+    }
+  }
+  /* L/R/C text block: desktop = margin on .overlay-content. Mobile (0–798px) = row flex
+     on .overlay-content’s parent (inset) + justify-content, because the name was often
+     100% wide and margin: auto had no free space. Name on mobile: width: fit-content. */
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+      padding-left: {{ nm_pl }}px;
+      padding-right: {{ nm_pr }}px;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+    {% if nm_al == 'left' %}
+      margin-left: 0;
+      margin-right: auto;
+    {% elsif nm_al == 'right' %}
+      margin-left: auto;
+      margin-right: 0;
+    {% else %}
+      margin-left: auto;
+      margin-right: auto;
+    {% endif %}
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: {{ nm_justify_m }};
+      padding-left: {{ nm_plm }}px;
+      padding-right: {{ nm_prm }}px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+    font-family: {{ eyebrow_font_stack }};
+    /* Smooth linear ramp across desktop widths.
+       Anchor points: at ~1024px viewport ≈ slider value; at ~3000px viewport ≈ 2.2× slider.
+       Between those it interpolates linearly via vw — no breakpoints, no plateaus. */
+    font-size: clamp({{ eb_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ eb_sz | times: 0.31 | divided_by: 16.0 }}rem + {{ eb_sz | times: 0.0675 }}vw), {{ eb_sz | times: 3 | divided_by: 16.0 }}rem);
+    font-weight: {{ eb_wt }};
+    line-height: {{ eb_lh }}%;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
+    transform: translateY({{ eb_nudge }}px);
+    {% if section.settings.eyebrow_uppercase %}
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    {% else %}
+      letter-spacing: {{ eb_ls }}px;
+    {% endif %}
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      color: {{ eyebrow_co }};
+      text-align: {{ eb_al }};
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      color: {{ eyebrow_co_m }};
+      font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
+      text-align: {{ eb_al_m }};
+      padding: {{ eb_ptm }}px 0 {{ eb_pbm }}px 0;
+      transform: translateY({{ eb_nudge_m }}px);
+      {% unless section.settings.eyebrow_uppercase %}
+        letter-spacing: {{ eb_ls_m }}px;
+      {% endunless %}
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__name {
+    font-family: {{ name_font_stack }};
+    /* Preferred max size: smooth linear ramp across desktop widths
+       (slider value ≈ size at ~1024px viewport, ≈ 2.5× slider at ~3000px).
+       The auto-fit script below (desktop only) scales DOWN from this size when needed
+       so the artist name fits on a single line within its container. */
+    font-size: clamp({{ nm_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ nm_sz | times: 0.235 | divided_by: 16.0 }}rem + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 | divided_by: 16.0 }}rem);
+    font-weight: {{ nm_wt }};
+    line-height: {{ nm_lh }}%;
+    letter-spacing: {{ nm_ls }}px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    width: auto;
+    text-align: left;
+    /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
+       from being clipped by overflow: hidden when line-height is tight.
+       Left/right: zero — horizontal inset is on .ak-artist-series-hero__overlay-inset. */
+    padding: {{ nm_pt }}px 0 calc({{ nm_pb }}px + 0.2em) 0;
+    transform: translateY({{ nm_nudge }}px);
+  }
+  /* Scrim: shadow on eyebrow only. Name colors are set per word; a dark text-shadow
+     on the name muddies black type and looks like a glow on light areas. */
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name * {
+    text-shadow: none;
+  }
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
+    text-shadow: 0 2px 18px rgba(5, 8, 6, 0.55), 0 1px 4px rgba(5, 8, 6, 0.92);
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
+      color: {{ name_co_first }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
+      color: {{ name_co_last }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
+      outline: 2px solid {{ name_co_first }};
+      outline-offset: 4px;
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__name {
+      /* Mobile: allow 2+ lines, no single-line cap from nowrap/JS. Slider ≈ size at
+         ~390px; scales up with vw; top of clamp ~2.8× (higher than old 1.5–1.7 so
+         the range setting can read larger before wrapping). */
+      font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.45 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.15 }}vw), {{ nm_sz_m | times: 2.8 | divided_by: 16.0 }}rem);
+      text-align: left;
+      padding: {{ nm_ptm }}px 0 calc({{ nm_pbm }}px + 0.2em) 0;
+      letter-spacing: {{ nm_ls_m }}px;
+      transform: translateY({{ nm_nudge_m }}px);
+      white-space: normal;
+      overflow: visible;
+      /* Shrink to text so the text block is not 100% wide; margin auto could not center. */
+      width: fit-content;
+      max-width: 100%;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
+      color: {{ name_co_first_m }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
+      color: {{ name_co_last_m }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
+      outline: 2px solid {{ name_co_first_m }};
+      outline-offset: 4px;
+    }
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ id }} .ak-artist-series-hero,
+    #shopify-section-{{ id }} .ak-artist-series-hero * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+{% endstyle %}
+
+<section
+  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter{% if show_bottom_gradient_scrim %} ak-artist-series-hero-section--scrim{% endif %}"
+  id="shopify-section-{{ id }}"
+  role="region"
+  {{ section_aria }}
+>
+  <div class="ak-artist-series-hero">
+    <div class="ak-artist-series-hero__stage{% if image_fill_and_crop %} ak-artist-series-hero__stage--crop{% else %} ak-artist-series-hero__stage--natural{% endif %}{% unless has_hero_image %} ak-artist-series-hero__stage--placeholder{% endunless %}">
+      <div class="ak-artist-series-hero__media">
+        {% if image != blank %}
+          {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'is-hidden-mobile-only ak-artist-series-hero__img' %}
+        {% else %}
+          <div class="ak-artist-series-hero__placeholder-fill is-hidden-mobile-only" aria-hidden="true"></div>
+        {% endif %}
+        {% if mobile_image != blank %}
+          <div class="is-hidden-desktop-only">
+            {% include 'image-element', image: mobile_image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'ak-artist-series-hero__img' %}
+          </div>
+        {% elsif image != blank %}
+          <div class="is-hidden-desktop-only">
+            {% include 'image-element', image: image, alt: img_alt_resolved, stretch_width: true, back_to_basics: true, additional_classes: 'ak-artist-series-hero__img' %}
+          </div>
+        {% else %}
+          <div class="is-hidden-desktop-only">
+            <div class="ak-artist-series-hero__placeholder-fill" aria-hidden="true"></div>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if show_bottom_gradient_scrim %}
+        <div class="ak-artist-series-hero__scrim" aria-hidden="true"></div>
+      {% endif %}
+
+      <div class="ak-artist-series-hero__band {% if solid_white_bottom_band %}ak-artist-series-hero__band--solid{% else %}ak-artist-series-hero__band--floating{% endif %}">
+        {% if ak_logo != blank %}
+          <img
+            class="ak-artist-series-hero__ak-logo"
+            src="{{ ak_logo | img_url: '800x' }}"
+            alt="{{ ak_logo_alt | escape }}"
+            loading="lazy"
+            width="{{ ak_logo.width }}"
+            height="{{ ak_logo.height }}"
+          >
+        {% endif %}
+      </div>
+
+      {% if eyebrow != blank or artist_name != blank %}
+        <div class="ak-artist-series-hero__overlay" aria-hidden="false">
+          <div class="ak-artist-series-hero__overlay-inset">
+          <div class="ak-artist-series-hero__overlay-content">
+          {% if eyebrow != blank %}
+            <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
+          {% endif %}
+          {% if artist_name != blank %}
+            {% assign _an_st = artist_name | strip %}
+            {% assign _an_tok = _an_st | split: ' ' %}
+            {% assign _an_first = _an_tok[0] %}
+            {% assign _an_last = '' %}
+            {% for _an_w in _an_tok %}
+              {% unless forloop.first %}
+                {% if _an_last != '' %}{% assign _an_last = _an_last | append: ' ' %}{% endif %}
+                {% assign _an_last = _an_last | append: _an_w %}
+              {% endunless %}
+            {% endfor %}
+            {% capture artist_name_html %}
+              {% if _an_last != '' %}
+                <span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--first">{{ _an_first | escape }}</span><span class="ak-artist-series-hero__name-sep" aria-hidden="true"> </span><span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--last">{{ _an_last | escape }}</span>
+              {% else %}
+                <span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--first">{{ _an_st | escape }}</span>
+              {% endif %}
+            {% endcapture %}
+            {% if heading_level == 'h2' %}
+              <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h2>
+            {% elsif heading_level == 'h3' %}
+              <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h3>
+            {% elsif heading_level == 'p' %}
+              <p class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</p>
+            {% else %}
+              <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h1>
+            {% endif %}
+          {% endif %}
+          </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if wordmark_line_1 != blank or wordmark_line_2 != blank %}
+        {%- comment -%}
+          When the wordmark is a heading (h1/h2/h3) we wrap BOTH lines in a single
+          heading element (with span sub-lines) so screen readers announce one
+          coherent heading instead of two consecutive ones. When set to "p" we
+          keep the original two-paragraph structure.
+        {%- endcomment -%}
+        {% if wordmark_heading_level == 'h1' or wordmark_heading_level == 'h2' or wordmark_heading_level == 'h3' %}
+          {% if wordmark_heading_level == 'h2' %}
+            <h2 class="ak-artist-series-hero__wordmark">
+          {% elsif wordmark_heading_level == 'h3' %}
+            <h3 class="ak-artist-series-hero__wordmark">
+          {% else %}
+            <h1 class="ak-artist-series-hero__wordmark">
+          {% endif %}
+            {% if wordmark_line_1 != blank %}
+              <span class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
+                {{- wordmark_line_1 | escape -}}
+              </span>
+            {% endif %}
+            {% if wordmark_line_2 != blank %}
+              <span class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
+                {{- wordmark_line_2 | escape -}}
+              </span>
+            {% endif %}
+          {% if wordmark_heading_level == 'h2' %}
+            </h2>
+          {% elsif wordmark_heading_level == 'h3' %}
+            </h3>
+          {% else %}
+            </h1>
+          {% endif %}
+        {% else %}
+          <div class="ak-artist-series-hero__wordmark">
+            {% if wordmark_line_1 != blank %}
+              <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--1">
+                {{- wordmark_line_1 | escape -}}
+              </p>
+            {% endif %}
+            {% if wordmark_line_2 != blank %}
+              <p class="ak-artist-series-hero__wordmark-line ak-artist-series-hero__wordmark-line--2">
+                {{- wordmark_line_2 | escape -}}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{%- if artist_name != blank -%}
+  <script>
+    (function () {
+      var nameId = 'ak-artist-series-hero-name-{{ id }}';
+      var el = document.getElementById(nameId);
+      if (!el) return;
+      var parent = el.parentElement;
+      if (!parent) return;
+
+      var pending = false;
+      function fit() {
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(function () {
+          pending = false;
+          // Reset to the CSS-defined preferred max, then shrink to fit.
+          el.style.fontSize = '';
+          /* Mobile: name uses normal wrap + no manual shrink; honor CSS clamp only. */
+          if (window.matchMedia('(max-width: 798px)').matches) {
+            return;
+          }
+          var style = window.getComputedStyle(el);
+          var paddingX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+          /* Inset is on a wrapper; measure the name box width (content area). */
+          var available = el.clientWidth - paddingX;
+          if (available <= 0) return;
+          var current = parseFloat(style.fontSize);
+          if (!current) return;
+          // Floor to keep type readable on very narrow viewports.
+          var minSize = 18;
+          // Two-pass proportional shrink converges in 1–2 iterations.
+          for (var i = 0; i < 4; i++) {
+            var overflow = el.scrollWidth;
+            if (overflow <= available + 0.5) break;
+            current = Math.max(minSize, current * (available / overflow));
+            el.style.fontSize = current + 'px';
+            if (current === minSize) break;
+          }
+        });
+      }
+
+      fit();
+      var ro = (typeof ResizeObserver === 'function') ? new ResizeObserver(fit) : null;
+      if (ro) ro.observe(parent);
+      window.addEventListener('resize', fit, { passive: true });
+      window.addEventListener('orientationchange', fit, { passive: true });
+      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        document.fonts.ready.then(fit);
+      }
+      // Re-fit when the Theme Editor swaps section content.
+      document.addEventListener('shopify:section:load', function (e) {
+        if (e && e.detail && e.detail.sectionId === '{{ id }}') fit();
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "AK Artist Series hero",
+  "class": "ak-artist-series-hero-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Full-bleed hero. Wordmark (2 lines), eyebrow, and artist name each have their own font, size, color, desktop/mobile alignment, and padding. Optional solid bottom band; otherwise a gradient scrim. Bake butterflies and signatures into the photo."
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image (desktop)",
+      "info": "Wide landscape recommended. With “Fill stage and crop image” off, the full image is shown (width 100%, no cropping). Bake butterflies and signature into the file."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Hero image (mobile)",
+      "info": "Optional; falls back to desktop. Same full-frame behavior when crop is off."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Hero image alt text",
+      "info": "Describe the photo (artist, setting). Falls back to the artist name."
+    },
+    {
+      "type": "select",
+      "id": "image_object_position",
+      "label": "Image focal point",
+      "default": "center",
+      "info": "Used when “Fill stage and crop image” is enabled.",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "center top", "label": "Center top" },
+        { "value": "center bottom", "label": "Center bottom" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "image_fill_and_crop",
+      "label": "Fill stage and crop image",
+      "default": false,
+      "info": "Off (default): full image is visible at natural aspect ratio (width 100%). On: fixed min-height with object-fit cover (may crop edges)."
+    },
+    {
+      "type": "range",
+      "id": "image_min_height",
+      "label": "Hero min height (desktop)",
+      "min": 480,
+      "max": 1080,
+      "step": 20,
+      "default": 720,
+      "unit": "px",
+      "info": "Fill & crop: minimum stage height. Natural: only the empty placeholder; with a real image, width is 100% and height follows the file unless you set max height below."
+    },
+    {
+      "type": "range",
+      "id": "image_min_height_mobile",
+      "label": "Hero min height (mobile)",
+      "min": 320,
+      "max": 900,
+      "step": 20,
+      "default": 480,
+      "unit": "px",
+      "info": "Fill & crop: minimum stage height. Natural: placeholder only when there is no image."
+    },
+    {
+      "type": "range",
+      "id": "image_max_height",
+      "label": "Hero max height (natural, desktop)",
+      "min": 0,
+      "max": 2000,
+      "step": 20,
+      "default": 0,
+      "unit": "px",
+      "info": "Only when “Fill stage and crop” is off. 0 = no cap (image uses full height). Otherwise caps the desktop image at this height (also limited by 92% of the viewport height on short screens)."
+    },
+    {
+      "type": "range",
+      "id": "image_max_height_mobile",
+      "label": "Hero max height (natural, mobile)",
+      "min": 0,
+      "max": 900,
+      "step": 20,
+      "default": 0,
+      "unit": "px",
+      "info": "Only for natural (non-crop) layout. 0 = no cap. Caps the mobile image; also limited by 88% of the viewport height."
+    },
+    {
+      "type": "header",
+      "content": "Top-left wordmark"
+    },
+      {
+        "type": "text",
+        "id": "wordmark_line_1",
+        "label": "Wordmark line 1",
+        "default": "Anne Klein",
+        "info": "First line (e.g. Anne Klein)."
+      },
+      {
+        "type": "text",
+        "id": "wordmark_line_2",
+        "label": "Wordmark line 2",
+        "default": "Artist Series",
+        "info": "Second line (e.g. Artist Series). Extra left padding creates the stair-step."
+      },
+      {
+        "type": "select",
+        "id": "wordmark_heading_level",
+        "label": "Wordmark heading level",
+        "default": "p",
+        "info": "Use H1 if the wordmark is the page's primary heading (recommended for the Artist Series cover page). Both lines render inside one heading element. If you set this to H1, set the Artist name heading level below to H2 so the page only has one H1.",
+        "options": [
+          { "value": "p", "label": "Paragraph (no heading)" },
+          { "value": "h1", "label": "H1" },
+          { "value": "h2", "label": "H2" },
+          { "value": "h3", "label": "H3" }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Wordmark layout"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_max_width",
+        "label": "Wordmark box max width (desktop)",
+        "min": 120,
+        "max": 480,
+        "step": 10,
+        "default": 320,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_max_width_mobile",
+        "label": "Wordmark box max width (mobile)",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "default": 180,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_offset_top",
+        "label": "Wordmark offset from top",
+        "min": 8,
+        "max": 120,
+        "step": 4,
+        "default": 32,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_offset_left",
+        "label": "Wordmark offset from left",
+        "min": 8,
+        "max": 120,
+        "step": 4,
+        "default": 32,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Wordmark \u2014 line 1"
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_font_family",
+        "label": "Line 1 font",
+        "default": "amiri",
+        "options": [
+          {
+            "value": "system",
+            "label": "System sans"
+          },
+          {
+            "value": "amiri",
+            "label": "Amiri"
+          },
+          {
+            "value": "arial",
+            "label": "Arial"
+          },
+          {
+            "value": "georgia",
+            "label": "Georgia"
+          },
+          {
+            "value": "times",
+            "label": "Times New Roman"
+          },
+          {
+            "value": "verdana",
+            "label": "Verdana"
+          },
+          {
+            "value": "trebuchet",
+            "label": "Trebuchet MS"
+          },
+          {
+            "value": "helvetica",
+            "label": "Helvetica Neue"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_font_weight",
+        "label": "Line 1 weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi-bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_font_size",
+        "label": "Line 1 size (desktop)",
+        "min": 10,
+        "max": 96,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_font_size_mobile",
+        "label": "Line 1 size (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
+      },
+      {
+        "type": "color",
+        "id": "wordmark_line_1_color",
+        "label": "Line 1 color",
+        "default": "#ffe1e3"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_line_height",
+        "label": "Line 1 line height",
+        "min": 100,
+        "max": 160,
+        "step": 5,
+        "default": 120,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_letter_spacing",
+        "label": "Line 1 letter spacing",
+        "min": -2,
+        "max": 8,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "wordmark_line_1_uppercase",
+        "label": "Line 1 uppercase + tracking",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_text_align",
+        "label": "Line 1 alignment (desktop)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_1_text_align_mobile",
+        "label": "Line 1 alignment (mobile)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_top",
+        "label": "Line 1 padding top (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_right",
+        "label": "Line 1 padding right (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_bottom",
+        "label": "Line 1 padding bottom (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_left",
+        "label": "Line 1 padding left (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_top_mobile",
+        "label": "Line 1 padding top (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_right_mobile",
+        "label": "Line 1 padding right (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_bottom_mobile",
+        "label": "Line 1 padding bottom (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_1_padding_left_mobile",
+        "label": "Line 1 padding left (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Wordmark \u2014 line 2"
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_font_family",
+        "label": "Line 2 font",
+        "default": "amiri",
+        "options": [
+          {
+            "value": "system",
+            "label": "System sans"
+          },
+          {
+            "value": "amiri",
+            "label": "Amiri"
+          },
+          {
+            "value": "arial",
+            "label": "Arial"
+          },
+          {
+            "value": "georgia",
+            "label": "Georgia"
+          },
+          {
+            "value": "times",
+            "label": "Times New Roman"
+          },
+          {
+            "value": "verdana",
+            "label": "Verdana"
+          },
+          {
+            "value": "trebuchet",
+            "label": "Trebuchet MS"
+          },
+          {
+            "value": "helvetica",
+            "label": "Helvetica Neue"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_font_weight",
+        "label": "Line 2 weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi-bold"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_font_size",
+        "label": "Line 2 size (desktop)",
+        "min": 10,
+        "max": 96,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_font_size_mobile",
+        "label": "Line 2 size (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "info": "0 = same as desktop."
+      },
+      {
+        "type": "color",
+        "id": "wordmark_line_2_color",
+        "label": "Line 2 color",
+        "default": "#ffe1e3"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_line_height",
+        "label": "Line 2 line height",
+        "min": 100,
+        "max": 160,
+        "step": 5,
+        "default": 120,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_letter_spacing",
+        "label": "Line 2 letter spacing",
+        "min": -2,
+        "max": 8,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "wordmark_line_2_uppercase",
+        "label": "Line 2 uppercase + tracking",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_text_align",
+        "label": "Line 2 alignment (desktop)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "wordmark_line_2_text_align_mobile",
+        "label": "Line 2 alignment (mobile)",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_top",
+        "label": "Line 2 padding top (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_right",
+        "label": "Line 2 padding right (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_bottom",
+        "label": "Line 2 padding bottom (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_left",
+        "label": "Line 2 padding left (desktop)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 28,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_top_mobile",
+        "label": "Line 2 padding top (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_right_mobile",
+        "label": "Line 2 padding right (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_bottom_mobile",
+        "label": "Line 2 padding bottom (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "wordmark_line_2_padding_left_mobile",
+        "label": "Line 2 padding left (mobile)",
+        "min": 0,
+        "max": 96,
+        "step": 4,
+        "default": 20,
+        "unit": "px"
+      },
+    {
+      "type": "header",
+      "content": "Bottom band + AK logo (overlays photo)"
+    },
+    {
+      "type": "checkbox",
+      "id": "solid_white_bottom_band",
+      "label": "Solid bottom band (white bar)",
+      "default": false,
+      "info": "Off (default): matches campaign art — gradient scrim + transparent strip for the logo (no white bar). On: solid colored band behind the logo."
+    },
+    {
+      "type": "range",
+      "id": "bottom_scrim_strength",
+      "label": "Bottom gradient strength (scrim)",
+      "min": 0,
+      "max": 85,
+      "step": 1,
+      "default": 52,
+      "unit": "%",
+      "info": "Only when “Solid bottom band” is off. 0% turns the dark bottom gradient off. Higher values add more darkening behind the eyebrow and name."
+    },
+    {
+      "type": "color",
+      "id": "band_color",
+      "label": "Band background color",
+      "default": "#ffffff",
+      "info": "Used only when “Solid bottom band” is on."
+    },
+    {
+      "type": "color",
+      "id": "band_text_color",
+      "label": "Band text/logo color (for SVG fills that inherit currentColor)",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "band_height",
+      "label": "Band / logo strip height (desktop)",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "default": 120,
+      "unit": "px",
+      "info": "Solid band: bar height. Transparent strip: space reserved for the AK logo above the bottom edge."
+    },
+    {
+      "type": "range",
+      "id": "band_height_mobile",
+      "label": "Band / logo strip height (mobile)",
+      "min": 60,
+      "max": 320,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "image_picker",
+      "id": "ak_logo",
+      "label": "AK logo image",
+      "info": "Recommended: SVG or transparent PNG."
+    },
+    {
+      "type": "text",
+      "id": "ak_logo_alt",
+      "label": "AK logo alt text",
+      "default": "Anne Klein"
+    },
+    {
+      "type": "range",
+      "id": "ak_logo_max_width",
+      "label": "AK logo max width (desktop)",
+      "min": 120,
+      "max": 480,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ak_logo_max_width_mobile",
+      "label": "AK logo max width (mobile)",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Hero overlay positioning"
+    },
+    {
+      "type": "range",
+      "id": "overlay_overlap",
+      "label": "Overlay overlap into band (desktop)",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 96,
+      "unit": "px",
+      "info": "How far the eyebrow and name overlap the bottom band or logo strip."
+    },
+    {
+      "type": "range",
+      "id": "overlay_overlap_mobile",
+      "label": "Overlay overlap into band (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 56,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Hero overlay text"
+    },
+    {
+      "type": "paragraph",
+      "content": "The text block (eyebrow + name) is only as wide as the name, up to the padded area. Use “Text block position” to place that group left, center, or right (desktop and mobile). Use “Eyebrow line position in text block” to place the eyebrow line left, center, or right inside the same block (independent of the name, which stays left-to-right under the name width). Name padding still sets the left/right track."
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "featured artist:"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_family",
+      "label": "Eyebrow font",
+      "default": "helvetica",
+      "options": [
+        {
+          "value": "system",
+          "label": "System sans"
+        },
+        {
+          "value": "amiri",
+          "label": "Amiri"
+        },
+        {
+          "value": "arial",
+          "label": "Arial"
+        },
+        {
+          "value": "georgia",
+          "label": "Georgia"
+        },
+        {
+          "value": "times",
+          "label": "Times New Roman"
+        },
+        {
+          "value": "verdana",
+          "label": "Verdana"
+        },
+        {
+          "value": "trebuchet",
+          "label": "Trebuchet MS"
+        },
+        {
+          "value": "helvetica",
+          "label": "Helvetica Neue"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_font_weight",
+      "label": "Eyebrow weight",
+      "default": "700",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Eyebrow size (desktop)",
+      "min": 12,
+      "max": 96,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "label": "Eyebrow size (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color (desktop)",
+      "default": "#ffffff",
+      "info": "799px and up. When unset, the overlay fallback text color in this section is still used (same as before)."
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color_mobile",
+      "label": "Eyebrow color (mobile)",
+      "default": "#ffffff",
+      "info": "0–798px. Defaults to the desktop eyebrow color; set a different swatch for small screens."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_line_height",
+      "label": "Eyebrow line height",
+      "min": 100,
+      "max": 160,
+      "step": 5,
+      "default": 120,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "label": "Eyebrow letter spacing (desktop)",
+      "min": -2,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing_mobile",
+      "label": "Eyebrow letter spacing (mobile)",
+      "min": -2,
+      "max": 8,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_uppercase",
+      "label": "Eyebrow uppercase + tracking",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_align",
+      "label": "Eyebrow line in text block (desktop)",
+      "default": "center",
+      "info": "Applies at 799px and up. Where the eyebrow line sits within the text block. The name uses its own line layout below; use “Text block position (desktop)” to move the whole block left/center/right.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_align_mobile",
+      "label": "Eyebrow line in text block (mobile)",
+      "default": "center",
+      "info": "Applies at 0–798px. Where the eyebrow line sits within the text block. Use “Text block position (mobile)” to place the block left/center/right in the hero.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_top",
+      "label": "Eyebrow padding top (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_right",
+      "label": "Eyebrow padding right (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_bottom",
+      "label": "Eyebrow padding bottom (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_left",
+      "label": "Eyebrow padding left (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_top_mobile",
+      "label": "Eyebrow padding top (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_right_mobile",
+      "label": "Eyebrow padding right (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_bottom_mobile",
+      "label": "Eyebrow padding bottom (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_padding_left_mobile",
+      "label": "Eyebrow padding left (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 16,
+      "unit": "px",
+      "info": "Unused. Horizontal inset comes from Name padding (shared with the name)."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_vertical_nudge",
+      "label": "Eyebrow vertical position (desktop)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_vertical_nudge_mobile",
+      "label": "Eyebrow vertical position (mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    },
+    {
+      "type": "header",
+      "content": "Artist name"
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Artist name (heading text)",
+      "default": "Anjelica Roselyn"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Artist name heading level",
+      "default": "h1",
+      "info": "Use only one H1 per page. If you set the wordmark above to H1, drop this to H2 or Paragraph.",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "p",
+          "label": "Paragraph (no heading)"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Name colors (first word / rest of name)"
+    },
+    {
+      "type": "paragraph",
+      "content": "The name is split on the first space. Use the desktop group for 799px-wide viewports and up, and the mobile group for 798px and below. Leave mobile swatches at the default to match the desktop first/last colors, or set different values for small screens."
+    },
+    {
+      "type": "header",
+      "content": "Name colors — desktop (799px+)"
+    },
+    {
+      "type": "color",
+      "id": "name_color_first",
+      "label": "First name color (desktop)",
+      "default": "#fde8ec",
+      "info": "First word at 799px and wider. Keyboard focus ring on the name uses this color on desktop. Single-word names use only the first (and mobile first) color settings."
+    },
+    {
+      "type": "color",
+      "id": "name_color_last",
+      "label": "Last name color (desktop)",
+      "default": "#fde8ec",
+      "info": "After the first space, 799px and up."
+    },
+    {
+      "type": "header",
+      "content": "Name colors — mobile (0–798px)"
+    },
+    {
+      "type": "color",
+      "id": "name_color_first_mobile",
+      "label": "First name color (mobile)",
+      "default": "#fde8ec",
+      "info": "First word at 798px and below. Defaults to the desktop first name color if you keep the same hex, or set a different color for phones. Focus ring on small screens uses this color."
+    },
+    {
+      "type": "color",
+      "id": "name_color_last_mobile",
+      "label": "Last name color (mobile)",
+      "default": "#fde8ec",
+      "info": "After the first space, 0–798px. Defaults to the desktop last name color if unchanged."
+    },
+    {
+      "type": "select",
+      "id": "name_font_family",
+      "label": "Name font",
+      "default": "helvetica",
+      "options": [
+        {
+          "value": "system",
+          "label": "System sans"
+        },
+        {
+          "value": "amiri",
+          "label": "Amiri"
+        },
+        {
+          "value": "arial",
+          "label": "Arial"
+        },
+        {
+          "value": "georgia",
+          "label": "Georgia"
+        },
+        {
+          "value": "times",
+          "label": "Times New Roman"
+        },
+        {
+          "value": "verdana",
+          "label": "Verdana"
+        },
+        {
+          "value": "trebuchet",
+          "label": "Trebuchet MS"
+        },
+        {
+          "value": "helvetica",
+          "label": "Helvetica Neue"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "name_font_weight",
+      "label": "Name weight",
+      "default": "700",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_font_size",
+      "label": "Name size (desktop base)",
+      "min": 48,
+      "max": 480,
+      "step": 6,
+      "default": 144,
+      "unit": "px",
+      "info": "Base size at ~1280px viewport. Type also grows with viewport width, capped at 3× this value."
+    },
+    {
+      "type": "range",
+      "id": "name_font_size_mobile",
+      "label": "Name size (mobile)",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop. On small screens the name can wrap to two (or more) lines; the auto-fit shrink only runs on desktop (799px+). This value is the base for the mobile clamp; increase for larger type. Set Name padding left/right (mobile) to 0 for the widest line length."
+    },
+    {
+      "type": "range",
+      "id": "name_line_height",
+      "label": "Name line height",
+      "min": 80,
+      "max": 140,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "name_letter_spacing",
+      "label": "Name letter spacing (desktop)",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "default": -4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_letter_spacing_mobile",
+      "label": "Name letter spacing (mobile)",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "default": -4,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "name_text_align",
+      "label": "Text block position (desktop)",
+      "default": "center",
+      "info": "At 799px and up: where the text block (eyebrow + name) sits in the hero. The block is only as wide as the name, up to the name padding. Eyebrow line in that block: “Eyebrow line in text block (desktop)”.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "name_text_align_mobile",
+      "label": "Text block position (mobile)",
+      "default": "center",
+      "info": "0–798px. Places the text block with flex (not margin) so it still moves when the name is wide. If the name fills the line, L/C/R look more subtle. Eyebrow in block: “Eyebrow line in text block (mobile)”.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_padding_top",
+      "label": "Name padding top (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_right",
+      "label": "Name padding right (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Shared: sets the right inset for both the eyebrow and the name."
+    },
+    {
+      "type": "range",
+      "id": "name_padding_bottom",
+      "label": "Name padding bottom (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_left",
+      "label": "Name padding left (desktop)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Shared: sets the left inset for both the eyebrow and the name (aligns the left edge)."
+    },
+    {
+      "type": "range",
+      "id": "name_padding_top_mobile",
+      "label": "Name padding top (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_right_mobile",
+      "label": "Name padding right (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Shared horizontal inset (with the eyebrow)."
+    },
+    {
+      "type": "range",
+      "id": "name_padding_bottom_mobile",
+      "label": "Name padding bottom (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "name_padding_left_mobile",
+      "label": "Name padding left (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Shared horizontal inset (with the eyebrow)."
+    },
+    {
+      "type": "range",
+      "id": "name_vertical_nudge",
+      "label": "Name vertical position (desktop)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    },
+    {
+      "type": "range",
+      "id": "name_vertical_nudge_mobile",
+      "label": "Name vertical position (mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Positive values move it down, negative move it up."
+    }
+  ],
+  "presets": [
+    {
+      "name": "AK Artist Series hero",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

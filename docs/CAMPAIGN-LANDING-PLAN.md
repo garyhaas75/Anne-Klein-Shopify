@@ -49,6 +49,38 @@ Work **one section per iteration**; update the **Status** row when something shi
 | 9 | “Behind the Scenes” + Instagram line (Figma **196:119**–**196:120**, mobile frame **35:616**) | **`page__ak-campaign-bts-collage`** — heading + **richtext** subcopy (default Instagram link). Same section as Step 10. | **In template** (`campaign_bts_collage` after BTS grid) |
 | 10 | Asymmetric editorial collage (backdrop **191:89**; tiles **191:97**, **191:96**, **191:90**, **191:91**, **191:92**, **191:98**, **191:94**, **191:95**, **191:93** on **798×1545** stage) | **`page__ak-campaign-bts-collage`** — optional backdrop; **nine** `collage_tile` blocks with presets **p1–p9** (% positions from Figma) or **Custom** %; mobile = backdrop → text → **2-col** tile stack. | **In template** (add backdrop + tile images + **alt** in admin) |
 
+### Anne Klein Artist Series page (`page.anne-klein-artist-series`)
+
+**Figma file key:** `0kmSuSntT1RaS2ElBXMw25` — **Canvas “Artist Series”** node **`333:421`**; frames **`AK_Artist Series_Desktop`** **`351:1393`**, **`AK_Artist Series_Mobile`** **`333:422`**.  
+**Template:** [`templates/page.anne-klein-artist-series.json`](../templates/page.anne-klein-artist-series.json).
+
+| # | Band (Figma, top → bottom) | Theme section (`page.anne-klein-artist-series.json`) |
+|---|----------------------------|------------------------------------------------------|
+| 1 | Hero — full-bleed photo (butterflies + AK signature **baked in**), top-left wordmark, **featured artist: Anjelica Roselyn** overlay, white band w/ centered AK logo | **NEW** [`sections/page__ak-artist-series-hero.liquid`](../sections/page__ak-artist-series-hero.liquid) — `artist_series_hero` |
+| 2 | **Where Style & Story Connect** — heading + 3-paragraph mission copy, optional Anne Klein signature pinned **bottom-right** | **NEW** [`sections/page__ak-artist-series-mission.liquid`](../sections/page__ak-artist-series-mission.liquid) — `artist_series_mission` |
+| 3 | Primary interview / film | `ak-video` (feature) — `artist_series_video_primary` |
+| 4 | **About the Artist** + bio (no button) | `page__ak-campaign-copy` — `artist_series_about` |
+| 5 | Tight horizontal product line-up — **single composed image** | `page__ak-campaign-stills` (1 still) — `artist_series_product_band_image` |
+| 6a | 4×2 product grid | `index__finishing-touches` — `artist_series_products` (8 hand-picked products) |
+| 6b | **SHOP THE COLLECTION** button | `page__ak-campaign-cta` (button only) — `artist_series_mid_cta` |
+| 7 | Zigzag stills (two photos + butterflies) — **single composed image** per design call | `page__ak-campaign-stills` (1 still) — `artist_series_zigzag_image` |
+| 8 | **The Invisible Thread with Anjelica Roselyn** title | `page__ak-campaign-copy` (heading-only) — `artist_series_thread_heading` |
+| 9 | Secondary campaign film | `ak-video` (hero) — `artist_series_video_secondary` |
+| 10 | Centered pull quote | `page__ak-campaign-copy` — `artist_series_quote` |
+| 11 | Large feature still | `page__ak-campaign-stills` (1 still) — `artist_series_feature_still` |
+| 12 | Footer CTA — centered photo, pull quote, **ANNE KLEIN** brand label, cursive **Anne Klein signature** image, SHOP THE COLLECTION button | **NEW** [`sections/page__ak-artist-series-footer-cta.liquid`](../sections/page__ak-artist-series-footer-cta.liquid) — `artist_series_footer_cta` |
+
+**New Liquid sections (live in repo):** `page__ak-artist-series-hero`, `page__ak-artist-series-mission`, `page__ak-artist-series-footer-cta`. Existing campaign sections are reused as-is for all other bands.
+
+**Admin follow-up:**
+- **Hero:** upload background image (butterflies + AK signature baked in), top-left wordmark, AK logo for the bottom band; set alt text.
+- **Mission:** upload Anne Klein signature image for the bottom-right (or leave blank to hide).
+- **Section 5 / 7 / 11:** upload the single composed images (product line-up, zigzag stills, feature still); set alt text.
+- **Section 6a:** assign the 8 product handles (or switch `product_source` to `From collection` and pick the Artist Series collection).
+- **Sections 6b / 12 (CTAs):** set the button link URL to the Artist Series collection.
+- **Sections 3 / 9 (videos):** assign actual video files in the theme editor.
+- **Footer CTA:** upload the campaign image and the cursive Anne Klein signature image.
+
 ## Template
 
 - Page template: **`campaign`** → [`templates/page.campaign.json`](../templates/page.campaign.json)
