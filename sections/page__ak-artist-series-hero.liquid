@@ -571,8 +571,9 @@
       bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
     }
   }
-  /* L/C/R: set text-align on the inset and let it inherit into eyebrow + name. Never set
-     text-align: left on the children — that overrides the inset and L/C/R appear broken. */
+  /* L/C/R: text-align on the *inset* positions the shrink-wrapped .overlay-content (see
+     below) left/center/right. Eyebrow + name always have text-align:left *inside* that
+     group so the eyebrow stays flush with the name’s left edge. */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
     min-width: 0;
     width: 100%;
@@ -594,8 +595,12 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
-    text-align: inherit;
+    display: inline-block;
+    text-align: left;
+    width: fit-content;
     max-width: 100%;
+    min-width: 0;
+    vertical-align: top;
     box-sizing: border-box;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
@@ -612,7 +617,7 @@
     line-height: {{ eb_lh }}%;
     margin: 0;
     box-sizing: border-box;
-    text-align: inherit;
+    text-align: left;
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
@@ -631,7 +636,7 @@
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
-      text-align: inherit;
+      text-align: left;
       padding: {{ eb_ptm }}px 0 {{ eb_pbm }}px 0;
       transform: translateY({{ eb_nudge_m }}px);
       {% unless section.settings.eyebrow_uppercase %}
@@ -656,7 +661,7 @@
     box-sizing: border-box;
     min-width: 0;
     width: auto;
-    text-align: inherit;
+    text-align: left;
     /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
        from being clipped by overflow: hidden when line-height is tight.
        Left/right: zero — horizontal inset is on .ak-artist-series-hero__overlay-inset. */
@@ -690,7 +695,7 @@
          ~390px; scales up with vw; top of clamp ~2.8× (higher than old 1.5–1.7 so
          the range setting can read larger before wrapping). */
       font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.45 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.15 }}vw), {{ nm_sz_m | times: 2.8 | divided_by: 16.0 }}rem);
-      text-align: inherit;
+      text-align: left;
       padding: {{ nm_ptm }}px 0 calc({{ nm_pbm }}px + 0.2em) 0;
       letter-spacing: {{ nm_ls_m }}px;
       transform: translateY({{ nm_nudge_m }}px);
