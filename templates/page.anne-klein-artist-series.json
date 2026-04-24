@@ -366,16 +366,22 @@
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_1_Desktop.png",
-            "image_alt": ""
+            "override_image": "shopify://shop_images/Section_6_Frame_1_Desktop_ab4d01da-a1e7-4c23-ac74-812fba584e18.png",
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_1_Mobile_6bd19ecf-ef5a-42d2-8612-1317aa9f5ecd.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_6BDiqW": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_2_Mobile.png",
-            "image_alt": ""
+            "override_image": "shopify://shop_images/Section_6_Frame_2_Desktop.png",
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_2_Mobile_ed84902c-147d-4035-8413-3a1fd6d6da35.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_CkLhiD": {
@@ -383,7 +389,10 @@
           "settings": {
             "product": "",
             "override_image": "shopify://shop_images/Section_6_Frame_3_Mobile.png",
-            "image_alt": ""
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_3_Mobile_40b36e3a-384d-4995-a473-39c57c03f531.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_a9nxy7": {
@@ -391,22 +400,32 @@
           "settings": {
             "product": "",
             "override_image": "shopify://shop_images/Section_6_Frame_4_Mobile.png",
-            "image_alt": ""
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_7_Desktop_90ec3bf6-78b3-4573-ab3a-c21efe765711.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_Y6mDBh": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_5_Mobile.png",
-            "image_alt": ""
+            "override_image": "shopify://shop_images/Section_6_Frame_6_Desktop_67f4a90a-103f-4dba-939e-525c7317762d.png",
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_5_Mobile_fcabf95b-8d5c-402d-958b-1cc54e1845f1.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_qPzFFL": {
           "type": "product",
           "settings": {
             "product": "",
-            "image_alt": ""
+            "override_image": "shopify://shop_images/Section_6_Frame_4_Desktop.png",
+            "override_image_mobile": "shopify://shop_images/Section_6_Frame_9_Mobile.png",
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_UKzHNT": {
@@ -414,21 +433,27 @@
           "settings": {
             "product": "",
             "override_image": "shopify://shop_images/Section_6_Frame_7_Desktop.png",
-            "image_alt": ""
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_ixUDWV": {
           "type": "product",
           "settings": {
             "product": "bevel-oval-drop-earrings-gold-tone",
-            "image_alt": ""
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         },
         "product_Eq3HgY": {
           "type": "product",
           "settings": {
             "product": "belinda-black",
-            "image_alt": ""
+            "image_alt": "",
+            "tile_title": "",
+            "tile_link": ""
           }
         }
       },
