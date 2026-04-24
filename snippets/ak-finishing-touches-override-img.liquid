@@ -9,6 +9,7 @@
   @param additional_classes {String} Optional (e.g. secondary swap classes)
 {% endcomment %}
 {% liquid
+  assign additional_classes = additional_classes | default: ''
   assign desk = desktop_img
   assign mob = mobile_img
   assign use_dual = false
