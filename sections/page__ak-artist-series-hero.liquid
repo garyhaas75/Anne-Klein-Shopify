@@ -74,7 +74,12 @@
 {% assign band_color = section.settings.band_color | default: '#ffffff' %}
 {% assign band_text_color = section.settings.band_text_color | default: '#000000' %}
 {% assign solid_white_bottom_band = section.settings.solid_white_bottom_band %}
-{% assign bottom_scrim_strength = section.settings.bottom_scrim_strength | default: 52 %}
+{% assign bottom_scrim_strength = section.settings.bottom_scrim_strength | default: 52 | plus: 0 %}
+{% comment %} Dark bottom gradient: only when not using the solid bar and strength &gt; 0. {% endcomment %}
+{% assign show_bottom_gradient_scrim = false %}
+{% if solid_white_bottom_band == false and bottom_scrim_strength > 0 %}
+  {% assign show_bottom_gradient_scrim = true %}
+{% endif %}
 {% assign image_min_height = section.settings.image_min_height | default: 720 %}
 {% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 %}
 {% assign band_height = section.settings.band_height | default: 220 %}
@@ -606,7 +611,7 @@
 {% endstyle %}
 
 <section
-  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter{% unless solid_white_bottom_band %} ak-artist-series-hero-section--scrim{% endunless %}"
+  class="section is-width-wide ak-artist-series-hero-section has-no-side-gutter{% if show_bottom_gradient_scrim %} ak-artist-series-hero-section--scrim{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {{ section_aria }}
@@ -634,9 +639,9 @@
         {% endif %}
       </div>
 
-      {% unless solid_white_bottom_band %}
+      {% if show_bottom_gradient_scrim %}
         <div class="ak-artist-series-hero__scrim" aria-hidden="true"></div>
-      {% endunless %}
+      {% endif %}
 
       <div class="ak-artist-series-hero__band {% if solid_white_bottom_band %}ak-artist-series-hero__band--solid{% else %}ak-artist-series-hero__band--floating{% endif %}">
         {% if ak_logo != blank %}
@@ -1446,13 +1451,13 @@
     {
       "type": "range",
       "id": "bottom_scrim_strength",
-      "label": "Bottom gradient strength",
-      "min": 15,
+      "label": "Bottom gradient strength (scrim)",
+      "min": 0,
       "max": 85,
       "step": 1,
       "default": 52,
       "unit": "%",
-      "info": "Only when solid band is off. Darkens the bottom of the hero behind eyebrow and name."
+      "info": "Only when “Solid bottom band” is off. 0% turns the dark bottom gradient off. Higher values add more darkening behind the eyebrow and name."
     },
     {
       "type": "color",
