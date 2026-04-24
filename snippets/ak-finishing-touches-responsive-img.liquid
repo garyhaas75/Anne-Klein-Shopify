@@ -1,13 +1,13 @@
 {% comment %}
-  Desktop vs mobile art using theme utilities (matches 798px breakpoint — see styles.scss .is-hidden-mobile-only / .is-hidden-desktop-only).
-  Single img when mobile unset or same asset URL; avoids custom wrappers that fought lazyload/CSS.
-  @param desktop_img {Image} Primary / desktop image (may be blank if only mobile set)
-  @param mobile_img {Image} Optional; when set, may output a second img for small viewports
+  Desktop vs mobile art using theme utilities (798px — styles.scss .is-hidden-mobile-only / .is-hidden-desktop-only).
+  When two different assets are shown (one hidden per breakpoint), lazy-loaded imgs often never load because display:none keeps them out of the lazy observer — dual output always uses back_to_basics (real src). Single-img paths keep normal lazyload unless eager (theme editor).
+  @param desktop_img {Image}
+  @param mobile_img {Image}
   @param alt {String}
   @param object_fit {Boolean}
   @param max_height {Number}
-  @param additional_classes {String} Optional base classes (e.g. lazypreload secondary…)
-  @param eager {Boolean} Theme editor: non-lazy img so preview always paints
+  @param additional_classes {String}
+  @param eager {Boolean} If true, single-img path also uses real src (theme editor)
 {% endcomment %}
 {% liquid
   assign additional_classes = additional_classes | default: ''
@@ -27,7 +27,7 @@
   {% else %}
     {% assign _desk_classes = additional_classes | append: ' is-hidden-mobile-only' | strip %}
     {% assign _mob_classes = additional_classes | append: ' is-hidden-desktop-only' | strip %}
-    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _desk_classes, back_to_basics: eager %}
-    {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _mob_classes, back_to_basics: eager %}
+    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _desk_classes, back_to_basics: true %}
+    {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _mob_classes, back_to_basics: true %}
   {% endif %}
 {% endif %}
