@@ -1,13 +1,7 @@
 {% comment %}
-  Desktop vs mobile art using theme utilities (798px — styles.scss .is-hidden-mobile-only / .is-hidden-desktop-only).
-  When two different assets are shown (one hidden per breakpoint), lazy-loaded imgs often never load because display:none keeps them out of the lazy observer — dual output always uses back_to_basics (real src). Single-img paths keep normal lazyload unless eager (theme editor).
-  @param desktop_img {Image}
-  @param mobile_img {Image}
-  @param alt {String}
-  @param object_fit {Boolean}
-  @param max_height {Number}
-  @param additional_classes {String}
-  @param eager {Boolean} If true, single-img path also uses real src (theme editor)
+  Same pattern as index__hero-campaign: desktop uses is-hidden-mobile-only; mobile sits in .is-hidden-desktop-only.
+  When both files differ, back_to_basics true so lazyload still loads the hidden img (theme-wide issue with dual lazy imgs).
+  @param desktop_img, mobile_img, alt, object_fit, max_height, additional_classes, eager (design_mode → real src on single-img paths)
 {% endcomment %}
 {% liquid
   assign additional_classes = additional_classes | default: ''
@@ -18,16 +12,19 @@
     {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
   {% endif %}
 {% elsif desktop_img == blank %}
-  {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
+  <div class="is-hidden-desktop-only">
+    {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
+  </div>
 {% else %}
   {% assign _du = desktop_img | image_url: width: 100 %}
   {% assign _mu = mobile_img | image_url: width: 100 %}
   {% if _du == _mu %}
     {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
   {% else %}
-    {% assign _desk_classes = additional_classes | append: ' is-hidden-mobile-only' | strip %}
-    {% assign _mob_classes = additional_classes | append: ' is-hidden-desktop-only' | strip %}
-    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _desk_classes, back_to_basics: true %}
-    {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _mob_classes, back_to_basics: true %}
+    {% assign _desk_cls = additional_classes | append: ' is-hidden-mobile-only' | strip %}
+    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _desk_cls, back_to_basics: true %}
+    <div class="is-hidden-desktop-only">
+      {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: true %}
+    </div>
   {% endif %}
 {% endif %}
