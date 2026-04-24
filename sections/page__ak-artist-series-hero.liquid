@@ -561,7 +561,12 @@
     padding: {{ nm_pt }}px {{ nm_pr }}px calc({{ nm_pb }}px + 0.2em) {{ nm_pl }}px;
     transform: translateY({{ nm_nudge }}px);
   }
+  /* Scrim: shadow on eyebrow only. Name colors are set per word; a dark text-shadow
+     on the name muddies black type and looks like a glow on light areas. */
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name,
+  #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__name * {
+    text-shadow: none;
+  }
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
     text-shadow: 0 2px 18px rgba(5, 8, 6, 0.55), 0 1px 4px rgba(5, 8, 6, 0.92);
   }
