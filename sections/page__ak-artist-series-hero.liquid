@@ -637,6 +637,12 @@
       padding-left: {{ nm_plm }}px;
       padding-right: {{ nm_prm }}px;
     }
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+      /* Column had align-items: stretch: children fill the line cross size, the line
+         grew to the full inset, so the “text block” was still 100% wide and row
+         justify-content (L/C/R) had no free space. flex-start = block shrinks. */
+      align-items: flex-start;
+    }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
     display: flex;
@@ -681,7 +687,8 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
       width: auto;
-      /* Column flex: line width = max(eyebrow, name); cross-axis stretch then fills that */
+      /* After line width = max(eyebrow, name), grow eyebrow to that line for text-align. */
+      align-self: stretch;
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
