@@ -155,6 +155,20 @@
 {% if nm_al_m != 'left' and nm_al_m != 'right' and nm_al_m != 'center' %}
   {% assign nm_al_m = 'center' %}
 {% endif %}
+{% if nm_al == 'left' %}
+  {% assign nm_justify = 'flex-start' %}
+{% elsif nm_al == 'right' %}
+  {% assign nm_justify = 'flex-end' %}
+{% else %}
+  {% assign nm_justify = 'center' %}
+{% endif %}
+{% if nm_al_m == 'left' %}
+  {% assign nm_justify_m = 'flex-start' %}
+{% elsif nm_al_m == 'right' %}
+  {% assign nm_justify_m = 'flex-end' %}
+{% else %}
+  {% assign nm_justify_m = 'center' %}
+{% endif %}
 {% assign nm_pt = section.settings.name_padding_top | default: 4 %}
 {% assign nm_pr = section.settings.name_padding_right | default: 24 %}
 {% assign nm_pb = section.settings.name_padding_bottom | default: 0 %}
@@ -586,8 +600,9 @@
       bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
     }
   }
-  /* L/C/R: .overlay-content is a shrink-wrapped block (width: max-content). Use margin
-     L/R to place it — works even when flex+justify or text-align on the parent failed. */
+  /* L/R/C text block: desktop = margin on .overlay-content. Mobile (0–798px) = row flex
+     on .overlay-content’s parent (inset) + justify-content, because the name was often
+     100% wide and margin: auto had no free space. Name on mobile: width: fit-content. */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
     min-width: 0;
     width: 100%;
@@ -615,20 +630,12 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: {{ nm_justify_m }};
       padding-left: {{ nm_plm }}px;
       padding-right: {{ nm_prm }}px;
-    }
-    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
-    {% if nm_al_m == 'left' %}
-      margin-left: 0;
-      margin-right: auto;
-    {% elsif nm_al_m == 'right' %}
-      margin-left: auto;
-      margin-right: 0;
-    {% else %}
-      margin-left: auto;
-      margin-right: auto;
-    {% endif %}
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
@@ -739,6 +746,8 @@
       transform: translateY({{ nm_nudge_m }}px);
       white-space: normal;
       overflow: visible;
+      /* Shrink to text so the text block is not 100% wide; margin auto could not center. */
+      width: fit-content;
       max-width: 100%;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
@@ -2266,7 +2275,7 @@
       "id": "name_text_align_mobile",
       "label": "Text block position (mobile)",
       "default": "center",
-      "info": "At 0–798px: where the text block (eyebrow + name) sits. If the name is almost as wide as the line, L/C/R can look more subtle. Eyebrow in block: “Eyebrow line in text block (mobile)”.",
+      "info": "0–798px. Places the text block with flex (not margin) so it still moves when the name is wide. If the name fills the line, L/C/R look more subtle. Eyebrow in block: “Eyebrow line in text block (mobile)”.",
       "options": [
         {
           "value": "left",
