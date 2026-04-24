@@ -14,7 +14,8 @@
       "type": "page__ak-artist-series-hero",
       "name": "AK Artist Series hero",
       "settings": {
-        "image": "shopify://shop_images/Screenshot_2026-04-22_at_10.05.27_AM_a6dd4368-772b-4a37-9778-56c14fa9d0a3.png",
+        "image": "shopify://shop_images/Hero_Desktop.png",
+        "mobile_image": "shopify://shop_images/Hero_Mobile.png",
         "image_alt": "",
         "image_object_position": "right",
         "image_fill_and_crop": true,
@@ -247,8 +248,8 @@
         "video_fit": "cover",
         "video_fit_mobile": "same",
         "video_background_color": "#000000",
-        "video": "shopify://files/videos/compressed-desktop.mp4",
-        "video_mobile": "shopify://files/videos/compressed-mobile.mp4",
+        "video": "shopify://files/videos/Section 3_AK_SS26_BTS_Interview_Anjelica_TheArtistSeries_16x9_1.mp4",
+        "video_mobile": "shopify://files/videos/Section 3_AK_SS26_BTS_Interview_Anjelica_TheArtistSeries_9x16_1.mp4",
         "title": "Campaign film",
         "autoplay": true,
         "loop": true,
@@ -303,8 +304,8 @@
         "still_LcftQe": {
           "type": "still",
           "settings": {
-            "image": "shopify://shop_images/product_strip.png",
-            "mobile_image": "shopify://shop_images/Screenshot_2026-04-23_at_6.57.28_AM.png",
+            "image": "shopify://shop_images/Section_5_Desktop.png",
+            "mobile_image": "shopify://shop_images/Section_5_Mobile.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -364,42 +365,55 @@
         "product_BkETDU": {
           "type": "product",
           "settings": {
-            "product": "3-piece-work-tote-black",
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_1_Desktop.png",
             "image_alt": ""
           }
         },
         "product_6BDiqW": {
           "type": "product",
           "settings": {
-            "product": "2-piece-gift-set-with-sculpted-buckle-wallet-and-removeable-card-organizer-black",
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_2_Mobile.png",
+            "image_alt": ""
+          }
+        },
+        "product_CkLhiD": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_3_Mobile.png",
             "image_alt": ""
           }
         },
         "product_a9nxy7": {
           "type": "product",
           "settings": {
-            "product": "able-flat-wide-grey",
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_4_Mobile.png",
             "image_alt": ""
           }
         },
         "product_Y6mDBh": {
           "type": "product",
           "settings": {
-            "product": "belinda-sand",
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_5_Mobile.png",
             "image_alt": ""
           }
         },
         "product_qPzFFL": {
           "type": "product",
           "settings": {
-            "product": "bevel-oval-drop-earrings-gold-tone",
+            "product": "",
             "image_alt": ""
           }
         },
         "product_UKzHNT": {
           "type": "product",
           "settings": {
-            "product": "better-loafer-camel",
+            "product": "",
+            "override_image": "shopify://shop_images/Section_6_Frame_7_Desktop.png",
             "image_alt": ""
           }
         },
@@ -421,6 +435,7 @@
       "block_order": [
         "product_BkETDU",
         "product_6BDiqW",
+        "product_CkLhiD",
         "product_a9nxy7",
         "product_Y6mDBh",
         "product_qPzFFL",
