@@ -661,7 +661,11 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
     min-width: 0;
-    max-width: 100%;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
+      max-width: 100%;
+    }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
@@ -762,11 +766,12 @@
       transform: translateY({{ nm_nudge_m }}px);
       white-space: normal;
       overflow: visible;
-      /* Block + fit-content was still using the 366px content width (inset minus padding) as
-         the shrink target, so the name box = full green area and L/C/R on the row did nothing. */
+      /* `> * { max-width:100% }` + this max-width:100% cycled to the full inset (366);
+         parent must size from text, not from % of the row. */
       display: inline-block;
       width: auto;
-      max-width: 100%;
+      max-width: none;
+      overflow-wrap: break-word;
       vertical-align: top;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
