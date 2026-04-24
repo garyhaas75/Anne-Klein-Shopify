@@ -604,9 +604,8 @@
       {% endif %}
     </div>
   </div>
-</section>
-
-<script type="application/json" data-section-id="{{ id }}" class="ak-ft__section-json">
+  {% comment %} Keep this script inside the section element: readFinishingTouchesSectionData uses $section.find(). A sibling script after closing </section> is not a descendant and was never found. {% endcomment %}
+  <script type="application/json" data-section-id="{{ id }}" class="ak-ft__section-json">
   {
     "collection_style": "slider",
     "products_per": {{ products_per_row }},
@@ -614,7 +613,8 @@
     "products_limit": {{ products_count }},
     "align_height": {{ align_height | json }}
   }
-</script>
+  </script>
+</section>
 <script>
 (function() {
   var sectionId = '{{ id }}';
@@ -624,7 +624,9 @@
 
   /** Config JSON must be read from script text only — jQuery .data() on data-section-data (boolean attr) breaks JSON.parse. */
   function readFinishingTouchesSectionData($section) {
-    var $dataEl = $section.find('script.ak-ft__section-json[type="application/json"][data-section-id="' + sectionId + '"]').first();
+    var $dataEl = $section.find('script.ak-ft__section-json[type="application/json"]').filter(function() {
+      return String(jQuery(this).attr('data-section-id')) === String(sectionId);
+    }).first();
     if (!$dataEl.length) return null;
     try {
       var el = $dataEl[0];
@@ -971,7 +973,8 @@
     setTimeout(initFinishingTouchesCarousel, 100);
   }
   document.addEventListener('shopify:section:load', function(e) {
-    if (e.detail.sectionId === sectionId) setTimeout(initFinishingTouchesCarousel, 150);
+    if (String(e.detail.sectionId) !== String(sectionId)) return;
+    setTimeout(initFinishingTouchesCarousel, 150);
   });
 })();
 </script>
