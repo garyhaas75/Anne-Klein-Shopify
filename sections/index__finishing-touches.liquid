@@ -68,7 +68,7 @@
   {% if block.type == 'product' %}
     {% if block.settings.product != blank %}
       {% assign block_product_count = block_product_count | plus: 1 %}
-    {% elsif block.settings.override_image != blank %}
+    {% elsif block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
       {% assign block_product_count = block_product_count | plus: 1 %}
     {% endif %}
   {% endif %}
@@ -410,36 +410,40 @@
             {% endfor %}
           {% else %}
             {% assign output_index = 0 %}
+            {% assign ft_img_eager = request.design_mode %}
             {% for block in section.blocks %}
               {% if block.type == 'product' and block.settings.product != blank %}
                 {% if output_index < product_limit %}
                   {% assign product = block.settings.product %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
                   {% assign override_image = block.settings.override_image %}
+                  {% assign override_image_mobile = block.settings.override_image_mobile %}
                   {% assign override_image_hover = block.settings.override_image_hover %}
+                  {% assign override_image_hover_mobile = block.settings.override_image_hover_mobile %}
                   {% assign override_alt = block.settings.image_alt | strip %}
                   {% if override_image != blank %}
-                    {% assign primary_image = override_image %}
+                    {% assign tile_desktop = override_image %}
                   {% elsif product.featured_media != blank %}
-                    {% assign primary_image = product.featured_media.preview_image %}
+                    {% assign tile_desktop = product.featured_media.preview_image %}
                   {% else %}
-                    {% assign primary_image = blank %}
+                    {% assign tile_desktop = blank %}
                   {% endif %}
                   {% if override_alt != blank %}
                     {% assign alt_text = override_alt %}
-                  {% elsif primary_image != blank and primary_image.alt != blank %}
-                    {% assign alt_text = primary_image.alt %}
+                  {% elsif tile_desktop != blank and tile_desktop.alt != blank %}
+                    {% assign alt_text = tile_desktop.alt %}
                   {% else %}
                     {% assign alt_text = product.title %}
                   {% endif %}
                   {% if override_image_hover != blank %}
-                    {% assign hover_image = override_image_hover %}
+                    {% assign hover_tile_desktop = override_image_hover %}
                   {% elsif override_image == blank and product.media[1] != blank %}
-                    {% assign hover_image = product.media[1] %}
+                    {% assign hover_tile_desktop = product.media[1] %}
                   {% else %}
-                    {% assign hover_image = blank %}
+                    {% assign hover_tile_desktop = blank %}
                   {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %}" {{ block.shopify_attributes }}>
+                  {% assign hover_tile_mobile = override_image_hover_mobile %}
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column has-thumbnail-sticker {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}{% if settings.show_secondary_image %}has-secondary-image-swap{% endif %}{% endif %}" {{ block.shopify_attributes }}>
                     <a href="{{ product.url }}" class="ak-ft__product-link" aria-label="{{ product.title | escape }}">
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
@@ -447,13 +451,15 @@
                             {% if settings.stickers_enabled %}
                               {% include 'product-thumbnail__sticker' %}
                             {% endif %}
-                            {% if primary_image != blank %}
-                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
-                            {% else %}
+                            {% if tile_desktop == blank and override_image_mobile == blank %}
                               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                            {% else %}
+                              {% render 'ak-finishing-touches-responsive-img', desktop_img: tile_desktop, mobile_img: override_image_mobile, alt: alt_text, object_fit: align_height, max_height: height, eager: ft_img_eager %}
                             {% endif %}
-                            {% if hover_image != blank and settings.show_secondary_image %}
-                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% if settings.show_secondary_image %}
+                              {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
+                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible', eager: ft_img_eager %}
+                              {% endif %}
                             {% endif %}
                           </div>
                           {% if hover_enabled or settings.enable_quickshop %}
@@ -487,11 +493,14 @@
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
                 {% endif %}
-              {% elsif block.type == 'product' and block.settings.product == blank and block.settings.override_image != blank %}
+              {% elsif block.type == 'product' and block.settings.product == blank %}
+                {% if block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
                 {% if output_index < product_limit %}
                   {% assign hover_enabled = settings.thumbnail_hover_enabled %}
-                  {% assign primary_image = block.settings.override_image %}
-                  {% assign hover_image = block.settings.override_image_hover %}
+                  {% assign ov_tile_d = block.settings.override_image %}
+                  {% assign ov_tile_m = block.settings.override_image_mobile %}
+                  {% assign hover_tile_desktop = block.settings.override_image_hover %}
+                  {% assign hover_tile_mobile = block.settings.override_image_hover_mobile %}
                   {% assign tile_title = block.settings.tile_title | strip %}
                   {% assign tile_link = block.settings.tile_link %}
                   {% assign alt_text = block.settings.image_alt | strip %}
@@ -502,7 +511,7 @@
                       {% assign alt_text = 'Featured image' %}
                     {% endif %}
                   {% endif %}
-                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}{% if settings.show_secondary_image %}has-secondary-image-swap{% endif %}{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
                     {% if tile_link != blank %}
                       <a href="{{ tile_link }}" class="ak-ft__product-link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
                     {% else %}
@@ -511,11 +520,11 @@
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
                           <div class="image__container product__imageContainer">
-                            {% if primary_image != blank %}
-                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
-                            {% endif %}
-                            {% if hover_image != blank and settings.show_secondary_image %}
-                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% render 'ak-finishing-touches-responsive-img', desktop_img: ov_tile_d, mobile_img: ov_tile_m, alt: alt_text, object_fit: align_height, max_height: height, eager: ft_img_eager %}
+                            {% if settings.show_secondary_image %}
+                              {% if hover_tile_desktop != blank or hover_tile_mobile != blank %}
+                                {% render 'ak-finishing-touches-responsive-img', desktop_img: hover_tile_desktop, mobile_img: hover_tile_mobile, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible', eager: ft_img_eager %}
+                              {% endif %}
                             {% endif %}
                           </div>
                         </div>
@@ -532,6 +541,7 @@
                     {% endif %}
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
+                {% endif %}
                 {% endif %}
               {% endif %}
             {% endfor %}
@@ -1242,19 +1252,31 @@
         },
         {
           "type": "paragraph",
-          "content": "With a product selected: leave blank to use its featured image, or upload art to replace it. With no product: upload at least Override image — use Title / Link below for caption and destination (no swatches or live price)."
+          "content": "Different desktop vs mobile art: fill Override image (desktop) and Override image (mobile). Uses the theme breakpoint (≤798px = mobile). When mobile is blank, desktop art is shown at all widths. With no product, set at least one override."
         },
         {
           "type": "image_picker",
           "id": "override_image",
-          "label": "Override image",
-          "info": "Used in place of the product's featured image. Crop / size all override images to the same dimensions for an even grid."
+          "label": "Override image (desktop)",
+          "info": "Shown from 799px up when a separate mobile override exists; otherwise at all widths. With a product, replaces the featured image unless blank."
+        },
+        {
+          "type": "image_picker",
+          "id": "override_image_mobile",
+          "label": "Override image (mobile)",
+          "info": "Optional. Shown at ≤798px when set. If blank, desktop override or product featured image is used everywhere."
         },
         {
           "type": "image_picker",
           "id": "override_image_hover",
-          "label": "Override hover image",
-          "info": "Optional. Shown on hover when the theme's secondary-image swap is enabled. Falls back to the product's second media if blank and no override image is set."
+          "label": "Override hover image (desktop)",
+          "info": "Optional. Hover swap when enabled. Falls back to second product media when overrides are blank."
+        },
+        {
+          "type": "image_picker",
+          "id": "override_image_hover_mobile",
+          "label": "Override hover image (mobile)",
+          "info": "Optional. Separate hover art at ≤798px. If blank, desktop hover (or product second image) is used."
         },
         {
           "type": "text",

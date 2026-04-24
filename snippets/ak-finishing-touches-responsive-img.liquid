@@ -1,0 +1,33 @@
+{% comment %}
+  Desktop vs mobile art using theme utilities (matches 798px breakpoint — see styles.scss .is-hidden-mobile-only / .is-hidden-desktop-only).
+  Single img when mobile unset or same asset URL; avoids custom wrappers that fought lazyload/CSS.
+  @param desktop_img {Image} Primary / desktop image (may be blank if only mobile set)
+  @param mobile_img {Image} Optional; when set, may output a second img for small viewports
+  @param alt {String}
+  @param object_fit {Boolean}
+  @param max_height {Number}
+  @param additional_classes {String} Optional base classes (e.g. lazypreload secondary…)
+  @param eager {Boolean} Theme editor: non-lazy img so preview always paints
+{% endcomment %}
+{% liquid
+  assign additional_classes = additional_classes | default: ''
+  assign eager = eager | default: false
+%}
+{% if mobile_img == blank %}
+  {% if desktop_img != blank %}
+    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
+  {% endif %}
+{% elsif desktop_img == blank %}
+  {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
+{% else %}
+  {% assign _du = desktop_img | image_url: width: 100 %}
+  {% assign _mu = mobile_img | image_url: width: 100 %}
+  {% if _du == _mu %}
+    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: eager %}
+  {% else %}
+    {% assign _desk_classes = additional_classes | append: ' is-hidden-mobile-only' | strip %}
+    {% assign _mob_classes = additional_classes | append: ' is-hidden-desktop-only' | strip %}
+    {% include 'image-element', image: desktop_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _desk_classes, back_to_basics: eager %}
+    {% include 'image-element', image: mobile_img, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: _mob_classes, back_to_basics: eager %}
+  {% endif %}
+{% endif %}
