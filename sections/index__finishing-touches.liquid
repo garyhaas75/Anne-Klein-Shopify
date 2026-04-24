@@ -1,6 +1,6 @@
 {% comment %}
   AK Homepage 2026 – Finishing Touches
-  Product carousel: title + individually selected products (blocks). Each block = one product.
+  Product carousel/grid: blocks can be a product tile, or override-image-only (cleared product, e.g. coming soon).
   Uses theme's slider markup/JS so carousel behavior matches Featured collection.
 {% endcomment %}
 
@@ -64,8 +64,12 @@
 {% else %}
   {% assign block_product_count = 0 %}
   {% for block in section.blocks %}
-    {% if block.type == 'product' and block.settings.product != blank %}
-      {% assign block_product_count = block_product_count | plus: 1 %}
+    {% if block.type == 'product' %}
+      {% if block.settings.product != blank %}
+        {% assign block_product_count = block_product_count | plus: 1 %}
+      {% elsif block.settings.override_image != blank %}
+        {% assign block_product_count = block_product_count | plus: 1 %}
+      {% endif %}
     {% endif %}
   {% endfor %}
   {% assign product_limit = product_limit_setting %}
@@ -128,6 +132,7 @@
     outline: 2px solid currentColor; outline-offset: 4px;
   }
   #shopify-section-{{ id }} .ak-ft__product-link { text-decoration: none; color: inherit; display: block; }
+  #shopify-section-{{ id }} .ak-ft__image-only-tile { display: block; color: inherit; }
   #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }
   /* Nav under slider: wrap + flex layout */
   #shopify-section-{{ id }} .ak-finishing-touches__carousel-wrap {
@@ -442,6 +447,52 @@
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
                 {% endif %}
+              {% elsif block.type == 'product' and block.settings.product == blank and block.settings.override_image != blank %}
+                {% if output_index < product_limit %}
+                  {% assign hover_enabled = settings.thumbnail_hover_enabled %}
+                  {% assign primary_image = block.settings.override_image %}
+                  {% assign hover_image = block.settings.override_image_hover %}
+                  {% assign tile_title = block.settings.tile_title | strip %}
+                  {% assign tile_link = block.settings.tile_link %}
+                  {% assign alt_text = block.settings.image_alt | strip %}
+                  {% if alt_text == blank %}
+                    {% if tile_title != blank %}
+                      {% assign alt_text = tile_title %}
+                    {% else %}
+                      {% assign alt_text = 'Featured image' %}
+                    {% endif %}
+                  {% endif %}
+                  <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-ft--image-only" {{ block.shopify_attributes }}>
+                    {% if tile_link != blank %}
+                      <a href="{{ tile_link }}" class="ak-ft__product-link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
+                    {% else %}
+                      <div class="ak-ft__image-only-tile" role="group" {% if tile_title != blank %}aria-label="{{ tile_title | escape }}"{% elsif alt_text != blank %}aria-label="{{ alt_text | escape }}"{% endif %}>
+                    {% endif %}
+                      <div class="product-wrap">
+                        <div class="product-image__wrapper">
+                          <div class="image__container product__imageContainer">
+                            {% if primary_image != blank %}
+                              {% include 'image-element', image: primary_image, alt: alt_text, object_fit: align_height, max_height: height %}
+                            {% endif %}
+                            {% if hover_image != blank and settings.show_secondary_image %}
+                              {% include 'image-element', image: hover_image, alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible' %}
+                            {% endif %}
+                          </div>
+                        </div>
+                        {% if hover_enabled == false and show_title and tile_title != blank %}
+                          <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">
+                            <span class="product-thumbnail__title">{{ tile_title | escape }}</span>
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% if tile_link != blank %}
+                      </a>
+                    {% else %}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% assign output_index = output_index | plus: 1 %}
+                {% endif %}
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -452,7 +503,7 @@
         </div>
         {% endif %}
       {% else %}
-        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}Select a collection above, or switch to "Hand-picked products" and add Product blocks below.{% else %}Add products using the "Product" blocks below.{% endif %}</p>
+        <p class="text-align-center" style="margin: 0;">{% if product_source == 'collection' %}Select a collection above, or switch to "Hand-picked products" and add Product blocks below.{% else %}Add Product blocks with a product selected, or clear the product and add an Override image for a preview or coming-soon tile (optional title and link in the block).{% endif %}</p>
       {% endif %}
     </div>
   </div>
@@ -1137,7 +1188,7 @@
           "type": "product",
           "id": "product",
           "label": "Product",
-          "info": "Select a product to show in the carousel. Add more blocks to add more products; order is the display order."
+          "info": "Optional when you upload an Override image below (e.g. coming-soon): clear this product and use Override image only, plus optional title/link. Otherwise pick a product for PDP link, swatches, and price."
         },
         {
           "type": "header",
@@ -1145,7 +1196,7 @@
         },
         {
           "type": "paragraph",
-          "content": "Leave blank to use the product's featured image. Upload an alternate image to control the aspect ratio and visual height of this tile, or to use lifestyle photography that differs from the PDP image."
+          "content": "With a product selected: leave blank to use its featured image, or upload art to replace it. With no product: upload at least Override image — use Title / Link below for caption and destination (no swatches or live price)."
         },
         {
           "type": "image_picker",
@@ -1163,7 +1214,23 @@
           "type": "text",
           "id": "image_alt",
           "label": "Image alt text (override)",
-          "info": "Describe the image for accessibility. Falls back to the product's alt text or title."
+          "info": "Describe the image for accessibility. With a product, falls back to product alt/title. Image-only tiles use this or Title below."
+        },
+        {
+          "type": "header",
+          "content": "When no product (override image only)"
+        },
+        {
+          "type": "text",
+          "id": "tile_title",
+          "label": "Title",
+          "info": "Shown under the image when Product is cleared and Section setting “Show product title” is on (e.g. Coming soon)."
+        },
+        {
+          "type": "url",
+          "id": "tile_link",
+          "label": "Link",
+          "info": "Optional. Makes the whole tile a link (e.g. collection or campaign page). Leave empty for a non-clickable preview."
         }
       ]
     }
