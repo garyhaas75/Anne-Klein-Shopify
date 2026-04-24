@@ -37,8 +37,7 @@
 {% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign crop_min_d = section.settings.crop_min_height_desktop | default: 480 %}
 {% assign crop_min_m = section.settings.crop_min_height_mobile | default: 400 %}
-{% assign letterbox = section.settings.letterbox_color | default: '#ffffff' %}
-{% assign letterbox_transparent = section.settings.letterbox_transparent %}
+{% assign letterbox = section.settings.letterbox_color | default: '#1a1a1a' %}
 {% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
 {% assign sec_heading = section.settings.heading %}
 {% assign sec_intro = section.settings.intro %}
@@ -140,11 +139,7 @@
     display: block;
     width: 100%;
     overflow: hidden;
-    {% if letterbox_transparent %}
-      background-color: transparent;
-    {% else %}
-      background-color: {{ letterbox }};
-    {% endif %}
+    background-color: {{ letterbox }};
   }
   #shopify-section-{{ id }} .ak-campaign-stills__media-shell {
     position: relative;
@@ -318,9 +313,7 @@
           <div class="ak-campaign-stills__header-inner">
             {% if sec_heading != blank %}
               {% assign hl = section.settings.heading_level | default: 'h2' %}
-              {% if hl == 'p' %}
-                <p class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</p>
-              {% elsif hl == 'h1' %}
+              {% if hl == 'h1' %}
                 <h1 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h1>
               {% elsif hl == 'h3' %}
                 <h3 class="ak-campaign-stills__heading" id="ak-stills-heading-{{ id }}">{{ sec_heading }}</h3>
@@ -463,12 +456,10 @@
       "id": "heading_level",
       "label": "Heading level",
       "default": "h2",
-      "info": "Choose Paragraph when this is body copy or a pull quote (not a real document heading).",
       "options": [
         { "value": "h1", "label": "H1" },
         { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "p", "label": "Paragraph (no heading)" }
+        { "value": "h3", "label": "H3" }
       ]
     },
     {
@@ -780,18 +771,10 @@
       "unit": "px"
     },
     {
-      "type": "checkbox",
-      "id": "letterbox_transparent",
-      "label": "Transparent frame background",
-      "default": true,
-      "info": "When on, the frame is fully transparent and the page background shows through. When off, the color below is used."
-    },
-    {
       "type": "color",
       "id": "letterbox_color",
-      "label": "Frame background color",
-      "default": "#ffffff",
-      "info": "Only used when ‘Transparent frame background’ is off. Shows where the image doesn't fill (Fixed-frame + Contain fit) and as the placeholder while the image loads."
+      "label": "Background (letterbox / loading)",
+      "default": "#1a1a1a"
     },
     {
       "type": "text",
