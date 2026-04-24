@@ -1867,6 +1867,28 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Name colors (first word / rest of name)"
+    },
+    {
+      "type": "paragraph",
+      "content": "The name is split on the first space: first word uses “First name color,” everything after uses “Last name color.” Use the same color in both if you want a single color."
+    },
+    {
+      "type": "color",
+      "id": "name_color_first",
+      "label": "First name color",
+      "default": "#fde8ec",
+      "info": "Color for the first word. Single-word names use only this color."
+    },
+    {
+      "type": "color",
+      "id": "name_color_last",
+      "label": "Last name color",
+      "default": "#fde8ec",
+      "info": "Color for everything after the first space (e.g. last name)."
+    },
+    {
       "type": "select",
       "id": "name_font_family",
       "label": "Name font",
@@ -1955,20 +1977,6 @@
       "default": 0,
       "unit": "px",
       "info": "0 = same as desktop. This value is the rendered size at ~390px viewport; scales up to ~1.5× near the tablet breakpoint. The auto-fit script then shrinks the name so it fits container width minus its left/right padding — so to get truly edge-to-edge text, set Name padding left/right (mobile) below to 0."
-    },
-    {
-      "type": "color",
-      "id": "name_color_first",
-      "label": "First name color",
-      "default": "#fde8ec",
-      "info": "The artist name is split on the first space: first word uses this color. Single-name artists use only this color."
-    },
-    {
-      "type": "color",
-      "id": "name_color_last",
-      "label": "Last name color",
-      "default": "#fde8ec",
-      "info": "Color for the rest of the name after the first space (e.g. surname). Single-word names only use first name color."
     },
     {
       "type": "range",
