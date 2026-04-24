@@ -1,36 +1,17 @@
 {% comment %}
-  Finishing Touches: same tile art at desktop vs mobile breakpoint.
-  When mobile_img differs from desktop_img, outputs two image-elements toggled by CSS; otherwise one image.
-  @param desktop_img {Image}
-  @param mobile_img {Image}
+  Finishing Touches: single resolved image per call (section picks override desktop → mobile → product).
+  Theme editor: eager img so lazyload does not leave tiles blank in preview.
+  @param image {Image}
   @param alt {String}
   @param object_fit {Boolean}
   @param max_height {Number}
-  @param additional_classes {String} Optional (e.g. secondary swap classes)
+  @param additional_classes {String} Optional
 {% endcomment %}
 {% liquid
   assign additional_classes = additional_classes | default: ''
-  assign desk = desktop_img
-  assign mob = mobile_img
-  # Dual layout only when assets differ by URL; same file in both pickers often has two ids — id-only compare forced broken dual markup.
-  assign use_dual = false
-  if mob != blank and desk != blank
-    assign desk_u = desk | image_url: width: 100
-    assign mob_u = mob | image_url: width: 100
-    if desk_u != mob_u
-      assign use_dual = true
-    endif
+  assign back_to_basics = false
+  if request.design_mode
+    assign back_to_basics = true
   endif
 %}
-{% if use_dual %}
-<div class="ak-ft-img-responsive{% if secondary_pair %} ak-ft-img-responsive--secondary{% endif %}">
-  <div class="ak-ft-img-responsive__desktop">
-    {% include 'image-element', image: desk, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
-  </div>
-  <div class="ak-ft-img-responsive__mobile">
-    {% include 'image-element', image: mob, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
-  </div>
-</div>
-{% else %}
-  {% include 'image-element', image: desk, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
-{% endif %}
+{% include 'image-element', image: image, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes, back_to_basics: back_to_basics %}
