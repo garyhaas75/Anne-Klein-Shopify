@@ -1,0 +1,32 @@
+{% comment %}
+  Finishing Touches: same tile art at desktop vs mobile breakpoint.
+  When mobile_img differs from desktop_img, outputs two image-elements toggled by CSS; otherwise one image.
+  @param desktop_img {Image}
+  @param mobile_img {Image}
+  @param alt {String}
+  @param object_fit {Boolean}
+  @param max_height {Number}
+  @param additional_classes {String} Optional (e.g. secondary swap classes)
+{% endcomment %}
+{% liquid
+  assign desk = desktop_img
+  assign mob = mobile_img
+  assign use_dual = false
+  if mob != blank and desk != blank
+    if mob.id != desk.id
+      assign use_dual = true
+    endif
+  endif
+%}
+{% if use_dual %}
+<div class="ak-ft-img-responsive{% if secondary_pair %} ak-ft-img-responsive--secondary{% endif %}">
+  <div class="ak-ft-img-responsive__desktop">
+    {% include 'image-element', image: desk, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
+  </div>
+  <div class="ak-ft-img-responsive__mobile">
+    {% include 'image-element', image: mob, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
+  </div>
+</div>
+{% else %}
+  {% include 'image-element', image: desk, alt: alt, object_fit: object_fit, max_height: max_height, additional_classes: additional_classes %}
+{% endif %}
