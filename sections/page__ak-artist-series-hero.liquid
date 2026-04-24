@@ -637,21 +637,27 @@
       padding-left: {{ nm_plm }}px;
       padding-right: {{ nm_prm }}px;
     }
-    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
-      /* Column had align-items: stretch: children fill the line cross size, the line
-         grew to the full inset, so the “text block” was still 100% wide and row
-         justify-content (L/C/R) had no free space. flex-start = block shrinks. */
-      align-items: flex-start;
-    }
   }
+  /* overlay-content: align-items MUST be in breakpoint blocks — a later unscoped
+     `align-items: stretch` was overriding the mobile `flex-start`, keeping name
+     + eyebrow stretched to the full inset width (e.g. 366px) so L/C/R had no effect. */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     width: max-content;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+      align-items: stretch;
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+      align-items: flex-start;
+    }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
     min-width: 0;
