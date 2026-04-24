@@ -80,8 +80,10 @@
 {% if solid_white_bottom_band == false and bottom_scrim_strength > 0 %}
   {% assign show_bottom_gradient_scrim = true %}
 {% endif %}
-{% assign image_min_height = section.settings.image_min_height | default: 720 %}
-{% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 %}
+{% assign image_min_height = section.settings.image_min_height | default: 720 | plus: 0 %}
+{% assign image_min_height_mobile = section.settings.image_min_height_mobile | default: 480 | plus: 0 %}
+{% assign image_max_height = section.settings.image_max_height | default: 0 | plus: 0 %}
+{% assign image_max_height_mobile = section.settings.image_max_height_mobile | default: 0 | plus: 0 %}
 {% assign band_height = section.settings.band_height | default: 220 %}
 {% assign band_height_mobile = section.settings.band_height_mobile | default: 160 %}
 {% assign overlay_overlap = section.settings.overlay_overlap | default: 96 %}
@@ -295,14 +297,14 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  /* --- Crop-fill: fixed min-height + cover (optional) --- */
+  /* --- Crop-fill: min-height + cover; min() keeps short viewports from forced overflow --- */
   #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
-    min-height: {{ image_min_height }}px;
+    min-height: min({{ image_min_height }}px, 92vh);
     overflow: hidden;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
-      min-height: {{ image_min_height_mobile }}px;
+      min-height: min({{ image_min_height_mobile }}px, 88vh);
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop .ak-artist-series-hero__media {
@@ -348,6 +350,62 @@
     #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-mobile-only { display: none !important; }
     #shopify-section-{{ id }} .ak-artist-series-hero__media .is-hidden-desktop-only { display: block !important; }
   }
+  {% comment %}
+    Natural + max height: desktop art uses img.is-hidden-mobile-only (see image-element); it is not
+    a direct child of .ak-artist-series-hero__media, so old `> .is-hidden-mobile-only` never matched.
+    min(px, vh) keeps tall caps from overflowing short desktop viewports.
+  {% endcomment %}
+  {% if image_fill_and_crop == false and image_max_height > 0 %}
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media img.is-hidden-mobile-only {
+      max-height: min({{ image_max_height }}px, 92vh) !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain;
+      object-position: {{ image_object_position }};
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop == false and image_max_height_mobile > 0 %}
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only {
+      max-height: min({{ image_max_height_mobile }}px, 88vh);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only .image-element__wrap {
+      max-height: inherit;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only img,
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--natural .ak-artist-series-hero__media > .is-hidden-desktop-only .placeholder-svg {
+      max-width: 100% !important;
+      width: 100% !important;
+      max-height: min({{ image_max_height_mobile }}px, 88vh) !important;
+      height: auto !important;
+      object-fit: contain;
+      object-position: {{ image_object_position }};
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop and image_max_height > 0 %}
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: min({{ image_min_height }}px, 92vh);
+      max-height: min({{ image_max_height | at_least: image_min_height }}px, 95vh);
+    }
+  }
+  {% endif %}
+  {% if image_fill_and_crop and image_max_height_mobile > 0 %}
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__stage--crop {
+      min-height: min({{ image_min_height_mobile }}px, 88vh);
+      max-height: min({{ image_max_height_mobile | at_least: image_min_height_mobile }}px, 92vh);
+    }
+  }
+  {% endif %}
   #shopify-section-{{ id }} .ak-artist-series-hero__wordmark {
     position: absolute;
     top: {{ wordmark_offset_top }}px;
@@ -859,7 +917,7 @@
       "step": 20,
       "default": 720,
       "unit": "px",
-      "info": "Crop mode: minimum stage height. Natural mode: used only when no image is set (placeholder)."
+      "info": "Fill & crop: minimum stage height. Natural: only the empty placeholder; with a real image, width is 100% and height follows the file unless you set max height below."
     },
     {
       "type": "range",
@@ -870,7 +928,29 @@
       "step": 20,
       "default": 480,
       "unit": "px",
-      "info": "Crop mode: minimum stage height. Natural mode: placeholder only."
+      "info": "Fill & crop: minimum stage height. Natural: placeholder only when there is no image."
+    },
+    {
+      "type": "range",
+      "id": "image_max_height",
+      "label": "Hero max height (natural, desktop)",
+      "min": 0,
+      "max": 2000,
+      "step": 20,
+      "default": 0,
+      "unit": "px",
+      "info": "Only when “Fill stage and crop” is off. 0 = no cap (image uses full height). Otherwise caps the desktop image at this height (also limited by 92% of the viewport height on short screens)."
+    },
+    {
+      "type": "range",
+      "id": "image_max_height_mobile",
+      "label": "Hero max height (natural, mobile)",
+      "min": 0,
+      "max": 900,
+      "step": 20,
+      "default": 0,
+      "unit": "px",
+      "info": "Only for natural (non-crop) layout. 0 = no cap. Caps the mobile image; also limited by 88% of the viewport height."
     },
     {
       "type": "header",
