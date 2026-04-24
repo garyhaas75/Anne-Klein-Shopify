@@ -359,98 +359,40 @@
         "padding_bottom_mobile": 0
       }
     },
-    "index_finishing_touches_r89aBe": {
-      "type": "index__finishing-touches",
+    "index_ak_product_grid_rMjcyf": {
+      "type": "index__ak-product-grid",
       "blocks": {
-        "product_BkETDU": {
+        "product_rY4QXJ": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_1_Desktop_ab4d01da-a1e7-4c23-ac74-812fba584e18.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_1_Mobile_6bd19ecf-ef5a-42d2-8612-1317aa9f5ecd.png",
             "image_alt": "",
             "tile_title": "",
             "tile_link": ""
           }
         },
-        "product_6BDiqW": {
+        "product_4W6qXk": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_2_Desktop.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_2_Mobile_ed84902c-147d-4035-8413-3a1fd6d6da35.png",
             "image_alt": "",
             "tile_title": "",
             "tile_link": ""
           }
         },
-        "product_CkLhiD": {
+        "product_PXw7KB": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_3_Mobile.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_3_Mobile_40b36e3a-384d-4995-a473-39c57c03f531.png",
             "image_alt": "",
             "tile_title": "",
             "tile_link": ""
           }
         },
-        "product_a9nxy7": {
+        "product_A4fCkQ": {
           "type": "product",
           "settings": {
             "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_4_Mobile.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_7_Desktop_90ec3bf6-78b3-4573-ab3a-c21efe765711.png",
-            "image_alt": "",
-            "tile_title": "",
-            "tile_link": ""
-          }
-        },
-        "product_Y6mDBh": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_6_Desktop_67f4a90a-103f-4dba-939e-525c7317762d.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_5_Mobile_fcabf95b-8d5c-402d-958b-1cc54e1845f1.png",
-            "image_alt": "",
-            "tile_title": "",
-            "tile_link": ""
-          }
-        },
-        "product_qPzFFL": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_4_Desktop.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_9_Mobile.png",
-            "image_alt": "",
-            "tile_title": "",
-            "tile_link": ""
-          }
-        },
-        "product_UKzHNT": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_7_Desktop.png",
-            "image_alt": "",
-            "tile_title": "",
-            "tile_link": ""
-          }
-        },
-        "product_ixUDWV": {
-          "type": "product",
-          "settings": {
-            "product": "bevel-oval-drop-earrings-gold-tone",
-            "image_alt": "",
-            "tile_title": "",
-            "tile_link": ""
-          }
-        },
-        "product_Eq3HgY": {
-          "type": "product",
-          "settings": {
-            "product": "belinda-black",
             "image_alt": "",
             "tile_title": "",
             "tile_link": ""
@@ -458,47 +400,41 @@
         }
       },
       "block_order": [
-        "product_BkETDU",
-        "product_6BDiqW",
-        "product_CkLhiD",
-        "product_a9nxy7",
-        "product_Y6mDBh",
-        "product_qPzFFL",
-        "product_UKzHNT",
-        "product_ixUDWV",
-        "product_Eq3HgY"
+        "product_rY4QXJ",
+        "product_4W6qXk",
+        "product_PXw7KB",
+        "product_A4fCkQ"
       ],
-      "name": "AK Finishing Touches",
+      "name": "AK Product grid",
       "settings": {
-        "title": "",
-        "heading_alignment": "center",
-        "heading_alignment_mobile": "",
-        "font_family": "system",
-        "heading_font_size": 24,
-        "heading_font_size_mobile": 0,
-        "heading_font_weight": "400",
-        "heading_underline": false,
-        "show_title": false,
-        "show_price": false,
-        "show_more_colors": false,
-        "show_stickers": false,
-        "layout_style": "grid",
+        "title": "SHOP THE LOOK",
         "product_source": "blocks",
         "collection": "",
         "products_limit": 12,
         "products_per": 4,
         "products_per_mobile": 2,
-        "grid_gap": 0,
+        "grid_gap": 16,
         "grid_gap_mobile": 0,
         "align_height": false,
         "collection_height": 320,
         "width": "wide",
         "show_gutter": true,
-        "padding_top": 10,
-        "padding_bottom": 10,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 10,
-        "section_aria_label": ""
+        "show_title": true,
+        "show_price": true,
+        "show_more_colors": true,
+        "show_stickers": true,
+        "section_aria_label": "",
+        "font_family": "system",
+        "heading_alignment": "center",
+        "heading_font_size": 24,
+        "heading_font_size_mobile": 0,
+        "heading_font_weight": "400",
+        "heading_underline": false,
+        "heading_alignment_mobile": "",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
       }
     },
     "page_ak_campaign_cta_FztAAp": {
@@ -857,7 +793,7 @@
     "campaign_film",
     "page_ak_campaign_copy_Yra8yW",
     "page_ak_campaign_stills_hjhnKR",
-    "index_finishing_touches_r89aBe",
+    "index_ak_product_grid_rMjcyf",
     "page_ak_campaign_cta_FztAAp",
     "page_ak_campaign_stills_pnTPed",
     "page_ak_campaign_copy_JnVKQU",
