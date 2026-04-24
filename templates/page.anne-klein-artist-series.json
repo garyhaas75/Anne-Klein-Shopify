@@ -301,7 +301,7 @@
         "padding_top": 20,
         "padding_bottom": 20,
         "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20
+        "padding_bottom_mobile": 0
       }
     },
     "page_ak_campaign_stills_hjhnKR": {
@@ -543,7 +543,7 @@
         "heading_alignment_mobile": "",
         "padding_top": 40,
         "padding_bottom": 40,
-        "padding_top_mobile": 40,
+        "padding_top_mobile": 0,
         "padding_bottom_mobile": 10
       }
     },
