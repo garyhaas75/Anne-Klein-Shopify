@@ -140,16 +140,6 @@
 {% assign nm_ls_m = section.settings.name_letter_spacing_mobile | default: nm_ls %}
 {% assign nm_al = section.settings.name_text_align | default: 'center' %}
 {% assign nm_al_m = section.settings.name_text_align_mobile | default: nm_al %}
-{% case nm_al %}
-  {% when 'left' %}{% assign oi_ali = 'flex-start' %}
-  {% when 'right' %}{% assign oi_ali = 'flex-end' %}
-  {% else %}{% assign oi_ali = 'center' %}
-{% endcase %}
-{% case nm_al_m %}
-  {% when 'left' %}{% assign oi_ali_m = 'flex-start' %}
-  {% when 'right' %}{% assign oi_ali_m = 'flex-end' %}
-  {% else %}{% assign oi_ali_m = 'center' %}
-{% endcase %}
 {% assign nm_pt = section.settings.name_padding_top | default: 4 %}
 {% assign nm_pr = section.settings.name_padding_right | default: 24 %}
 {% assign nm_pb = section.settings.name_padding_bottom | default: 0 %}
@@ -581,13 +571,10 @@
       bottom: calc({{ band_height_mobile }}px - {{ overlay_overlap_mobile }}px);
     }
   }
-  /* Full-width track; positions the tight eyebrow+name group (name alignment = block position).
-     Default is flex-start, not stretch — if align-items is stretch, the .overlay-content is as wide
-     as the row and L/C/R look identical. Media queries below set true mobile/desktop alignment. */
+  /* Block position: text-align on the inset moves the inline-grid (same pattern as centering
+     inline-block). Do not give grid children width: 100% or the group stays full width and
+     L/C/R look the same. Inner text stays left via .overlay-content { text-align: left } */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     min-width: 0;
     width: 100%;
     max-width: 100%;
@@ -597,25 +584,20 @@
     #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
       padding-left: {{ nm_pl }}px;
       padding-right: {{ nm_pr }}px;
-      align-items: {{ oi_ali }};
-    }
-    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
-      align-self: {{ oi_ali }};
+      text-align: {{ nm_al }};
     }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__overlay-inset {
       padding-left: {{ nm_plm }}px;
       padding-right: {{ nm_prm }}px;
-      align-items: {{ oi_ali_m }};
-    }
-    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
-      align-self: {{ oi_ali_m }};
+      text-align: {{ nm_al_m }};
     }
   }
-  /* Shrink to max(eyebrow, name); each row is full column width, text left — eyebrow lines up with name’s left */
+  /* Shrink to max(eyebrow, name); one column; inner copy stays left even when inset is center|right */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
     display: inline-grid;
+    text-align: left;
     width: max-content;
     max-width: 100%;
     min-width: 0;
@@ -623,7 +605,6 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
     min-width: 0;
-    width: 100%;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
@@ -634,7 +615,6 @@
     font-weight: {{ eb_wt }};
     line-height: {{ eb_lh }}%;
     margin: 0;
-    width: 100%;
     box-sizing: border-box;
     text-align: left;
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
@@ -678,8 +658,8 @@
     overflow: hidden;
     max-width: 100%;
     box-sizing: border-box;
-    width: 100%;
     min-width: 0;
+    width: auto;
     text-align: left;
     /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
        from being clipped by overflow: hidden when line-height is tight.
@@ -2230,7 +2210,7 @@
       "id": "name_text_align",
       "label": "Name + eyebrow alignment (desktop)",
       "default": "center",
-      "info": "Uses CSS (min-width: 799px). If the theme preview is narrower, the mobile control below is used. Full-width name lines can make Left/Center/Right look the same even when the control works.",
+      "info": "Applies at min-width: 799px. Uses text-align on the text track to place the block (the eyebrow+name use an inline grid). Wider name lines can make Left/Center/Right look similar; narrow the preview to test mobile. If the preview is under 799px, the mobile control applies instead.",
       "options": [
         {
           "value": "left",
@@ -2251,7 +2231,7 @@
       "id": "name_text_align_mobile",
       "label": "Name + eyebrow alignment (mobile)",
       "default": "center",
-      "info": "Uses CSS (max-width: 798px): only when the theme preview is 798px wide or less. Wider than that, the desktop alignment above is used. If your text is full width, Left/Center/Right may look similar.",
+      "info": "Applies at max-width: 798px. Uses text-align to move the eyebrow+name block; text inside the block stays left. Resize the theme preview to phone width. If the name spans almost the full width, the three options may look similar.",
       "options": [
         {
           "value": "left",
