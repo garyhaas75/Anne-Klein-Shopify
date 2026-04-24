@@ -657,6 +657,9 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
       align-items: flex-start;
+      /* Base uses width:max-content — that can still be the full 366px row. min-content
+         width = max(children's min width), so the text block can shrink for L/C/R. */
+      width: min-content;
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
