@@ -608,8 +608,8 @@
     font-family: {{ name_font_stack }};
     /* Preferred max size: smooth linear ramp across desktop widths
        (slider value ≈ size at ~1024px viewport, ≈ 2.5× slider at ~3000px).
-       The auto-fit script below scales DOWN from this size when needed so the
-       artist name always fits on a single line within its container. */
+       The auto-fit script below (desktop only) scales DOWN from this size when needed
+       so the artist name fits on a single line within its container. */
     font-size: clamp({{ nm_sz | times: 0.85 | divided_by: 16.0 }}rem, calc({{ nm_sz | times: 0.235 | divided_by: 16.0 }}rem + {{ nm_sz | times: 0.075 }}vw), {{ nm_sz | times: 3.5 | divided_by: 16.0 }}rem);
     font-weight: {{ nm_wt }};
     line-height: {{ nm_lh }}%;
@@ -649,14 +649,17 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
-      /* Mobile linear ramp: slider value ≈ size at ~390px viewport,
-         scaling smoothly up toward ~1.5× slider near the 798px breakpoint.
-         Auto-fit script shrinks from this if it ever overflows the container. */
-      font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.522 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.1225 }}vw), {{ nm_sz_m | times: 1.7 | divided_by: 16.0 }}rem);
+      /* Mobile: allow 2+ lines, no single-line cap from nowrap/JS. Slider ≈ size at
+         ~390px; scales up with vw; top of clamp ~2.8× (higher than old 1.5–1.7 so
+         the range setting can read larger before wrapping). */
+      font-size: clamp({{ nm_sz_m | times: 0.6 | divided_by: 16.0 }}rem, calc({{ nm_sz_m | times: 0.45 | divided_by: 16.0 }}rem + {{ nm_sz_m | times: 0.15 }}vw), {{ nm_sz_m | times: 2.8 | divided_by: 16.0 }}rem);
       text-align: {{ nm_al_m }};
       padding: {{ nm_ptm }}px {{ nm_prm }}px calc({{ nm_pbm }}px + 0.2em) {{ nm_plm }}px;
       letter-spacing: {{ nm_ls_m }}px;
       transform: translateY({{ nm_nudge_m }}px);
+      white-space: normal;
+      overflow: visible;
+      max-width: 100%;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
       color: {{ name_co_first_m }};
@@ -832,6 +835,10 @@
           pending = false;
           // Reset to the CSS-defined preferred max, then shrink to fit.
           el.style.fontSize = '';
+          /* Mobile: name uses normal wrap + no manual shrink; honor CSS clamp only. */
+          if (window.matchMedia('(max-width: 798px)').matches) {
+            return;
+          }
           var style = window.getComputedStyle(el);
           var paddingX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
           var available = parent.clientWidth - paddingX;
@@ -2102,7 +2109,7 @@
       "step": 4,
       "default": 0,
       "unit": "px",
-      "info": "0 = same as desktop. This value is the rendered size at ~390px viewport; scales up to ~1.5× near the tablet breakpoint. The auto-fit script then shrinks the name so it fits container width minus its left/right padding — so to get truly edge-to-edge text, set Name padding left/right (mobile) below to 0."
+      "info": "0 = same as desktop. On small screens the name can wrap to two (or more) lines; the auto-fit shrink only runs on desktop (799px+). This value is the base for the mobile clamp; increase for larger type. Set Name padding left/right (mobile) to 0 for the widest line length."
     },
     {
       "type": "range",
