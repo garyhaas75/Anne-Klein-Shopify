@@ -593,7 +593,20 @@
         "still_kHrTwa": {
           "type": "still",
           "settings": {
-            "image": "shopify://shop_images/Image_cluster_with_flower.png",
+            "image": "shopify://shop_images/Section_7_1_Mobile_c346642c-27af-42a3-9f27-8c97566ea5c0.png",
+            "mobile_image": "shopify://shop_images/Section_7_1_Mobile.png",
+            "image_alt": "",
+            "caption": "",
+            "caption_placement": "none",
+            "link_url": "",
+            "link_new_tab": false
+          }
+        },
+        "still_Ut9Ub7": {
+          "type": "still",
+          "settings": {
+            "image": "shopify://shop_images/Section_7_2_Desktop_f79f41b0-db67-402c-9a13-98adab230e70.png",
+            "mobile_image": "shopify://shop_images/Section_7_2_Mobile_571e44fb-6b8e-4008-bc3e-9e20e521cf7d.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -603,7 +616,8 @@
         }
       },
       "block_order": [
-        "still_kHrTwa"
+        "still_kHrTwa",
+        "still_Ut9Ub7"
       ],
       "name": "AK Campaign stills",
       "settings": {
