@@ -119,8 +119,7 @@
 {% assign eb_lh = section.settings.eyebrow_line_height | default: 120 %}
 {% assign eb_ls = section.settings.eyebrow_letter_spacing | default: 0 %}
 {% assign eb_ls_m = section.settings.eyebrow_letter_spacing_mobile | default: eb_ls %}
-{% assign eb_al = section.settings.eyebrow_text_align | default: 'center' %}
-{% assign eb_al_m = section.settings.eyebrow_text_align_mobile | default: eb_al %}
+{% comment %} text-align: eyebrow uses name_text_align in CSS so one control lines them up. {% endcomment %}
 {% assign eb_pt = section.settings.eyebrow_padding_top | default: 0 %}
 {% assign eb_pr = section.settings.eyebrow_padding_right | default: 24 %}
 {% assign eb_pb = section.settings.eyebrow_padding_bottom | default: 12 %}
@@ -592,6 +591,7 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+    /* text-align matches the artist name (one theme setting) */
     font-family: {{ eyebrow_font_stack }};
     /* Smooth linear ramp across desktop widths.
        Anchor points: at ~1024px viewport ≈ slider value; at ~3000px viewport ≈ 2.2× slider.
@@ -602,7 +602,7 @@
     margin: 0;
     width: 100%;
     box-sizing: border-box;
-    text-align: {{ eb_al }};
+    text-align: {{ nm_al }};
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
@@ -621,7 +621,7 @@
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
-      text-align: {{ eb_al_m }};
+      text-align: {{ nm_al_m }};
       padding: {{ eb_ptm }}px 0 {{ eb_pbm }}px 0;
       transform: translateY({{ eb_nudge_m }}px);
       {% unless section.settings.eyebrow_uppercase %}
@@ -1686,7 +1686,11 @@
     },
     {
       "type": "paragraph",
-      "content": "Eyebrow and artist name sit above the bottom band. Left/right spacing for both is one shared inset: use Name padding left/right (not Eyebrow left/right, which is unused). Each line has its own font, size, and color, alignment, and top/bottom padding."
+      "content": "One alignment control covers both the eyebrow and the name. Use Name padding left/right for the same horizontal inset, then set Name + eyebrow alignment to Left, Center, or Right for both lines together."
+    },
+    {
+      "type": "paragraph",
+      "content": "The “Eyebrow alignment” and horizontal eyebrow padding options below are ignored. Each line can still have its own font, size, color, and top/bottom spacing."
     },
     {
       "type": "header",
@@ -1842,6 +1846,7 @@
       "id": "eyebrow_text_align",
       "label": "Eyebrow alignment (desktop)",
       "default": "center",
+      "info": "Not used. The artist name’s “Name + eyebrow alignment” control sets both lines.",
       "options": [
         {
           "value": "left",
@@ -1862,6 +1867,7 @@
       "id": "eyebrow_text_align_mobile",
       "label": "Eyebrow alignment (mobile)",
       "default": "center",
+      "info": "Not used. Use the mobile “Name + eyebrow alignment” for both lines.",
       "options": [
         {
           "value": "left",
@@ -2185,8 +2191,9 @@
     {
       "type": "select",
       "id": "name_text_align",
-      "label": "Name alignment (desktop)",
+      "label": "Name + eyebrow alignment (desktop)",
       "default": "center",
+      "info": "Applies to the eyebrow and the artist name together. For the same left edge, choose Left here and use the shared Name padding (above).",
       "options": [
         {
           "value": "left",
@@ -2205,8 +2212,9 @@
     {
       "type": "select",
       "id": "name_text_align_mobile",
-      "label": "Name alignment (mobile)",
+      "label": "Name + eyebrow alignment (mobile)",
       "default": "center",
+      "info": "Applies to the eyebrow and the artist name together. For the same left edge, choose Left and use the shared mobile Name padding (above).",
       "options": [
         {
           "value": "left",
