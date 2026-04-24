@@ -53,7 +53,7 @@
 {% assign product_limit_setting = section.settings.products_limit | default: 12 | plus: 0 %}
 {% comment %}
   Collection picker returns a collection object. Resolve through collections[handle] when possible.
-  If Product source is From collection but that collection has 0 products, we fall back to hand-picked Product blocks so the section does not render empty while blocks exist.
+  Product blocks always win when any block has a product or an override image: "From collection" only drives the carousel when there are zero configured Product blocks. Otherwise merchants configure blocks (e.g. override-only coming-soon tiles) and never see them while collection mode is on.
 {% endcomment %}
 {% assign ft_collection = section.settings.collection %}
 {% if ft_collection != blank %}
@@ -63,9 +63,20 @@
   {% endif %}
 {% endif %}
 
+{% assign block_product_count = 0 %}
+{% for block in section.blocks %}
+  {% if block.type == 'product' %}
+    {% if block.settings.product != blank %}
+      {% assign block_product_count = block_product_count | plus: 1 %}
+    {% elsif block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
+      {% assign block_product_count = block_product_count | plus: 1 %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 {% assign use_collection_loop = false %}
 {% assign collection_size = 0 %}
-{% if product_source == 'collection' and ft_collection != blank %}
+{% if product_source == 'collection' and ft_collection != blank and block_product_count == 0 %}
   {% assign collection_size = ft_collection.products_count | plus: 0 %}
   {% if collection_size > 0 %}
     {% assign use_collection_loop = true %}
@@ -82,16 +93,6 @@
   {% endif %}
   {% assign product_limit = products_count %}
 {% else %}
-  {% assign block_product_count = 0 %}
-  {% for block in section.blocks %}
-    {% if block.type == 'product' %}
-      {% if block.settings.product != blank %}
-        {% assign block_product_count = block_product_count | plus: 1 %}
-      {% elsif block.settings.override_image != blank or block.settings.override_image_mobile != blank %}
-        {% assign block_product_count = block_product_count | plus: 1 %}
-      {% endif %}
-    {% endif %}
-  {% endfor %}
   {% assign product_limit = product_limit_setting %}
   {% if block_product_count < product_limit_setting %}
     {% assign product_limit = block_product_count %}
@@ -1130,7 +1131,7 @@
         { "value": "blocks", "label": "Hand-picked products" },
         { "value": "collection", "label": "From collection" }
       ],
-      "info": "Hand-picked: Product blocks below drive the carousel. From collection: uses that collection’s products when it has at least one; if the collection is empty, Product blocks are used instead so the section is not blank."
+      "info": "Hand-picked: Product blocks drive the carousel. From collection: uses that collection only when no Product block has a product or override image. If any block is configured, blocks win (so override-only tiles work even when a collection is selected)."
     },
     {
       "type": "collection",
