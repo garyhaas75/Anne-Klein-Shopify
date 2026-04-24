@@ -158,20 +158,19 @@
   #shopify-section-{{ id }} .ak-ft-img-responsive__mobile {
     width: 100%;
   }
-  @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }} .ak-ft-img-responsive__mobile {
-      display: none !important;
-    }
-    #shopify-section-{{ id }} .ak-ft-img-responsive__desktop {
-      display: block;
-    }
+  /* Desktop-first defaults so one column is always visible if dual markup is used (matches theme breakpoint 799 / 798). */
+  #shopify-section-{{ id }} .ak-ft-img-responsive__desktop {
+    display: block;
+  }
+  #shopify-section-{{ id }} .ak-ft-img-responsive__mobile {
+    display: none;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-ft-img-responsive__desktop {
       display: none !important;
     }
     #shopify-section-{{ id }} .ak-ft-img-responsive__mobile {
-      display: block;
+      display: block !important;
     }
   }
   #shopify-section-{{ id }} .flickity-page-dots .dot { min-width: 24px; min-height: 24px; }

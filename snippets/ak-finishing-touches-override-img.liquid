@@ -12,9 +12,12 @@
   assign additional_classes = additional_classes | default: ''
   assign desk = desktop_img
   assign mob = mobile_img
+  # Dual layout only when assets differ by URL; same file in both pickers often has two ids — id-only compare forced broken dual markup.
   assign use_dual = false
   if mob != blank and desk != blank
-    if mob.id != desk.id
+    assign desk_u = desk | image_url: width: 100
+    assign mob_u = mob | image_url: width: 100
+    if desk_u != mob_u
       assign use_dual = true
     endif
   endif
