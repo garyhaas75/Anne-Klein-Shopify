@@ -247,6 +247,25 @@
       scroll-behavior: auto;
     }
   }
+  /* If init JS never runs (e.g. bad config parse), still show a horizontal product row on desktop. */
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }}:not(.ak-ft--native-desktop) .ak-finishing-touches__carousel-wrap .slider-gallery:not(.flickity-enabled) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      width: 100%;
+      min-height: 200px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    #shopify-section-{{ id }}:not(.ak-ft--native-desktop) .ak-finishing-touches__carousel-wrap .slider-gallery:not(.flickity-enabled) .gallery-cell {
+      flex: 0 0 auto;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+  }
   /* Show / hide product info inside this section only (does not affect other sections). */
   {% unless show_title %}
   #shopify-section-{{ id }} .product-thumbnail__title,
@@ -587,7 +606,7 @@
   </div>
 </section>
 
-<script type="application/json" data-section-id="{{ id }}" data-section-data>
+<script type="application/json" data-section-id="{{ id }}" class="ak-ft__section-json">
   {
     "collection_style": "slider",
     "products_per": {{ products_per_row }},
@@ -602,6 +621,20 @@
   var arrowShape = 'M95.04 46 21.68 46 48.18 22.8 42.91 16.78 4.96 50 42.91 83.22 48.18 77.2 21.68 54 95.04 54 95.04 46z';
   var carouselLabel = {{ title | default: 'Finishing touches' | json }};
   var MOBILE_MQ = window.matchMedia('(max-width: 798px)');
+
+  /** Config JSON must be read from script text only — jQuery .data() on data-section-data (boolean attr) breaks JSON.parse. */
+  function readFinishingTouchesSectionData($section) {
+    var $dataEl = $section.find('script.ak-ft__section-json[type="application/json"][data-section-id="' + sectionId + '"]').first();
+    if (!$dataEl.length) return null;
+    try {
+      var el = $dataEl[0];
+      var raw = (el && el.textContent ? el.textContent : ($dataEl.html() || '')).trim();
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
 
   function getMobileColumns($gallery) {
     var n = parseInt($gallery.attr('data-mobile-columns'), 10);
@@ -756,13 +789,8 @@
     if (typeof jQuery === 'undefined') return;
     var $section = jQuery('#shopify-section-' + sectionId);
     if (!$section.length) return;
-    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
-    if (!$dataEl.length) return;
-    var data = {};
-    try {
-      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
-      data = typeof raw === 'object' ? raw : JSON.parse(raw);
-    } catch (e) { return; }
+    var data = readFinishingTouchesSectionData($section);
+    if (!data) return;
     if (data.collection_style !== 'slider') return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
@@ -833,14 +861,8 @@
     if (!$section.length) return;
     var $gallery = $section.find('.slider-gallery');
     if (!$gallery.length) return;
-    var $dataEl = $section.find('[data-section-id="' + sectionId + '"][data-section-data]').first();
-    if (!$dataEl.length) return;
-    var data = {};
-    try {
-      var raw = $dataEl.data('section-data') || $dataEl.html() || $dataEl.text();
-      data = typeof raw === 'object' ? raw : JSON.parse(raw);
-    } catch (e) { return; }
-    if (data.collection_style !== 'slider') return;
+    var data = readFinishingTouchesSectionData($section);
+    if (!data || data.collection_style !== 'slider') return;
 
     var isMobile = MOBILE_MQ.matches;
     var hasFlickity = $gallery.hasClass('flickity-enabled');
