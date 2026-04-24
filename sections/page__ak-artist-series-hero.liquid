@@ -89,7 +89,9 @@
 {% assign ak_logo_max_width_mobile = section.settings.ak_logo_max_width_mobile | default: 200 %}
 {% assign image_object_position = section.settings.image_object_position | default: 'center' %}
 {% assign image_fill_and_crop = section.settings.image_fill_and_crop %}
-{% assign name_co = section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
+{% comment %} Legacy `name_color` in older section JSON: fallback if new keys are missing. {% endcomment %}
+{% assign name_co_first = section.settings.name_color_first | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
+{% assign name_co_last = section.settings.name_color_last | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
 {% assign has_hero_image = false %}
 {% if image != blank or mobile_image != blank %}
   {% assign has_hero_image = true %}
@@ -553,7 +555,6 @@
     max-width: 100%;
     box-sizing: border-box;
     width: 100%;
-    color: {{ name_co }};
     text-align: {{ nm_al }};
     /* Extra 0.2em on the bottom keeps serif descenders (g, j, p, y)
        from being clipped by overflow: hidden when line-height is tight. */
@@ -576,7 +577,16 @@
       transform: translateY({{ nm_nudge_m }}px);
     }
   }
-  #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible,
+  #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
+    color: {{ name_co_first }};
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
+    color: {{ name_co_last }};
+  }
+  #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
+    outline: 2px solid {{ name_co_first }};
+    outline-offset: 4px;
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 4px;
@@ -642,14 +652,31 @@
             <p class="ak-artist-series-hero__eyebrow">{{ eyebrow }}</p>
           {% endif %}
           {% if artist_name != blank %}
+            {% assign _an_st = artist_name | strip %}
+            {% assign _an_tok = _an_st | split: ' ' %}
+            {% assign _an_first = _an_tok[0] %}
+            {% assign _an_last = '' %}
+            {% for _an_w in _an_tok %}
+              {% unless forloop.first %}
+                {% if _an_last != '' %}{% assign _an_last = _an_last | append: ' ' %}{% endif %}
+                {% assign _an_last = _an_last | append: _an_w %}
+              {% endunless %}
+            {% endfor %}
+            {% capture artist_name_html %}
+              {% if _an_last != '' %}
+                <span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--first">{{ _an_first | escape }}</span><span class="ak-artist-series-hero__name-sep" aria-hidden="true"> </span><span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--last">{{ _an_last | escape }}</span>
+              {% else %}
+                <span class="ak-artist-series-hero__name-part ak-artist-series-hero__name-part--first">{{ _an_st | escape }}</span>
+              {% endif %}
+            {% endcapture %}
             {% if heading_level == 'h2' %}
-              <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h2>
+              <h2 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h2>
             {% elsif heading_level == 'h3' %}
-              <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h3>
+              <h3 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h3>
             {% elsif heading_level == 'p' %}
-              <p class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</p>
+              <p class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</p>
             {% else %}
-              <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name }}</h1>
+              <h1 class="ak-artist-series-hero__name" id="ak-artist-series-hero-name-{{ id }}">{{ artist_name_html }}</h1>
             {% endif %}
           {% endif %}
         </div>
@@ -1931,9 +1958,17 @@
     },
     {
       "type": "color",
-      "id": "name_color",
-      "label": "Name color",
-      "default": "#fde8ec"
+      "id": "name_color_first",
+      "label": "First name color",
+      "default": "#fde8ec",
+      "info": "The artist name is split on the first space: first word uses this color. Single-name artists use only this color."
+    },
+    {
+      "type": "color",
+      "id": "name_color_last",
+      "label": "Last name color",
+      "default": "#fde8ec",
+      "info": "Color for the rest of the name after the first space (e.g. surname). Single-word names only use first name color."
     },
     {
       "type": "range",
