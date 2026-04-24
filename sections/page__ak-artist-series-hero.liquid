@@ -119,7 +119,7 @@
 {% assign eb_lh = section.settings.eyebrow_line_height | default: 120 %}
 {% assign eb_ls = section.settings.eyebrow_letter_spacing | default: 0 %}
 {% assign eb_ls_m = section.settings.eyebrow_letter_spacing_mobile | default: eb_ls %}
-{% comment %} name_text_align: positions the shrink-wrapped .overlay-content block; text in that block is left. {% endcomment %}
+{% comment %} name_text_align: L/C/R for the shrink-wrapped .overlay-content block. Eyebrow: eyebrow_text_align. {% endcomment %}
 {% assign eb_pt = section.settings.eyebrow_padding_top | default: 0 %}
 {% assign eb_pr = section.settings.eyebrow_padding_right | default: 24 %}
 {% assign eb_pb = section.settings.eyebrow_padding_bottom | default: 12 %}
@@ -130,6 +130,15 @@
 {% assign eb_plm = section.settings.eyebrow_padding_left_mobile | default: 16 %}
 {% assign eb_nudge = section.settings.eyebrow_vertical_nudge | default: 0 %}
 {% assign eb_nudge_m = section.settings.eyebrow_vertical_nudge_mobile | default: 0 %}
+{% comment %} Text block: nm_al_*. Eyebrow line in block: eb_al_*. (schema defaults match.) {% endcomment %}
+{% assign eb_al = section.settings.eyebrow_text_align | default: 'center' | strip | downcase %}
+{% assign eb_al_m = section.settings.eyebrow_text_align_mobile | default: eb_al | strip | downcase %}
+{% if eb_al != 'left' and eb_al != 'right' and eb_al != 'center' %}
+  {% assign eb_al = 'left' %}
+{% endif %}
+{% if eb_al_m != 'left' and eb_al_m != 'right' and eb_al_m != 'center' %}
+  {% assign eb_al_m = 'left' %}
+{% endif %}
 
 {% assign nm_sz = section.settings.name_font_size | default: 144 %}
 {% assign nm_sz_m0 = section.settings.name_font_size_mobile | default: 0 | plus: 0 %}
@@ -625,8 +634,7 @@
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: stretch;
     width: max-content;
     max-width: 100%;
     min-width: 0;
@@ -634,7 +642,6 @@
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
     min-width: 0;
-    align-self: flex-start;
     max-width: 100%;
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
@@ -647,7 +654,7 @@
     line-height: {{ eb_lh }}%;
     margin: 0;
     box-sizing: border-box;
-    text-align: left;
+    width: 100%;
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
@@ -660,13 +667,14 @@
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
       color: {{ eyebrow_co }};
+      text-align: {{ eb_al }};
     }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
-      text-align: left;
+      text-align: {{ eb_al_m }};
       padding: {{ eb_ptm }}px 0 {{ eb_pbm }}px 0;
       transform: translateY({{ eb_nudge_m }}px);
       {% unless section.settings.eyebrow_uppercase %}
@@ -1734,11 +1742,7 @@
     },
     {
       "type": "paragraph",
-      "content": "The eyebrow and the name sit in one tight block: the block is as wide as the longer line and grows with the name. Left/right padding is the Name padding. “Name + eyebrow alignment” places that block in the area (left, center, or right). Inside the block, both lines are left-aligned so the eyebrow lines up with the name’s left edge, even when the block is centered on the page."
-    },
-    {
-      "type": "paragraph",
-      "content": "The “Eyebrow alignment” and horizontal eyebrow padding options below are ignored. Each line can still have its own font, size, color, and top/bottom spacing."
+      "content": "The text block (eyebrow + name) is only as wide as the name, up to the padded area. Use “Text block position” to place that group left, center, or right (desktop and mobile). Use “Eyebrow line position in text block” to place the eyebrow line left, center, or right inside the same block (independent of the name, which stays left-to-right under the name width). Name padding still sets the left/right track."
     },
     {
       "type": "header",
@@ -1892,9 +1896,9 @@
     {
       "type": "select",
       "id": "eyebrow_text_align",
-      "label": "Eyebrow alignment (desktop)",
+      "label": "Eyebrow line in text block (desktop)",
       "default": "center",
-      "info": "Not used. The artist name’s “Name + eyebrow alignment” control sets both lines.",
+      "info": "Applies at 799px and up. Where the eyebrow line sits within the text block. The name uses its own line layout below; use “Text block position (desktop)” to move the whole block left/center/right.",
       "options": [
         {
           "value": "left",
@@ -1913,9 +1917,9 @@
     {
       "type": "select",
       "id": "eyebrow_text_align_mobile",
-      "label": "Eyebrow alignment (mobile)",
+      "label": "Eyebrow line in text block (mobile)",
       "default": "center",
-      "info": "Not used. Use the mobile “Name + eyebrow alignment” for both lines.",
+      "info": "Applies at 0–798px. Where the eyebrow line sits within the text block. Use “Text block position (mobile)” to place the block left/center/right in the hero.",
       "options": [
         {
           "value": "left",
@@ -2239,9 +2243,9 @@
     {
       "type": "select",
       "id": "name_text_align",
-      "label": "Name + eyebrow alignment (desktop)",
+      "label": "Text block position (desktop)",
       "default": "center",
-      "info": "Applies at min-width: 799px. Horizontally places the eyebrow+name group (the lines stay left-aligned to each other). Wider name lines can make L/C/R look more similar.",
+      "info": "At 799px and up: where the text block (eyebrow + name) sits in the hero. The block is only as wide as the name, up to the name padding. Eyebrow line in that block: “Eyebrow line in text block (desktop)”.",
       "options": [
         {
           "value": "left",
@@ -2260,9 +2264,9 @@
     {
       "type": "select",
       "id": "name_text_align_mobile",
-      "label": "Name + eyebrow alignment (mobile)",
+      "label": "Text block position (mobile)",
       "default": "center",
-      "info": "Applies at max-width: 798px. Horizontally places the combined eyebrow+name block. If the name spans almost the full line width, left/center/right are harder to see.",
+      "info": "At 0–798px: where the text block (eyebrow + name) sits. If the name is almost as wide as the line, L/C/R can look more subtle. Eyebrow in block: “Eyebrow line in text block (mobile)”.",
       "options": [
         {
           "value": "left",
