@@ -99,11 +99,6 @@
 {% comment %} Legacy `name_color` in older section JSON: fallback if new keys are missing. {% endcomment %}
 {% assign name_co_first = section.settings.name_color_first | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
 {% assign name_co_last = section.settings.name_color_last | default: section.settings.name_color | default: section.settings.overlay_name_color | default: '#fde8ec' %}
-{% comment %} `name_match_mobile_name_colors` off = use separate mobile pickers; nil/true = one set for all breakpoints. {% endcomment %}
-{% assign name_match_mobile_name_colors = true %}
-{% if section.settings.name_match_mobile_name_colors == false %}
-  {% assign name_match_mobile_name_colors = false %}
-{% endif %}
 {% assign name_co_first_m = section.settings.name_color_first_mobile | default: name_co_first %}
 {% assign name_co_last_m = section.settings.name_color_last_mobile | default: name_co_last %}
 {% assign has_hero_image = false %}
@@ -640,6 +635,18 @@
   #shopify-section-{{ id }}.ak-artist-series-hero-section--scrim .ak-artist-series-hero__eyebrow {
     text-shadow: 0 2px 18px rgba(5, 8, 6, 0.55), 0 1px 4px rgba(5, 8, 6, 0.92);
   }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
+      color: {{ name_co_first }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
+      color: {{ name_co_last }};
+    }
+    #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
+      outline: 2px solid {{ name_co_first }};
+      outline-offset: 4px;
+    }
+  }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name {
       /* Mobile linear ramp: slider value ≈ size at ~390px viewport,
@@ -651,34 +658,17 @@
       letter-spacing: {{ nm_ls_m }}px;
       transform: translateY({{ nm_nudge_m }}px);
     }
-  }
-  #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
-    color: {{ name_co_first }};
-  }
-  #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
-    color: {{ name_co_last }};
-  }
-  {% if name_match_mobile_name_colors == false %}
-  @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
       color: {{ name_co_first_m }};
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--last {
       color: {{ name_co_last_m }};
     }
-  }
-  {% endif %}
-  #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
-    outline: 2px solid {{ name_co_first }};
-    outline-offset: 4px;
-  }
-  {% if name_match_mobile_name_colors == false %}
-  @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__name:focus-visible {
-      outline-color: {{ name_co_first_m }};
+      outline: 2px solid {{ name_co_first_m }};
+      outline-offset: 4px;
     }
   }
-  {% endif %}
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 4px;
@@ -1986,50 +1976,43 @@
     },
     {
       "type": "paragraph",
-      "content": "The name is split on the first space. By default, the same first/last colors are used on all screen sizes. Turn off “Use desktop name colors on mobile” to set different swatches for 798px-wide viewports and below."
+      "content": "The name is split on the first space. Use the desktop group for 799px-wide viewports and up, and the mobile group for 798px and below. Leave mobile swatches at the default to match the desktop first/last colors, or set different values for small screens."
     },
     {
       "type": "header",
-      "content": "Name colors — desktop (799px and up, or all sizes when linked below)"
+      "content": "Name colors — desktop (799px+)"
     },
     {
       "type": "color",
       "id": "name_color_first",
       "label": "First name color (desktop)",
       "default": "#fde8ec",
-      "info": "First word at 799px and wider. Single-word names use only this color (unless you set a mobile first color)."
+      "info": "First word at 799px and wider. Keyboard focus ring on the name uses this color on desktop. Single-word names use only the first (and mobile first) color settings."
     },
     {
       "type": "color",
       "id": "name_color_last",
       "label": "Last name color (desktop)",
       "default": "#fde8ec",
-      "info": "After the first space, desktop viewports."
+      "info": "After the first space, 799px and up."
     },
     {
       "type": "header",
-      "content": "Name colors — mobile (798px and below)"
-    },
-    {
-      "type": "checkbox",
-      "id": "name_match_mobile_name_colors",
-      "label": "Use desktop name colors on mobile",
-      "default": true,
-      "info": "On (default): first/last name colors are the same on every breakpoint. Off: set the two mobile swatches below (used from 0–798px wide only)."
+      "content": "Name colors — mobile (0–798px)"
     },
     {
       "type": "color",
       "id": "name_color_first_mobile",
       "label": "First name color (mobile)",
       "default": "#fde8ec",
-      "info": "Only when “Use desktop name colors on mobile” is off. First word on small screens."
+      "info": "First word at 798px and below. Defaults to the desktop first name color if you keep the same hex, or set a different color for phones. Focus ring on small screens uses this color."
     },
     {
       "type": "color",
       "id": "name_color_last_mobile",
       "label": "Last name color (mobile)",
       "default": "#fde8ec",
-      "info": "Only when “Use desktop name colors on mobile” is off. After the first space, small screens."
+      "info": "After the first space, 0–798px. Defaults to the desktop last name color if unchanged."
     },
     {
       "type": "select",
