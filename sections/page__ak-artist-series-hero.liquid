@@ -938,69 +938,6 @@
   </div>
 </section>
 
-{%- comment -%} Debug 63c362: append ?debug=63c362 to page URL, mobile width ≤798px, then read .cursor/debug-63c362.log (or console [debug-63c362]) {%- endcomment -%}
-<script>
-  // #region agent log
-  (function () {
-    if (!/debug=63c362|debug_hero=1/.test(location.search || '')) return;
-    var LOG = 'http://127.0.0.1:7610/ingest/2b5f62f8-221d-40c6-90eb-7b0f2d3dbb8c';
-    var SID = '63c362';
-    var section = document.getElementById('shopify-section-{{ id }}');
-    if (!section) return;
-    var t0 = 0;
-    function send() {
-      var now = Date.now();
-      if (now - t0 < 200) return;
-      t0 = now;
-      var inset = section.querySelector('.ak-artist-series-hero__overlay-inset');
-      var content = section.querySelector('.ak-artist-series-hero__overlay-content');
-      if (!inset || !content) return;
-      var nameEl = section.querySelector('.ak-artist-series-hero__name');
-      var eyeEl = section.querySelector('.ak-artist-series-hero__eyebrow');
-      var insetR = inset.getBoundingClientRect();
-      var contentR = content.getBoundingClientRect();
-      var data = {
-        H1_contentEqInset: Math.abs(insetR.width - contentR.width) < 1.5,
-        H2_isMobile: window.matchMedia('(max-width: 798px)').matches,
-        innerWidth: window.innerWidth,
-        insetW: Math.round(insetR.width * 100) / 100,
-        contentW: Math.round(contentR.width * 100) / 100,
-        nameW: nameEl ? Math.round(nameEl.getBoundingClientRect().width * 100) / 100 : null,
-        eyeW: eyeEl ? Math.round(eyeEl.getBoundingClientRect().width * 100) / 100 : null,
-        H3_nameEqInset: nameEl && Math.abs(insetR.width - nameEl.getBoundingClientRect().width) < 1.5,
-        H4_alignItems: window.getComputedStyle(content).alignItems,
-        H5_insetDisplay: window.getComputedStyle(inset).display,
-        H5_justify: window.getComputedStyle(inset).justifyContent
-      };
-      if (window.console && console.info) {
-        console.info('[debug-63c362] hero text box inspect', data);
-      }
-      fetch(LOG, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': SID },
-        body: JSON.stringify({
-          sessionId: SID,
-          runId: 'inspect',
-          hypothesisId: 'H1-H5',
-          location: 'page__ak-artist-series-hero:mobile-width',
-          message: 'overlay inset vs content width',
-          data: data,
-          timestamp: now
-        })
-      }).catch(function () {});
-    }
-    function schedule() {
-      window.requestAnimationFrame(function () { send(); });
-    }
-    if (document.readyState === 'complete' || document.readyState === 'interactive') schedule();
-    else document.addEventListener('DOMContentLoaded', schedule, { once: true });
-    window.addEventListener('resize', function () { setTimeout(schedule, 120); }, { passive: true });
-    if (window.innerWidth < 800) {
-      if (window.document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setTimeout(schedule, 50); });
-    }
-  })();
-  // #endregion
-</script>
 {%- if artist_name != blank -%}
   <script>
     (function () {
