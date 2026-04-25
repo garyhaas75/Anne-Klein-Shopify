@@ -99,7 +99,7 @@
         "eyebrow_padding_bottom_mobile": 0,
         "eyebrow_padding_left_mobile": 16,
         "eyebrow_vertical_nudge": 0,
-        "eyebrow_vertical_nudge_mobile": 52,
+        "eyebrow_vertical_nudge_mobile": 64,
         "artist_name": "Anjelica Roselyn",
         "heading_level": "h2",
         "name_color_first": "#000000",
@@ -124,7 +124,7 @@
         "name_padding_bottom_mobile": 0,
         "name_padding_left_mobile": 8,
         "name_vertical_nudge": 20,
-        "name_vertical_nudge_mobile": 52
+        "name_vertical_nudge_mobile": 68
       }
     },
     "page_ak_artist_series_mission_7nUAA6": {
