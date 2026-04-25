@@ -33,19 +33,19 @@
     </div>
   -->
 
-  <form class="header__link action-area__link search_hover" action="/search" method="get" role="search" style="position: relative;">
-    <label class="visually-hidden" for="Search">{{ 'general.search.title' | t | default: 'Search' }}</label>
-    <input
-      id="Search"
-      class="search_input"
-      name="q"
-      type="search"
-      value="{{ search.terms | escape }}"
-      placeholder="Search"
-      aria-label="Search"
-    >
-    <button id="search_submit" class="search_submit" type="submit" aria-label="Submit search"></button>
-  </form>
+  <a class="header__link action-area__link search_hover" title="Search" style="position: relative;" aria-label="Search">
+    <form action="" method="get" role="search">
+      <input
+        id="Search"
+        class="search_input"
+        name="a"
+        type="search"
+        value="{{ search.terms | escape }}"
+        placeholder="Search"
+      >
+      <input id="search_submit" class="search_submit" value="" type="submit">
+    </form>
+  </a>
 
   <style>
         @media only screen and (min-width: 769px) {

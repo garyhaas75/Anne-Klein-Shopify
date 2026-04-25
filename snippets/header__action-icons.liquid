@@ -8,19 +8,19 @@
 <div class="header__icons header__icon-style-{{ object.settings.icon_style | replace: '_', '-' }} {{ header_icon_class }}">
   {% comment %} Search icon {% endcomment %}
 
-  <form class="header__link action-area__link search_hover" action="/search" method="get" role="search" style="position: relative;">
-    <label class="visually-hidden" for="Search">{{ 'general.search.title' | t | default: 'Search' }}</label>
-    <input
-      id="Search"
-      name="q"
-      class="search_input"
-      type="search"
-      value="{{ search.terms | escape }}"
-      placeholder="Search"
-      aria-label="Search"
-    >
-    <button id="search_submit" class="search_submit" type="submit" aria-label="Submit search"></button>
-  </form>
+  <a class="header__link action-area__link search_hover" title="Search" style="position: relative;">
+    <form action="" method="get" role="search">
+      <input
+        id="Search"
+        name="a"
+        class="search_input"
+        type="search"
+        value="{{ search.terms | escape }}"
+        placeholder="Search"
+      >
+      <input id="search_submit" class="search_submit" value="" type="submit">
+    </form>
+  </a>
 
   {% if settings.show_multiple_currencies %}
     {% comment %} Currency converter select {% endcomment %}

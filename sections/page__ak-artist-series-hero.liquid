@@ -807,9 +807,6 @@
   role="region"
   {{ section_aria }}
 >
-  {% if heading_level != 'h1' and wordmark_heading_level != 'h1' %}
-    <h1 class="visually-hidden">{{ page.title | default: 'Anne Klein Artist Series' | escape }}</h1>
-  {% endif %}
   <div class="ak-artist-series-hero">
     <div class="ak-artist-series-hero__stage{% if image_fill_and_crop %} ak-artist-series-hero__stage--crop{% else %} ak-artist-series-hero__stage--natural{% endif %}{% unless has_hero_image %} ak-artist-series-hero__stage--placeholder{% endunless %}">
       <div class="ak-artist-series-hero__media">
