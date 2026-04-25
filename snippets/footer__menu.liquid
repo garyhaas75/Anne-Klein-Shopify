@@ -17,7 +17,7 @@ link_setting: <string>
   </h2>
   <ul>
     {% for link in menu.links %}
-      {% assign _link_title = link.title | strip %}
+      {% assign _link_title = link.title | strip | replace: '&nbsp;', '' | strip %}
       <li class="footer__menu-link">
         <a
           href="{{ link.url }}"
