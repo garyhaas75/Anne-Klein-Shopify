@@ -1017,6 +1017,10 @@
       object-fit: {{ video_fit_mobile }};
       width: 100%;
       height: 100%;
+      /* Flex container + replaced element: ensure it actually fills the wrap height.
+         Without this, we can end up with a short video box (e.g. 60vh) inside a taller
+         section (e.g. 60vh + padding), leaving a background "bar" below. */
+      min-height: 100%;
       {% if vmw_m > 0 %}
       max-width: min(100%, {{ vmw_m }}px);
       {% endif %}
