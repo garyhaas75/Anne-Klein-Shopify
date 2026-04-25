@@ -355,7 +355,7 @@
         "image_behavior": "natural",
         "image_object_fit": "cover",
         "image_object_position": "center",
-        "crop_min_height_desktop": 480,
+        "crop_min_height_desktop": 460,
         "crop_min_height_mobile": 400,
         "letterbox_transparent": true,
         "letterbox_color": "#1a1a1a",
@@ -542,8 +542,8 @@
         "heading_font_weight": "400",
         "heading_underline": false,
         "heading_alignment_mobile": "",
-        "padding_top": 40,
-        "padding_bottom": 40,
+        "padding_top": 10,
+        "padding_bottom": 10,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 10
       }
@@ -768,7 +768,7 @@
         "title": "Video",
         "autoplay": true,
         "loop": true,
-        "enable_native_controls": false,
+        "enable_native_controls": true,
         "start_card_heading": "",
         "start_card_text": "",
         "start_card_heading_mobile": "",
