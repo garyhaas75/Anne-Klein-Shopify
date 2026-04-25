@@ -239,6 +239,8 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__inner {
+    position: relative;
+    z-index: 2;
     max-width: {{ content_max_width }}rem;
     {% if text_alignment == 'right' %}
       margin-left: auto;
@@ -444,6 +446,7 @@
     height: auto;
     max-width: 50%;
     pointer-events: none;
+    z-index: 1;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__signature {
