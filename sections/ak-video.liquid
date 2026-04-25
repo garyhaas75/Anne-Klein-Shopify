@@ -1024,7 +1024,17 @@
       max-height: {{ vmh_m }}px;
       min-height: 0;
       {% else %}
-      min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
+      {% comment %}
+        When both section max height + video max height are 0 (non-hero), we run in
+        auto-height mode so the video can render its intrinsic aspect ratio with no crop.
+        A forced vh min-height creates the black "letterbox" band under the video.
+      {% endcomment %}
+      {% if is_hero == false and smh_m < 1 and vmh_m < 1 %}
+        min-height: 0;
+        height: auto;
+      {% else %}
+        min-height: {% if is_hero %}70vh{% else %}60vh{% endif %};
+      {% endif %}
       {% endif %}
     }
     #ak-video-{{ section.id }} .ak-video__title {
