@@ -18,8 +18,24 @@ link_setting: <string>
   <ul>
     {% for link in menu.links %}
       <li class="footer__menu-link">
-        <a href="{{ link.url }}" class="{% if link.active %}is-active{% endif %}">
-          {{ link.title }}  {% if link.title == 'Your Privacy Choices' %}<img src="{{ 'privacy-choices-icon.png' | asset_img_url: 'master' }}" style="max-width:20px;" />{% endif %}
+        <a
+          href="{{ link.url }}"
+          class="{% if link.active %}is-active{% endif %}"
+          {% if link.title == blank %}aria-label="Footer link"{% endif %}
+        >
+          {% if link.title != blank %}
+            {{ link.title }}
+          {% else %}
+            <span class="visually-hidden">Footer link</span>
+          {% endif %}
+          {% if link.title == 'Your Privacy Choices' %}
+            <img
+              src="{{ 'privacy-choices-icon.png' | asset_img_url: 'master' }}"
+              alt=""
+              role="presentation"
+              style="max-width:20px;"
+            />
+          {% endif %}
         </a>
       </li>
     {% endfor %}

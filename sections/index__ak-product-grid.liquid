@@ -338,14 +338,25 @@
                   {% assign tile_link = block.settings.tile_link %}
                   {% assign alt_text = block.settings.image_alt | strip %}
                   {% if alt_text == blank %}
-                    {% if tile_title != blank %}{% assign alt_text = tile_title %}
-                    {% else %}{% assign alt_text = 'Featured image' %}{% endif %}
+                    {% if tile_title != blank %}
+                      {% assign alt_text = tile_title %}
+                    {% else %}
+                      {% assign alt_text = 'Product grid item' %}
+                    {% endif %}
+                  {% endif %}
+                  {% assign sr_label = '' %}
+                  {% if tile_title != blank and alt_text != blank and tile_title != alt_text %}
+                    {% assign sr_label = tile_title | append: '. ' | append: alt_text %}
+                  {% elsif tile_title != blank %}
+                    {% assign sr_label = tile_title %}
+                  {% elsif alt_text != blank %}
+                    {% assign sr_label = alt_text %}
                   {% endif %}
                   <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-pg__image-only-tile" role="listitem" {{ block.shopify_attributes }}>
                     {% if tile_link != blank %}
-                      <a href="{{ tile_link }}" class="ak-pg__link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
+                      <a href="{{ tile_link }}" class="ak-pg__link"{% if sr_label != blank %} aria-label="{{ sr_label | escape }}"{% endif %}>
                     {% else %}
-                      <div class="ak-pg__image-only" role="group" {% if tile_title != blank %}aria-label="{{ tile_title | escape }}"{% elsif alt_text != blank %}aria-label="{{ alt_text | escape }}"{% endif %}>
+                      <div class="ak-pg__image-only" role="group"{% if sr_label != blank %} aria-label="{{ sr_label | escape }}"{% endif %}>
                     {% endif %}
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
