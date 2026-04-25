@@ -17,18 +17,19 @@ link_setting: <string>
   </h2>
   <ul>
     {% for link in menu.links %}
+      {% assign _link_title = link.title | strip %}
       <li class="footer__menu-link">
         <a
           href="{{ link.url }}"
           class="{% if link.active %}is-active{% endif %}"
-          {% if link.title == blank %}aria-label="Footer link"{% endif %}
+          {% if _link_title == blank %}aria-label="Footer link"{% endif %}
         >
-          {% if link.title != blank %}
-            {{ link.title }}
+          {% if _link_title != blank %}
+            {{ _link_title }}
           {% else %}
             <span class="visually-hidden">Footer link</span>
           {% endif %}
-          {% if link.title == 'Your Privacy Choices' %}
+          {% if _link_title == 'Your Privacy Choices' %}
             <img
               src="{{ 'privacy-choices-icon.png' | asset_img_url: 'master' }}"
               alt=""
