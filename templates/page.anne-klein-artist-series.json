@@ -806,10 +806,10 @@
         "body_font_size": 18,
         "body_font_size_mobile": 0,
         "body_font_weight": "400",
-        "body_line_height": 165,
+        "body_line_height": 150,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 28,
+        "padding_top": 44,
         "padding_bottom": 0,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 8
