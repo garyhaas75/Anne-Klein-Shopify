@@ -901,7 +901,7 @@
         "brand_to_signature_gap": 0,
         "signature_to_button_gap": 44,
         "quote_font_family": "helvetica",
-        "quote_font_size": 50,
+        "quote_font_size": 36,
         "quote_font_size_mobile": 32,
         "quote_font_weight": "300",
         "quote_line_height": 130,
