@@ -528,7 +528,7 @@
         "grid_gap_mobile": 4,
         "align_height": false,
         "collection_height": 320,
-        "width": "wide",
+        "width": "standard",
         "show_gutter": true,
         "show_title": true,
         "show_price": true,
