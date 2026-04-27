@@ -177,7 +177,7 @@
         "background_color": "#ffffff",
         "heading_font_family": "helvetica",
         "heading_font_family_mobile": "same",
-        "heading_font_size": 28,
+        "heading_font_size": 24,
         "heading_font_size_mobile": 24,
         "heading_font_weight": "700",
         "body_font_family": "helvetica",
