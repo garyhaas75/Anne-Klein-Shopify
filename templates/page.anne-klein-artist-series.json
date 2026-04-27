@@ -910,7 +910,7 @@
         "brand_font_size": 14,
         "brand_font_weight": "700",
         "section_aria_label": "Shop the Artist Series collection",
-        "padding_top": 96,
+        "padding_top": 0,
         "padding_bottom": 96,
         "padding_top_mobile": 28,
         "padding_bottom_mobile": 20
