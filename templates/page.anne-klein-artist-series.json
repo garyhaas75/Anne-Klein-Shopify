@@ -65,7 +65,7 @@
         "wordmark_line_2_padding_top_mobile": 0,
         "wordmark_line_2_padding_right_mobile": 0,
         "wordmark_line_2_padding_bottom_mobile": 0,
-        "wordmark_line_2_padding_left_mobile": 8,
+        "wordmark_line_2_padding_left_mobile": 20,
         "solid_white_bottom_band": false,
         "bottom_scrim_strength": 0,
         "band_color": "#ffffff",
