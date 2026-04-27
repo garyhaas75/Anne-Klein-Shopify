@@ -67,6 +67,8 @@
 {% assign signature_max_width_mobile = section.settings.signature_max_width_mobile | default: 200 %}
 {% assign signature_offset_right = section.settings.signature_offset_right | default: 32 %}
 {% assign signature_offset_bottom = section.settings.signature_offset_bottom | default: 32 %}
+{% assign signature_offset_right_mobile = section.settings.signature_offset_right_mobile | default: 0 | plus: 0 %}
+{% assign signature_offset_bottom_mobile = section.settings.signature_offset_bottom_mobile | default: 0 | plus: 0 %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 
 {% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
@@ -439,22 +441,34 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-mission__signature {
-    position: absolute;
-    right: {{ signature_offset_right }}px;
-    bottom: {{ signature_offset_bottom }}px;
-    width: min({{ signature_max_width }}px, 30vw);
+    display: block;
     height: auto;
-    max-width: 50%;
     pointer-events: none;
     z-index: 1;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-mission__signature {
+      position: absolute;
+      right: {{ signature_offset_right }}px;
+      bottom: {{ signature_offset_bottom }}px;
+      width: min({{ signature_max_width }}px, 30vw);
+      max-width: 50%;
+    }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__signature {
       position: static;
-      display: block;
       width: min({{ signature_max_width_mobile }}px, 60vw);
       max-width: 100%;
-      margin: 1.5rem auto 0;
+      margin-top: 1.5rem;
+      margin-bottom: {{ signature_offset_bottom_mobile }}px;
+      {% if signature_offset_right_mobile < 1 %}
+      margin-left: auto;
+      margin-right: auto;
+      {% else %}
+      margin-left: auto;
+      margin-right: {{ signature_offset_right_mobile }}px;
+      {% endif %}
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -637,6 +651,28 @@
       "step": 4,
       "default": 32,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "signature_offset_right_mobile",
+      "label": "Signature offset from right (mobile)",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Inset from the right when the signature is placed below the copy. 0 keeps the signature centered horizontally."
+    },
+    {
+      "type": "range",
+      "id": "signature_offset_bottom_mobile",
+      "label": "Signature offset from bottom (mobile)",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "info": "Extra space below the signature before the section ends (desktop offsets do not apply on mobile)."
     },
     {
       "type": "header",
