@@ -67,8 +67,8 @@
 {% assign signature_max_width_mobile = section.settings.signature_max_width_mobile | default: 200 %}
 {% assign signature_offset_right = section.settings.signature_offset_right | default: 32 %}
 {% assign signature_offset_bottom = section.settings.signature_offset_bottom | default: 32 %}
-{% assign signature_offset_right_mobile = section.settings.signature_offset_right_mobile | default: 0 | plus: 0 %}
-{% assign signature_offset_bottom_mobile = section.settings.signature_offset_bottom_mobile | default: 0 | plus: 0 %}
+{% assign signature_offset_right_mobile = section.settings.signature_offset_right_mobile | default: 32 | plus: 0 %}
+{% assign signature_offset_bottom_mobile = section.settings.signature_offset_bottom_mobile | default: 32 | plus: 0 %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 
 {% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
@@ -440,7 +440,10 @@
       font-family: {{ body_font_stack_mobile }};
     }
   }
+  /* Signature is absolutely positioned to the mission band (same behavior on mobile + desktop).
+     Mobile uses separate offset sliders so it does not affect section padding or flow height. */
   #shopify-section-{{ id }} .ak-artist-series-mission__signature {
+    position: absolute;
     display: block;
     height: auto;
     pointer-events: none;
@@ -448,7 +451,6 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__signature {
-      position: absolute;
       right: {{ signature_offset_right }}px;
       bottom: {{ signature_offset_bottom }}px;
       width: min({{ signature_max_width }}px, 30vw);
@@ -457,18 +459,10 @@
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-mission__signature {
-      position: static;
+      right: {{ signature_offset_right_mobile }}px;
+      bottom: {{ signature_offset_bottom_mobile }}px;
       width: min({{ signature_max_width_mobile }}px, 60vw);
-      max-width: 100%;
-      margin-top: 1.5rem;
-      margin-bottom: {{ signature_offset_bottom_mobile }}px;
-      {% if signature_offset_right_mobile < 1 %}
-      margin-left: auto;
-      margin-right: auto;
-      {% else %}
-      margin-left: auto;
-      margin-right: {{ signature_offset_right_mobile }}px;
-      {% endif %}
+      max-width: 50%;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -659,9 +653,9 @@
       "min": 0,
       "max": 240,
       "step": 4,
-      "default": 0,
+      "default": 32,
       "unit": "px",
-      "info": "Inset from the right when the signature is placed below the copy. 0 keeps the signature centered horizontally."
+      "info": "Distance from the right edge of the band. Positions the overlay signature (same as desktop)."
     },
     {
       "type": "range",
@@ -670,9 +664,9 @@
       "min": 0,
       "max": 240,
       "step": 4,
-      "default": 0,
+      "default": 32,
       "unit": "px",
-      "info": "Extra space below the signature before the section ends (desktop offsets do not apply on mobile)."
+      "info": "Distance from the bottom edge of the band. Positions the overlay signature (same as desktop)."
     },
     {
       "type": "header",
