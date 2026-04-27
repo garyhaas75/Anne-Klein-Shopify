@@ -177,7 +177,7 @@
         "background_color": "#ffffff",
         "heading_font_family": "helvetica",
         "heading_font_family_mobile": "same",
-        "heading_font_size": 30,
+        "heading_font_size": 28,
         "heading_font_size_mobile": 24,
         "heading_font_weight": "700",
         "body_font_family": "helvetica",
@@ -189,7 +189,7 @@
         "body_line_height_mobile": 0,
         "section_aria_label": "",
         "padding_top": 96,
-        "padding_bottom": 96,
+        "padding_bottom": 108,
         "padding_top_mobile": 64,
         "padding_bottom_mobile": 40
       }
