@@ -288,7 +288,7 @@
         "text_color": "#000000",
         "background_color": "#ffffff",
         "heading_font_family": "helvetica",
-        "heading_font_size": 30,
+        "heading_font_size": 32,
         "heading_font_size_mobile": 32,
         "heading_font_weight": "700",
         "heading_underline": false,
