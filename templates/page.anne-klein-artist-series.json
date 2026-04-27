@@ -912,8 +912,8 @@
         "section_aria_label": "Shop the Artist Series collection",
         "padding_top": 0,
         "padding_bottom": 96,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 20
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 40
       }
     }
   },
