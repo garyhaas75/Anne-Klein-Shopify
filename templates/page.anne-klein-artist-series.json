@@ -894,7 +894,7 @@
         "button_link": "shopify://collections",
         "button_new_tab": false,
         "button_style": "button--primary",
-        "content_max_width": 56,
+        "content_max_width": 38,
         "text_color": "#000000",
         "background_color": "#ffffff",
         "image_to_quote_gap": 32,
