@@ -119,9 +119,9 @@
         "name_padding_right": 0,
         "name_padding_bottom": 0,
         "name_padding_left": 20,
-        "name_padding_top_mobile": 4,
+        "name_padding_top_mobile": 0,
         "name_padding_right_mobile": 16,
-        "name_padding_bottom_mobile": 0,
+        "name_padding_bottom_mobile": 4,
         "name_padding_left_mobile": 8,
         "name_vertical_nudge": 20,
         "name_vertical_nudge_mobile": 68
