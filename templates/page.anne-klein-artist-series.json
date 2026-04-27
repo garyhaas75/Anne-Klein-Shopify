@@ -857,7 +857,7 @@
         "caption_font_size_mobile": 0,
         "caption_overlay_color": "#ffffff",
         "caption_scrim_opacity": 65,
-        "width": "wide",
+        "width": "standard",
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
