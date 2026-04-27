@@ -14,7 +14,7 @@
       "type": "page__ak-artist-series-hero",
       "name": "AK Artist Series hero",
       "settings": {
-        "image": "shopify://shop_images/AK_Artist_Series_Desktop_without_text.jpg",
+        "image": "shopify://shop_images/AK_Artist_Series_Hero.jpg",
         "mobile_image": "shopify://shop_images/Hero_Mobile.png",
         "image_alt": "",
         "image_object_position": "center",
