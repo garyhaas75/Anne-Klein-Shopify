@@ -699,8 +699,8 @@
         "section_aria_label": "",
         "padding_top": 52,
         "padding_bottom": 48,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 12
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 20
       }
     },
     "ak_video_E8CV4B": {
@@ -811,8 +811,8 @@
         "section_aria_label": "",
         "padding_top": 56,
         "padding_bottom": 0,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 8
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 24
       }
     },
     "page_ak_campaign_stills_FtVVTx": {
@@ -858,7 +858,7 @@
         "caption_font_size_mobile": 0,
         "caption_overlay_color": "#ffffff",
         "caption_scrim_opacity": 65,
-        "width": "standard",
+        "width": "wide",
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
