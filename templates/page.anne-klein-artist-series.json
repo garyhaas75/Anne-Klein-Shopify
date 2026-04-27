@@ -561,7 +561,7 @@
         "heading_line_2_mobile": "",
         "heading_level": "h2",
         "body": "",
-        "button_label": "Shop All",
+        "button_label": "Shop The Collection",
         "button_link": "shopify://collections",
         "button_new_tab": true,
         "button_style": "button--primary",
