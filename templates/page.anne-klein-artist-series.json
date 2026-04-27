@@ -600,8 +600,8 @@
         "still_kHrTwa": {
           "type": "still",
           "settings": {
-            "image": "shopify://shop_images/Section_7_1_Mobile_c346642c-27af-42a3-9f27-8c97566ea5c0.png",
-            "mobile_image": "shopify://shop_images/Section_7_1_Mobile.png",
+            "image": "shopify://shop_images/Group_123.png",
+            "mobile_image": "shopify://shop_images/Group_124.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -611,9 +611,10 @@
         },
         "still_Ut9Ub7": {
           "type": "still",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Section_7_2_Desktop_f79f41b0-db67-402c-9a13-98adab230e70.png",
-            "mobile_image": "shopify://shop_images/Section_7_2_Mobile_571e44fb-6b8e-4008-bc3e-9e20e521cf7d.png",
+            "mobile_image": "shopify://shop_images/Group_124.png",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
