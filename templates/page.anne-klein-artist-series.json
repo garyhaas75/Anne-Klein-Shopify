@@ -570,7 +570,7 @@
         "content_max_width_mobile": 0,
         "heading_max_width_desktop": 0,
         "heading_max_width_mobile": 0,
-        "cta_spacing": 24,
+        "cta_spacing": 32,
         "cta_spacing_mobile": 0,
         "width": "wide",
         "show_gutter": true,
