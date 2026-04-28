@@ -638,18 +638,37 @@
       padding-right: {{ nm_prm }}px;
     }
   }
+  /* overlay-content: align-items MUST be in breakpoint blocks — a later unscoped
+     `align-items: stretch` was overriding the mobile `flex-start`, keeping name
+     + eyebrow stretched to the full inset width (e.g. 366px) so L/C/R had no effect. */
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     width: max-content;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
   }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+      align-items: stretch;
+    }
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content {
+      align-items: flex-start;
+      /* Base uses width:max-content — that can still be the full 366px row. min-content
+         width = max(children's min width), so the text block can shrink for L/C/R. */
+      width: min-content;
+    }
+  }
   #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
     min-width: 0;
-    max-width: 100%;
+  }
+  @media only screen and (min-width: 799px) {
+    #shopify-section-{{ id }} .ak-artist-series-hero__overlay-content > * {
+      max-width: 100%;
+    }
   }
   #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
     font-family: {{ eyebrow_font_stack }};
@@ -661,7 +680,7 @@
     line-height: {{ eb_lh }}%;
     margin: 0;
     box-sizing: border-box;
-    width: 100%;
+    /* Mobile: avoid width:100% here; it was sizing the text block to the full inset. */
     padding: {{ eb_pt }}px 0 {{ eb_pb }}px 0;
     transform: translateY({{ eb_nudge }}px);
     {% if section.settings.eyebrow_uppercase %}
@@ -673,12 +692,16 @@
   }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      width: 100%;
       color: {{ eyebrow_co }};
       text-align: {{ eb_al }};
     }
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-artist-series-hero__eyebrow {
+      width: auto;
+      /* After line width = max(eyebrow, name), grow eyebrow to that line for text-align. */
+      align-self: stretch;
       color: {{ eyebrow_co_m }};
       font-size: {{ eb_sz_m | divided_by: 16.0 }}rem;
       text-align: {{ eb_al_m }};
@@ -746,9 +769,13 @@
       transform: translateY({{ nm_nudge_m }}px);
       white-space: normal;
       overflow: visible;
-      /* Shrink to text so the text block is not 100% wide; margin auto could not center. */
-      width: fit-content;
-      max-width: 100%;
+      /* `> * { max-width:100% }` + this max-width:100% cycled to the full inset (366);
+         parent must size from text, not from % of the row. */
+      display: inline-block;
+      width: auto;
+      max-width: none;
+      overflow-wrap: break-word;
+      vertical-align: top;
     }
     #shopify-section-{{ id }} .ak-artist-series-hero__name-part--first {
       color: {{ name_co_first_m }};
