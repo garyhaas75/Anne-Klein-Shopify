@@ -539,11 +539,11 @@
     min-width: 0;
     align-self: center;
   }
-  /* Auto-height mode (non-hero + no max-height caps): let the video define height */
+  /* Auto-height mode (non-hero + no max-height caps): wrap height; player rules live in
+     the main desktop .ak-video__player block below so a later rule cannot override them. */
   @media (min-width: 799px) {
     {% if is_hero == false and smh_d < 1 and vmh_d < 1 %}
       #ak-video-{{ section.id }} .ak-video__wrap { height: auto; }
-      #ak-video-{{ section.id }} .ak-video__player { height: auto; min-height: 0; object-fit: contain; }
     {% endif %}
   }
   @media (max-width: 798px) {
@@ -554,10 +554,16 @@
   }
   @media (min-width: 799px) {
     #ak-video-{{ section.id }} .ak-video__player {
-      object-fit: {{ video_fit }};
       width: 100%;
+      {% if is_hero == false and smh_d < 1 and vmh_d < 1 %}
+      object-fit: contain;
+      height: auto;
+      min-height: 0;
+      {% else %}
+      object-fit: {{ video_fit }};
       height: 100%;
       min-height: 100%;
+      {% endif %}
       {% if vmw_d > 0 %}
       max-width: min(100%, {{ vmw_d }}px);
       {% endif %}
@@ -567,8 +573,9 @@
       {% endif %}
     }
   }
-  {% comment %} Desktop: cover nudge when no max-height {% endcomment %}
+  {% comment %} Desktop: cover nudge when no max-height (skip intrinsic auto-height mode) {% endcomment %}
   {% if video_fit == 'cover' %}
+  {% unless is_hero == false and smh_d < 1 and vmh_d < 1 %}
   @media (min-width: 799px) {
     #ak-video-{{ section.id }} .ak-video__wrap .ak-video__player {
       {% if vmh_d < 1 %}
@@ -577,6 +584,7 @@
       {% endif %}
     }
   }
+  {% endunless %}
   {% endif %}
   {% if video_fit == 'cover' and vmh_d > 0 %}
   @media (min-width: 799px) {
