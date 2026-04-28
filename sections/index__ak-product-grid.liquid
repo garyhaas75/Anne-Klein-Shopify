@@ -21,6 +21,11 @@
 {% if section.settings.show_more_colors == nil %}{% assign show_more_colors = true %}{% endif %}
 {% assign show_stickers = section.settings.show_stickers %}
 {% if section.settings.show_stickers == nil %}{% assign show_stickers = true %}{% endif %}
+{% comment %} Only render product-info (caption + hover overlay) when title or price is shown; avoids global .product-thumbnail { padding-top } on empty rows when toggles are off. {% endcomment %}
+{% assign ak_pg_caption_meta = false %}
+{% if show_title or show_price %}
+  {% assign ak_pg_caption_meta = true %}
+{% endif %}
 {% assign align_height = section.settings.align_height %}
 {% assign height = section.settings.collection_height | default: 320 | plus: 0 %}
 {% assign width = section.settings.width | default: 'wide' %}
@@ -129,6 +134,10 @@
   {% unless show_stickers %}
   #shopify-section-{{ id }} .sticker-holder, #shopify-section-{{ id }} .thumbnail-sticker { display: none !important; }
   {% endunless %}
+  {% unless ak_pg_caption_meta %}
+  /* Theme global .product-thumbnail { padding-top: 8px } still applies when title/price are hidden */
+  #shopify-section-{{ id }} .ak-pg__grid .product-thumbnail { padding-top: 0 !important; margin: 0 !important; min-height: 0 !important; }
+  {% endunless %}
   #shopify-section-{{ id }} .ak-pg__grid {
     display: grid;
     grid-template-columns: repeat({{ products_per_row }}, minmax(0, 1fr));
@@ -196,9 +205,12 @@
                           {% include 'image-element', image: product.media[1], alt: '', object_fit: align_height, max_height: height, additional_classes: 'lazypreload secondary swap--visible', back_to_basics: ak_pg_editor %}
                         {% endif %}
                       </div>
-                      {% if hover_enabled or settings.enable_quickshop %}
+                      {% assign ak_pg_overlay_block = false %}
+                      {% if settings.enable_quickshop %}{% assign ak_pg_overlay_block = true %}{% endif %}
+                      {% if hover_enabled and ak_pg_caption_meta %}{% assign ak_pg_overlay_block = true %}{% endif %}
+                      {% if ak_pg_overlay_block %}
                         <div class="thumbnail-overlay__container">
-                          {% if hover_enabled %}
+                          {% if hover_enabled and ak_pg_caption_meta %}
                             <div class="quick-shop__info animated fadeInDown">
                               <div class="thumbnail-overlay">
                                 <div class="info text-align-{{ settings.thumbnail_text_alignment }}">{% include 'product-thumbnail__product-info' %}</div>
@@ -209,12 +221,12 @@
                         </div>
                       {% endif %}
                     </div>
-                    {% if hover_enabled == false %}
+                    {% if hover_enabled == false and ak_pg_caption_meta %}
                       <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">{% include 'product-thumbnail__product-info' %}</div>
                     {% endif %}
                   </div>
                 </a>
-                {% include 'product-thumbnail__swatch' %}
+                {% if show_more_colors %}{% include 'product-thumbnail__swatch' %}{% endif %}
               </div>
             {% endfor %}
           {% else %}
@@ -294,9 +306,12 @@
                               {% endif %}
                             {% endif %}
                           </div>
-                          {% if hover_enabled or settings.enable_quickshop %}
+                          {% assign ak_pg_overlay_block = false %}
+                          {% if settings.enable_quickshop %}{% assign ak_pg_overlay_block = true %}{% endif %}
+                          {% if hover_enabled and ak_pg_caption_meta %}{% assign ak_pg_overlay_block = true %}{% endif %}
+                          {% if ak_pg_overlay_block %}
                             <div class="thumbnail-overlay__container">
-                              {% if hover_enabled %}
+                              {% if hover_enabled and ak_pg_caption_meta %}
                                 <div class="quick-shop__info animated fadeInDown">
                                   <div class="thumbnail-overlay">
                                     <div class="info text-align-{{ settings.thumbnail_text_alignment }}">{% include 'product-thumbnail__product-info' %}</div>
@@ -307,12 +322,12 @@
                             </div>
                           {% endif %}
                         </div>
-                        {% if hover_enabled == false %}
+                        {% if hover_enabled == false and ak_pg_caption_meta %}
                           <div class="thumbnail__caption text-align-{{ settings.thumbnail_text_alignment }}">{% include 'product-thumbnail__product-info' %}</div>
                         {% endif %}
                       </div>
                     </a>
-                    {% include 'product-thumbnail__swatch' %}
+                    {% if show_more_colors %}{% include 'product-thumbnail__swatch' %}{% endif %}
                   </div>
                   {% assign output_index = output_index | plus: 1 %}
                 {% endif %}
@@ -338,14 +353,25 @@
                   {% assign tile_link = block.settings.tile_link %}
                   {% assign alt_text = block.settings.image_alt | strip %}
                   {% if alt_text == blank %}
-                    {% if tile_title != blank %}{% assign alt_text = tile_title %}
-                    {% else %}{% assign alt_text = 'Featured image' %}{% endif %}
+                    {% if tile_title != blank %}
+                      {% assign alt_text = tile_title %}
+                    {% else %}
+                      {% assign alt_text = 'Product grid item' %}
+                    {% endif %}
+                  {% endif %}
+                  {% assign sr_label = '' %}
+                  {% if tile_title != blank and alt_text != blank and tile_title != alt_text %}
+                    {% assign sr_label = tile_title | append: '. ' | append: alt_text %}
+                  {% elsif tile_title != blank %}
+                    {% assign sr_label = tile_title %}
+                  {% elsif alt_text != blank %}
+                    {% assign sr_label = alt_text %}
                   {% endif %}
                   <div class="gallery-cell thumbnail {% include 'column-width', value: products_per_row %} medium-down--one-half column {% if hover_image != blank and settings.show_secondary_image %}has-secondary-image-swap{% endif %} ak-pg__image-only-tile" role="listitem" {{ block.shopify_attributes }}>
                     {% if tile_link != blank %}
-                      <a href="{{ tile_link }}" class="ak-pg__link" aria-label="{% if tile_title != blank %}{{ tile_title | escape }}{% else %}{{ alt_text | escape }}{% endif %}">
+                      <a href="{{ tile_link }}" class="ak-pg__link"{% if sr_label != blank %} aria-label="{{ sr_label | escape }}"{% endif %}>
                     {% else %}
-                      <div class="ak-pg__image-only" role="group" {% if tile_title != blank %}aria-label="{{ tile_title | escape }}"{% elsif alt_text != blank %}aria-label="{{ alt_text | escape }}"{% endif %}>
+                      <div class="ak-pg__image-only" role="group"{% if sr_label != blank %} aria-label="{{ sr_label | escape }}"{% endif %}>
                     {% endif %}
                       <div class="product-wrap">
                         <div class="product-image__wrapper">
