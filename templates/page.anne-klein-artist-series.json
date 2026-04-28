@@ -904,7 +904,7 @@
         "background_color": "#ffffff",
         "image_to_quote_gap": 32,
         "quote_to_brand_gap": 20,
-        "brand_to_signature_gap": 0,
+        "brand_to_signature_gap": -8,
         "signature_to_button_gap": 44,
         "quote_font_family": "helvetica",
         "quote_font_size": 32,
