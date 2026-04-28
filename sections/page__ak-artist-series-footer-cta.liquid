@@ -39,7 +39,7 @@
 {% assign padding_bottom_mobile = section.settings.padding_bottom_mobile | default: 64 %}
 {% assign image_to_quote_gap = section.settings.image_to_quote_gap | default: 32 %}
 {% assign quote_to_brand_gap = section.settings.quote_to_brand_gap | default: 24 %}
-{% assign brand_to_signature_gap = section.settings.brand_to_signature_gap | default: 8 %}
+{% assign brand_to_signature_gap = section.settings.brand_to_signature_gap | default: 8 | plus: 0 %}
 {% assign signature_to_button_gap = section.settings.signature_to_button_gap | default: 28 %}
 {% assign section_aria_label = section.settings.section_aria_label %}
 
@@ -503,11 +503,12 @@
       "type": "range",
       "id": "brand_to_signature_gap",
       "label": "Brand label → signature gap",
-      "min": 0,
-      "max": 60,
+      "min": -80,
+      "max": 80,
       "step": 2,
       "default": 8,
-      "unit": "px"
+      "unit": "px",
+      "info": "Space between the wordmark and signature. Use a negative value to pull the signature closer to the wordmark (overlap/crop in the layout flow)."
     },
     {
       "type": "range",
