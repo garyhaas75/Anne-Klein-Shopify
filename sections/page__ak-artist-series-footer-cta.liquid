@@ -3,7 +3,7 @@
   Figma file: 0kmSuSntT1RaS2ElBXMw25 (AK_Homepage-2026)
   Frames: AK_Artist Series_Desktop 351:1393 (Group 25 region), AK_Artist Series_Mobile 333:422
   Composition: centered hero photo (decorative butterflies baked into the image),
-  pull-quote richtext below, small brand label ("ANNE KLEIN"), Anne Klein cursive
+  pull-quote richtext below, brand wordmark image, Anne Klein cursive
   signature image, and a primary CTA button. All centered on a configurable
   background color.
   WCAG 2.2 AA: region landmark, configurable heading level for the quote
@@ -19,7 +19,10 @@
 {% assign image_max_width_mobile = section.settings.image_max_width_mobile | default: 320 %}
 {% assign quote_rt = section.settings.quote %}
 {% assign quote_level = section.settings.quote_level | default: 'p' %}
-{% assign brand_label = section.settings.brand_label %}
+{% assign brand_logo = section.settings.brand_logo %}
+{% assign brand_logo_alt = section.settings.brand_logo_alt | default: 'Anne Klein' %}
+{% assign brand_logo_max_width = section.settings.brand_logo_max_width | default: 200 %}
+{% assign brand_logo_max_width_mobile = section.settings.brand_logo_max_width_mobile | default: 160 %}
 {% assign signature = section.settings.signature %}
 {% assign signature_alt = section.settings.signature_alt | default: 'Anne Klein signature' %}
 {% assign signature_max_width = section.settings.signature_max_width | default: 240 %}
@@ -42,8 +45,6 @@
 
 {% capture quote_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.quote_font_family %}{% endcapture %}
 {% assign quote_font_stack = quote_font_stack | strip %}
-{% capture brand_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.brand_font_family %}{% endcapture %}
-{% assign brand_font_stack = brand_font_stack | strip %}
 
 {% assign quote_size = section.settings.quote_font_size | default: 50 %}
 {% assign quote_size_mobile = section.settings.quote_font_size_mobile | default: 0 | plus: 0 %}
@@ -52,9 +53,6 @@
 {% endif %}
 {% assign quote_weight = section.settings.quote_font_weight | default: '300' %}
 {% assign quote_lh = section.settings.quote_line_height | default: 130 %}
-{% assign brand_size = section.settings.brand_font_size | default: 14 %}
-{% assign brand_weight = section.settings.brand_font_weight | default: '700' %}
-
 {% capture section_aria %}
   {% if section_aria_label != blank %}
     aria-label="{{ section_aria_label | escape }}"
@@ -153,14 +151,16 @@
     margin-bottom: 0;
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
-    font-family: {{ brand_font_stack }};
-    /* Smooth linear ramp: ≈ slider @ ~1024px → ≈ 2× slider @ ~3000px. */
-    font-size: clamp({{ brand_size | times: 0.85 | divided_by: 16.0 }}rem, calc({{ brand_size | times: 0.36 | divided_by: 16.0 }}rem + {{ brand_size | times: 0.0625 }}vw), {{ brand_size | times: 3 | divided_by: 16.0 }}rem);
-    font-weight: {{ brand_weight }};
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: {{ text_color }};
+    display: block;
+    width: min({{ brand_logo_max_width }}px, 100%);
+    height: auto;
+    max-width: 100%;
     margin: 0 0 {{ brand_to_signature_gap }}px;
+  }
+  @media only screen and (max-width: 798px) {
+    #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
+      width: min({{ brand_logo_max_width_mobile }}px, 85vw);
+    }
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__signature {
     display: block;
@@ -237,8 +237,15 @@
         {% endif %}
       {% endif %}
 
-      {% if brand_label != blank %}
-        <p class="ak-artist-series-footer-cta__brand">{{ brand_label }}</p>
+      {% if brand_logo != blank %}
+        <img
+          class="ak-artist-series-footer-cta__brand"
+          src="{{ brand_logo | image_url: width: 600 }}"
+          alt="{{ brand_logo_alt | escape }}"
+          loading="lazy"
+          width="{{ brand_logo.width }}"
+          height="{{ brand_logo.height }}"
+        >
       {% endif %}
 
       {% if signature != blank %}
@@ -274,7 +281,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Footer band: centered photo (with butterflies baked in), pull quote, brand label, Anne Klein cursive signature, and a primary CTA button."
+      "content": "Footer band: centered photo (with butterflies baked in), pull quote, brand wordmark image, Anne Klein cursive signature, and a primary CTA button."
     },
     {
       "type": "header",
@@ -343,13 +350,39 @@
     },
     {
       "type": "header",
-      "content": "Brand label + signature"
+      "content": "Brand wordmark + signature"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Brand wordmark (above signature)",
+      "info": "PNG or SVG of the ANNE KLEIN (or campaign) logotype. Replaces the former text label."
     },
     {
       "type": "text",
-      "id": "brand_label",
-      "label": "Brand label (above signature)",
-      "default": "ANNE KLEIN"
+      "id": "brand_logo_alt",
+      "label": "Brand wordmark alt text",
+      "default": "Anne Klein"
+    },
+    {
+      "type": "range",
+      "id": "brand_logo_max_width",
+      "label": "Brand wordmark max width (desktop)",
+      "min": 80,
+      "max": 400,
+      "step": 10,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "brand_logo_max_width_mobile",
+      "label": "Brand wordmark max width (mobile)",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "default": 160,
+      "unit": "px"
     },
     {
       "type": "image_picker",
@@ -550,50 +583,6 @@
       "step": 5,
       "default": 130,
       "unit": "%"
-    },
-    {
-      "type": "header",
-      "content": "Fonts — brand label"
-    },
-    {
-      "type": "select",
-      "id": "brand_font_family",
-      "label": "Brand label font",
-      "default": "helvetica",
-      "options": [
-        { "value": "system", "label": "System sans" },
-        { "value": "amiri", "label": "Amiri" },
-        { "value": "arial", "label": "Arial" },
-        { "value": "georgia", "label": "Georgia" },
-        { "value": "times", "label": "Times New Roman" },
-        { "value": "verdana", "label": "Verdana" },
-        { "value": "trebuchet", "label": "Trebuchet MS" },
-        { "value": "helvetica", "label": "Helvetica Neue" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "brand_font_size",
-      "label": "Brand label size",
-      "min": 10,
-      "max": 64,
-      "step": 1,
-      "default": 14,
-      "unit": "px",
-      "info": "Base size at ~1280px viewport. Grows fluidly on wider viewports."
-    },
-    {
-      "type": "select",
-      "id": "brand_font_weight",
-      "label": "Brand label weight",
-      "default": "700",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" }
-      ]
     },
     {
       "type": "header",
