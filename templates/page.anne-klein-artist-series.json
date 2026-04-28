@@ -535,7 +535,7 @@
         "show_title": false,
         "show_price": false,
         "show_more_colors": false,
-        "show_stickers": true,
+        "show_stickers": false,
         "section_aria_label": "",
         "font_family": "system",
         "heading_alignment": "center",
