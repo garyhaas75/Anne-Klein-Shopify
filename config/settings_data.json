@@ -6692,7 +6692,7 @@
       },
       "9765019387669295980": {
         "type": "shopify://apps/flock-whp/blocks/flock-vton-global-embed/019db5f5-42b9-7f9e-b8ac-6361d86643f3",
-        "disabled": true,
+        "disabled": false,
         "settings": {
           "api_base": "https://api.flockshop.ai",
           "tenant_id": "226",
