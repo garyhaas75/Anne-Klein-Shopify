@@ -151,6 +151,8 @@
     margin-bottom: 0;
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__brand {
+    position: relative;
+    z-index: 2;
     display: block;
     width: min({{ brand_logo_max_width }}px, 100%);
     height: auto;
@@ -163,6 +165,8 @@
     }
   }
   #shopify-section-{{ id }} .ak-artist-series-footer-cta__signature {
+    position: relative;
+    z-index: 1;
     display: block;
     width: min({{ signature_max_width }}px, 60vw);
     height: auto;
