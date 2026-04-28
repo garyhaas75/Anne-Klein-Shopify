@@ -890,7 +890,7 @@
         "brand_logo": "shopify://shop_images/ANNEKLEIN-fulllogo-blk_2.png",
         "brand_logo_alt": "Anne Klein",
         "brand_logo_max_width": 130,
-        "brand_logo_max_width_mobile": 160,
+        "brand_logo_max_width_mobile": 120,
         "signature": "shopify://shop_images/Anne_Signature.png",
         "signature_alt": "Anne Klein signature",
         "signature_max_width": 240,
