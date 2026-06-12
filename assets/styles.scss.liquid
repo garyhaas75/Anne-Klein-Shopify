@@ -6867,7 +6867,8 @@ a.navbar-item,
 
       .navbar-item.has-dropdown {
         &.is-active,
-        &.is-hoverable:hover {
+        &.is-hoverable:hover,
+        &.is-hoverable:focus-within {
           .navbar-link {
             background-color: transparent !important;
           }
@@ -6892,7 +6893,8 @@ a.navbar-item,
     &.has-dropdown,
     &.has-mega-menu {
       @include align-items(stretch);
-      &:hover {
+      &:hover,
+      &:focus-within {
         .navbar-dropdown {
           visibility: visible;
           opacity: 1;
@@ -6922,7 +6924,9 @@ a.navbar-item,
     }
 
     &.is-active:hover,
-    &.is-hoverable:hover {
+    &.is-active:focus-within,
+    &.is-hoverable:hover,
+    &.is-hoverable:focus-within {
       .navbar-dropdown {
         .navbar.is-spaced,
         &.is-boxed {
@@ -6934,7 +6938,8 @@ a.navbar-item,
     }
   }
 
-  .has-submenu input:checked ~ .navbar-submenu {
+  .has-submenu input:checked ~ .navbar-submenu,
+  .has-submenu:focus-within > .navbar-submenu {
     display: block;
   }
 
@@ -6949,7 +6954,8 @@ a.navbar-item,
   .dropdown-style-horizontal .navbar-item {
 
     &.is-active,
-    &.is-hoverable:hover .navbar-dropdown .section {
+    &.is-hoverable:hover .navbar-dropdown .section,
+    &.is-hoverable:focus-within .navbar-dropdown .section {
       @include flexbox();
       @include flex-wrap(wrap);
     }
@@ -7016,7 +7022,9 @@ a.navbar-item,
   }
 
   .has-dropdown:hover,
-  .has-mega-menu:hover {
+  .has-dropdown:focus-within,
+  .has-mega-menu:hover,
+  .has-mega-menu:focus-within {
 
     > .header__link > a {
       color: $header-link-hover;
@@ -13693,7 +13701,9 @@ $vertical-header-padding: 1.5rem;
 
   .vertical-header__first-level-link::after,
   &.has-dropdown:hover .vertical-header__first-level-link::after,
-  &.has-mega-menu:hover .vertical-header__first-level-link::after {
+  &.has-dropdown:focus-within .vertical-header__first-level-link::after,
+  &.has-mega-menu:hover .vertical-header__first-level-link::after,
+  &.has-mega-menu:focus-within .vertical-header__first-level-link::after {
     transform: translateY(-110%) rotate(-90deg);
   }
 }
