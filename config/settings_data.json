@@ -6485,6 +6485,7 @@
           "title": "Spring 2026 Campaign",
           "autoplay": true,
           "loop": true,
+          "enable_native_controls": false,
           "start_card_image": "shopify://shop_images/Start_Frame_Desktop.png",
           "start_card_heading": "",
           "start_card_text": "",
@@ -6680,11 +6681,6 @@
         "disabled": false,
         "settings": {}
       },
-      "4252583770683550135": {
-        "type": "shopify://apps/redo/blocks/redo_app_embed/c613644b-6df4-4d11-b336-43a5c06745a1",
-        "disabled": false,
-        "settings": {}
-      },
       "10864971697205422121": {
         "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa",
         "disabled": false,
@@ -6698,6 +6694,31 @@
           "tenant_id": "226",
           "widget_base_url": "https://vton-widget.s3.us-east-1.amazonaws.com/widget"
         }
+      },
+      "7872257831342662540": {
+        "type": "shopify://apps/worry-free-purchase/blocks/index/c61a403d-127f-4a83-aa2d-dd891cc35fd1",
+        "disabled": false,
+        "settings": {}
+      },
+      "12223586505187511484": {
+        "type": "shopify://apps/worry-free-purchase/blocks/extend-warranty-pdp-widget/c61a403d-127f-4a83-aa2d-dd891cc35fd1",
+        "disabled": false,
+        "settings": {}
+      },
+      "18029433255430647954": {
+        "type": "shopify://apps/worry-free-purchase/blocks/extend-warranty-cart-widget/c61a403d-127f-4a83-aa2d-dd891cc35fd1",
+        "disabled": false,
+        "settings": {}
+      },
+      "563819768016994035": {
+        "type": "shopify://apps/worry-free-purchase/blocks/ai-support-chat-widget/c61a403d-127f-4a83-aa2d-dd891cc35fd1",
+        "disabled": false,
+        "settings": {}
+      },
+      "4252583770683550135": {
+        "type": "shopify://apps/redo/blocks/redo_app_embed/c613644b-6df4-4d11-b336-43a5c06745a1",
+        "disabled": true,
+        "settings": {}
       }
     }
   }
