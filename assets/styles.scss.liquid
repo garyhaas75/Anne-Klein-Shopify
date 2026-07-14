@@ -19342,3 +19342,70 @@ a.ugc-button-link {
     scroll-behavior: auto !important;
   }
 }
+
+
+.fit-scale_wrapper {
+  max-width: 520px;
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.fit-scale_row { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+ 
+.fit-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 0px;
+  border-radius: 999px;
+}
+
+.fit-scale__label {
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #000;
+  white-space: nowrap;
+}
+
+.fit-scale__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 120px;
+}
+
+.fit-scale__track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #000;
+}
+
+.fit-scale__dot {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.fit-scale__dot--active {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-color: #000;
+}
