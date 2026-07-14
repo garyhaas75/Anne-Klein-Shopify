@@ -1,14 +1,14 @@
 {% for tag in product.tags %}
   {% if tag == 'runs-small' %}
-    {% assign size_fit_img = 'runs-small.png' | asset_img_url: 'master' %}
+    {% assign size_fit = 'runs-small' %}
   {% elsif tag == 'runs-little-small'  %}
-    {% assign size_fit_img = 'runs-little-small.png' | asset_img_url: 'master' %}
-  {% elsif tag == 'runs-true-to-size'  %}
-    {% assign size_fit_img = 'runs-true-to-size.png' | asset_img_url: 'master' %}
-  {% elsif tag == 'runs-little-large'  %}
-    {% assign size_fit_img = 'runs-little-large.png' | asset_img_url: 'master' %}
+    {% assign size_fit = 'runs-small' %}
+  {% elsif tag == 'runs-true-to-size' %}
+    {% assign size_fit = 'runs-true-to-size' %}
+  {% elsif tag == 'runs-little-large' %}
+    {% assign size_fit = 'runs-large' %}
   {% elsif tag == 'runs-large'  %}
-    {% assign size_fit_img = 'runs-large.png' | asset_img_url: 'master' %}
+    {% assign size_fit = 'runs-large' %}
   {% endif %}
 {% endfor %}
 
@@ -36,7 +36,7 @@
             <style>
               .pdp-description-icons {
                 display: flex;
-                flex-wrap: wrap;
+                flex-wrap: wrap; 
                 flex-direction: row;
                 padding-bottom: 20px;
               }
@@ -47,17 +47,20 @@
               }
             </style>
         {% endif %}
-        {% comment %} Sunglass Size Chart{% endcomment %}
-        {% comment %}
-        {% if product.tags contains 'Sunglasses' %}
-          <img src="{{ section.settings.sunglasses | img_url: 'master' }}">
+
+
+        {% if product.metafields.custom.why_it_works.value != blank or 
+          product.metafields.custom.compatibility.value != blank or 
+          product.metafields.custom.care_notes.value != blank or 
+          product.metafields.custom.fit_guidance.value != blank or 
+          product.metafields.custom.use_cases.value != blank %}
+          <p><a href="#full-details" style="text-transform: uppercase; text-decoration: underline; font-weight: 600">See Full Details</a></p>
         {% endif %}
-        {% endcomment %}
         </div>
       </div>
       {% endif %}
 
-      {% if size_fit_img %}
+      {% if size_fit %}
       {% assign size_fit_desc = product.metafields.size_fit.description | newline_to_br %}
       {% assign size_fit_desc = size_fit_desc | split: '/>' %}
         
@@ -73,7 +76,53 @@
               </ul>
             </div>
           {% endif %}
-          <img src="{{ size_fit_img }}">
+
+          {% if size_fit == 'runs-small' %}
+          <div class="fit-scale_wrapper">
+          <div class="fit-scale_row">
+            <div class="fit-scale">
+              <span class="fit-scale__label">Runs Small</span>
+              <span class="fit-scale__track">
+                <span class="fit-scale__dot fit-scale__dot--active"></span>
+                <span class="fit-scale__dot"></span>
+                <span class="fit-scale__dot"></span>
+              </span>
+              <span class="fit-scale__label">Runs Large</span>
+            </div>
+          </div>
+          </div>
+
+          {% elsif size_fit == 'runs-true-to-size' %}
+          <div class="fit-scale_wrapper">
+          <div class="fit-scale_row">
+            <div class="fit-scale">
+              <span class="fit-scale__label">Runs Small</span>
+              <span class="fit-scale__track">
+                <span class="fit-scale__dot"></span>
+                <span class="fit-scale__dot fit-scale__dot--active"></span>
+                <span class="fit-scale__dot"></span>
+              </span>
+              <span class="fit-scale__label">Runs Large</span>
+            </div>
+          </div>
+          </div>
+
+          {% elsif size_fit == 'runs-large' %}
+          <div class="fit-scale_wrapper">
+          <div class="fit-scale_row">
+            <div class="fit-scale">
+              <span class="fit-scale__label">Runs Small</span>
+              <span class="fit-scale__track">
+                <span class="fit-scale__dot"></span>
+                <span class="fit-scale__dot"></span>
+                <span class="fit-scale__dot fit-scale__dot--active"></span>
+              </span>
+              <span class="fit-scale__label">Runs Large</span>
+            </div>
+          </div>
+          </div>
+
+          {% endif %}
         </div>
       </div>
 	  {% endif %}
@@ -104,12 +153,14 @@
         <div class="content" style="display:none;"><p>{{ product.metafields["global"]["Materials"]}}</p></div>
       </div>
        {% endif %}
+       {% comment %} 
        {% if product.metafields["global"]["country_of_origin"] %}
-      <div class="accordion">
-        <button class="heading" aria-expanded="false">Country Of Origin</button>
-        <div class="content" style="display:none;"><p>{{ product.metafields["global"]["country_of_origin"]}}</p></div>
-      </div>
+        <div class="accordion">
+          <button class="heading" aria-expanded="false">Country Of Origin</button>
+          <div class="content" style="display:none;"><p>{{ product.metafields["global"]["country_of_origin"]}}</p></div>
+        </div> 
         {% endif %}
+      {% endcomment %}
        {% if product.metafields["global"]["Product-Care"] %}
        <div class="accordion">
          <button class="heading" aria-expanded="false">Product Care</button>
