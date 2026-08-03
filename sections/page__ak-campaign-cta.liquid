@@ -21,6 +21,8 @@
 {% if max_width_m < 1 %}
   {% assign max_width_m = max_width %}
 {% endif %}
+{% assign pad_x = section.settings.content_padding_x | default: 0 | plus: 0 %}
+{% assign pad_x_m = section.settings.content_padding_x_mobile | default: 10 | plus: 0 %}
 {% assign cta_spacing = section.settings.cta_spacing | default: 28 %}
 {% assign cta_spacing_m = section.settings.cta_spacing_mobile | default: 0 | plus: 0 %}
 {% if cta_spacing_m < 1 %}
@@ -97,6 +99,9 @@
     padding-bottom: {{ padding_bottom }}px;
     background-color: {{ bg_color }};
     color: {{ text_color }};
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -106,8 +111,12 @@
   }
   #shopify-section-{{ id }} .ak-campaign-cta__inner {
     max-width: {{ max_width }}rem;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+    padding-left: {{ pad_x }}px;
+    padding-right: {{ pad_x }}px;
+    box-sizing: border-box;
     text-align: {{ text_align }};
   }
   #shopify-section-{{ id }} .ak-campaign-cta__heading {
@@ -164,6 +173,8 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-campaign-cta__inner {
       max-width: {{ max_width_m }}rem;
+      padding-left: {{ pad_x_m }}px;
+      padding-right: {{ pad_x_m }}px;
     }
     #shopify-section-{{ id }} .ak-campaign-cta__heading {
       font-size: clamp(1.0625rem, 4.5vw + 1.75rem, {{ heading_size_mobile }}px);
@@ -437,6 +448,28 @@
       "default": 0,
       "unit": "rem",
       "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x",
+      "label": "Horizontal padding (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "Left and right inset inside the content column."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_x_mobile",
+      "label": "Horizontal padding (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 10,
+      "unit": "px",
+      "info": "Left and right inset at ≤798px."
     },
     {
       "type": "header",
