@@ -721,6 +721,7 @@
           "type": "zigzag_row",
           "settings": {
             "quote": "<p>“The holidays are full of unexpected plans. I love getting dressed for the fun of it, but I love it even more when one outfit can take me from work to wherever the night leads.”</p>",
+            "quote_style": "roman",
             "attribution": "",
             "row_layout": "auto",
             "image": "shopify://shop_images/104613_EBE_AnneKlein_002_04_1_1.png",
@@ -734,6 +735,7 @@
           "disabled": true,
           "settings": {
             "quote": "<p>\"When you meet other moms, you talk about something and you feel connected.”</p>",
+            "quote_style": "inherit",
             "attribution": "Tina Kunakey",
             "row_layout": "auto",
             "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2_2.jpg",
@@ -761,6 +763,7 @@
         "attribution_color": "#000000",
         "text_column_bg": "#ffffff",
         "quote_underline": false,
+        "quote_italic": true,
         "quote_font_family": "amiri",
         "quote_font_size": 28,
         "quote_font_size_mobile": 0,
@@ -1212,6 +1215,7 @@
           "type": "zigzag_row",
           "settings": {
             "quote": "<p>\"Life moves quickly enough on its own. I’ve learned that the best way to keep up isn’t to do more, it’s to be fully present for the moment I’m in. And that makes everything else a little more manageable.\"</p>",
+            "quote_style": "inherit",
             "attribution": "",
             "row_layout": "auto",
             "image": "shopify://shop_images/104613_EBE_AnneKlein_011_13_1_32c08709-b879-4108-869e-85d1e761146f.jpg",
@@ -1225,6 +1229,7 @@
           "disabled": true,
           "settings": {
             "quote": "<p>\"When you meet other moms, you talk about something and you feel connected.”</p>",
+            "quote_style": "inherit",
             "attribution": "Tina Kunakey",
             "row_layout": "auto",
             "image": "shopify://shop_images/ANNE_KLEIN_SS26_V2_SHOT_09_1252_2_2.jpg",
@@ -1252,6 +1257,7 @@
         "attribution_color": "#000000",
         "text_column_bg": "#ffffff",
         "quote_underline": false,
+        "quote_italic": true,
         "quote_font_family": "amiri",
         "quote_font_size": 28,
         "quote_font_size_mobile": 0,
