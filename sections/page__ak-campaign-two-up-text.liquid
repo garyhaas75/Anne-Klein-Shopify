@@ -1,5 +1,5 @@
 {% comment %}
-  AK Campaign — two images side by side (desktop), stacked (mobile), then heading + rich text + optional attribution.
+  AK Campaign — two images side by side (desktop), stacked (mobile), then centered heading + left/right eyebrows + optional body/attribution.
   Figma ref (mobile frame 35:616): e.g. BTS pair + quote band — compare cells `189:70`/`189:73` + text `189:79`–`189:81` (file agnYrbiuU2Ory43nJYA4Nk).
   WCAG 2.2 AA: region, image alts, heading order, link focus-visible in RTE, min 44px tap targets on links.
 {% endcomment %}
@@ -11,12 +11,17 @@
 {% assign alt2 = section.settings.image_2_alt | default: img2.alt | default: 'Campaign photograph' %}
 {% assign heading = section.settings.heading %}
 {% assign hl = section.settings.heading_level | default: 'h2' %}
+{% assign eyebrow_left = section.settings.eyebrow_left %}
+{% assign eyebrow_right = section.settings.eyebrow_right %}
 {% assign body_rt = section.settings.body %}
 {% assign attr = section.settings.attribution %}
 {% assign text_align = section.settings.text_alignment | default: 'center' %}
 {% assign bg = section.settings.background_color | default: '#ffffff' %}
 {% assign text_color = section.settings.text_color | default: '#000000' %}
 {% assign attr_color = section.settings.attribution_color | default: '#000000' %}
+{% assign heading_color = section.settings.heading_color | default: text_color %}
+{% assign eyebrow_left_color = section.settings.eyebrow_left_color | default: text_color %}
+{% assign eyebrow_right_color = section.settings.eyebrow_right_color | default: text_color %}
 {% assign gap_d = section.settings.image_gap_desktop | default: 12 %}
 {% assign gap_m = section.settings.image_gap_mobile | default: 8 %}
 {% assign min_h_d = section.settings.image_min_height_desktop | default: 480 %}
@@ -32,6 +37,16 @@
 {% assign two_h_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
 {% if two_h_m < 1 %}
   {% assign two_h_m = two_h %}
+{% endif %}
+{% assign two_eb_l = section.settings.eyebrow_left_font_size | default: 16 %}
+{% assign two_eb_l_m = section.settings.eyebrow_left_font_size_mobile | default: 0 | plus: 0 %}
+{% if two_eb_l_m < 1 %}
+  {% assign two_eb_l_m = two_eb_l %}
+{% endif %}
+{% assign two_eb_r = section.settings.eyebrow_right_font_size | default: 16 %}
+{% assign two_eb_r_m = section.settings.eyebrow_right_font_size_mobile | default: 0 | plus: 0 %}
+{% if two_eb_r_m < 1 %}
+  {% assign two_eb_r_m = two_eb_r %}
 {% endif %}
 {% assign two_b = section.settings.body_font_size | default: 20 %}
 {% assign two_b_m = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
@@ -53,11 +68,26 @@
 {% if two_txt_mt_m < 1 %}
   {% assign two_txt_mt_m = two_txt_mt %}
 {% endif %}
+{% assign eyebrow_gap_d = section.settings.eyebrow_gap_desktop | default: 24 %}
+{% assign eyebrow_gap_m = section.settings.eyebrow_gap_mobile | default: 12 %}
 {% assign lnk1 = section.settings.image_1_link %}
 {% assign lnk2 = section.settings.image_2_link %}
 
+{% if section.settings.heading_font_family == 'amiri'
+  or section.settings.eyebrow_left_font_family == 'amiri'
+  or section.settings.eyebrow_right_font_family == 'amiri'
+  or section.settings.body_font_family == 'amiri'
+  or section.settings.attribution_font_family == 'amiri'
+%}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
+
 {% capture heading_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.heading_font_family %}{% endcapture %}
 {% assign heading_font_stack = heading_font_stack | strip %}
+{% capture eyebrow_left_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_left_font_family %}{% endcapture %}
+{% assign eyebrow_left_font_stack = eyebrow_left_font_stack | strip %}
+{% capture eyebrow_right_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.eyebrow_right_font_family %}{% endcapture %}
+{% assign eyebrow_right_font_stack = eyebrow_right_font_stack | strip %}
 {% capture body_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.body_font_family %}{% endcapture %}
 {% assign body_font_stack = body_font_stack | strip %}
 {% capture attr_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.attribution_font_family %}{% endcapture %}
@@ -147,19 +177,62 @@
   }
   #shopify-section-{{ id }} .ak-two-up__text {
     margin-top: {{ two_txt_mt }}px;
-    max-width: {{ max_w_text }}rem;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: {{ text_align }};
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     color: {{ text_color }};
   }
   #shopify-section-{{ id }} .ak-two-up__heading {
     font-family: {{ heading_font_stack }};
-    font-size: clamp(1.25rem, 3vw, {{ two_h }}px);
+    font-size: {{ two_h }}px;
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
+    font-style: {% if section.settings.heading_italic %}italic{% else %}normal{% endif %};
+    {% if section.settings.heading_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
     line-height: 1.25;
-    margin: 0 0 1rem;
-    color: {{ text_color }};
+    margin: 0 0 {% if eyebrow_left != blank or eyebrow_right != blank %}0.75rem{% else %}1rem{% endif %};
+    color: {{ heading_color }};
+    text-align: center;
+  }
+  #shopify-section-{{ id }} .ak-two-up__eyebrows {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: {{ eyebrow_gap_d }}px;
+    width: 100%;
+    min-width: 0;
+  }
+  #shopify-section-{{ id }} .ak-two-up__eyebrow {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    line-height: 1.35;
+  }
+  #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
+    font-family: {{ eyebrow_left_font_stack }};
+    font-size: {{ two_eb_l }}px;
+    font-weight: {{ section.settings.eyebrow_left_font_weight | default: '400' }};
+    font-style: {% if section.settings.eyebrow_left_italic %}italic{% else %}normal{% endif %};
+    {% if section.settings.eyebrow_left_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
+    color: {{ eyebrow_left_color }};
+    text-align: left;
+  }
+  #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+    font-family: {{ eyebrow_right_font_stack }};
+    font-size: {{ two_eb_r }}px;
+    font-weight: {{ section.settings.eyebrow_right_font_weight | default: '400' }};
+    font-style: {% if section.settings.eyebrow_right_italic %}italic{% else %}normal{% endif %};
+    {% if section.settings.eyebrow_right_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
+    color: {{ eyebrow_right_color }};
+    text-align: right;
+  }
+  #shopify-section-{{ id }} .ak-two-up__body-wrap {
+    margin-top: {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}1rem{% else %}0{% endif %};
+    max-width: {{ max_w_text }}rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: {{ text_align }};
   }
   #shopify-section-{{ id }} .ak-two-up__rte {
     font-family: {{ body_font_stack }};
@@ -193,10 +266,31 @@
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} .ak-two-up__text {
       margin-top: {{ two_txt_mt_m }}px;
-      max-width: {{ max_w_text_m }}rem;
     }
     #shopify-section-{{ id }} .ak-two-up__heading {
-      font-size: clamp(1.25rem, 3vw, {{ two_h_m }}px);
+      font-size: {{ two_h_m }}px;
+      margin-bottom: {% if eyebrow_left != blank or eyebrow_right != blank %}0.75rem{% else %}1rem{% endif %};
+    }
+    #shopify-section-{{ id }} .ak-two-up__eyebrows {
+      flex-direction: column;
+      align-items: stretch;
+      gap: {{ eyebrow_gap_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-two-up__eyebrow--left,
+    #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+    }
+    #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
+      font-size: {{ two_eb_l_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+      font-size: {{ two_eb_r_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-two-up__body-wrap {
+      max-width: {{ max_w_text_m }}rem;
     }
     #shopify-section-{{ id }} .ak-two-up__rte {
       font-size: {{ two_b_m }}px;
@@ -251,22 +345,40 @@
         </div>
       </div>
 
-      {% if heading != blank or body_rt != blank or attr != blank %}
+      {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank or body_rt != blank or attr != blank %}
         <div class="ak-two-up__text">
           {% if heading != blank %}
             {% if hl == 'h1' %}
-              <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h1>
+              <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h1>
             {% elsif hl == 'h3' %}
-              <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h3>
+              <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h3>
             {% else %}
-              <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading }}</h2>
+              <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h2>
             {% endif %}
           {% endif %}
-          {% if body_rt != blank %}
-            <div class="ak-two-up__rte rte">{{ body_rt }}</div>
+          {% if eyebrow_left != blank or eyebrow_right != blank %}
+            <div class="ak-two-up__eyebrows">
+              {% if eyebrow_left != blank %}
+                <p class="ak-two-up__eyebrow ak-two-up__eyebrow--left">{{ eyebrow_left | escape }}</p>
+              {% else %}
+                <span class="ak-two-up__eyebrow ak-two-up__eyebrow--left" aria-hidden="true"></span>
+              {% endif %}
+              {% if eyebrow_right != blank %}
+                <p class="ak-two-up__eyebrow ak-two-up__eyebrow--right">{{ eyebrow_right | escape }}</p>
+              {% else %}
+                <span class="ak-two-up__eyebrow ak-two-up__eyebrow--right" aria-hidden="true"></span>
+              {% endif %}
+            </div>
           {% endif %}
-          {% if attr != blank %}
-            <footer class="ak-two-up__attr">— {{ attr }}</footer>
+          {% if body_rt != blank or attr != blank %}
+            <div class="ak-two-up__body-wrap">
+              {% if body_rt != blank %}
+                <div class="ak-two-up__rte rte">{{ body_rt }}</div>
+              {% endif %}
+              {% if attr != blank %}
+                <footer class="ak-two-up__attr">— {{ attr | escape }}</footer>
+              {% endif %}
+            </div>
           {% endif %}
         </div>
       {% endif %}
@@ -282,7 +394,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Two images in one row (stacked on mobile), then optional heading, rich text, and attribution. Use instead of zigzag when you only need a pair of photos + copy below."
+      "content": "Two images in one row (stacked on mobile), then centered heading + left/right eyebrows, optional body and attribution."
     },
     {
       "type": "header",
@@ -406,9 +518,14 @@
       "content": "Text block"
     },
     {
+      "type": "paragraph",
+      "content": "Desktop: centered heading, then left + right eyebrows. Mobile stacks heading → left → right."
+    },
+    {
       "type": "text",
       "id": "heading",
-      "label": "Heading (optional)"
+      "label": "Heading (centered)",
+      "default": "BY THE HOUR"
     },
     {
       "type": "select",
@@ -422,9 +539,41 @@
       ]
     },
     {
+      "type": "text",
+      "id": "eyebrow_left",
+      "label": "Left eyebrow",
+      "default": "Fall / Winter 2026 Campaign"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_right",
+      "label": "Right eyebrow",
+      "default": "Starring Olivia Munn"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap_desktop",
+      "label": "Gap between eyebrows (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap_mobile",
+      "label": "Gap between eyebrows (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 12,
+      "unit": "px"
+    },
+    {
       "type": "richtext",
       "id": "body",
-      "label": "Body"
+      "label": "Body (optional)"
     },
     {
       "type": "text",
@@ -435,7 +584,7 @@
     {
       "type": "select",
       "id": "text_alignment",
-      "label": "Text alignment",
+      "label": "Body text alignment",
       "default": "center",
       "options": [
         { "value": "left", "label": "Left" },
@@ -467,18 +616,18 @@
     {
       "type": "range",
       "id": "content_max_width",
-      "label": "Text max width (desktop)",
+      "label": "Body max width (desktop)",
       "min": 28,
       "max": 72,
       "step": 1,
       "default": 48,
       "unit": "rem",
-      "info": "Only constrains the text block; images use full section width."
+      "info": "Only constrains body/attribution; heading + eyebrows use full section width."
     },
     {
       "type": "range",
       "id": "content_max_width_mobile",
-      "label": "Text max width (mobile)",
+      "label": "Body max width (mobile)",
       "min": 0,
       "max": 72,
       "step": 1,
@@ -488,13 +637,13 @@
     },
     {
       "type": "header",
-      "content": "Typography"
+      "content": "Heading typography"
     },
     {
       "type": "select",
       "id": "heading_font_family",
       "label": "Heading font",
-      "default": "amiri",
+      "default": "helvetica",
       "options": [
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
@@ -509,7 +658,7 @@
     {
       "type": "range",
       "id": "heading_font_size",
-      "label": "Heading size (max, desktop)",
+      "label": "Heading size (desktop)",
       "min": 18,
       "max": 56,
       "step": 1,
@@ -519,7 +668,7 @@
     {
       "type": "range",
       "id": "heading_font_size_mobile",
-      "label": "Heading size (max, mobile)",
+      "label": "Heading size (mobile)",
       "min": 0,
       "max": 56,
       "step": 1,
@@ -541,10 +690,176 @@
       ]
     },
     {
+      "type": "checkbox",
+      "id": "heading_italic",
+      "label": "Heading italic",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Heading uppercase",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Left eyebrow typography"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_left_font_family",
+      "label": "Left eyebrow font",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_left_font_size",
+      "label": "Left eyebrow size (desktop)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_left_font_size_mobile",
+      "label": "Left eyebrow size (mobile)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_left_font_weight",
+      "label": "Left eyebrow weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_left_italic",
+      "label": "Left eyebrow italic",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_left_uppercase",
+      "label": "Left eyebrow uppercase",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_left_color",
+      "label": "Left eyebrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Right eyebrow typography"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_right_font_family",
+      "label": "Right eyebrow font",
+      "default": "helvetica",
+      "options": [
+        { "value": "system", "label": "System sans" },
+        { "value": "amiri", "label": "Amiri" },
+        { "value": "arial", "label": "Arial" },
+        { "value": "georgia", "label": "Georgia" },
+        { "value": "times", "label": "Times New Roman" },
+        { "value": "verdana", "label": "Verdana" },
+        { "value": "trebuchet", "label": "Trebuchet MS" },
+        { "value": "helvetica", "label": "Helvetica Neue" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_right_font_size",
+      "label": "Right eyebrow size (desktop)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_right_font_size_mobile",
+      "label": "Right eyebrow size (mobile)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_right_font_weight",
+      "label": "Right eyebrow weight",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_right_italic",
+      "label": "Right eyebrow italic",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "eyebrow_right_uppercase",
+      "label": "Right eyebrow uppercase",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_right_color",
+      "label": "Right eyebrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Body & attribution typography"
+    },
+    {
       "type": "select",
       "id": "body_font_family",
       "label": "Body font",
-      "default": "amiri",
+      "default": "helvetica",
       "options": [
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
@@ -565,6 +880,17 @@
       "step": 1,
       "default": 20,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "label": "Body size (mobile)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "select",
@@ -604,7 +930,7 @@
       "type": "select",
       "id": "attribution_font_family",
       "label": "Attribution font",
-      "default": "amiri",
+      "default": "helvetica",
       "options": [
         { "value": "system", "label": "System sans" },
         { "value": "amiri", "label": "Amiri" },
