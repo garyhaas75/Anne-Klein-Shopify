@@ -721,7 +721,7 @@
           "type": "zigzag_row",
           "settings": {
             "quote": "<p>“The holidays are full of unexpected plans. I love getting dressed for the fun of it, but I love it even more when one outfit can take me from work to wherever the night leads.”</p>",
-            "quote_style": "roman",
+            "quote_style": "inherit",
             "attribution": "",
             "row_layout": "auto",
             "image": "shopify://shop_images/104613_EBE_AnneKlein_002_04_1_1.png",
@@ -764,7 +764,7 @@
         "text_column_bg": "#ffffff",
         "quote_underline": false,
         "quote_italic": true,
-        "quote_font_family": "amiri",
+        "quote_font_family": "helvetica",
         "quote_font_size": 28,
         "quote_font_size_mobile": 0,
         "quote_font_weight": "400",
