@@ -122,6 +122,16 @@
     color: {{ q_color }};
     {% if section.settings.quote_underline %}text-decoration: underline; text-underline-offset: 0.12em; text-decoration-thickness: 1px;{% endif %}
   }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--italic {
+    font-style: italic;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--roman {
+    font-style: normal;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--roman em,
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--roman i {
+    font-style: normal;
+  }
   #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner p {
     margin: 0 0 0.5em;
   }
@@ -249,6 +259,23 @@
                 {% assign text_left = false %}
               {% endif %}
             {% endif %}
+            {% assign quote_style = block.settings.quote_style | default: 'inherit' %}
+            {% if quote_style == 'italic' %}
+              {% assign quote_italic_on = true %}
+            {% elsif quote_style == 'roman' %}
+              {% assign quote_italic_on = false %}
+            {% else %}
+              {% if section.settings.quote_italic %}
+                {% assign quote_italic_on = true %}
+              {% else %}
+                {% assign quote_italic_on = false %}
+              {% endif %}
+            {% endif %}
+            {% if quote_italic_on %}
+              {% assign quote_style_class = 'ak-quote-zigzag__quote-inner--italic' %}
+            {% else %}
+              {% assign quote_style_class = 'ak-quote-zigzag__quote-inner--roman' %}
+            {% endif %}
 
             <li class="ak-quote-zigzag__item" {{ block.shopify_attributes }}>
               <div class="ak-quote-zigzag__row {% if text_left %}ak-quote-zigzag__row--text-left{% else %}ak-quote-zigzag__row--text-right{% endif %}">
@@ -257,7 +284,7 @@
                     {% if qt != blank or at != blank %}
                       <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
                         {% if qt != blank %}
-                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                          <div class="ak-quote-zigzag__quote-inner rte {{ quote_style_class }}">{{ qt }}</div>
                         {% endif %}
                         {% if at != blank %}
                           <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
@@ -304,7 +331,7 @@
                     {% if qt != blank or at != blank %}
                       <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
                         {% if qt != blank %}
-                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                          <div class="ak-quote-zigzag__quote-inner rte {{ quote_style_class }}">{{ qt }}</div>
                         {% endif %}
                         {% if at != blank %}
                           <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
@@ -458,6 +485,13 @@
       "label": "Underline quote text",
       "default": false,
       "info": "Off = no line under the quote. Turn on for an editorial underline."
+    },
+    {
+      "type": "checkbox",
+      "id": "quote_italic",
+      "label": "Italic quotes (section default)",
+      "default": true,
+      "info": "Default for all rows. Each Quote + image row can override this."
     },
     {
       "type": "select",
@@ -661,7 +695,19 @@
           "type": "richtext",
           "id": "quote",
           "label": "Quote",
-          "default": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>"
+          "default": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>",
+          "info": "Prefer plain text here — use Quote style below for italics instead of the I toolbar."
+        },
+        {
+          "type": "select",
+          "id": "quote_style",
+          "label": "Quote style",
+          "default": "inherit",
+          "options": [
+            { "value": "inherit", "label": "Use section default" },
+            { "value": "italic", "label": "Italic" },
+            { "value": "roman", "label": "Not italic (roman)" }
+          ]
         },
         {
           "type": "text",
