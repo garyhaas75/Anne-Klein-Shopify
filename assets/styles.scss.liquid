@@ -6867,8 +6867,7 @@ a.navbar-item,
 
       .navbar-item.has-dropdown {
         &.is-active,
-        &.is-hoverable:hover,
-        &.is-hoverable:focus-within {
+        &.is-hoverable:hover {
           .navbar-link {
             background-color: transparent !important;
           }
@@ -6893,8 +6892,7 @@ a.navbar-item,
     &.has-dropdown,
     &.has-mega-menu {
       @include align-items(stretch);
-      &:hover,
-      &:focus-within {
+      &:hover {
         .navbar-dropdown {
           visibility: visible;
           opacity: 1;
@@ -6924,9 +6922,7 @@ a.navbar-item,
     }
 
     &.is-active:hover,
-    &.is-active:focus-within,
-    &.is-hoverable:hover,
-    &.is-hoverable:focus-within {
+    &.is-hoverable:hover {
       .navbar-dropdown {
         .navbar.is-spaced,
         &.is-boxed {
@@ -6938,8 +6934,7 @@ a.navbar-item,
     }
   }
 
-  .has-submenu input:checked ~ .navbar-submenu,
-  .has-submenu:focus-within > .navbar-submenu {
+  .has-submenu input:checked ~ .navbar-submenu {
     display: block;
   }
 
@@ -6954,8 +6949,7 @@ a.navbar-item,
   .dropdown-style-horizontal .navbar-item {
 
     &.is-active,
-    &.is-hoverable:hover .navbar-dropdown .section,
-    &.is-hoverable:focus-within .navbar-dropdown .section {
+    &.is-hoverable:hover .navbar-dropdown .section {
       @include flexbox();
       @include flex-wrap(wrap);
     }
@@ -7022,9 +7016,7 @@ a.navbar-item,
   }
 
   .has-dropdown:hover,
-  .has-dropdown:focus-within,
-  .has-mega-menu:hover,
-  .has-mega-menu:focus-within {
+  .has-mega-menu:hover {
 
     > .header__link > a {
       color: $header-link-hover;
@@ -8206,7 +8198,7 @@ span._ks_text {
   display: none !important;
   
   @include respond-to('medium-down') {
-    display: block !important;
+    display: none !important;
   }
 }
 
@@ -8214,10 +8206,20 @@ span._ks_text {
 .product-gallery .product-gallery__main .flickity-prev-next-button.previous,
 .product-gallery .product-gallery__main .flickity-prev-next-button.next {
   @include respond-to('medium-down') {
-    display: none !important;
+    
   }
 }
 @media only screen and (max-width: 798px) {
+  .product-gallery__thumbnails.product-gallery__thumbnails--bottom-thumbnails {
+    margin-top: 20px;
+  }
+  .product-gallery .product-gallery__main .flickity-prev-next-button .flickity-button-icon {
+    display: none;
+  }
+  .flickity-button.flickity-prev-next-button {
+    width: 33px;
+    height: 33px;
+  }
   .template-product .section.section.is-width-standard.has-padding-top.has-padding-bottom {
     padding-top: 0px;
   }
@@ -13701,9 +13703,7 @@ $vertical-header-padding: 1.5rem;
 
   .vertical-header__first-level-link::after,
   &.has-dropdown:hover .vertical-header__first-level-link::after,
-  &.has-dropdown:focus-within .vertical-header__first-level-link::after,
-  &.has-mega-menu:hover .vertical-header__first-level-link::after,
-  &.has-mega-menu:focus-within .vertical-header__first-level-link::after {
+  &.has-mega-menu:hover .vertical-header__first-level-link::after {
     transform: translateY(-110%) rotate(-90deg);
   }
 }
@@ -19351,4 +19351,76 @@ a.ugc-button-link {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+div#judgeme_product_reviews {
+  width: 80%;
+  margin: 30px auto;
+}
+
+
+.fit-scale_wrapper {
+  max-width: 520px;
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.fit-scale_row { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+ 
+.fit-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 0px;
+  border-radius: 999px;
+}
+
+.fit-scale__label {
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #000;
+  white-space: nowrap;
+}
+
+.fit-scale__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 120px;
+}
+
+.fit-scale__track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #000;
+}
+
+.fit-scale__dot {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.fit-scale__dot--active {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-color: #000;
 }

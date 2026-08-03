@@ -1,50 +1,108 @@
 {% if template contains 'product' %}
 
-<script text="text/javascript">
+<script type="text/javascript">
+(function () {
+  // Klaviyo "Viewed Product" / "Added to Cart" are marketing tracking, so they
+  // are gated behind Consentmo marketing consent. Mirrors the signal handling
+  // used in snippets/pixels.liquid; stays attached so a later revoke is honored.
+  var marketingAllowed = false;
+  var hasRun = false;
+  var sawConsentmoOnLoad = false;
+  /** If Consentmo never emits consentmoSignal_onLoad still run after this wait. */
+  var WATCHDOG_MS = 10000;
 
+  function marketingOk(p) {
+    return !!(p && p.marketing);
+  }
 
-async function fetchData() {
-  const response = await fetch(
-    "https://widget-api.stylitics.com/api/outfits?username=anneklein&item_number={{- product.handle -}}"
-  );
-  const data = await response.json();
+  async function fetchData() {
+    const response = await fetch(
+      "https://widget-api.stylitics.com/api/outfits?username=anneklein&item_number={{- product.handle -}}"
+    );
+    const data = await response.json();
 
-  var klaviyo = window.klaviyo || [];
-  var klaviyoItem = {
-    Name: {{ product.title|json }},
-    ProductID: {{ product.id|json }},
-    Categories: {{ product.collections|map:'title'|json }},
-    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
-    URL: "{{ shop.secure_url }}{{ product.url }}",
-    Brand: {{ product.vendor|json }},
-    Price: {{ product.price|money|json }},
-    CompareAtPrice: {{ product.compare_at_price_max|money|json }},
-    StyliticsOutfits: data
-  };
-  
-  console.log(klaviyoItem);
+    var klaviyo = window.klaviyo || [];
+    var klaviyoItem = {
+      Name: {{ product.title|json }},
+      ProductID: {{ product.id|json }},
+      Categories: {{ product.collections|map:'title'|json }},
+      ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+      URL: "{{ shop.secure_url }}{{ product.url }}",
+      Brand: {{ product.vendor|json }},
+      Price: {{ product.price|money|json }},
+      CompareAtPrice: {{ product.compare_at_price_max|money|json }},
+      StyliticsOutfits: data
+    };
 
-  klaviyo.push(['track', 'Viewed Product', klaviyoItem]);
-  klaviyo.push(['trackViewedItem', {
-    Title: klaviyoItem.Name,
-    ItemId: klaviyoItem.ProductID,
-    Categories: klaviyoItem.Categories,
-    ImageUrl: klaviyoItem.ImageURL,
-    Url: klaviyoItem.URL,
-    Metadata: {
-      Brand: klaviyoItem.Brand,
-      Price: klaviyoItem.Price,
-      CompareAtPrice: klaviyoItem.CompareAtPrice
-    }
-  }]);
+    klaviyo.push(['track', 'Viewed Product', klaviyoItem]);
+    klaviyo.push(['trackViewedItem', {
+      Title: klaviyoItem.Name,
+      ItemId: klaviyoItem.ProductID,
+      Categories: klaviyoItem.Categories,
+      ImageUrl: klaviyoItem.ImageURL,
+      Url: klaviyoItem.URL,
+      Metadata: {
+        Brand: klaviyoItem.Brand,
+        Price: klaviyoItem.Price,
+        CompareAtPrice: klaviyoItem.CompareAtPrice
+      }
+    }]);
 
-  document.querySelector('.button--add-to-cart').addEventListener('click',function (){
-    klaviyo.push(['track', 'Added to Cart', klaviyoItem]);
+    document.querySelector('.button--add-to-cart').addEventListener('click', function () {
+      // Re-check live so a mid-session revoke stops further tracking.
+      if (!marketingAllowed) return;
+      klaviyo.push(['track', 'Added to Cart', klaviyoItem]);
+    });
+  }
+
+  function runKlaviyo() {
+    if (hasRun) return;
+    hasRun = true;
+    fetchData();
+  }
+
+  var watchdogId = setTimeout(function () {
+    if (sawConsentmoOnLoad) return;
+    marketingAllowed = true;
+    runKlaviyo();
+  }, WATCHDOG_MS);
+
+  // Stays attached for the session so consent can be granted or revoked live.
+  document.addEventListener('consentmoSignal', function (ev) {
+    var prefs = (ev && ev.detail && ev.detail.preferences) || {};
+    marketingAllowed = marketingOk(prefs);
+    if (marketingAllowed) runKlaviyo();
   });
-}
 
-fetchData();
+  document.addEventListener(
+    'consentmoSignal_onLoad',
+    function (cmpEvent) {
+      sawConsentmoOnLoad = true;
+      if (watchdogId) {
+        clearTimeout(watchdogId);
+        watchdogId = null;
+      }
 
+      var detail = (cmpEvent && cmpEvent.detail) ? cmpEvent.detail : {};
+
+      var cmpActive = Number(detail.isActive) === 1;
+      var prefsOnLoad =
+        (detail.consent && detail.consent.preferences) ||
+        detail.preferences ||
+        {};
+
+      if (!cmpActive) {
+        marketingAllowed = true;
+        runKlaviyo();
+        return;
+      }
+
+      marketingAllowed = marketingOk(prefsOnLoad);
+      if (marketingAllowed) runKlaviyo();
+    },
+    { once: true }
+  );
+})();
 </script>
 
 {% comment %}
