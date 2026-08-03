@@ -1107,7 +1107,7 @@
         "width": "wide",
         "show_gutter": false,
         "text_column_width": 50,
-        "row_min_height_desktop": 1320,
+        "row_min_height_desktop": 840,
         "row_min_height_mobile": 0,
         "row_gap": 0,
         "row_gap_mobile": 0,
