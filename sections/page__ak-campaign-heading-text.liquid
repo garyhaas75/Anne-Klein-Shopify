@@ -1,14 +1,11 @@
 {% comment %}
-  AK Campaign — two images side by side (desktop), stacked (mobile), then centered heading + left/right eyebrows + optional body/attribution.
-  Figma ref (mobile frame 35:616): e.g. BTS pair + quote band — compare cells `189:70`/`189:73` + text `189:79`–`189:81` (file agnYrbiuU2Ory43nJYA4Nk).
-  WCAG 2.2 AA: region, image alts, heading order, link focus-visible in RTE, min 44px tap targets on links.
+  AK Campaign — heading text block: left eyebrow | centered heading | right eyebrow
+  (same caption-row logic as page__ak-campaign-two-up-text, without images).
+  Optional body + attribution below.
+  WCAG 2.2 AA: region, heading level, link focus-visible in RTE.
 {% endcomment %}
 
 {% assign id = section.id %}
-{% assign img1 = section.settings.image_1 %}
-{% assign img2 = section.settings.image_2 %}
-{% assign alt1 = section.settings.image_1_alt | default: img1.alt | default: 'Campaign photograph' %}
-{% assign alt2 = section.settings.image_2_alt | default: img2.alt | default: 'Campaign photograph' %}
 {% assign heading = section.settings.heading %}
 {% assign hl = section.settings.heading_level | default: 'h2' %}
 {% assign eyebrow_left = section.settings.eyebrow_left %}
@@ -22,12 +19,6 @@
 {% assign heading_color = section.settings.heading_color | default: text_color %}
 {% assign eyebrow_left_color = section.settings.eyebrow_left_color | default: text_color %}
 {% assign eyebrow_right_color = section.settings.eyebrow_right_color | default: text_color %}
-{% assign gap_d = section.settings.image_gap_desktop | default: 12 %}
-{% assign gap_m = section.settings.image_gap_mobile | default: 8 %}
-{% assign min_h_d = section.settings.image_min_height_desktop | default: 480 %}
-{% assign min_h_m = section.settings.image_min_height_mobile | default: 280 %}
-{% assign img_fit = section.settings.image_object_fit | default: 'cover' %}
-{% assign img_pos = section.settings.image_object_position | default: 'center' %}
 {% assign max_w_text = section.settings.content_max_width | default: 48 %}
 {% assign max_w_text_m = section.settings.content_max_width_mobile | default: 0 | plus: 0 %}
 {% if max_w_text_m < 1 %}
@@ -35,40 +26,35 @@
 {% endif %}
 {% assign pad_x = section.settings.content_padding_x | default: 0 | plus: 0 %}
 {% assign pad_x_m = section.settings.content_padding_x_mobile | default: 10 | plus: 0 %}
-{% assign two_h = section.settings.heading_font_size | default: 32 %}
-{% assign two_h_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
-{% if two_h_m < 1 %}
-  {% assign two_h_m = two_h %}
+{% assign ht_h = section.settings.heading_font_size | default: 32 %}
+{% assign ht_h_m = section.settings.heading_font_size_mobile | default: 0 | plus: 0 %}
+{% if ht_h_m < 1 %}
+  {% assign ht_h_m = ht_h %}
 {% endif %}
-{% assign two_eb_l = section.settings.eyebrow_left_font_size | default: 16 %}
-{% assign two_eb_l_m = section.settings.eyebrow_left_font_size_mobile | default: 0 | plus: 0 %}
-{% if two_eb_l_m < 1 %}
-  {% assign two_eb_l_m = two_eb_l %}
+{% assign ht_eb_l = section.settings.eyebrow_left_font_size | default: 16 %}
+{% assign ht_eb_l_m = section.settings.eyebrow_left_font_size_mobile | default: 0 | plus: 0 %}
+{% if ht_eb_l_m < 1 %}
+  {% assign ht_eb_l_m = ht_eb_l %}
 {% endif %}
-{% assign two_eb_r = section.settings.eyebrow_right_font_size | default: 16 %}
-{% assign two_eb_r_m = section.settings.eyebrow_right_font_size_mobile | default: 0 | plus: 0 %}
-{% if two_eb_r_m < 1 %}
-  {% assign two_eb_r_m = two_eb_r %}
+{% assign ht_eb_r = section.settings.eyebrow_right_font_size | default: 16 %}
+{% assign ht_eb_r_m = section.settings.eyebrow_right_font_size_mobile | default: 0 | plus: 0 %}
+{% if ht_eb_r_m < 1 %}
+  {% assign ht_eb_r_m = ht_eb_r %}
 {% endif %}
-{% assign two_b = section.settings.body_font_size | default: 20 %}
-{% assign two_b_m = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
-{% if two_b_m < 1 %}
-  {% assign two_b_m = two_b %}
+{% assign ht_b = section.settings.body_font_size | default: 20 %}
+{% assign ht_b_m = section.settings.body_font_size_mobile | default: 0 | plus: 0 %}
+{% if ht_b_m < 1 %}
+  {% assign ht_b_m = ht_b %}
 {% endif %}
-{% assign two_attr = section.settings.attribution_font_size | default: 16 %}
-{% assign two_attr_m = section.settings.attribution_font_size_mobile | default: 0 | plus: 0 %}
-{% if two_attr_m < 1 %}
-  {% assign two_attr_m = two_attr %}
+{% assign ht_attr = section.settings.attribution_font_size | default: 16 %}
+{% assign ht_attr_m = section.settings.attribution_font_size_mobile | default: 0 | plus: 0 %}
+{% if ht_attr_m < 1 %}
+  {% assign ht_attr_m = ht_attr %}
 {% endif %}
-{% assign two_lh = section.settings.body_line_height | default: 150 %}
-{% assign two_lh_m = section.settings.body_line_height_mobile | default: 0 | plus: 0 %}
-{% if two_lh_m < 1 %}
-  {% assign two_lh_m = two_lh %}
-{% endif %}
-{% assign two_txt_mt = section.settings.text_block_margin_top | default: 32 %}
-{% assign two_txt_mt_m = section.settings.text_block_margin_top_mobile | default: 0 | plus: 0 %}
-{% if two_txt_mt_m < 1 %}
-  {% assign two_txt_mt_m = two_txt_mt %}
+{% assign ht_lh = section.settings.body_line_height | default: 150 %}
+{% assign ht_lh_m = section.settings.body_line_height_mobile | default: 0 | plus: 0 %}
+{% if ht_lh_m < 1 %}
+  {% assign ht_lh_m = ht_lh %}
 {% endif %}
 {% assign eyebrow_gap_d = section.settings.eyebrow_gap_desktop | default: 24 %}
 {% assign eyebrow_gap_m = section.settings.eyebrow_gap_mobile | default: 12 %}
@@ -82,24 +68,6 @@
 {% if eyebrow_pad_r_m < 1 %}
   {% assign eyebrow_pad_r_m = eyebrow_pad_r %}
 {% endif %}
-{% assign lnk1 = section.settings.image_1_link %}
-{% assign lnk2 = section.settings.image_2_link %}
-{% assign has_img1 = false %}
-{% assign has_img2 = false %}
-{% if img1 != blank %}
-  {% assign has_img1 = true %}
-{% endif %}
-{% if img2 != blank %}
-  {% assign has_img2 = true %}
-{% endif %}
-{% if has_img1 and has_img2 %}
-  {% assign image_layout = 'pair' %}
-{% elsif has_img1 or has_img2 %}
-  {% assign image_layout = 'single' %}
-{% else %}
-  {% assign image_layout = 'empty' %}
-{% endif %}
-{% assign single_max_w = section.settings.single_image_max_width | default: 50 %}
 
 {% if section.settings.heading_font_family == 'amiri'
   or section.settings.eyebrow_left_font_family == 'amiri'
@@ -126,6 +94,9 @@
     padding-top: {{ section.settings.padding_top | default: 48 }}px;
     padding-bottom: {{ section.settings.padding_bottom | default: 48 }}px;
     background-color: {{ bg }};
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   @media only screen and (max-width: 798px) {
     #shopify-section-{{ id }} {
@@ -133,144 +104,7 @@
       padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom | default: 40 }}px;
     }
   }
-  #shopify-section-{{ id }} .ak-two-up__grid {
-    width: 100%;
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images {
-    display: flex;
-    flex-direction: column;
-    gap: {{ gap_m }}px;
-    width: 100%;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--single,
-  #shopify-section-{{ id }} .ak-two-up__images--empty {
-    align-items: center;
-  }
-  @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }} .ak-two-up__images {
-      flex-direction: row;
-      gap: {{ gap_d }}px;
-      align-items: stretch;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--single,
-    #shopify-section-{{ id }} .ak-two-up__images--empty {
-      justify-content: center;
-      align-items: flex-start;
-    }
-  }
-  #shopify-section-{{ id }} .ak-two-up__cell {
-    flex: 1 1 100%;
-    min-width: 0;
-    position: relative;
-    overflow: hidden;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell,
-  #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
-    background-color: {{ section.settings.image_placeholder_bg | default: '#e8e8e8' }};
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell .image-element__wrap,
-  #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell .image-element__wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    margin: 0;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell img,
-  #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell .placeholder-svg,
-  #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell img,
-  #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell .placeholder-svg {
-    width: 100%;
-    height: 100%;
-    object-fit: {{ img_fit }};
-    object-position: {{ img_pos }};
-    display: block;
-  }
-  /* Single image: size to the photo — no forced min-height / letterbox bars */
-  #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell {
-    background-color: transparent;
-    height: auto;
-    min-height: 0;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell .image-element__wrap {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    margin: 0;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell img {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: unset;
-    display: block;
-  }
-  #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__link {
-    display: block;
-    height: auto;
-    min-height: 0;
-  }
-  @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell {
-      flex: 1 1 50%;
-      max-width: 50%;
-      min-height: {{ min_h_d }}px;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell,
-    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
-      flex: 0 1 {{ single_max_w }}%;
-      width: {{ single_max_w }}%;
-      max-width: {{ single_max_w }}%;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
-      min-height: {{ min_h_d }}px;
-    }
-  }
-  @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-two-up__images--pair {
-      width: 100vw;
-      max-width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      gap: 0;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell {
-      aspect-ratio: 2 / 3;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--single,
-    #shopify-section-{{ id }} .ak-two-up__images--empty {
-      width: 100%;
-      max-width: 100%;
-      margin-left: 0;
-      gap: 0;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell,
-    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
-      width: 100%;
-      max-width: 100%;
-      flex: 1 1 100%;
-    }
-    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
-      aspect-ratio: 2 / 3;
-    }
-  }
-  #shopify-section-{{ id }} .ak-two-up__link {
-    display: block;
-    height: 100%;
-    min-height: inherit;
-    text-decoration: none;
-    color: inherit;
-  }
-  #shopify-section-{{ id }} .ak-two-up__link:focus-visible {
-    outline: 3px solid {{ text_color }};
-    outline-offset: 2px;
-  }
-  #shopify-section-{{ id }} .ak-two-up__text {
-    margin-top: {{ two_txt_mt }}px;
+  #shopify-section-{{ id }} .ak-heading-text {
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -279,7 +113,7 @@
     padding-right: {{ pad_x }}px;
     box-sizing: border-box;
   }
-  #shopify-section-{{ id }} .ak-two-up__caption-row {
+  #shopify-section-{{ id }} .ak-heading-text__caption-row {
     display: flex;
     flex-direction: row;
     align-items: baseline;
@@ -288,11 +122,11 @@
     width: 100%;
     min-width: 0;
   }
-  #shopify-section-{{ id }} .ak-two-up__heading {
+  #shopify-section-{{ id }} .ak-heading-text__heading {
     flex: 1 1 0;
     min-width: 0;
     font-family: {{ heading_font_stack }};
-    font-size: {{ two_h }}px;
+    font-size: {{ ht_h }}px;
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     font-style: {% if section.settings.heading_italic %}italic{% else %}normal{% endif %};
     {% if section.settings.heading_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
@@ -303,7 +137,7 @@
     color: {{ heading_color }};
     text-align: center;
   }
-  #shopify-section-{{ id }} .ak-two-up__eyebrow {
+  #shopify-section-{{ id }} .ak-heading-text__eyebrow {
     flex: 1 1 0;
     min-width: 0;
     max-width: 100%;
@@ -313,9 +147,9 @@
     border: 0;
     line-height: 1;
   }
-  #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
+  #shopify-section-{{ id }} .ak-heading-text__eyebrow--left {
     font-family: {{ eyebrow_left_font_stack }};
-    font-size: {{ two_eb_l }}px;
+    font-size: {{ ht_eb_l }}px;
     font-weight: {{ section.settings.eyebrow_left_font_weight | default: '400' }};
     font-style: {% if section.settings.eyebrow_left_italic %}italic{% else %}normal{% endif %};
     {% if section.settings.eyebrow_left_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
@@ -324,9 +158,9 @@
     padding-left: {{ eyebrow_pad_l }}px;
     padding-right: 0;
   }
-  #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+  #shopify-section-{{ id }} .ak-heading-text__eyebrow--right {
     font-family: {{ eyebrow_right_font_stack }};
-    font-size: {{ two_eb_r }}px;
+    font-size: {{ ht_eb_r }}px;
     font-weight: {{ section.settings.eyebrow_right_font_weight | default: '400' }};
     font-style: {% if section.settings.eyebrow_right_italic %}italic{% else %}normal{% endif %};
     {% if section.settings.eyebrow_right_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
@@ -335,197 +169,139 @@
     padding-right: {{ eyebrow_pad_r }}px;
     padding-left: 0;
   }
-  #shopify-section-{{ id }} .ak-two-up__body-wrap {
+  #shopify-section-{{ id }} .ak-heading-text__body-wrap {
     margin-top: {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}1rem{% else %}0{% endif %};
     max-width: {{ max_w_text }}rem;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     text-align: {{ text_align }};
+    box-sizing: border-box;
   }
-  #shopify-section-{{ id }} .ak-two-up__rte {
+  #shopify-section-{{ id }} .ak-heading-text__rte {
     font-family: {{ body_font_stack }};
-    font-size: {{ two_b }}px;
+    font-size: {{ ht_b }}px;
     font-weight: {{ section.settings.body_font_weight | default: '400' }};
-    line-height: {{ two_lh }}%;
+    line-height: {{ ht_lh }}%;
   }
-  #shopify-section-{{ id }} .ak-two-up__rte p {
+  #shopify-section-{{ id }} .ak-heading-text__rte p {
     margin: 0 0 0.75em;
   }
-  #shopify-section-{{ id }} .ak-two-up__rte p:last-child {
+  #shopify-section-{{ id }} .ak-heading-text__rte p:last-child {
     margin-bottom: 0;
   }
-  #shopify-section-{{ id }} .ak-two-up__rte a {
+  #shopify-section-{{ id }} .ak-heading-text__rte a {
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 0.15em;
   }
-  #shopify-section-{{ id }} .ak-two-up__rte a:focus-visible {
+  #shopify-section-{{ id }} .ak-heading-text__rte a:focus-visible {
     outline: 3px solid currentColor;
     outline-offset: 2px;
   }
-  #shopify-section-{{ id }} .ak-two-up__attr {
+  #shopify-section-{{ id }} .ak-heading-text__attr {
     display: block;
     margin-top: 1.25rem;
     font-family: {{ attr_font_stack }};
-    font-size: {{ two_attr }}px;
+    font-size: {{ ht_attr }}px;
     font-weight: {{ section.settings.attribution_font_weight | default: '400' }};
     color: {{ attr_color }};
   }
   @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-two-up__text {
-      margin-top: {{ two_txt_mt_m }}px;
+    #shopify-section-{{ id }} .ak-heading-text {
       padding-left: {{ pad_x_m }}px;
       padding-right: {{ pad_x_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__caption-row {
+    #shopify-section-{{ id }} .ak-heading-text__caption-row {
       flex-direction: column;
       align-items: stretch;
       gap: {{ eyebrow_gap_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__heading {
+    #shopify-section-{{ id }} .ak-heading-text__heading {
       order: 1;
       flex: 0 0 auto;
       width: 100%;
-      font-size: {{ two_h_m }}px;
+      font-size: {{ ht_h_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
+    #shopify-section-{{ id }} .ak-heading-text__eyebrow--left {
       order: 2;
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
       text-align: center;
-      font-size: {{ two_eb_l_m }}px;
+      font-size: {{ ht_eb_l_m }}px;
       padding-left: {{ eyebrow_pad_l_m }}px;
       padding-right: {{ eyebrow_pad_l_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+    #shopify-section-{{ id }} .ak-heading-text__eyebrow--right {
       order: 3;
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
       text-align: center;
-      font-size: {{ two_eb_r_m }}px;
+      font-size: {{ ht_eb_r_m }}px;
       padding-left: {{ eyebrow_pad_r_m }}px;
       padding-right: {{ eyebrow_pad_r_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__body-wrap {
+    #shopify-section-{{ id }} .ak-heading-text__body-wrap {
       max-width: {{ max_w_text_m }}rem;
     }
-    #shopify-section-{{ id }} .ak-two-up__rte {
-      font-size: {{ two_b_m }}px;
-      line-height: {{ two_lh_m }}%;
+    #shopify-section-{{ id }} .ak-heading-text__rte {
+      font-size: {{ ht_b_m }}px;
+      line-height: {{ ht_lh_m }}%;
     }
-    #shopify-section-{{ id }} .ak-two-up__attr {
-      font-size: {{ two_attr_m }}px;
+    #shopify-section-{{ id }} .ak-heading-text__attr {
+      font-size: {{ ht_attr_m }}px;
     }
   }
 {% endstyle %}
 
 <section
-  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-two-up-text-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
+  class="section is-width-{{ section.settings.width | default: 'wide' }} ak-campaign-heading-text-section {% if section.settings.show_gutter == false %}has-no-side-gutter has-background{% else %}has-gutter-enabled{% endif %}"
   id="shopify-section-{{ id }}"
   role="region"
   {% if heading != blank %}
-    aria-labelledby="ak-two-up-heading-{{ id }}"
+    aria-labelledby="ak-heading-text-heading-{{ id }}"
   {% elsif section.settings.section_aria_label != blank %}
     aria-label="{{ section.settings.section_aria_label | escape }}"
   {% else %}
-    aria-label="Campaign images and story"
+    aria-label="Campaign heading"
   {% endif %}
 >
   <div class="container equal-columns--outside-trim">
-    <div class="ak-two-up__grid columns one-whole">
-      <div class="ak-two-up__images ak-two-up__images--{{ image_layout }}">
-        {% if image_layout == 'pair' %}
-          <div class="ak-two-up__cell">
-            {% if lnk1 != blank %}
-              <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
-            {% endif %}
-            {% if has_img1 %}
-              {% include 'image-element', image: img1, alt: alt1, stretch_width: true %}
-            {% else %}
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-            {% if lnk1 != blank %}
-              </a>
-            {% endif %}
-          </div>
-          <div class="ak-two-up__cell">
-            {% if lnk2 != blank %}
-              <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
-            {% endif %}
-            {% if has_img2 %}
-              {% include 'image-element', image: img2, alt: alt2, stretch_width: true %}
-            {% else %}
-              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-            {% if lnk2 != blank %}
-              </a>
-            {% endif %}
-          </div>
-        {% elsif image_layout == 'single' and has_img1 %}
-          <div class="ak-two-up__cell">
-            {% if lnk1 != blank %}
-              <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
-            {% endif %}
-            {% include 'image-element', image: img1, alt: alt1, stretch_width: true %}
-            {% if lnk1 != blank %}
-              </a>
-            {% endif %}
-          </div>
-        {% elsif image_layout == 'single' and has_img2 %}
-          <div class="ak-two-up__cell">
-            {% if lnk2 != blank %}
-              <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
-            {% endif %}
-            {% include 'image-element', image: img2, alt: alt2, stretch_width: true %}
-            {% if lnk2 != blank %}
-              </a>
-            {% endif %}
-          </div>
-        {% else %}
-          <div class="ak-two-up__cell">
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-          </div>
-        {% endif %}
-      </div>
-
-      {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank or body_rt != blank or attr != blank %}
-        <div class="ak-two-up__text">
-          {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}
-            <div class="ak-two-up__caption-row">
-              {% if eyebrow_left != blank %}
-                <p class="ak-two-up__eyebrow ak-two-up__eyebrow--left">{{ eyebrow_left | escape }}</p>
-              {% else %}
-                <span class="ak-two-up__eyebrow ak-two-up__eyebrow--left" aria-hidden="true"></span>
-              {% endif %}
-              {% if heading != blank %}
-                {% if hl == 'h1' %}
-                  <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h1>
-                {% elsif hl == 'h3' %}
-                  <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h3>
-                {% else %}
-                  <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h2>
-                {% endif %}
-              {% else %}
-                <span class="ak-two-up__heading" aria-hidden="true"></span>
-              {% endif %}
-              {% if eyebrow_right != blank %}
-                <p class="ak-two-up__eyebrow ak-two-up__eyebrow--right">{{ eyebrow_right | escape }}</p>
-              {% else %}
-                <span class="ak-two-up__eyebrow ak-two-up__eyebrow--right" aria-hidden="true"></span>
-              {% endif %}
-            </div>
+    <div class="ak-heading-text">
+      {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}
+        <div class="ak-heading-text__caption-row">
+          {% if eyebrow_left != blank %}
+            <p class="ak-heading-text__eyebrow ak-heading-text__eyebrow--left">{{ eyebrow_left | escape }}</p>
+          {% else %}
+            <span class="ak-heading-text__eyebrow ak-heading-text__eyebrow--left" aria-hidden="true"></span>
           {% endif %}
-          {% if body_rt != blank or attr != blank %}
-            <div class="ak-two-up__body-wrap">
-              {% if body_rt != blank %}
-                <div class="ak-two-up__rte rte">{{ body_rt }}</div>
-              {% endif %}
-              {% if attr != blank %}
-                <footer class="ak-two-up__attr">— {{ attr | escape }}</footer>
-              {% endif %}
-            </div>
+          {% if heading != blank %}
+            {% if hl == 'h1' %}
+              <h1 class="ak-heading-text__heading" id="ak-heading-text-heading-{{ id }}">{{ heading | escape }}</h1>
+            {% elsif hl == 'h3' %}
+              <h3 class="ak-heading-text__heading" id="ak-heading-text-heading-{{ id }}">{{ heading | escape }}</h3>
+            {% else %}
+              <h2 class="ak-heading-text__heading" id="ak-heading-text-heading-{{ id }}">{{ heading | escape }}</h2>
+            {% endif %}
+          {% else %}
+            <span class="ak-heading-text__heading" aria-hidden="true"></span>
+          {% endif %}
+          {% if eyebrow_right != blank %}
+            <p class="ak-heading-text__eyebrow ak-heading-text__eyebrow--right">{{ eyebrow_right | escape }}</p>
+          {% else %}
+            <span class="ak-heading-text__eyebrow ak-heading-text__eyebrow--right" aria-hidden="true"></span>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if body_rt != blank or attr != blank %}
+        <div class="ak-heading-text__body-wrap">
+          {% if body_rt != blank %}
+            <div class="ak-heading-text__rte rte">{{ body_rt }}</div>
+          {% endif %}
+          {% if attr != blank %}
+            <footer class="ak-heading-text__attr">— {{ attr | escape }}</footer>
           {% endif %}
         </div>
       {% endif %}
@@ -535,149 +311,12 @@
 
 {% schema %}
 {
-  "name": "AK Campaign two-up + text",
-  "class": "ak-campaign-two-up-text-section",
-  "tag": "section",
+  "name": "AK Campaign heading text",
+  "class": "shopify-section--ak-campaign-heading-text",
   "settings": [
     {
       "type": "paragraph",
-      "content": "One or two images. Leave Image 2 blank for a single centered image. With both images: side by side on desktop, stacked on mobile. Caption row: left eyebrow | centered heading | right eyebrow (mobile stacks heading → left → right)."
-    },
-    {
-      "type": "header",
-      "content": "Images"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_1",
-      "label": "Image 1 (left / top)"
-    },
-    {
-      "type": "text",
-      "id": "image_1_alt",
-      "label": "Image 1 alt text",
-      "info": "Required for accessibility if image 1 is set."
-    },
-    {
-      "type": "url",
-      "id": "image_1_link",
-      "label": "Image 1 link (optional)"
-    },
-    {
-      "type": "checkbox",
-      "id": "image_1_new_tab",
-      "label": "Image 1 link opens new tab",
-      "default": false
-    },
-    {
-      "type": "image_picker",
-      "id": "image_2",
-      "label": "Image 2 (right / bottom)"
-    },
-    {
-      "type": "text",
-      "id": "image_2_alt",
-      "label": "Image 2 alt text"
-    },
-    {
-      "type": "url",
-      "id": "image_2_link",
-      "label": "Image 2 link (optional)"
-    },
-    {
-      "type": "checkbox",
-      "id": "image_2_new_tab",
-      "label": "Image 2 link opens new tab",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "single_image_max_width",
-      "label": "Single image width (desktop)",
-      "min": 30,
-      "max": 100,
-      "step": 5,
-      "default": 50,
-      "unit": "%",
-      "info": "Used when only one image is set. Image is centered."
-    },
-    {
-      "type": "range",
-      "id": "image_gap_desktop",
-      "label": "Gap between images (desktop)",
-      "min": 0,
-      "max": 48,
-      "step": 2,
-      "default": 12,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "image_gap_mobile",
-      "label": "Gap between images (mobile)",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "default": 8,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "image_min_height_desktop",
-      "label": "Min height per image (desktop)",
-      "min": 200,
-      "max": 900,
-      "step": 20,
-      "default": 480,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "image_min_height_mobile",
-      "label": "Min height per image (mobile)",
-      "min": 160,
-      "max": 600,
-      "step": 20,
-      "default": 280,
-      "unit": "px"
-    },
-    {
-      "type": "select",
-      "id": "image_object_fit",
-      "label": "Image fit",
-      "default": "cover",
-      "options": [
-        { "value": "cover", "label": "Cover" },
-        { "value": "contain", "label": "Contain" },
-        { "value": "fill", "label": "Fill (stretch)" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "image_object_position",
-      "label": "Image focal point",
-      "default": "center",
-      "options": [
-        { "value": "center", "label": "Center" },
-        { "value": "top", "label": "Top" },
-        { "value": "bottom", "label": "Bottom" },
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "color",
-      "id": "image_placeholder_bg",
-      "label": "Placeholder background",
-      "default": "#e8e8e8"
-    },
-    {
-      "type": "header",
-      "content": "Text block"
-    },
-    {
-      "type": "paragraph",
-      "content": "Desktop: centered heading, then left + right eyebrows. Mobile stacks heading → left → right."
+      "content": "Desktop: left eyebrow | centered heading | right eyebrow (baseline-aligned). Mobile stacks heading → left → right."
     },
     {
       "type": "text",
@@ -794,27 +433,6 @@
     },
     {
       "type": "range",
-      "id": "text_block_margin_top",
-      "label": "Space above text block (desktop)",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "default": 32,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "text_block_margin_top_mobile",
-      "label": "Space above text block (mobile)",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "default": 0,
-      "unit": "px",
-      "info": "0 = same as desktop."
-    },
-    {
-      "type": "range",
       "id": "content_max_width",
       "label": "Body max width (desktop)",
       "min": 28,
@@ -838,7 +456,7 @@
     {
       "type": "range",
       "id": "content_padding_x",
-      "label": "Text horizontal padding (desktop)",
+      "label": "Horizontal padding (desktop)",
       "min": 0,
       "max": 48,
       "step": 2,
@@ -848,13 +466,13 @@
     {
       "type": "range",
       "id": "content_padding_x_mobile",
-      "label": "Text horizontal padding (mobile)",
+      "label": "Horizontal padding (mobile)",
       "min": 0,
       "max": 48,
       "step": 2,
       "default": 10,
       "unit": "px",
-      "info": "Left and right inset for heading, eyebrows, and body at ≤798px."
+      "info": "Left and right inset at ≤798px."
     },
     {
       "type": "header",
@@ -1095,9 +713,9 @@
     {
       "type": "range",
       "id": "body_font_size",
-      "label": "Body size",
+      "label": "Body size (desktop)",
       "min": 14,
-      "max": 28,
+      "max": 32,
       "step": 1,
       "default": 20,
       "unit": "px"
@@ -1107,7 +725,7 @@
       "id": "body_font_size_mobile",
       "label": "Body size (mobile)",
       "min": 0,
-      "max": 28,
+      "max": 32,
       "step": 1,
       "default": 0,
       "unit": "px",
@@ -1286,7 +904,7 @@
   ],
   "presets": [
     {
-      "name": "AK Campaign two-up + text",
+      "name": "AK Campaign heading text",
       "category": "Custom"
     }
   ]

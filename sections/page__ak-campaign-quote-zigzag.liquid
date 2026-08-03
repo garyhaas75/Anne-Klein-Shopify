@@ -16,6 +16,15 @@
 {% assign text_bg = section.settings.text_column_bg | default: '#ffffff' %}
 {% capture quote_font_stack %}{% render 'ak-campaign-font-stack', font_key: section.settings.quote_font_family %}{% endcapture %}
 {% assign quote_font_stack = quote_font_stack | strip %}
+{% assign quote_font_key = section.settings.quote_font_family | default: 'amiri' %}
+{% comment %} Only fonts with a real italic cut we load/use — no faux italic that swaps the look. {% endcomment %}
+{% assign quote_font_has_italic = false %}
+{% if quote_font_key == 'amiri' or quote_font_key == 'georgia' or quote_font_key == 'times' %}
+  {% assign quote_font_has_italic = true %}
+{% endif %}
+{% if quote_font_key == 'amiri' %}
+  {% render 'ak-campaign-fonts' %}
+{% endif %}
 {% assign zz_row_gap = section.settings.row_gap | default: 0 %}
 {% assign zz_row_gap_m = section.settings.row_gap_mobile | default: 0 | plus: 0 %}
 {% if zz_row_gap_m < 1 %}
@@ -113,17 +122,39 @@
     padding: 0;
     border: none;
     max-width: 100%;
+    font-style: normal;
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner {
     font-family: {{ quote_font_stack }};
     font-size: clamp(1.25rem, 3.5vw, {{ zz_q }}px);
     font-weight: {{ section.settings.quote_font_weight | default: '400' }};
+    font-style: normal;
+    font-synthesis: none;
     line-height: 1.35;
     color: {{ q_color }};
     {% if section.settings.quote_underline %}text-decoration: underline; text-underline-offset: 0.12em; text-decoration-thickness: 1px;{% endif %}
   }
+  /* Italic only when a designed italic face exists for the selected family (e.g. Amiri). */
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--italic {
+    font-family: {{ quote_font_stack }};
+    font-style: italic;
+    font-synthesis: none;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--italic em,
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner--italic i {
+    font-family: inherit;
+    font-style: italic;
+    font-synthesis: none;
+  }
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner em,
+  #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner i {
+    font-family: inherit;
+    font-style: inherit;
+    font-synthesis: none;
+  }
   #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner p {
     margin: 0 0 0.5em;
+    font-family: inherit;
   }
   #shopify-section-{{ id }} .ak-quote-zigzag__quote-inner p:last-child {
     margin-bottom: 0;
@@ -249,6 +280,24 @@
                 {% assign text_left = false %}
               {% endif %}
             {% endif %}
+            {% assign quote_style = block.settings.quote_style | default: 'inherit' %}
+            {% if quote_style == 'italic' %}
+              {% assign quote_italic_want = true %}
+            {% elsif quote_style == 'roman' %}
+              {% assign quote_italic_want = false %}
+            {% else %}
+              {% if section.settings.quote_italic %}
+                {% assign quote_italic_want = true %}
+              {% else %}
+                {% assign quote_italic_want = false %}
+              {% endif %}
+            {% endif %}
+            {% comment %} Never faux-italic fonts without a loaded italic design — keeps the selected family. {% endcomment %}
+            {% if quote_italic_want and quote_font_has_italic %}
+              {% assign quote_style_class = 'ak-quote-zigzag__quote-inner--italic' %}
+            {% else %}
+              {% assign quote_style_class = '' %}
+            {% endif %}
 
             <li class="ak-quote-zigzag__item" {{ block.shopify_attributes }}>
               <div class="ak-quote-zigzag__row {% if text_left %}ak-quote-zigzag__row--text-left{% else %}ak-quote-zigzag__row--text-right{% endif %}">
@@ -257,7 +306,7 @@
                     {% if qt != blank or at != blank %}
                       <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
                         {% if qt != blank %}
-                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                          <div class="ak-quote-zigzag__quote-inner rte {{ quote_style_class }}">{{ qt }}</div>
                         {% endif %}
                         {% if at != blank %}
                           <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
@@ -304,7 +353,7 @@
                     {% if qt != blank or at != blank %}
                       <blockquote class="ak-quote-zigzag__blockquote" id="ak-zigzag-q-{{ block.id }}">
                         {% if qt != blank %}
-                          <div class="ak-quote-zigzag__quote-inner rte">{{ qt }}</div>
+                          <div class="ak-quote-zigzag__quote-inner rte {{ quote_style_class }}">{{ qt }}</div>
                         {% endif %}
                         {% if at != blank %}
                           <footer class="ak-quote-zigzag__attr">— {{ at }}</footer>
@@ -458,6 +507,13 @@
       "label": "Underline quote text",
       "default": false,
       "info": "Off = no line under the quote. Turn on for an editorial underline."
+    },
+    {
+      "type": "checkbox",
+      "id": "quote_italic",
+      "label": "Italic quotes (section default)",
+      "default": true,
+      "info": "Only applies when Quote font has a real italic (Amiri, Georgia, Times). Helvetica/Arial stay the same upright face — no fake italic."
     },
     {
       "type": "select",
@@ -661,7 +717,20 @@
           "type": "richtext",
           "id": "quote",
           "label": "Quote",
-          "default": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>"
+          "default": "<p>Since becoming a mom, there's a whole different world that I didn't even know, but I feel like women, just get each other.</p>",
+          "info": "Use plain text. Prefer Quote style + Quote font (Amiri) for italics — avoid the I toolbar."
+        },
+        {
+          "type": "select",
+          "id": "quote_style",
+          "label": "Quote style",
+          "default": "inherit",
+          "info": "Italic only changes Amiri/Georgia/Times. Other fonts keep the selected upright face.",
+          "options": [
+            { "value": "inherit", "label": "Use section default" },
+            { "value": "italic", "label": "Italic (if font supports)" },
+            { "value": "roman", "label": "Upright (not italic)" }
+          ]
         },
         {
           "type": "text",

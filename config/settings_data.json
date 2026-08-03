@@ -901,7 +901,7 @@
           "logo": "shopify://shop_images/AnneKlein_Logo_Black_2x_f43c8da8-4924-4d51-8488-3546aa98c3bb.png",
           "logo_width": 200,
           "logo_position": "above",
-          "main_linklist": "anne-klein-no-egluck",
+          "main_linklist": "anne-klein-no-apple-accessories",
           "menu_spacing": "default",
           "enable_overlay": false,
           "show_text_shadow": false,
@@ -930,15 +930,6 @@
               "menu_1_bottom_link": "shopify://collections/accessories"
             }
           },
-          "1589295727958": {
-            "type": "menu",
-            "settings": {
-              "menu_1": "apple-accessories",
-              "menu_1_link": "shopify://collections/apple-accessories",
-              "menu_1_bottom_text": "View All Apple Accessories",
-              "menu_1_bottom_link": "shopify://collections/apple-accessories"
-            }
-          },
           "f8c92836-a380-404c-a5f5-7857966c8789": {
             "type": "menu",
             "settings": {
@@ -948,14 +939,24 @@
               "menu_1_bottom_link": ""
             }
           },
+          "1589295727958": {
+            "type": "menu",
+            "disabled": true,
+            "settings": {
+              "menu_1": "apple-accessories",
+              "menu_1_link": "shopify://collections/apple-accessories",
+              "menu_1_bottom_text": "View All Apple Accessories",
+              "menu_1_bottom_link": "shopify://collections/apple-accessories"
+            }
+          },
           "d7512328-7356-4f02-b277-96f4c3356157": {
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/MM_68.jpg",
+              "image_top": "shopify://shop_images/jewelry_600x800_5f9b2e99-ca53-4c0a-b5b5-029b69834f87.jpg",
               "image_top_mobile-hidden": true,
-              "image_link_top": "shopify://collections/apple-watch-accessories",
-              "image_caption_top": "<p>Apple Watch® Accessories</p>",
+              "image_link_top": "shopify://collections/best-seller-jewelry",
+              "image_caption_top": "<p>Jewelry Best Sellers</p>",
               "menu_1": "",
               "menu_1_link": "",
               "menu_1_bottom_text": "",
@@ -1007,8 +1008,8 @@
         },
         "block_order": [
           "menu_ffyxrD",
-          "1589295727958",
           "f8c92836-a380-404c-a5f5-7857966c8789",
+          "1589295727958",
           "d7512328-7356-4f02-b277-96f4c3356157",
           "f1197c42-07ee-452c-b1ff-bb5858de7789"
         ],
@@ -1091,7 +1092,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Campaign_Lookbook.jpg",
+              "image_top": "shopify://shop_images/resized_zoom_outfit_600x800_c1d69d7f-8d2c-407a-8f22-7877c846808a.png",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://pages/spring-summer-2026-campaign",
               "image_caption_top": "<p><a href=\"https://anneklein.com/pages/spring-summer-campaign-2025\" title=\"https://anneklein.com/pages/spring-summer-campaign-2025\">Campaign Lookbook</a></p>",
@@ -1150,6 +1151,7 @@
         "blocks": {
           "8bc25cc8-ef6a-41db-a1bc-779acb2abbe7": {
             "type": "menu",
+            "disabled": true,
             "settings": {
               "menu_1": "insiders-club",
               "menu_1_link": "shopify://pages/loyalty-rewards",
@@ -1168,10 +1170,12 @@
           },
           "96a9fb1c-43bf-408c-9d53-18f8897e966c": {
             "type": "empty_column",
+            "disabled": true,
             "settings": {}
           },
           "62b8e0a2-f395-4a0d-8042-aa62ac07ba8b": {
             "type": "mixed",
+            "disabled": true,
             "settings": {
               "richtext_top": "",
               "image_top": "shopify://shop_images/AK_Insider_s_Club.jpg",
@@ -1206,7 +1210,7 @@
           "62b8e0a2-f395-4a0d-8042-aa62ac07ba8b"
         ],
         "settings": {
-          "parent_link": "Insider's Club",
+          "parent_link": "About",
           "enable_mega_menu_border": false,
           "mega_menu_background_color": "#ffffff",
           "mega_menu_text_color": "#000000",
@@ -1312,7 +1316,12 @@
           "animation": "none",
           "sunglasses": "shopify://shop_images/AK_Eyewear_Fit_Chart.jpg",
           "css_class": "",
-          "custom_css": ""
+          "custom_css": "",
+          "api_base": "https://api.flockshop.ai",
+          "tenant_id": "226",
+          "widget_base_url": "https://d11wn5htdjg0tc.cloudfront.net/widget",
+          "margin_top": 16,
+          "margin_bottom": 16
         }
       },
       "product__recommendations": {
@@ -1575,6 +1584,7 @@
       "page__main": {
         "type": "page__main",
         "settings": {
+          "hide_page_heading": true,
           "width": "standard",
           "padding_top": 40,
           "padding_bottom": 40,
@@ -3261,7 +3271,7 @@
               "richtext_top": "",
               "image_top": "shopify://shop_images/New_Handbags.jpg",
               "image_top_mobile-hidden": true,
-              "image_link_top": "shopify://collections/handbags-1",
+              "image_link_top": "shopify://collections/new-handbags",
               "image_caption_top": "<p>What's New</p>",
               "menu_1": "",
               "menu_1_link": "",
@@ -3443,7 +3453,12 @@
           "animation": "none",
           "sunglasses": "shopify://shop_images/AK_Eyewear_Fit_Chart.jpg",
           "css_class": "",
-          "custom_css": ""
+          "custom_css": "",
+          "api_base": "https://api.flockshop.ai",
+          "tenant_id": "226",
+          "widget_base_url": "https://d11wn5htdjg0tc.cloudfront.net/widget",
+          "margin_top": 16,
+          "margin_bottom": 16
         }
       },
       "product__multi_color_multi_option_main": {
@@ -3492,7 +3507,12 @@
           "animation": "none",
           "sunglasses": "shopify://shop_images/AK_Eyewear_Fit_Chart.jpg",
           "css_class": "",
-          "custom_css": ""
+          "custom_css": "",
+          "api_base": "https://api.flockshop.ai",
+          "tenant_id": "226",
+          "widget_base_url": "https://d11wn5htdjg0tc.cloudfront.net/widget",
+          "margin_top": 16,
+          "margin_bottom": 16
         }
       },
       "page-watches__header": {
@@ -5940,7 +5960,6 @@
           },
           "pill_dQhzEA": {
             "type": "pill",
-            "disabled": true,
             "settings": {
               "label": "Watches",
               "link": "shopify://collections/watches-1"
@@ -5965,7 +5984,7 @@
         "settings": {
           "heading": "New for the Season",
           "heading_color": "#000000",
-          "heading_font_size": 30,
+          "heading_font_size": 20,
           "heading_font_size_mobile": 0,
           "heading_font_weight": "400",
           "layout_mode": "inline",
@@ -5974,16 +5993,16 @@
           "background_color": "#ffffff",
           "pill_background_color": "#000000",
           "pill_text_color": "#ffffff",
-          "font_family": "amiri",
+          "font_family": "helvetica",
           "font_heading": "",
           "font_pills": "helvetica",
           "pill_font_weight": "400",
-          "pill_font_size": 18,
+          "pill_font_size": 14,
           "pill_font_size_mobile": 0,
           "pill_letter_spacing": 2,
           "pill_padding_vertical": 12,
-          "pill_padding_horizontal": 28,
-          "pill_spacing": 18,
+          "pill_padding_horizontal": 32,
+          "pill_spacing": 6,
           "pill_padding_vertical_mobile": 10,
           "pill_padding_horizontal_mobile": 40,
           "pill_spacing_mobile": 8,
@@ -6002,9 +6021,9 @@
             "type": "panel",
             "settings": {
               "media_type": "video",
-              "video": "shopify://files/videos/AK_SS26_13_16x9_NO LOGO_Low Res.mp4",
-              "heading": "Dress with Intention",
-              "cta_text": "SHOP DRESSES",
+              "video": "shopify://files/videos/DIRECTING THE CREW_02.mp4",
+              "heading": "Behind the Lens",
+              "cta_text": "SHOP ACCESSORIES",
               "link": "shopify://collections/dresses"
             }
           },
@@ -6012,51 +6031,51 @@
             "type": "panel",
             "settings": {
               "media_type": "image",
-              "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_01_0032.png",
-              "heading": "Business Leisure",
-              "cta_text": "SHOP WORKWEAR",
+              "image": "shopify://shop_images/104613_EBE_AnneKlein_009_15_1_1.png",
+              "heading": "Gold Standard",
+              "cta_text": "SHOP JEWELRY",
               "link": "shopify://collections/workwear"
-            }
-          },
-          "panel_RWrxm7": {
-            "type": "panel",
-            "settings": {
-              "media_type": "image",
-              "image": "shopify://shop_images/cb48eab5448188900bfe091a063bf7b604c0f0f7.jpg",
-              "heading": "Finishing Touches",
-              "cta_text": "SHOP ACCESSORIES",
-              "link": "shopify://collections/accessories"
             }
           },
           "panel_8gJmX4": {
             "type": "panel",
             "settings": {
               "media_type": "video",
-              "video": "shopify://files/videos/AK_SS26_12_16x9_NO LOGO.mp4",
-              "heading": "Vacation Mindset",
-              "cta_text": "SHOP RESORT",
+              "video": "shopify://files/videos/DOLLY.mp4",
+              "heading": "That's a Wrap",
+              "cta_text": "SHOP CLOTHING",
               "link": "shopify://collections/new"
+            }
+          },
+          "panel_RWrxm7": {
+            "type": "panel",
+            "settings": {
+              "media_type": "video",
+              "image": "shopify://shop_images/AK_FW_26_EDITTED_0103_1.png",
+              "heading": "On the Prowl",
+              "cta_text": "SHOP SHOES",
+              "link": "shopify://collections/accessories"
             }
           }
         },
         "block_order": [
           "panel_8jABLa",
           "panel_3PGkkV",
-          "panel_RWrxm7",
-          "panel_8gJmX4"
+          "panel_8gJmX4",
+          "panel_RWrxm7"
         ],
         "name": "AK Lifestyle Quad",
         "settings": {
           "text_color": "#ffffff",
-          "font_family": "amiri",
+          "font_family": "helvetica",
           "font_heading": "",
           "font_cta": "helvetica",
-          "heading_font_size": 42,
+          "heading_font_size": 28,
           "heading_font_size_mobile": 42,
           "heading_font_weight": "400",
-          "cta_font_size": 14,
+          "cta_font_size": 12,
           "cta_font_size_mobile": 0,
-          "cta_font_weight": "400",
+          "cta_font_weight": "700",
           "container_width": "full",
           "aspect_ratio_mode": "8_9",
           "max_height_desktop": 0,
@@ -6080,7 +6099,7 @@
           "tile_EGk7by": {
             "type": "tile",
             "settings": {
-              "image": "shopify://shop_images/f22820a8318c1ea73ef15bb774aaca2273a0fe6a.jpg",
+              "image": "shopify://shop_images/hf_20260722_183054_c2f690a5-d819-4cc3-9b9b-f52baef84ea6_1.png",
               "image_alt": "",
               "label": "Clothing",
               "link": "shopify://collections/clothing"
@@ -6099,7 +6118,7 @@
           "tile_RE4KaW": {
             "type": "tile",
             "settings": {
-              "image": "shopify://shop_images/ME_283_ANNE_KLEIN_SS26_V2_SHOT_17_2103_crop_6.png",
+              "image": "shopify://shop_images/hf_20260722_170615_7f733da3-5f64-4339-9b63-11625e679f41_1.png",
               "image_alt": "",
               "label": "Jewelry",
               "link": "shopify://collections/jewelry"
@@ -6108,16 +6127,16 @@
           "tile_7NN4Hz": {
             "type": "tile",
             "settings": {
-              "image": "shopify://shop_images/3fbbfb7702416112d6d1dd15b952d48aae6fa690.jpg",
+              "image": "shopify://shop_images/hf_20260722_164200_ace9e74f-5044-4cf5-8c4f-63102abb422c_1.png",
               "image_alt": "",
               "label": "Handbags",
-              "link": "shopify://collections/handbags-1"
+              "link": "shopify://collections/handbags-wallets"
             }
           },
           "tile_9qUTDp": {
             "type": "tile",
             "settings": {
-              "image": "shopify://shop_images/44ed6fe5d0b7007fc4bdc500a46e21d4cb80f41a.jpg",
+              "image": "shopify://shop_images/hf_20260722_173147_907420fe-2b13-48a3-8983-59ec2e0274ea_1.png",
               "image_alt": "",
               "label": "Opticals",
               "link": "shopify://collections/sunglasses"
@@ -6138,7 +6157,7 @@
           "heading_color": "#000000",
           "font_family": "helvetica",
           "heading_font_weight": "700",
-          "heading_font_size": 16,
+          "heading_font_size": 14,
           "heading_font_size_mobile": 0,
           "heading_letter_spacing": 0,
           "heading_alignment": "center",
@@ -6348,35 +6367,35 @@
           "label": "",
           "open_in_new_tab": false,
           "enable_shop_similar": false,
-          "image": "shopify://shop_images/053d51096fa1cc0c96af8da859ecdc6d14079961.jpg",
-          "mobile_image": "shopify://shop_images/ME_273_ANNE_KLEIN_FW25_SHOT_08_0069_3.png",
+          "image": "shopify://shop_images/Group_181_ad669b44-f446-4b52-a1df-89b7df4d344e.jpg",
+          "mobile_image": "shopify://shop_images/Group_181_724c7d24-c16b-43ce-af07-4cf3023c44d1.jpg",
           "image_alt": "",
           "max_height_desktop": 900,
-          "max_height_mobile": 620,
+          "max_height_mobile": 280,
           "overlay_container_padding_top": 25,
           "overlay_container_padding_bottom": 25,
           "overlay_container_padding_top_mobile": 25,
           "overlay_container_padding_bottom_mobile": 25,
           "pretext": "",
-          "title": "Spring Botanicals",
-          "subtitle": "<p>SHOP NOW</p>",
+          "title": "Still Life in Sequins",
+          "subtitle": "<p>SHOP DRESSES</p>",
           "pretext_color": "#ffffff",
           "pretext_underline": false,
-          "preheading_font_family": "amiri",
+          "preheading_font_family": "helvetica",
           "heading_color": "#ffffff",
-          "font_family": "amiri",
-          "heading_font_size": 42,
+          "font_family": "helvetica",
+          "heading_font_size": 28,
           "heading_font_size_mobile": 0,
-          "subheading_font_size": 14,
+          "subheading_font_size": 12,
           "subheading_font_size_mobile": 14,
           "heading_font_weight": "400",
           "heading_underline": false,
           "subheading_color": "#ffffff",
           "subheading_font_family": "helvetica",
           "preheading_font_weight": "400",
-          "subheading_font_weight": "400",
+          "subheading_font_weight": "700",
           "subheading_underline": true,
-          "text_alignment": "center",
+          "text_alignment": "left",
           "text_alignment_mobile": "center",
           "text_horizontal_position": "left",
           "text_horizontal_position_mobile": "",
@@ -6428,7 +6447,7 @@
           "section_padding_bottom": 0,
           "section_padding_top_mobile": 0,
           "section_padding_bottom_mobile": 0,
-          "font_family": "amiri",
+          "font_family": "helvetica",
           "font_overlay_line1": "",
           "font_overlay_heading": "",
           "font_overlay_cta": "helvetica",
@@ -6447,20 +6466,20 @@
           "overlay_line1_padding_bottom_mobile": 0,
           "overlay_heading_padding_bottom_mobile": 0,
           "overlay_subheading_font_size_mobile": 0,
-          "overlay_heading_font_size_mobile": 72,
+          "overlay_heading_font_size_mobile": 34,
           "overlay_cta_font_size_mobile": 0,
-          "overlay_subheading": "Spring 2026 Campaign",
+          "overlay_subheading": "",
           "overlay_subheading_font_size": 18,
           "overlay_line1_font_weight": "400",
           "overlay_subheading_underline": false,
-          "overlay_heading": "The Invisible Thread",
-          "overlay_heading_font_size": 48,
+          "overlay_heading": "BY THE HOUR",
+          "overlay_heading_font_size": 36,
           "overlay_heading_font_weight": "400",
           "overlay_heading_underline": false,
           "heading_letter_spacing": 0,
           "heading_letter_spacing_mobile": -1,
-          "overlay_cta": "DISCOVER",
-          "overlay_cta_font_size": 14,
+          "overlay_cta": "INSIDE THE CAMPAIGN",
+          "overlay_cta_font_size": 12,
           "overlay_cta_font_weight": "700",
           "overlay_cta_underline": true,
           "overlay_link": "shopify://pages/campaign-new",
@@ -6480,11 +6499,12 @@
           "video_fit": "cover",
           "video_fit_mobile": "same",
           "video_background_color": "#000000",
-          "video": "shopify://files/videos/AK_SS26_14A_16x9_NO LOGO_Low Res.mp4",
-          "video_mobile": "shopify://files/videos/AK_SS26_14A_9x16_NO LOGO_Low Res.mp4",
+          "video": "shopify://files/videos/AK26_MK_Indv_Intro_r0.2B NO TIME CARD.mp4",
+          "video_mobile": "shopify://files/videos/AK26_MK_Indv_Intro_r0.2B NO TIME CARD.mp4",
           "title": "Spring 2026 Campaign",
           "autoplay": true,
           "loop": true,
+          "enable_native_controls": false,
           "start_card_image": "shopify://shop_images/Start_Frame_Desktop.png",
           "start_card_heading": "",
           "start_card_text": "",
@@ -6502,21 +6522,22 @@
       },
       "index_sale_banner_CFgEzC": {
         "type": "index__sale-banner",
+        "disabled": true,
         "name": "Sale banner",
         "settings": {
           "section_title": "",
           "section_aria_label": "",
-          "background_image": "shopify://shop_images/AK_Sale_Banner_2_Desktop.png",
-          "background_image_mobile": "shopify://shop_images/AK_Sale_Banner_2_Mobile.png",
+          "background_image": "shopify://shop_images/option-2-desktop.png",
+          "background_image_mobile": "shopify://shop_images/option-2-mobile.png",
           "background_color": "#ffffff",
           "background_image_fit": "cover",
           "background_image_position": "center",
           "capsule_shape": "ellipse",
           "capsule_corner_radius": 20,
-          "capsule_background": "#f0ede3",
-          "capsule_border_color": "#df4d0a",
-          "text_color": "#df4d0a",
-          "headline_color": "#df4d0a",
+          "capsule_background": "#fff9f0",
+          "capsule_border_color": "#2b448e",
+          "text_color": "#2b448e",
+          "headline_color": "#2b448e",
           "capsule_max_width_percent": 88,
           "capsule_padding_top": 28,
           "capsule_padding_bottom": 28,
@@ -6549,13 +6570,13 @@
           "capsule_stack_pad_top_mobile": 0,
           "capsule_stack_pad_bottom_desktop": 0,
           "capsule_stack_pad_bottom_mobile": 0,
-          "eyebrow": "Mother’s Day Gifting Sale",
+          "eyebrow": "4th of July Sale",
           "headline_line_1": "20% Off Sitewide",
           "headline_line_2": "",
           "promo_code_prefix": "Discount applied at checkout.",
           "promo_code_value": "",
-          "cta_label": "SHOP THE SALE",
-          "cta_link": "shopify://pages/anne-klein-artist-series",
+          "cta_label": "Shop the Sale",
+          "cta_link": "shopify://collections/new",
           "cta_new_tab": false,
           "eyebrow_font_family": "amiri",
           "eyebrow_font_weight": "400",
@@ -6588,9 +6609,9 @@
           "code_line_height_mobile": 0,
           "code_letter_spacing": 0,
           "code_letter_spacing_mobile": 0,
-          "cta_font_family": "amiri",
-          "cta_font_weight": "400",
-          "cta_label_color": "#000000",
+          "cta_font_family": "helvetica",
+          "cta_font_weight": "500",
+          "cta_label_color": "#2b448e",
           "cta_size_desktop": 22,
           "cta_size_mobile": 18,
           "cta_match_eyebrow_font_size": false,
@@ -6602,20 +6623,187 @@
           "cta_letter_spacing_mobile": 0,
           "text_alignment": "center",
           "text_alignment_mobile": "inherit",
-          "section_spacing_top": 24,
-          "section_spacing_bottom": 24,
+          "section_spacing_top": 0,
+          "section_spacing_bottom": 8,
           "section_spacing_top_mobile": 0,
-          "section_spacing_bottom_mobile": 24,
+          "section_spacing_bottom_mobile": 8,
           "min_height_desktop": 400,
           "min_height_mobile": 370,
           "padding_top": 24,
           "padding_bottom": 24,
           "css_class": ""
         }
+      },
+      "page_ak_artist_series_hero_WgDKBB": {
+        "type": "page__ak-artist-series-hero",
+        "disabled": true,
+        "name": "AK Artist Series hero",
+        "settings": {
+          "image": "shopify://shop_images/AK_Artist_Series_Hero.jpg",
+          "mobile_image": "shopify://shop_images/Hero_Mobile.png",
+          "image_alt": "",
+          "image_object_position": "center",
+          "image_fill_and_crop": false,
+          "image_min_height": 480,
+          "image_min_height_mobile": 560,
+          "image_max_height": 0,
+          "image_max_height_mobile": 0,
+          "wordmark_line_1": "Anne Klein",
+          "wordmark_line_2": "Artist Series",
+          "wordmark_heading_level": "p",
+          "wordmark_max_width": 320,
+          "wordmark_max_width_mobile": 180,
+          "wordmark_offset_top": 92,
+          "wordmark_offset_left": 36,
+          "wordmark_line_1_font_family": "helvetica",
+          "wordmark_line_1_font_weight": "700",
+          "wordmark_line_1_font_size": 24,
+          "wordmark_line_1_font_size_mobile": 24,
+          "wordmark_line_1_color": "#000000",
+          "wordmark_line_1_line_height": 120,
+          "wordmark_line_1_letter_spacing": 0,
+          "wordmark_line_1_uppercase": false,
+          "wordmark_line_1_text_align": "left",
+          "wordmark_line_1_text_align_mobile": "left",
+          "wordmark_line_1_padding_top": 0,
+          "wordmark_line_1_padding_right": 0,
+          "wordmark_line_1_padding_bottom": 0,
+          "wordmark_line_1_padding_left": 0,
+          "wordmark_line_1_padding_top_mobile": 12,
+          "wordmark_line_1_padding_right_mobile": 0,
+          "wordmark_line_1_padding_bottom_mobile": 0,
+          "wordmark_line_1_padding_left_mobile": 0,
+          "wordmark_line_2_font_family": "helvetica",
+          "wordmark_line_2_font_weight": "700",
+          "wordmark_line_2_font_size": 24,
+          "wordmark_line_2_font_size_mobile": 24,
+          "wordmark_line_2_color": "#000000",
+          "wordmark_line_2_line_height": 120,
+          "wordmark_line_2_letter_spacing": 0,
+          "wordmark_line_2_uppercase": false,
+          "wordmark_line_2_text_align": "left",
+          "wordmark_line_2_text_align_mobile": "left",
+          "wordmark_line_2_padding_top": 0,
+          "wordmark_line_2_padding_right": 0,
+          "wordmark_line_2_padding_bottom": 0,
+          "wordmark_line_2_padding_left": 28,
+          "wordmark_line_2_padding_top_mobile": 0,
+          "wordmark_line_2_padding_right_mobile": 0,
+          "wordmark_line_2_padding_bottom_mobile": 0,
+          "wordmark_line_2_padding_left_mobile": 20,
+          "solid_white_bottom_band": false,
+          "bottom_scrim_strength": 0,
+          "band_color": "#ffffff",
+          "band_text_color": "#000000",
+          "band_height": 120,
+          "band_height_mobile": 140,
+          "ak_logo_alt": "Anne Klein",
+          "ak_logo_max_width": 320,
+          "ak_logo_max_width_mobile": 200,
+          "overlay_overlap": 104,
+          "overlay_overlap_mobile": 56,
+          "eyebrow": "featured artist:",
+          "eyebrow_font_family": "helvetica",
+          "eyebrow_font_weight": "700",
+          "eyebrow_font_size": 16,
+          "eyebrow_font_size_mobile": 16,
+          "eyebrow_color": "#000000",
+          "eyebrow_color_mobile": "#e1c2ac",
+          "eyebrow_line_height": 100,
+          "eyebrow_letter_spacing": 0,
+          "eyebrow_letter_spacing_mobile": 0,
+          "eyebrow_uppercase": false,
+          "eyebrow_text_align": "left",
+          "eyebrow_text_align_mobile": "left",
+          "eyebrow_padding_top": 0,
+          "eyebrow_padding_right": 0,
+          "eyebrow_padding_bottom": 0,
+          "eyebrow_padding_left": 72,
+          "eyebrow_padding_top_mobile": 0,
+          "eyebrow_padding_right_mobile": 16,
+          "eyebrow_padding_bottom_mobile": 12,
+          "eyebrow_padding_left_mobile": 16,
+          "eyebrow_vertical_nudge": 0,
+          "eyebrow_vertical_nudge_mobile": 64,
+          "artist_name": "Anjelica Roselyn",
+          "heading_level": "h2",
+          "name_color_first": "#000000",
+          "name_color_last": "#e1c2ac",
+          "name_color_first_mobile": "#e1c2ac",
+          "name_color_last_mobile": "#e1c2ac",
+          "name_font_family": "helvetica",
+          "name_font_weight": "700",
+          "name_font_size": 126,
+          "name_font_size_mobile": 80,
+          "name_line_height": 100,
+          "name_letter_spacing": 0,
+          "name_letter_spacing_mobile": 0,
+          "name_text_align": "center",
+          "name_text_align_mobile": "center",
+          "name_padding_top": 4,
+          "name_padding_right": 0,
+          "name_padding_bottom": 0,
+          "name_padding_left": 20,
+          "name_padding_top_mobile": 0,
+          "name_padding_right_mobile": 16,
+          "name_padding_bottom_mobile": 4,
+          "name_padding_left_mobile": 8,
+          "name_vertical_nudge": 20,
+          "name_vertical_nudge_mobile": 68
+        }
+      },
+      "page_ak_campaign_cta_eJEUxh": {
+        "type": "page__ak-campaign-cta",
+        "disabled": true,
+        "name": "AK Campaign CTA",
+        "settings": {
+          "heading": "",
+          "heading_use_line_2": false,
+          "heading_line_2": "",
+          "heading_separate_mobile": false,
+          "heading_mobile": "",
+          "heading_use_line_2_mobile": false,
+          "heading_line_2_mobile": "",
+          "heading_level": "h2",
+          "body": "",
+          "button_label": "Explore The Collection",
+          "button_link": "shopify://pages/anne-klein-artist-series",
+          "button_new_tab": false,
+          "button_style": "button--primary",
+          "text_alignment": "center",
+          "content_max_width": 48,
+          "content_max_width_mobile": 0,
+          "heading_max_width_desktop": 0,
+          "heading_max_width_mobile": 0,
+          "cta_spacing": 32,
+          "cta_spacing_mobile": 0,
+          "width": "wide",
+          "show_gutter": true,
+          "text_color": "#000000",
+          "background_color": "#ffffff",
+          "heading_font_family": "amiri",
+          "heading_font_size": 36,
+          "heading_font_size_mobile": 0,
+          "heading_font_weight": "700",
+          "heading_underline": false,
+          "body_font_family": "system",
+          "body_font_size": 18,
+          "body_font_size_mobile": 0,
+          "body_font_weight": "400",
+          "body_line_height": 165,
+          "body_line_height_mobile": 0,
+          "section_aria_label": "",
+          "padding_top": 0,
+          "padding_bottom": 32,
+          "padding_top_mobile": 0,
+          "padding_bottom_mobile": 20
+        }
       }
     },
     "content_for_index": [
       "index_sale_banner_CFgEzC",
+      "page_ak_artist_series_hero_WgDKBB",
+      "page_ak_campaign_cta_eJEUxh",
       "ak_video_JDTPRV",
       "index_category_pills_QCdmYD",
       "index_lifestyle_quad_P3Phpq",
@@ -6642,13 +6830,6 @@
         "type": "shopify://apps/consentmo-gdpr/blocks/gdpr_cookie_consent/4fbe573f-a377-4fea-9801-3ee0858cae41",
         "disabled": false,
         "settings": {}
-      },
-      "1530068250781986104": {
-        "type": "shopify://apps/fast-bundle/blocks/fast_bundle/9e87fbe2-9041-4c23-acf5-322413994cef",
-        "disabled": false,
-        "settings": {
-          "home": false
-        }
       },
       "12526071353035850722": {
         "type": "shopify://apps/back-in-stock-customer-alerts/blocks/app-embed/bfa6a8c4-24e2-411a-9396-e35031b33f34",
@@ -6690,14 +6871,24 @@
         "disabled": false,
         "settings": {}
       },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
       "9765019387669295980": {
         "type": "shopify://apps/flock-whp/blocks/flock-vton-global-embed/019db5f5-42b9-7f9e-b8ac-6361d86643f3",
         "disabled": false,
         "settings": {
           "api_base": "https://api.flockshop.ai",
           "tenant_id": "226",
-          "widget_base_url": "https://vton-widget.s3.us-east-1.amazonaws.com/widget"
+          "widget_base_url": "https://d11wn5htdjg0tc.cloudfront.net/widget"
         }
+      },
+      "7872257831342662540": {
+        "type": "shopify://apps/worry-free-purchase/blocks/index/c61a403d-127f-4a83-aa2d-dd891cc35fd1",
+        "disabled": true,
+        "settings": {}
       }
     }
   }

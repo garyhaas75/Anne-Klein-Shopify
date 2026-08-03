@@ -8,7 +8,7 @@ const colorMap = new Map([
   ["Grey", "#8c8c8c"],
   ["Gold", "#FFD700"],
   ["Silver", "#c1c1c1"],
-  ["Rose Gold", "#FFD395"],
+  ["Rose Gold", "#DEA193"],
   ["White", "#f6f5ee"],
   ["Red", "#cc504f"],
   ["Green", "#339859"],
@@ -162,6 +162,8 @@ window.onWizzyScriptLoaded = function () {
         mobile: 3000,
       };
 
+      data.filters.configs.layout = "v1";
+
       return data;
     }
   );
@@ -211,6 +213,14 @@ window.onWizzyScriptLoaded = function () {
         collectionSection.style.display = "none";
         collectionDescription.style.display = "none";
       }
+      return data;
+    }
+  );
+
+  window.wizzyConfig.events.registerEvent(
+    window.wizzyConfig.events.allowedEvents.BEFORE_FILTERS_EXECUTED, 
+    function(data) {
+      updateHierarchyFacets(data.filters);
       return data;
     }
   );
@@ -297,6 +307,28 @@ window.onWizzyScriptLoaded = function () {
   window.wizzyConfig.events.registerEvent(
   window.wizzyConfig.events.allowedEvents.VIEW_RENDERED,
     function (data) {
+
+      if (data.data.api === "filter" && window.wizzyConfig.common.isOnCategoryPage) {
+        const l1FacetBlock = document.querySelector(
+          '.wizzy-filters-facet-block[data-key="product_category_1_custom"]'
+        );
+
+        if (l1FacetBlock) {
+          const l1Items = l1FacetBlock.querySelectorAll(
+            ".wizzy-facet-list > .wizzy-facet-list-item"
+          );
+
+          l1Items.forEach((l1Item) => {
+            const value = l1Item
+              .querySelector(".facet-item-label-value")
+              ?.textContent?.trim();
+
+            if (value) {
+              appendHierarchy(l1Item, 1, value);
+            }
+          });
+        }
+      }
       
 
       let promotionBannerCollectionTitle = document.querySelector(".wz-promotion-banner-title-wrapper .wz-promotion-banner-collection-title");
@@ -486,4 +518,175 @@ function updateColorFacetOption(item) {
     },
   };
   return item;
+}
+
+
+
+function updateHierarchyFacets(filters) {
+  const attributes = filters.attributes || {};
+  const facets = filters.facets || {};
+
+  const isFacetsArray = Array.isArray(facets);
+
+  /**
+   * Build valid hierarchy chain.
+   * Only children of existing parents are allowed.
+   */
+  const validHierarchyKeys = new Set();
+
+  let currentLevelKeys = [];
+
+  const l1Values =
+    attributes.product_category_1_custom || [];
+
+  l1Values.forEach((value) => {
+    currentLevelKeys.push({
+      level: 2,
+      key: `level_2_${cleanHierarchyKey(value)}`
+    });
+  });
+
+  while (currentLevelKeys.length) {
+    const nextLevelKeys = [];
+
+    currentLevelKeys.forEach(({ level, key }) => {
+      validHierarchyKeys.add(key);
+
+      const values = attributes[key];
+
+      if (
+        level < 5 &&
+        Array.isArray(values) &&
+        values.length
+      ) {
+        values.forEach((value) => {
+          nextLevelKeys.push({
+            level: level + 1,
+            key: `level_${level + 1}_${cleanHierarchyKey(value)}`
+          });
+        });
+      }
+    });
+
+    currentLevelKeys = nextLevelKeys;
+  }
+
+  /**
+   * Remove invalid hierarchy attributes.
+   */
+  Object.keys(attributes).forEach((attributeKey) => {
+    if (
+      /^level_\d+_/.test(attributeKey) &&
+      !validHierarchyKeys.has(attributeKey)
+    ) {
+      delete attributes[attributeKey];
+    }
+  });
+
+  /**
+   * Remove all hierarchy facets.
+   */
+  if (isFacetsArray) {
+    for (let i = facets.length - 1; i >= 0; i--) {
+      if (/^level_\d+_/.test(facets[i].key)) {
+        facets.splice(i, 1);
+      }
+    }
+  } else {
+    Object.keys(facets).forEach((facetKey) => {
+      if (/^level_\d+_/.test(facetKey)) {
+        delete facets[facetKey];
+      }
+    });
+  }
+
+  let nextFacetOrder = isFacetsArray
+    ? facets.length + 1
+    : Object.keys(facets).length + 1;
+
+  /**
+   * Rebuild only valid hierarchy facets.
+   */
+  validHierarchyKeys.forEach((facetKey) => {
+    const match = facetKey.match(/^level_(\d+)_/);
+
+    if (!match) {
+      return;
+    }
+
+    const level = parseInt(match[1], 10);
+
+    if (isFacetsArray) {
+      facets.push({
+        label: `Product Type - L${level}`,
+        key: facetKey,
+        position: "left",
+        order: nextFacetOrder++,
+      });
+    } else {
+      facets[facetKey] = {
+        label: `Product Type - L${level}`,
+        key: facetKey,
+        position: "left",
+        order: nextFacetOrder++,
+      };
+    }
+  });
+}
+
+
+function getHierarchyFacetKey(level, value) {
+  const slugValue = value
+    .replace(/-/g, "_")
+    .replace(/ /g, "_");
+
+  return `level_${level}_${slugValue}`;
+}
+
+function appendHierarchy(parentLi, currentLevel, value) {
+  const nextLevel = currentLevel + 1;
+
+  if (nextLevel > 5) {
+    return;
+  }
+
+  const facetKey = getHierarchyFacetKey(nextLevel, value);
+
+  const facetBlock = document.querySelector(
+    `.facet-block-${CSS.escape(facetKey)}`
+  );
+
+  if (!facetBlock) {
+    return;
+  }
+
+  parentLi.classList.add("has-hierarchy-filter-wizzy");
+
+  const hierarchyWrapper = document.createElement("div");
+  hierarchyWrapper.className = "hierarchy-filter-wizzy-wrapper";
+
+  facetBlock.classList.add("hierarchy-filter-wizzy");
+
+  hierarchyWrapper.appendChild(facetBlock);
+  parentLi.appendChild(hierarchyWrapper);
+
+  const childItems = facetBlock.querySelectorAll(
+    ".wizzy-facet-list > .wizzy-facet-list-item"
+  );
+
+  childItems.forEach((childLi) => {
+    const childValue = childLi
+      .querySelector(".facet-item-label-value")
+      ?.textContent?.trim();
+
+    if (childValue) {
+      appendHierarchy(childLi, nextLevel, childValue);
+    }
+  });
+}
+
+function cleanHierarchyKey(value) {
+  return value
+    .replace(/-/g, "_")
+    .replace(/ /g, "_");
 }

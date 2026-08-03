@@ -335,8 +335,8 @@
         "header_max_width": 48,
         "header_max_width_mobile": 0,
         "header_background": "#ffffff",
-        "heading_color": "#000000",
-        "body_color": "#000000",
+        "heading_color": "#ffffff",
+        "body_color": "#ffffff",
         "heading_font_family": "amiri",
         "heading_font_size": 36,
         "heading_font_size_mobile": 0,
@@ -359,8 +359,7 @@
         "image_object_position": "center",
         "crop_min_height_desktop": 460,
         "crop_min_height_mobile": 400,
-        "letterbox_transparent": true,
-        "letterbox_color": "#1a1a1a",
+        "letterbox_color": "#ffffff",
         "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
@@ -374,9 +373,9 @@
         "product_qW4cAY": {
           "type": "product",
           "settings": {
-            "product": "bonded-satchel-with-floral-charm-pearl-white-knockout-floral-candy-pink-w-primrose-pink",
-            "override_image": "shopify://shop_images/Section_6_Frame_1_Desktop_ca707246-0528-40f4-b7d1-6476a26c86aa.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_1_Mobile_14ecb0e1-a756-4245-ad32-8d8abb3901cb.png",
+            "product": "butterfly-dial-leather-strap-watch-3",
+            "override_image": "shopify://shop_images/Desktop_1.jpg",
+            "override_image_mobile": "shopify://shop_images/Mobile_1.jpg",
             "image_alt": "Anne Klein mini structured satchel in cream leather with a pink floral charm and gold-tone hardware",
             "tile_title": "",
             "tile_link": ""
@@ -385,10 +384,10 @@
         "product_rY4QXJ": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_2_Desktop_f1862254-f4d7-4d35-abd0-2f72778bee85.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_2_Mobile_914fae46-7b8d-4522-a76a-69f2845f94bd.png",
-            "image_alt": "Product Coming Soon. Anne Klein double butterfly brooch pin in gunmetal with amber crystal embellishment and red enamel wings",
+            "product": "butterfly-dial-leather-strap-watch",
+            "override_image": "shopify://shop_images/Frame_2.png",
+            "override_image_mobile": "shopify://shop_images/Frame_14.jpg",
+            "image_alt": "Playful artistry meets polished sophistication in this standout bracelet watch. Featuring an expressive nature-inspired dial, it adds a chic and modern touch to any jewelry collection.",
             "tile_title": "",
             "tile_link": ""
           }
@@ -396,9 +395,9 @@
         "product_4W6qXk": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_3_Desktop.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_3_Mobile_e3492c42-5194-419f-b7ee-6098d99929cc.png",
+            "product": "br-butterfly-motif-cuff-gld-lt-hem-multi-cry-gold-tone",
+            "override_image": "shopify://shop_images/Desktop_3.jpg",
+            "override_image_mobile": "shopify://shop_images/Mobile_3.jpg",
             "image_alt": "Product Coming Soon. Anne Klein open-cuff bangle bracelet in gold tone featuring two butterfly charms in blue and pink enamel",
             "tile_title": "",
             "tile_link": ""
@@ -407,9 +406,9 @@
         "product_PXw7KB": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_4_Desktop_e8dbc10d-f335-4899-bb19-db0468b24907.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_9_Mobile_923f79a1-284d-4742-b8e9-c138d4a8f889.png",
+            "product": "butterfly-motif-chndlr-earring",
+            "override_image": "shopify://shop_images/Desktop_4.jpg",
+            "override_image_mobile": "shopify://shop_images/Mobile_4.jpg",
             "image_alt": "Product Coming Soon. Anne Klein mini structured satchel in pink with an illustrated butterfly and floral print, gold-tone hardware",
             "tile_title": "",
             "tile_link": ""
@@ -418,9 +417,9 @@
         "product_A4fCkQ": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_5_Desktop.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_10_Mobile.png",
+            "product": "large-drama-butterfly-motif-earring",
+            "override_image": "shopify://shop_images/Large_Drama_Butterfuly_Motif_Earring_Desktop.jpg",
+            "override_image_mobile": "shopify://shop_images/Large_Drama_Butterfuly_Motif_Earring_Mobile.jpg",
             "image_alt": "Product Coming Soon. Anne Klein butterfly stud earrings in gunmetal with amber crystal detail and red enamel wings",
             "tile_title": "",
             "tile_link": ""
@@ -451,10 +450,10 @@
         "product_DDXbPx": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_8_Desktop_dc26cff3-38f5-4ae3-a675-0c16262d44b1.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_8_Mobile.png",
-            "image_alt": "Product Coming Soon. Anne Klein toggle bracelet with terracotta and grey rectangular stone links and butterfly charms in rose gold tone",
+            "product": "butterfly-dial-leather-strap-watch-4",
+            "override_image": "shopify://shop_images/Frame_8.png",
+            "override_image_mobile": "shopify://shop_images/Frame_20.jpg",
+            "image_alt": "This petite watch draws its character from a butterfly motif on the dial, giving it a decorative quality that feels more like jewelry than a standard timepiece. The compact 16mm case sits delicately on the wrist, scaled for women who prefer their accessories fine and understated rather than oversized. A smooth leather strap in a classic buckle closure keeps the fit secure and adjustable, while the mineral crystal lens protects the dial from everyday scratches and scuffs. The proportions here are deliberately small, making this a watch that layers well alongside bracelets without competing for attention. Water resistant to 100 feet, it holds up to real life, not just careful occasions.",
             "tile_title": "",
             "tile_link": ""
           }
@@ -462,10 +461,10 @@
         "product_MUQ6V3": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_9_Desktop_38c80c66-3cbd-4d6b-bef4-396bbd9a5bdb.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_12_Mobile.png",
-            "image_alt": "Product Coming Soon. Anne Klein collar necklace in rose gold tone with butterfly and floral charms in red, purple, and grey enamel with pearl accents",
+            "product": "butterfly-dial-leather-strap-watch-1",
+            "override_image": "shopify://shop_images/Frame_9.png",
+            "override_image_mobile": "shopify://shop_images/Frame_24.jpg",
+            "image_alt": "Delicate and distinctive, this watch captures the beauty of nature through an artistic, feminine design. Its sleek silhouette and elegant detailing make it an easy choice for elevating any outfit.",
             "tile_title": "",
             "tile_link": ""
           }
@@ -473,9 +472,9 @@
         "product_zwkKbm": {
           "type": "product",
           "settings": {
-            "product": "",
-            "override_image": "shopify://shop_images/Section_6_Frame_10_Desktop_b0f101ef-3de8-4020-adcc-ea83468085b3.png",
-            "override_image_mobile": "shopify://shop_images/Section_6_Frame_6_Mobile_64dcd5fc-e2ef-430f-9a09-980164941e36.png",
+            "product": "butterfly-motif-drop-earring",
+            "override_image": "shopify://shop_images/Butterfly_Motif_Drop_Earring_Desktop.jpg",
+            "override_image_mobile": "shopify://shop_images/Butterfly_Motif_Drop_Earring_Mobile.jpg",
             "image_alt": "Product Coming Soon. Anne Klein drop earrings in gold tone featuring a terracotta stone with a red and grey butterfly charm and crystal pavé lever back",
             "tile_title": "",
             "tile_link": ""
@@ -564,7 +563,7 @@
         "heading_level": "h2",
         "body": "",
         "button_label": "Shop The Collection",
-        "button_link": "shopify://collections",
+        "button_link": "https://anneklein.com/collections/artist-series?srsltid=AfmBOoot6FjnODa1iXh-gInpK4c_poeda0xTPYqQhY7DPcGZGo_u88wo",
         "button_new_tab": true,
         "button_style": "button--primary",
         "text_alignment": "center",
@@ -602,21 +601,8 @@
         "still_kHrTwa": {
           "type": "still",
           "settings": {
-            "image": "shopify://shop_images/Group_123.png",
-            "mobile_image": "shopify://shop_images/Group_124.png",
-            "image_alt": "",
-            "caption": "",
-            "caption_placement": "none",
-            "link_url": "",
-            "link_new_tab": false
-          }
-        },
-        "still_Ut9Ub7": {
-          "type": "still",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/Section_7_2_Desktop_f79f41b0-db67-402c-9a13-98adab230e70.png",
-            "mobile_image": "shopify://shop_images/Group_124.png",
+            "image": "shopify://shop_images/Desktop_684db819-503c-4402-bd97-af4f24eadc2a.jpg",
+            "mobile_image": "shopify://shop_images/Mobile_6842f97e-8e19-44f6-ab36-84bf7702e870.jpg",
             "image_alt": "",
             "caption": "",
             "caption_placement": "none",
@@ -626,8 +612,7 @@
         }
       },
       "block_order": [
-        "still_kHrTwa",
-        "still_Ut9Ub7"
+        "still_kHrTwa"
       ],
       "name": "AK Campaign stills",
       "settings": {
@@ -662,8 +647,7 @@
         "image_object_position": "center",
         "crop_min_height_desktop": 480,
         "crop_min_height_mobile": 400,
-        "letterbox_transparent": true,
-        "letterbox_color": "#1a1a1a",
+        "letterbox_color": "#ffffff",
         "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
@@ -709,7 +693,7 @@
       "type": "ak-video",
       "name": "AK Video",
       "settings": {
-        "layout": "hero",
+        "layout": "feature",
         "section_padding_top": 0,
         "section_padding_bottom": 0,
         "section_padding_top_mobile": 0,
@@ -860,7 +844,7 @@
         "caption_font_size_mobile": 0,
         "caption_overlay_color": "#ffffff",
         "caption_scrim_opacity": 65,
-        "width": "wide",
+        "width": "standard",
         "show_gutter": false,
         "still_gap": 0,
         "still_gap_mobile": 0,
@@ -869,8 +853,7 @@
         "image_object_position": "center",
         "crop_min_height_desktop": 480,
         "crop_min_height_mobile": 400,
-        "letterbox_transparent": true,
-        "letterbox_color": "#1a1a1a",
+        "letterbox_color": "#ffffff",
         "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 0,
@@ -895,7 +878,7 @@
         "signature_alt": "Anne Klein signature",
         "signature_max_width": 240,
         "signature_max_width_mobile": 180,
-        "button_label": "SHOP THE COLLECTION",
+        "button_label": "",
         "button_link": "shopify://collections",
         "button_new_tab": false,
         "button_style": "button--primary",
@@ -905,7 +888,7 @@
         "image_to_quote_gap": 32,
         "quote_to_brand_gap": 20,
         "brand_to_signature_gap": -8,
-        "signature_to_button_gap": 44,
+        "signature_to_button_gap": 0,
         "quote_font_family": "helvetica",
         "quote_font_size": 32,
         "quote_font_size_mobile": 32,
@@ -913,7 +896,7 @@
         "quote_line_height": 130,
         "section_aria_label": "Shop the Artist Series collection",
         "padding_top": 0,
-        "padding_bottom": 96,
+        "padding_bottom": 32,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 40
       }

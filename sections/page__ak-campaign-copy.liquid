@@ -45,7 +45,7 @@
   {% assign max_width_m = max_width %}
 {% endif %}
 {% assign pad_x = section.settings.content_padding_x | default: 0 | plus: 0 %}
-{% assign pad_x_m = section.settings.content_padding_x_mobile | default: 24 | plus: 0 %}
+{% assign pad_x_m = section.settings.content_padding_x_mobile | default: 10 | plus: 0 %}
 
 {% capture section_aria %}
   {% if heading != blank %}
@@ -238,7 +238,7 @@
       "label": "Horizontal padding (desktop)",
       "min": 0,
       "max": 48,
-      "step": 4,
+      "step": 2,
       "default": 0,
       "unit": "px",
       "info": "Left and right inset inside the content column."
@@ -249,8 +249,8 @@
       "label": "Horizontal padding (mobile)",
       "min": 0,
       "max": 48,
-      "step": 4,
-      "default": 24,
+      "step": 2,
+      "default": 10,
       "unit": "px",
       "info": "Left and right inset at ≤798px. Helps when section gutter is off or max width fills the screen."
     },
