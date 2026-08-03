@@ -5985,7 +5985,7 @@
           "heading": "New for the Season",
           "heading_color": "#000000",
           "heading_font_size": 20,
-          "heading_font_size_mobile": 0,
+          "heading_font_size_mobile": 20,
           "heading_font_weight": "400",
           "layout_mode": "inline",
           "content_alignment": "center",
