@@ -157,9 +157,9 @@
         "heading_use_line_2": false,
         "heading_line_2": "The Film",
         "heading_separate_mobile": true,
-        "heading_mobile": "Anne Klein",
+        "heading_mobile": "",
         "heading_use_line_2_mobile": true,
-        "heading_line_2_mobile": "The Film",
+        "heading_line_2_mobile": "",
         "heading_level": "h2",
         "body": "<p>By The Hour follows Olivia Munn through the making of the Anne Klein Fall/Winter 2026 campaign. As work and life’s constant interruptions unfold together, the collection moves with Olivia revealing a wardrobe shaped by confidence, humor, and modern life.</p>",
         "button_label": "SHOP THE COLLECTION",
@@ -191,8 +191,8 @@
         "section_aria_label": "",
         "padding_top": 0,
         "padding_bottom": 48,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 12
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 32
       }
     },
     "campaign_two_up_text": {
