@@ -82,6 +82,22 @@
 {% endif %}
 {% assign lnk1 = section.settings.image_1_link %}
 {% assign lnk2 = section.settings.image_2_link %}
+{% assign has_img1 = false %}
+{% assign has_img2 = false %}
+{% if img1 != blank %}
+  {% assign has_img1 = true %}
+{% endif %}
+{% if img2 != blank %}
+  {% assign has_img2 = true %}
+{% endif %}
+{% if has_img1 and has_img2 %}
+  {% assign image_layout = 'pair' %}
+{% elsif has_img1 or has_img2 %}
+  {% assign image_layout = 'single' %}
+{% else %}
+  {% assign image_layout = 'empty' %}
+{% endif %}
+{% assign single_max_w = section.settings.single_image_max_width | default: 50 %}
 
 {% if section.settings.heading_font_family == 'amiri'
   or section.settings.eyebrow_left_font_family == 'amiri'
@@ -126,10 +142,17 @@
     gap: {{ gap_m }}px;
     width: 100%;
   }
+  #shopify-section-{{ id }} .ak-two-up__images--single {
+    align-items: center;
+  }
   @media only screen and (min-width: 799px) {
     #shopify-section-{{ id }} .ak-two-up__images {
       flex-direction: row;
       gap: {{ gap_d }}px;
+      align-items: stretch;
+    }
+    #shopify-section-{{ id }} .ak-two-up__images--single {
+      justify-content: center;
       align-items: stretch;
     }
   }
@@ -157,21 +180,40 @@
     display: block;
   }
   @media only screen and (min-width: 799px) {
-    #shopify-section-{{ id }} .ak-two-up__cell {
+    #shopify-section-{{ id }} .ak-two-up__images--pair .ak-two-up__cell {
       flex: 1 1 50%;
       max-width: 50%;
       min-height: {{ min_h_d }}px;
     }
+    #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell,
+    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
+      flex: 0 1 {{ single_max_w }}%;
+      width: {{ single_max_w }}%;
+      max-width: {{ single_max_w }}%;
+      min-height: {{ min_h_d }}px;
+    }
   }
   @media only screen and (max-width: 798px) {
-    #shopify-section-{{ id }} .ak-two-up__images {
+    #shopify-section-{{ id }} .ak-two-up__images--pair {
       width: 100vw;
       max-width: 100vw;
       margin-left: calc(-50vw + 50%);
       gap: 0;
     }
+    #shopify-section-{{ id }} .ak-two-up__images--single,
+    #shopify-section-{{ id }} .ak-two-up__images--empty {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      gap: 0;
+    }
     #shopify-section-{{ id }} .ak-two-up__cell {
       aspect-ratio: 2 / 3;
+    }
+    #shopify-section-{{ id }} .ak-two-up__images--single .ak-two-up__cell,
+    #shopify-section-{{ id }} .ak-two-up__images--empty .ak-two-up__cell {
+      width: 100%;
+      max-width: 100%;
     }
   }
   #shopify-section-{{ id }} .ak-two-up__link {
@@ -346,33 +388,59 @@
 >
   <div class="container equal-columns--outside-trim">
     <div class="ak-two-up__grid columns one-whole">
-      <div class="ak-two-up__images">
-        <div class="ak-two-up__cell">
-          {% if lnk1 != blank %}
-            <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
-          {% endif %}
-          {% if img1 != blank %}
+      <div class="ak-two-up__images ak-two-up__images--{{ image_layout }}">
+        {% if image_layout == 'pair' %}
+          <div class="ak-two-up__cell">
+            {% if lnk1 != blank %}
+              <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
+            {% endif %}
+            {% if has_img1 %}
+              {% include 'image-element', image: img1, alt: alt1, stretch_width: true %}
+            {% else %}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            {% if lnk1 != blank %}
+              </a>
+            {% endif %}
+          </div>
+          <div class="ak-two-up__cell">
+            {% if lnk2 != blank %}
+              <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
+            {% endif %}
+            {% if has_img2 %}
+              {% include 'image-element', image: img2, alt: alt2, stretch_width: true %}
+            {% else %}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            {% if lnk2 != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% elsif image_layout == 'single' and has_img1 %}
+          <div class="ak-two-up__cell">
+            {% if lnk1 != blank %}
+              <a href="{{ lnk1 }}" class="ak-two-up__link" {% if section.settings.image_1_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt1 | escape }}">
+            {% endif %}
             {% include 'image-element', image: img1, alt: alt1, stretch_width: true %}
-          {% else %}
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-          {% if lnk1 != blank %}
-            </a>
-          {% endif %}
-        </div>
-        <div class="ak-two-up__cell">
-          {% if lnk2 != blank %}
-            <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
-          {% endif %}
-          {% if img2 != blank %}
+            {% if lnk1 != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% elsif image_layout == 'single' and has_img2 %}
+          <div class="ak-two-up__cell">
+            {% if lnk2 != blank %}
+              <a href="{{ lnk2 }}" class="ak-two-up__link" {% if section.settings.image_2_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{{ alt2 | escape }}">
+            {% endif %}
             {% include 'image-element', image: img2, alt: alt2, stretch_width: true %}
-          {% else %}
+            {% if lnk2 != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="ak-two-up__cell">
             {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-          {% if lnk2 != blank %}
-            </a>
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
       </div>
 
       {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank or body_rt != blank or attr != blank %}
@@ -426,7 +494,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Two images in one row (stacked on mobile), then a bottom-aligned caption row: left eyebrow | centered heading | right eyebrow. Mobile stacks heading → left → right."
+      "content": "One or two images. Leave Image 2 blank for a single centered image. With both images: side by side on desktop, stacked on mobile. Caption row: left eyebrow | centered heading | right eyebrow (mobile stacks heading → left → right)."
     },
     {
       "type": "header",
@@ -474,6 +542,17 @@
       "id": "image_2_new_tab",
       "label": "Image 2 link opens new tab",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "single_image_max_width",
+      "label": "Single image width (desktop)",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "unit": "%",
+      "info": "Used when only one image is set. Image is centered."
     },
     {
       "type": "range",
