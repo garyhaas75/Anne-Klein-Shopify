@@ -6371,7 +6371,7 @@
           "mobile_image": "shopify://shop_images/Group_181_724c7d24-c16b-43ce-af07-4cf3023c44d1.jpg",
           "image_alt": "",
           "max_height_desktop": 900,
-          "max_height_mobile": 620,
+          "max_height_mobile": 280,
           "overlay_container_padding_top": 25,
           "overlay_container_padding_bottom": 25,
           "overlay_container_padding_top_mobile": 25,
