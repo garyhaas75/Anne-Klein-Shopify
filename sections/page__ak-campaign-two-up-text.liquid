@@ -195,7 +195,7 @@
   #shopify-section-{{ id }} .ak-two-up__caption-row {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: baseline;
     justify-content: space-between;
     gap: {{ eyebrow_gap_d }}px;
     width: 100%;
@@ -209,8 +209,10 @@
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     font-style: {% if section.settings.heading_italic %}italic{% else %}normal{% endif %};
     {% if section.settings.heading_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
-    line-height: 1.2;
+    line-height: 1;
     margin: 0;
+    padding: 0;
+    border: 0;
     color: {{ heading_color }};
     text-align: center;
   }
@@ -219,7 +221,10 @@
     min-width: 0;
     max-width: 100%;
     margin: 0;
-    line-height: 1.2;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+    line-height: 1;
   }
   #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
     font-family: {{ eyebrow_left_font_stack }};
