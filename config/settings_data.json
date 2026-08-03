@@ -5997,7 +5997,7 @@
           "font_heading": "",
           "font_pills": "helvetica",
           "pill_font_weight": "400",
-          "pill_font_size": 14,
+          "pill_font_size": 16,
           "pill_font_size_mobile": 0,
           "pill_letter_spacing": 2,
           "pill_padding_vertical": 12,
@@ -6010,8 +6010,8 @@
           "section_aria_label": "",
           "padding_top": 28,
           "padding_bottom": 28,
-          "padding_top_mobile": 16,
-          "padding_bottom_mobile": 24
+          "padding_top_mobile": 20,
+          "padding_bottom_mobile": 20
         }
       },
       "index_lifestyle_quad_P3Phpq": {
