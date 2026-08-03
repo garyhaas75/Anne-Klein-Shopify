@@ -70,6 +70,16 @@
 {% endif %}
 {% assign eyebrow_gap_d = section.settings.eyebrow_gap_desktop | default: 24 %}
 {% assign eyebrow_gap_m = section.settings.eyebrow_gap_mobile | default: 12 %}
+{% assign eyebrow_pad_l = section.settings.eyebrow_left_padding | default: 20 %}
+{% assign eyebrow_pad_l_m = section.settings.eyebrow_left_padding_mobile | default: 0 | plus: 0 %}
+{% if eyebrow_pad_l_m < 1 %}
+  {% assign eyebrow_pad_l_m = eyebrow_pad_l %}
+{% endif %}
+{% assign eyebrow_pad_r = section.settings.eyebrow_right_padding | default: 20 %}
+{% assign eyebrow_pad_r_m = section.settings.eyebrow_right_padding_mobile | default: 0 | plus: 0 %}
+{% if eyebrow_pad_r_m < 1 %}
+  {% assign eyebrow_pad_r_m = eyebrow_pad_r %}
+{% endif %}
 {% assign lnk1 = section.settings.image_1_link %}
 {% assign lnk2 = section.settings.image_2_link %}
 
@@ -182,32 +192,34 @@
     min-width: 0;
     color: {{ text_color }};
   }
+  #shopify-section-{{ id }} .ak-two-up__caption-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: {{ eyebrow_gap_d }}px;
+    width: 100%;
+    min-width: 0;
+  }
   #shopify-section-{{ id }} .ak-two-up__heading {
+    flex: 1 1 0;
+    min-width: 0;
     font-family: {{ heading_font_stack }};
     font-size: {{ two_h }}px;
     font-weight: {{ section.settings.heading_font_weight | default: '400' }};
     font-style: {% if section.settings.heading_italic %}italic{% else %}normal{% endif %};
     {% if section.settings.heading_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
-    line-height: 1.25;
-    margin: 0 0 {% if eyebrow_left != blank or eyebrow_right != blank %}0.75rem{% else %}1rem{% endif %};
+    line-height: 1.2;
+    margin: 0;
     color: {{ heading_color }};
     text-align: center;
-  }
-  #shopify-section-{{ id }} .ak-two-up__eyebrows {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: {{ eyebrow_gap_d }}px;
-    width: 100%;
-    min-width: 0;
   }
   #shopify-section-{{ id }} .ak-two-up__eyebrow {
     flex: 1 1 0;
     min-width: 0;
     max-width: 100%;
     margin: 0;
-    line-height: 1.35;
+    line-height: 1.2;
   }
   #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
     font-family: {{ eyebrow_left_font_stack }};
@@ -217,6 +229,8 @@
     {% if section.settings.eyebrow_left_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
     color: {{ eyebrow_left_color }};
     text-align: left;
+    padding-left: {{ eyebrow_pad_l }}px;
+    padding-right: 0;
   }
   #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
     font-family: {{ eyebrow_right_font_stack }};
@@ -226,6 +240,8 @@
     {% if section.settings.eyebrow_right_uppercase %}text-transform: uppercase; letter-spacing: 0.08em;{% else %}text-transform: none;{% endif %}
     color: {{ eyebrow_right_color }};
     text-align: right;
+    padding-right: {{ eyebrow_pad_r }}px;
+    padding-left: 0;
   }
   #shopify-section-{{ id }} .ak-two-up__body-wrap {
     margin-top: {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}1rem{% else %}0{% endif %};
@@ -267,27 +283,36 @@
     #shopify-section-{{ id }} .ak-two-up__text {
       margin-top: {{ two_txt_mt_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__heading {
-      font-size: {{ two_h_m }}px;
-      margin-bottom: {% if eyebrow_left != blank or eyebrow_right != blank %}0.75rem{% else %}1rem{% endif %};
-    }
-    #shopify-section-{{ id }} .ak-two-up__eyebrows {
+    #shopify-section-{{ id }} .ak-two-up__caption-row {
       flex-direction: column;
       align-items: stretch;
       gap: {{ eyebrow_gap_m }}px;
     }
-    #shopify-section-{{ id }} .ak-two-up__eyebrow--left,
-    #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+    #shopify-section-{{ id }} .ak-two-up__heading {
+      order: 1;
+      flex: 0 0 auto;
+      width: 100%;
+      font-size: {{ two_h_m }}px;
+    }
+    #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
+      order: 2;
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
       text-align: center;
-    }
-    #shopify-section-{{ id }} .ak-two-up__eyebrow--left {
       font-size: {{ two_eb_l_m }}px;
+      padding-left: {{ eyebrow_pad_l_m }}px;
+      padding-right: {{ eyebrow_pad_l_m }}px;
     }
     #shopify-section-{{ id }} .ak-two-up__eyebrow--right {
+      order: 3;
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
       font-size: {{ two_eb_r_m }}px;
+      padding-left: {{ eyebrow_pad_r_m }}px;
+      padding-right: {{ eyebrow_pad_r_m }}px;
     }
     #shopify-section-{{ id }} .ak-two-up__body-wrap {
       max-width: {{ max_w_text_m }}rem;
@@ -347,21 +372,23 @@
 
       {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank or body_rt != blank or attr != blank %}
         <div class="ak-two-up__text">
-          {% if heading != blank %}
-            {% if hl == 'h1' %}
-              <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h1>
-            {% elsif hl == 'h3' %}
-              <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h3>
-            {% else %}
-              <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h2>
-            {% endif %}
-          {% endif %}
-          {% if eyebrow_left != blank or eyebrow_right != blank %}
-            <div class="ak-two-up__eyebrows">
+          {% if heading != blank or eyebrow_left != blank or eyebrow_right != blank %}
+            <div class="ak-two-up__caption-row">
               {% if eyebrow_left != blank %}
                 <p class="ak-two-up__eyebrow ak-two-up__eyebrow--left">{{ eyebrow_left | escape }}</p>
               {% else %}
                 <span class="ak-two-up__eyebrow ak-two-up__eyebrow--left" aria-hidden="true"></span>
+              {% endif %}
+              {% if heading != blank %}
+                {% if hl == 'h1' %}
+                  <h1 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h1>
+                {% elsif hl == 'h3' %}
+                  <h3 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h3>
+                {% else %}
+                  <h2 class="ak-two-up__heading" id="ak-two-up-heading-{{ id }}">{{ heading | escape }}</h2>
+                {% endif %}
+              {% else %}
+                <span class="ak-two-up__heading" aria-hidden="true"></span>
               {% endif %}
               {% if eyebrow_right != blank %}
                 <p class="ak-two-up__eyebrow ak-two-up__eyebrow--right">{{ eyebrow_right | escape }}</p>
@@ -394,7 +421,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Two images in one row (stacked on mobile), then centered heading + left/right eyebrows, optional body and attribution."
+      "content": "Two images in one row (stacked on mobile), then a bottom-aligned caption row: left eyebrow | centered heading | right eyebrow. Mobile stacks heading → left → right."
     },
     {
       "type": "header",
@@ -553,7 +580,7 @@
     {
       "type": "range",
       "id": "eyebrow_gap_desktop",
-      "label": "Gap between eyebrows (desktop)",
+      "label": "Gap between caption items (desktop)",
       "min": 0,
       "max": 80,
       "step": 4,
@@ -563,12 +590,54 @@
     {
       "type": "range",
       "id": "eyebrow_gap_mobile",
-      "label": "Gap between eyebrows (mobile)",
+      "label": "Gap between caption items (mobile)",
       "min": 0,
       "max": 48,
       "step": 4,
       "default": 12,
       "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_left_padding",
+      "label": "Left eyebrow inset (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_left_padding_mobile",
+      "label": "Left eyebrow inset (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_right_padding",
+      "label": "Right eyebrow inset (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_right_padding_mobile",
+      "label": "Right eyebrow inset (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = same as desktop."
     },
     {
       "type": "richtext",
