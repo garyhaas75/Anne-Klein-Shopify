@@ -142,7 +142,7 @@
         "text_color": "#000000",
         "attribution_color": "#000000",
         "background_color": "#ffffff",
-        "width": "wide",
+        "width": "standard",
         "show_gutter": true,
         "section_aria_label": "",
         "padding_top": 36,
