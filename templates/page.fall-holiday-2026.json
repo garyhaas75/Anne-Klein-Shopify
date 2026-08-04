@@ -1416,7 +1416,7 @@
         "row_min_height_mobile": 0,
         "row_gap": 0,
         "row_gap_mobile": 0,
-        "image_object_fit": "contain",
+        "image_object_fit": "cover",
         "image_object_position": "center",
         "quote_color": "#1e3a5f",
         "attribution_color": "#000000",
