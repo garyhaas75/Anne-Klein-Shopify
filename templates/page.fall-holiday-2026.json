@@ -1797,7 +1797,7 @@
         "heading_level": "p",
         "body": "<p>ANNE KLEIN</p>",
         "button_label": "SHOP THE COLLECTION",
-        "button_link": "",
+        "button_link": "shopify://collections/new",
         "button_new_tab": false,
         "button_style": "button--primary",
         "text_alignment": "center",
