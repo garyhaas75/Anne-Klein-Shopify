@@ -552,7 +552,7 @@
         "heading_use_line_2_mobile": true,
         "heading_line_2_mobile": "The Formal Edit",
         "heading_level": "h2",
-        "body": "<p>As the day gives way to evening, the collection takes on a new expression sequins, florals, and elevated occasion dressing  bring a sense of glamour that feels effortless modern. </p>",
+        "body": "<p>As the day gives way to evening, the collection takes on a new expression sequins, florals, and elevated occasion dressing  bring a sense of glamour that feels effortlessly modern. </p>",
         "button_label": "SHOP THE COLLECTION",
         "button_link": "",
         "button_new_tab": false,
@@ -709,7 +709,7 @@
         "width": "wide",
         "show_gutter": false,
         "text_column_width": 50,
-        "row_min_height_desktop": 840,
+        "row_min_height_desktop": 820,
         "row_min_height_mobile": 0,
         "row_gap": 0,
         "row_gap_mobile": 0,
@@ -1131,7 +1131,7 @@
         "width": "wide",
         "show_gutter": false,
         "text_column_width": 50,
-        "row_min_height_desktop": 840,
+        "row_min_height_desktop": 820,
         "row_min_height_mobile": 0,
         "row_gap": 0,
         "row_gap_mobile": 0,
