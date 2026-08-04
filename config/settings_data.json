@@ -6402,7 +6402,7 @@
           "text_vertical_position": "bottom",
           "text_vertical_position_mobile": "",
           "text_shadow_contrast": true,
-          "scrim_overlay": "dark",
+          "scrim_overlay": "none",
           "background_color": "rgba(0,0,0,0)",
           "background_opacity": 0,
           "border_color": "#ffffff",
