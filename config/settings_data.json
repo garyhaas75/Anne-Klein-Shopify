@@ -5941,21 +5941,21 @@
             "type": "pill",
             "settings": {
               "label": "Clothing",
-              "link": "shopify://collections/clothing"
+              "link": "shopify://collections/new-clothing"
             }
           },
           "pill_fLLfEr": {
             "type": "pill",
             "settings": {
               "label": "Shoes",
-              "link": "shopify://collections/shoes"
+              "link": "shopify://collections/new-shoes"
             }
           },
           "pill_byRCig": {
             "type": "pill",
             "settings": {
               "label": "Handbags",
-              "link": "shopify://collections/handbags-1"
+              "link": "shopify://collections/new-handbags-wallets"
             }
           },
           "pill_dQhzEA": {
@@ -6024,7 +6024,7 @@
               "video": "shopify://files/videos/DIRECTING THE CREW_02.mp4",
               "heading": "Behind the Lens",
               "cta_text": "SHOP ACCESSORIES",
-              "link": "shopify://collections/dresses"
+              "link": "shopify://collections/jewelry-accessories"
             }
           },
           "panel_3PGkkV": {
@@ -6034,7 +6034,7 @@
               "image": "shopify://shop_images/104613_EBE_AnneKlein_009_15_1_1.png",
               "heading": "Gold Standard",
               "cta_text": "SHOP JEWELRY",
-              "link": "shopify://collections/workwear"
+              "link": "shopify://collections/watches-jewelry"
             }
           },
           "panel_8gJmX4": {
@@ -6044,7 +6044,7 @@
               "video": "shopify://files/videos/DOLLY.mp4",
               "heading": "That's a Wrap",
               "cta_text": "SHOP CLOTHING",
-              "link": "shopify://collections/new"
+              "link": "shopify://collections/clothing"
             }
           },
           "panel_RWrxm7": {
@@ -6054,7 +6054,7 @@
               "image": "shopify://shop_images/AK_FW_26_EDITTED_0103_1.png",
               "heading": "On the Prowl",
               "cta_text": "SHOP SHOES",
-              "link": "shopify://collections/accessories"
+              "link": "shopify://collections/shoes"
             }
           }
         },
@@ -6102,7 +6102,7 @@
               "image": "shopify://shop_images/hf_20260722_183054_c2f690a5-d819-4cc3-9b9b-f52baef84ea6_1.png",
               "image_alt": "",
               "label": "Clothing",
-              "link": "shopify://collections/clothing"
+              "link": "shopify://collections/new-clothing"
             }
           },
           "tile_CgzwBd": {
@@ -6130,7 +6130,7 @@
               "image": "shopify://shop_images/hf_20260722_164200_ace9e74f-5044-4cf5-8c4f-63102abb422c_1.png",
               "image_alt": "",
               "label": "Handbags",
-              "link": "shopify://collections/handbags-wallets"
+              "link": "shopify://collections/new-handbags-wallets"
             }
           },
           "tile_9qUTDp": {
