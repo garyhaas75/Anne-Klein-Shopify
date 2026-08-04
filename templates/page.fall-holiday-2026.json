@@ -146,7 +146,7 @@
         "show_gutter": true,
         "section_aria_label": "",
         "padding_top": 36,
-        "padding_bottom": 12,
+        "padding_bottom": 16,
         "padding_top_mobile": 32,
         "padding_bottom_mobile": 12
       }
@@ -323,7 +323,7 @@
         "body_line_height": 165,
         "body_line_height_mobile": 0,
         "section_aria_label": "",
-        "padding_top": 48,
+        "padding_top": 44,
         "padding_bottom": 48,
         "padding_top_mobile": 24,
         "padding_bottom_mobile": 24
