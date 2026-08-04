@@ -808,7 +808,7 @@
       "collection__banner": {
         "type": "collection__banner",
         "settings": {
-          "show_banner": true,
+          "show_banner": false,
           "image": "shopify://shop_images/opt-1.png",
           "image_darken": false,
           "subtitle": "",
