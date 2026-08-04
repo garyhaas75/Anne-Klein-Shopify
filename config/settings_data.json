@@ -6363,7 +6363,7 @@
         "type": "index__image-with-text-overlay",
         "name": "Image with text overlay",
         "settings": {
-          "link": "shopify://collections/florals",
+          "link": "shopify://collections/dresses",
           "label": "",
           "open_in_new_tab": false,
           "enable_shop_similar": false,
