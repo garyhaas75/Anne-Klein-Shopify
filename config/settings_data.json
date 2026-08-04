@@ -808,11 +808,11 @@
       "collection__banner": {
         "type": "collection__banner",
         "settings": {
-          "show_banner": false,
-          "image": "shopify://shop_images/megamenu_watches.jpg",
-          "image_darken": true,
-          "subtitle": "Still time for the perfect gift",
-          "width": "standard",
+          "show_banner": true,
+          "image": "shopify://shop_images/opt-1.png",
+          "image_darken": false,
+          "subtitle": "",
+          "width": "wide",
           "banner_height": "small",
           "padding_top": 0,
           "padding_bottom": 0,
