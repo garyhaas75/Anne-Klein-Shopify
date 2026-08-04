@@ -216,7 +216,7 @@
         "image_gap_mobile": 0,
         "image_min_height_desktop": 900,
         "image_min_height_mobile": 280,
-        "image_object_fit": "contain",
+        "image_object_fit": "cover",
         "image_object_position": "center",
         "image_placeholder_bg": "#FFFFFF",
         "heading": "",
