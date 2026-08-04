@@ -325,7 +325,7 @@
         "section_aria_label": "",
         "padding_top": 40,
         "padding_bottom": 48,
-        "padding_top_mobile": 24,
+        "padding_top_mobile": 20,
         "padding_bottom_mobile": 24
       }
     },
@@ -454,7 +454,7 @@
         "section_aria_label": "",
         "padding_top": 40,
         "padding_bottom": 48,
-        "padding_top_mobile": 24,
+        "padding_top_mobile": 20,
         "padding_bottom_mobile": 24
       }
     },
@@ -584,7 +584,7 @@
         "section_aria_label": "",
         "padding_top": 40,
         "padding_bottom": 48,
-        "padding_top_mobile": 24,
+        "padding_top_mobile": 20,
         "padding_bottom_mobile": 24
       }
     },
