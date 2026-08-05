@@ -550,21 +550,23 @@
       #ak-video-{{ section.id }} .ak-video__player { height: auto; min-height: 0; object-fit: contain; }
     {% endif %}
   }
-  @media (min-width: 799px) {
-  /* Dual players: desktop by default; mobile file only at ≤798px when present */
+  /* Dual players: hide inactive file so flex wrap never shows two side-by-side */
   #ak-video-{{ section.id }} .ak-video__player--mobile {
-    display: none;
+    display: none !important;
   }
   @media only screen and (max-width: 798px) {
     #ak-video-{{ section.id }} .ak-video__player--desktop[data-has-mobile="true"] {
-      display: none;
+      display: none !important;
     }
     #ak-video-{{ section.id }} .ak-video__player--mobile {
-      display: block;
+      display: block !important;
+      width: 100%;
+      max-width: 100%;
     }
   }
-  #ak-video-{{ section.id }} .ak-video__player {
-    width: 100%;
+  @media (min-width: 799px) {
+    #ak-video-{{ section.id }} .ak-video__player {
+      width: 100%;
       {% if is_hero == false and smh_d < 1 and vmh_d < 1 %}
       object-fit: contain;
       height: auto;
