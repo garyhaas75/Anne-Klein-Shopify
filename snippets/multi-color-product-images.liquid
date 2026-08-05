@@ -30,19 +30,25 @@
   {% endif %}
 {% endstyle %}
 
-
+{% assign media_total_count = 0 %}
+{% for productListHandle in productHandleArr %}    
+  {% assign product_count = all_products[productListHandle] %}    
+  {% for media in product_count.media %}
+    {% assign media_total_count = media_total_count | plus: 1 %}
+  {% endfor %}
+{% endfor %}
 
 {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
 
 <div class="product-gallery
             product-gallery__thumbnails--{{ display_thumbnails }}
-            product-gallery--media-amount-{{ product.media.size }}
+            product-gallery--media-amount-{{ media_total_count }}
             slideshow-transition--{{ slideshow_transition }}
             {% if object.settings.thumbnail_position %}product-gallery--{{ thumbnail_position }}{% endif %}
             display-arrows--{{ gallery_arrows }}
             {% if object.settings.set_product_height == true %}has-height-set{%endif %}"
             data-video-loop="{{ object.settings.video_looping }}">
-  <div class="product-gallery__main" data-product-id="{{ product.id }}" data-media-count="{{ product.media.size }}">
+  <div class="product-gallery__main" data-product-id="{{ product.id }}" data-media-count="{{media_total_count}}">
 {% for productListHandle in productHandleArr %}
 
 {% assign product = all_products[productListHandle] %}   

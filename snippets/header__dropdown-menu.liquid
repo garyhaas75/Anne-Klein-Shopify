@@ -40,14 +40,7 @@ prefix: <string>
           </a>
         {% else %}
           <div class="has-submenu">
-            {% comment %}
-              tabindex="-1" keeps Tab from landing on the visuallyhidden
-              checkbox between every category. The submenu now reveals via
-              :focus-within on .has-submenu (see styles.scss.liquid), so
-              keyboard users tab straight from one category link to the
-              next without an invisible focus stop.
-            {% endcomment %}
-            <input class="visuallyhidden" type="checkbox" id="{{ prefix }}submenu-{{ block.id }}-{{ forloop.index }}-{{ currentIndex }}" tabindex="-1">
+            <input class="visuallyhidden" type="checkbox" id="{{ prefix }}submenu-{{ block.id }}-{{ forloop.index }}-{{ currentIndex }}">
             <label for="{{ prefix }}submenu-{{ block.id }}-{{ forloop.index }}-{{ currentIndex }}">
               {% if sub_link.url == 'http://' or sub_link.url == '' or sub_link.url == '/' or sub_link.url == 'https://' or sub_link.url == '#' %}
                 <a class="navbar-link {% if sub_link.active %}is-active{% endif %}">

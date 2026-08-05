@@ -385,10 +385,10 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Heels_for_Spring.jpg",
+              "image_top": "shopify://shop_images/Ballet_Flats_39dafde3-a999-4f9b-9bc1-754e7eed303a.jpg",
               "image_top_mobile-hidden": true,
-              "image_link_top": "shopify://collections/heels",
-              "image_caption_top": "<p>Shop Heels for Spring</p>",
+              "image_link_top": "shopify://collections/fall-shoes",
+              "image_caption_top": "<p>The Fall Shoe Edit</p>",
               "menu_1": "",
               "menu_1_link": "",
               "menu_1_bottom_text": "",
@@ -413,7 +413,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Shoes.jpg",
+              "image_top": "shopify://shop_images/Slingbacks_ba6d02ac-a25a-4ed4-a15a-35ea277e3fd8.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/shoes",
               "image_caption_top": "<p>Shop New Arrivals</p>",
@@ -607,7 +607,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_New_Arrivals.jpg",
+              "image_top": "shopify://shop_images/New_Arrivals_bedd28f9-aec5-48f7-ae5d-bc7cbae0b127.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new",
               "image_caption_top": "<p>Shop New Arrivals</p>",
@@ -635,7 +635,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_Dresses.jpg",
+              "image_top": "shopify://shop_images/Shop_Dresses_d8bcb9f0-c447-4c9a-90e6-b366b990bd39.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/dresses",
               "image_caption_top": "<p>Shop Dresses</p>",
@@ -723,7 +723,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Watches.jpg",
+              "image_top": "shopify://shop_images/New_Watches_60d2e463-a018-4b54-8f20-49ec5d8a143a.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new-watches",
               "image_caption_top": "<p>New Watches</p>",
@@ -809,10 +809,10 @@
         "type": "collection__banner",
         "settings": {
           "show_banner": false,
-          "image": "shopify://shop_images/megamenu_watches.jpg",
-          "image_darken": true,
-          "subtitle": "Still time for the perfect gift",
-          "width": "standard",
+          "image": "shopify://shop_images/opt-1.png",
+          "image_darken": false,
+          "subtitle": "",
+          "width": "wide",
           "banner_height": "small",
           "padding_top": 0,
           "padding_bottom": 0,
@@ -953,7 +953,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/jewelry_600x800_5f9b2e99-ca53-4c0a-b5b5-029b69834f87.jpg",
+              "image_top": "shopify://shop_images/Jewelry_Best_Sellers_5b448d1b-0242-4fba-8a10-cba94b7813e7.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/best-seller-jewelry",
               "image_caption_top": "<p>Jewelry Best Sellers</p>",
@@ -981,7 +981,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_Sunglasses.jpg",
+              "image_top": "shopify://shop_images/Sunglasses_8597e755-2bf5-4df6-8d60-3e5fb1301dfd.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/sunglasses",
               "image_caption_top": "<p>Sunglasses</p>",
@@ -3269,7 +3269,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Handbags.jpg",
+              "image_top": "shopify://shop_images/New_Handbags_8b8f1116-69ce-4e69-8c2a-6b19c5ba4d66.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new-handbags",
               "image_caption_top": "<p>What's New</p>",
@@ -3297,10 +3297,10 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Handbags_1_1.jpg",
+              "image_top": "shopify://shop_images/Tote_Bags_85789aed-2995-4caa-8081-ceb9c0dc6ca2.jpg",
               "image_top_mobile-hidden": true,
-              "image_link_top": "shopify://collections/crossbody-bags",
-              "image_caption_top": "<p>Crossbody Bags</p>",
+              "image_link_top": "shopify://collections/tote-bags",
+              "image_caption_top": "<p>Tote Bags</p>",
               "menu_1": "",
               "menu_1_link": "",
               "menu_1_bottom_text": "",
@@ -5941,21 +5941,21 @@
             "type": "pill",
             "settings": {
               "label": "Clothing",
-              "link": "shopify://collections/clothing"
+              "link": "shopify://collections/new-clothing"
             }
           },
           "pill_fLLfEr": {
             "type": "pill",
             "settings": {
               "label": "Shoes",
-              "link": "shopify://collections/shoes"
+              "link": "shopify://collections/new-shoes"
             }
           },
           "pill_byRCig": {
             "type": "pill",
             "settings": {
               "label": "Handbags",
-              "link": "shopify://collections/handbags-1"
+              "link": "shopify://collections/new-handbags-wallets"
             }
           },
           "pill_dQhzEA": {
@@ -5985,7 +5985,7 @@
           "heading": "New for the Season",
           "heading_color": "#000000",
           "heading_font_size": 20,
-          "heading_font_size_mobile": 0,
+          "heading_font_size_mobile": 20,
           "heading_font_weight": "400",
           "layout_mode": "inline",
           "content_alignment": "center",
@@ -5997,7 +5997,7 @@
           "font_heading": "",
           "font_pills": "helvetica",
           "pill_font_weight": "400",
-          "pill_font_size": 14,
+          "pill_font_size": 16,
           "pill_font_size_mobile": 0,
           "pill_letter_spacing": 2,
           "pill_padding_vertical": 12,
@@ -6010,8 +6010,8 @@
           "section_aria_label": "",
           "padding_top": 28,
           "padding_bottom": 28,
-          "padding_top_mobile": 16,
-          "padding_bottom_mobile": 24
+          "padding_top_mobile": 20,
+          "padding_bottom_mobile": 20
         }
       },
       "index_lifestyle_quad_P3Phpq": {
@@ -6024,27 +6024,27 @@
               "video": "shopify://files/videos/DIRECTING THE CREW_02.mp4",
               "heading": "Behind the Lens",
               "cta_text": "SHOP ACCESSORIES",
-              "link": "shopify://collections/dresses"
+              "link": "shopify://collections/jewelry-accessories"
             }
           },
           "panel_3PGkkV": {
             "type": "panel",
             "settings": {
               "media_type": "image",
-              "image": "shopify://shop_images/104613_EBE_AnneKlein_009_15_1_1.png",
+              "image": "shopify://shop_images/104613_EBE_AnneKlein_009_15_1_1_c0ba2f9f-0a43-475c-bb88-badb88ee02c6.png",
               "heading": "Gold Standard",
               "cta_text": "SHOP JEWELRY",
-              "link": "shopify://collections/workwear"
+              "link": "shopify://collections/watches-jewelry"
             }
           },
           "panel_8gJmX4": {
             "type": "panel",
             "settings": {
               "media_type": "video",
-              "video": "shopify://files/videos/DOLLY.mp4",
+              "video": "shopify://files/videos/AK_FW26_Indv_Dolly_4x5.mp4",
               "heading": "That's a Wrap",
               "cta_text": "SHOP CLOTHING",
-              "link": "shopify://collections/new"
+              "link": "shopify://collections/clothing"
             }
           },
           "panel_RWrxm7": {
@@ -6054,7 +6054,7 @@
               "image": "shopify://shop_images/AK_FW_26_EDITTED_0103_1.png",
               "heading": "On the Prowl",
               "cta_text": "SHOP SHOES",
-              "link": "shopify://collections/accessories"
+              "link": "shopify://collections/shoes"
             }
           }
         },
@@ -6070,11 +6070,11 @@
           "font_family": "helvetica",
           "font_heading": "",
           "font_cta": "helvetica",
-          "heading_font_size": 28,
-          "heading_font_size_mobile": 42,
+          "heading_font_size": 30,
+          "heading_font_size_mobile": 30,
           "heading_font_weight": "400",
           "cta_font_size": 12,
-          "cta_font_size_mobile": 0,
+          "cta_font_size_mobile": 12,
           "cta_font_weight": "700",
           "container_width": "full",
           "aspect_ratio_mode": "8_9",
@@ -6090,7 +6090,7 @@
           "overlay_caption_padding_top": 24,
           "overlay_caption_padding_bottom": 32,
           "overlay_caption_padding_top_mobile": 24,
-          "overlay_caption_padding_bottom_mobile": 24
+          "overlay_caption_padding_bottom_mobile": 32
         }
       },
       "index_shop_new_arrivals_JiGV4g": {
@@ -6102,7 +6102,7 @@
               "image": "shopify://shop_images/hf_20260722_183054_c2f690a5-d819-4cc3-9b9b-f52baef84ea6_1.png",
               "image_alt": "",
               "label": "Clothing",
-              "link": "shopify://collections/clothing"
+              "link": "shopify://collections/new-clothing"
             }
           },
           "tile_CgzwBd": {
@@ -6130,7 +6130,7 @@
               "image": "shopify://shop_images/hf_20260722_164200_ace9e74f-5044-4cf5-8c4f-63102abb422c_1.png",
               "image_alt": "",
               "label": "Handbags",
-              "link": "shopify://collections/handbags-wallets"
+              "link": "shopify://collections/new-handbags-wallets"
             }
           },
           "tile_9qUTDp": {
@@ -6258,7 +6258,7 @@
           "heading_font_weight": "700",
           "heading_underline": false,
           "product_source": "collection",
-          "collection": "jewelry-accessories",
+          "collection": "watches-jewelry-copy",
           "products_limit": 20,
           "products_per": 6,
           "align_height": false,
@@ -6363,12 +6363,12 @@
         "type": "index__image-with-text-overlay",
         "name": "Image with text overlay",
         "settings": {
-          "link": "shopify://collections/florals",
+          "link": "shopify://collections/dresses",
           "label": "",
           "open_in_new_tab": false,
           "enable_shop_similar": false,
-          "image": "shopify://shop_images/Group_181_ad669b44-f446-4b52-a1df-89b7df4d344e.jpg",
-          "mobile_image": "shopify://shop_images/Group_181_724c7d24-c16b-43ce-af07-4cf3023c44d1.jpg",
+          "image": "shopify://shop_images/Group_181.png",
+          "mobile_image": "shopify://shop_images/Group_181_0fac556f-d08a-4f1d-bb91-418255f911af.jpg",
           "image_alt": "",
           "max_height_desktop": 900,
           "max_height_mobile": 280,
@@ -6384,7 +6384,7 @@
           "preheading_font_family": "helvetica",
           "heading_color": "#ffffff",
           "font_family": "helvetica",
-          "heading_font_size": 28,
+          "heading_font_size": 30,
           "heading_font_size_mobile": 0,
           "subheading_font_size": 12,
           "subheading_font_size_mobile": 14,
@@ -6402,7 +6402,7 @@
           "text_vertical_position": "bottom",
           "text_vertical_position_mobile": "",
           "text_shadow_contrast": true,
-          "scrim_overlay": "dark",
+          "scrim_overlay": "none",
           "background_color": "rgba(0,0,0,0)",
           "background_opacity": 0,
           "border_color": "#ffffff",
@@ -6461,7 +6461,7 @@
           "overlay_padding_top": 0,
           "overlay_padding_bottom": 25,
           "overlay_padding_top_mobile": 0,
-          "overlay_padding_bottom_mobile": 0,
+          "overlay_padding_bottom_mobile": 35,
           "overlay_line_spacing_mobile": 0,
           "overlay_line1_padding_bottom_mobile": 0,
           "overlay_heading_padding_bottom_mobile": 0,
@@ -6482,7 +6482,7 @@
           "overlay_cta_font_size": 12,
           "overlay_cta_font_weight": "700",
           "overlay_cta_underline": true,
-          "overlay_link": "shopify://pages/campaign-new",
+          "overlay_link": "shopify://pages/2026-fall-winter-campaign",
           "overlay_link_new_tab": false,
           "overlay_text": "",
           "text_color": "#ffffff",
@@ -6499,25 +6499,25 @@
           "video_fit": "cover",
           "video_fit_mobile": "same",
           "video_background_color": "#000000",
-          "video": "shopify://files/videos/AK26_MK_Indv_Intro_r0.2B NO TIME CARD.mp4",
-          "video_mobile": "shopify://files/videos/AK26_MK_Indv_Intro_r0.2B NO TIME CARD.mp4",
-          "title": "Spring 2026 Campaign",
+          "video": "shopify://files/videos/Hero Desktop.mp4",
+          "video_mobile": "shopify://files/videos/Hero Mobile.mp4",
+          "title": "Fall/Winter2026 Campaign",
           "autoplay": true,
           "loop": true,
           "enable_native_controls": false,
-          "start_card_image": "shopify://shop_images/Start_Frame_Desktop.png",
+          "start_card_image": "shopify://shop_images/Start_Card_Homepage_Desktop_a1799bf6-4aea-4c11-9436-6cfe4231da9c.png",
           "start_card_heading": "",
           "start_card_text": "",
-          "start_card_image_mobile": "shopify://shop_images/Start_Frame_Mobile.png",
+          "start_card_image_mobile": "shopify://shop_images/Start_Card_Homepage_Mobile_f9f88d64-1b40-467f-9732-2a47f78b56f0.png",
           "start_card_heading_mobile": "",
           "start_card_text_mobile": "",
-          "end_card_image": "shopify://shop_images/End_Frame_Desktop.png",
+          "end_card_image": "shopify://shop_images/End_Card_Homepage_Desktop.png",
           "end_card_heading": "",
           "end_card_button_label": "Watch again",
-          "end_card_image_mobile": "shopify://shop_images/End_Frame_Mobile.png",
+          "end_card_image_mobile": "shopify://shop_images/End_Card_Homepage_Mobile.png",
           "end_card_heading_mobile": "",
           "end_card_button_label_mobile": "",
-          "transcript": "A man in a white tuxedo and black tie stands in front of a record player and places a vinyl record onto the turntable. The record is black with a white Anne Klein lion head logo in the center. As the record begins to spin, a woman with long dark hair wearing a floral tiered dress walks across a lawn using circular stone steps. A man in a white tuxedo pushes a bar cart as the woman picks up a drink and smiles. A second woman with blonde hair walks toward a swimming pool wearing a floral dress, sunglasses, and a white scarf. The scene transitions to the first woman wearing a black dress and a large white sun hat with black polka dots while holding a cocktail. The blonde woman appears in a black and white dress with a matching polka dot hat and adjusts her sunglasses, revealing a gold watch and chain necklace. The first woman walks along the edge of the pool in a white suit carrying a floral handbag. The blonde woman walks through a garden in a white vest and skirt. A man in a tuxedo carries a small white handbag with a gold lion logo clasp on a silver tray. The first woman is seen through a circular window holding the bag while the blonde woman walks past. A man in a tuxedo runs up a flight of stairs with a bouquet of flowers. Another man in a tuxedo carries a bottle of champagne on a tray along a white stone railing. The two women walk past each other on the balcony and then turn to face the camera. The name Anne Klein appears in white letters over a view of the swimming pool where two men hold white umbrellas. The record with the lion logo continues to rotate on the turntable."
+          "transcript": "A close-up shot opens on a script titled \"BY THE HOUR\" ANNE KLEIN FW26 starring Olivia Munn, with a pair of translucent glasses resting on top of the cover. Inside a vintage car, Olivia Munn reaches over to switch off the ignition, rests her hands on the steering wheel, and takes a brief breath before stepping out. Outside, she greets a crew member with a friendly \"Hey, good morning!\" as they welcome her to set. Set chatter crackles over the radios in the background, announcing that Olivia has arrived and asking who ordered coffee. The camera shifts focus to a large black Anne Klein tote bag sitting on the leather passenger seat as the ANNE KLEIN logo appears on screen."
         }
       },
       "index_sale_banner_CFgEzC": {
@@ -6773,6 +6773,8 @@
           "text_alignment": "center",
           "content_max_width": 48,
           "content_max_width_mobile": 0,
+          "content_padding_x": 0,
+          "content_padding_x_mobile": 10,
           "heading_max_width_desktop": 0,
           "heading_max_width_mobile": 0,
           "cta_spacing": 32,

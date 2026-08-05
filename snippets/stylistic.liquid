@@ -13,6 +13,10 @@ You control the id of this element, so the id can be anything you want.
       min: 3,
       max: 6,
     },
+    customer: {
+      // Default to no engagement tracking until Consentmo confirms consent
+      doNotTrack: true
+    },
     display: {
       disableMnM: true,
       swipeableCarouselArrows: true
@@ -46,7 +50,78 @@ You control the id of this element, so the id can be anything you want.
   })
   
   // All callback methods must be added before the .start() method
+  // Default to localStorage/cookies disabled until Consentmo confirms consent
+  widgetInstance.disableLocalStorageAndCookies();
   widgetInstance.start();
+
+  // --- Consentmo consent gating for Stylitics tracking & storage ---
+  // The widget always renders (product recommendations are functional);
+  // only engagement tracking and browser storage are gated on consent.
+  // Mirrors the Consentmo signal handling used in snippets/pixels.liquid.
+  // Listens for the whole session so consent can be granted AND revoked live.
+  (function () {
+    var sawConsentmoOnLoad = false;
+    /** Tracks the last applied state so we only toggle the widget on change. */
+    var currentlyEnabled = null;
+    /** If Consentmo never emits consentmoSignal_onLoad still enable after this wait. */
+    var WATCHDOG_MS = 10000;
+
+    function prefsAllow(p) {
+      return !!(p && p.analytics && p.marketing && p.functionality);
+    }
+
+    function applyConsent(allow) {
+      if (currentlyEnabled === allow) return;
+      currentlyEnabled = allow;
+      try {
+        if (allow) {
+          widgetInstance.doTrack();
+          widgetInstance.enableLocalStorageAndCookies();
+        } else {
+          widgetInstance.doNotTrack();
+          widgetInstance.disableLocalStorageAndCookies();
+        }
+      } catch (e) {}
+    }
+
+    var watchdogId = setTimeout(function () {
+      if (sawConsentmoOnLoad) return;
+      applyConsent(true);
+    }, WATCHDOG_MS);
+
+    // Stays attached for the session so a later revoke (or re-grant) is honored.
+    document.addEventListener('consentmoSignal', function (ev) {
+      var prefs = (ev && ev.detail && ev.detail.preferences) || {};
+      applyConsent(prefsAllow(prefs));
+    });
+
+    document.addEventListener(
+      'consentmoSignal_onLoad',
+      function (cmpEvent) {
+        sawConsentmoOnLoad = true;
+        if (watchdogId) {
+          clearTimeout(watchdogId);
+          watchdogId = null;
+        }
+
+        var detail = (cmpEvent && cmpEvent.detail) ? cmpEvent.detail : {};
+
+        var cmpActive = Number(detail.isActive) === 1;
+        var prefsOnLoad =
+          (detail.consent && detail.consent.preferences) ||
+          detail.preferences ||
+          {};
+
+        if (!cmpActive) {
+          applyConsent(true);
+          return;
+        }
+
+        applyConsent(prefsAllow(prefsOnLoad));
+      },
+      { once: true }
+    );
+  })();
 
   $('.swatch-element.color').click(function() {
     widgetInstance.refresh({api: {item_number: $(this).attr('handle')}});

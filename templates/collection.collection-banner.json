@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header": {
+      "type": "collection__header",
+      "disabled": true,
+      "settings": {
+        "collection_breadcrumb": false,
+        "collection_tags": true,
+        "collection_sort": true,
+        "set_alt_as_decorative": true,
+        "show_promo_banner": false,
+        "image": "shopify://shop_images/opt-2.png",
+        "image_darken": false,
+        "promo_title": "Special sale on now!",
+        "promo_text": "<p>Description of promotion with lots of details.</p>",
+        "banner_height": "medium",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "css_class": "",
+        "custom_css": ""
+      }
+    },
+    "1758064137ba2a8749": {
+      "type": "apps",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "1758064137ba2a8749"
+  ]
+}
