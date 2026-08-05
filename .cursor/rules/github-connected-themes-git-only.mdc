@@ -1,0 +1,18 @@
+---
+description: GitHub-connected Shopify themes must be updated via git, not theme push
+alwaysApply: true
+---
+
+# Connected themes: git only
+
+`Anne-Klein-Shopify/dev` and `Anne-Klein-Shopify/main` sync from GitHub. Do **not** use `shopify theme push` to publish lasting changes to those themes — GitHub sync will overwrite or drop CLI uploads.
+
+**Do this instead:**
+1. Edit files in the repo
+2. Commit (when the user asks)
+3. Push to **`dev`** by default (`git push origin dev`)
+4. Promote to **`main`** only when the user explicitly asks and confirms
+
+**OK:** `shopify theme pull` to inspect remote state; theme editor for merchant content (then pull into git if it must persist on the branch).
+
+**Not OK:** `shopify theme push` / upload to a GitHub-connected theme as the ship path.
