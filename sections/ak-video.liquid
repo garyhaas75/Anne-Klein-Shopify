@@ -197,7 +197,8 @@
       title="{{ section.settings.title | default: 'Video' | escape }}"
       {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
       {% if use_mobile %}data-has-mobile="true"{% endif %}
-      {% if section.settings.start_card_image != blank and section.settings.autoplay != true %}poster="{{ section.settings.start_card_image | image_url: width: 1920 }}"{% endif %}
+      {% comment %} Poster always: shows start-card art while loading and when autoplay is blocked (e.g. iOS Low Power Mode) {% endcomment %}
+      {% if section.settings.start_card_image != blank %}poster="{{ section.settings.start_card_image | image_url: width: 1920 }}"{% endif %}
     >
       {% for source in section.settings.video.sources %}
         <source src="{{ source.url }}" type="{{ source.mime_type }}">
@@ -215,9 +216,9 @@
         title="{{ section.settings.title | default: 'Video' | escape }}"
         {% if section.settings.transcript != blank %}aria-describedby="ak-video-transcript-{{ section.id }}"{% endif %}
         data-has-mobile="true"
-        {% if section.settings.start_card_image_mobile != blank and section.settings.autoplay != true %}
+        {% if section.settings.start_card_image_mobile != blank %}
           poster="{{ section.settings.start_card_image_mobile | image_url: width: 1200 }}"
-        {% elsif section.settings.start_card_image != blank and section.settings.autoplay != true %}
+        {% elsif section.settings.start_card_image != blank %}
           poster="{{ section.settings.start_card_image | image_url: width: 1200 }}"
         {% endif %}
       >
@@ -539,16 +540,24 @@
     align-self: center;
   }
   /* Auto-height mode (non-hero + no max-height caps): wrap height; player rules live in
-     the main desktop .ak-video__player block below so a later rule cannot override them. */
+     the main desktop .ak-video__player block below so a later rule cannot override them.
+     aspect-ratio reserves the video's real space BEFORE metadata loads — without it the
+     section collapses to a ~150px strip and the start card is invisible until the video
+     is ready (worse on phones that block autoplay and never load the video). */
   @media (min-width: 799px) {
     {% if is_hero == false and smh_d < 1 and vmh_d < 1 %}
       #ak-video-{{ section.id }} .ak-video__wrap { height: auto; }
+      #ak-video-{{ section.id }} .ak-video__player--desktop { aspect-ratio: {{ section.settings.video.aspect_ratio }}; }
     {% endif %}
   }
   @media (max-width: 798px) {
     {% if is_hero == false and smh_m < 1 and vmh_m < 1 %}
       #ak-video-{{ section.id }} .ak-video__wrap { height: auto; }
       #ak-video-{{ section.id }} .ak-video__player { height: auto; min-height: 0; object-fit: contain; }
+      #ak-video-{{ section.id }} .ak-video__player--desktop { aspect-ratio: {{ section.settings.video.aspect_ratio }}; }
+      {% if use_mobile %}
+      #ak-video-{{ section.id }} .ak-video__player--mobile { aspect-ratio: {{ section.settings.video_mobile.aspect_ratio }}; }
+      {% endif %}
     {% endif %}
   }
   /* Dual players: hide inactive file so flex wrap never shows two side-by-side */
