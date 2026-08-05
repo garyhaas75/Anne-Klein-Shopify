@@ -1121,23 +1121,20 @@
     if (!section) return;
     var desktopVideo = section.querySelector('.ak-video__player--desktop');
     var mobileVideo = section.querySelector('.ak-video__player--mobile');
-    var isMobile = window.matchMedia('(max-width: 798px)').matches;
+    var mobileQuery = window.matchMedia('(max-width: 798px)');
+    var isMobile = mobileQuery.matches;
     var video = (isMobile && mobileVideo) ? mobileVideo : (desktopVideo || section.querySelector('.ak-video__player'));
     if (!video) return;
 
-    /* Stop the inactive player so only one file loads/plays */
+    /* Pause the inactive player. Do NOT strip its sources — resizing across the
+       breakpoint (theme editor, DevTools) must be able to hand playback over. */
     function deactivatePlayer(el) {
       if (!el || el === video) return;
       el.removeAttribute('autoplay');
       el.pause();
-      el.removeAttribute('src');
-      el.querySelectorAll('source').forEach(function(s) { s.removeAttribute('src'); });
-      try { el.load(); } catch (e) {}
-      el.setAttribute('aria-hidden', 'true');
     }
     deactivatePlayer(desktopVideo);
     deactivatePlayer(mobileVideo);
-    video.removeAttribute('aria-hidden');
 
     var muteBtn = section.querySelector('.ak-video__mute');
     var pauseBtn = section.querySelector('.ak-video__pause');
@@ -1170,19 +1167,49 @@
       el.setAttribute('aria-hidden', 'true');
     }
 
-    /* --- 4. Video events for cards --- */
-    video.addEventListener('play', function() {
-      hide(startCard);
-      hide(endCard);
-      updatePauseBtn();
+    /* --- 4. Video events for cards (bound to both players; only the active one fires) --- */
+    [desktopVideo, mobileVideo].forEach(function(v) {
+      if (!v) return;
+      v.addEventListener('play', function() {
+        if (v !== video) return;
+        hide(startCard);
+        hide(endCard);
+        updatePauseBtn();
+      });
+      v.addEventListener('pause', function() {
+        if (v !== video) return;
+        updatePauseBtn();
+      });
+      v.addEventListener('ended', function() {
+        if (v !== video) return;
+        if (!loop) show(endCard);
+        updatePauseBtn();
+      });
     });
-    video.addEventListener('pause', function() {
-      updatePauseBtn();
-    });
-    video.addEventListener('ended', function() {
-      if (!loop) show(endCard);
-      updatePauseBtn();
-    });
+
+    /* --- 4b. Breakpoint change: hand playback to the newly visible player --- */
+    if (desktopVideo && mobileVideo) {
+      var onBreakpointChange = function(e) {
+        var next = e.matches ? mobileVideo : desktopVideo;
+        if (next === video) return;
+        var wasPlaying = !video.paused;
+        var wasMuted = video.muted;
+        video.pause();
+        next.muted = wasMuted;
+        if (!enableNativeControls) next.removeAttribute('controls');
+        video = next;
+        if ((wasPlaying || wantsAutoplay) && !reducedMotion) {
+          video.play().catch(function() {});
+        }
+        updateMuteBtn();
+        updatePauseBtn();
+      };
+      if (mobileQuery.addEventListener) {
+        mobileQuery.addEventListener('change', onBreakpointChange);
+      } else if (mobileQuery.addListener) {
+        mobileQuery.addListener(onBreakpointChange);
+      }
+    }
 
     /* --- 5. Start card: visible initially, tap to play --- */
     if (startCard) {
