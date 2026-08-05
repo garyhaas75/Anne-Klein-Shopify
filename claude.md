@@ -51,6 +51,17 @@ Target **branch `main`** only. Enable:
 - If the goal is for **Shopify / GitHub** to see the change, **commit and push to `dev`** (when the user wants that), and **confirm with evidence** (e.g. successful `git push origin dev`, commit hash). **Do not** push to **`main`** unless the user **explicitly** asked for **`main`** and you completed the **“Are you sure…”** check in the **`main` branch** section above.
 - Do **not** assume “saved in Cursor” means “live on the theme.”
 
+## GitHub-connected themes: git only (no CLI theme push)
+
+`Anne-Klein-Shopify/dev` and `Anne-Klein-Shopify/main` (and other branch-named themes) are **connected to GitHub**. Shopify syncs **from the matching git branch**. Direct CLI uploads fight that sync and get overwritten or lost.
+
+- **Never** use `shopify theme push` (or theme upload) to update a **GitHub-connected** theme when the goal is a lasting change.
+- **Always** ship code/template/section changes via **git**: commit → push to **`dev`** (default), or to **`main`** only after the explicit approval flow above.
+- Theme editor **content** saves (section settings, images, copy) can still be made in Shopify admin; they land in `config/settings_data.json` / template JSON and should be **pulled into git** when you want them preserved on the connected branch.
+- Use `shopify theme pull` only to **read** remote state into the workspace when needed — not as the publish path for connected themes.
+- Exception: a **non-connected** / scratch theme ID the user names explicitly may still use CLI push for a one-off preview — ask first if unclear.
+
+
 ## Shopify section schema: `range` settings
 
 - **`default`** (and preset values in **`templates/*.json`**) must be **`min` + _n_ × `step`**.
