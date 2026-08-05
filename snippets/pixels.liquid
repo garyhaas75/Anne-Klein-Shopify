@@ -1,0 +1,73 @@
+<script id="consentmo-fastr-optimize">
+  (function () {
+    var executed = false;
+    var sawConsentmoOnLoad = false;
+    /** If Consentmo never emits consentmoSignal_onLoad still load Fastr after this wait. */
+    var WATCHDOG_MS = 10000;
+    var base = 'https://data.fastroptimize.io/addacf2d-c0a6-8055-8005-dbb8b4b70397';
+
+    function prefsAllow(p) {
+      return !!(p && p.analytics && p.marketing && p.functionality);
+    }
+
+    function injectFastr() {
+      if (executed) return;
+      executed = true;
+
+      var a = document.createElement('script');
+      a.src = base + '/analytics/init.js';
+      a.async = true;
+      a.defer = true;
+      document.head.appendChild(a);
+
+      var e = document.createElement('script');
+      e.src = base + '/experiments/init.js';
+      e.async = true;
+      e.defer = true;
+      document.head.appendChild(e);
+    }
+
+    var watchdogId = setTimeout(function () {
+      if (executed) return;
+      if (sawConsentmoOnLoad) return;
+      injectFastr();
+    }, WATCHDOG_MS);
+
+    document.addEventListener(
+      'consentmoSignal_onLoad',
+      function (cmpEvent) {
+        sawConsentmoOnLoad = true;
+        if (watchdogId) {
+          clearTimeout(watchdogId);
+          watchdogId = null;
+        }
+
+        var detail = (cmpEvent && cmpEvent.detail) ? cmpEvent.detail : {};
+
+        var cmpActive = Number(detail.isActive) === 1;
+        var prefsOnLoad =
+          (detail.consent && detail.consent.preferences) ||
+          detail.preferences ||
+          {};
+
+        if (!cmpActive) {
+          injectFastr();
+          return;
+        }
+
+        if (prefsAllow(prefsOnLoad)) {
+          injectFastr();
+          return;
+        }
+
+        document.addEventListener('consentmoSignal', function onCmpSignal(ev) {
+          var prefs = (ev && ev.detail && ev.detail.preferences) || {};
+          if (!prefsAllow(prefs)) return;
+          document.removeEventListener('consentmoSignal', onCmpSignal);
+          injectFastr();
+        });
+      },
+      { once: true }
+    );
+  })();
+</script>

@@ -12,6 +12,7 @@
       collection_handles contains 'ak-closet' or
       collection_handles contains 'considered' or
       collection_handles contains 'exclusive' or
+    product_tags contains 'NEW' or
 	  product_tags contains 'AK SPORT' or
 	  product_tags contains 'DEAL' or
 	  product_tags contains 'SAVE' or
@@ -46,13 +47,6 @@
       {% if collection_handles contains 'coming-soon' %}
         <div class="coming-soon-sticker thumbnail-sticker sticker-{{i}}">
           <span class="sticker-text">{{ 'collections.general.coming_soon' | t }}</span>
-        </div>
-      {% endif %}
-
-
-      {% if collection_handles contains 'new' %}
-        <div class="new-sticker thumbnail-sticker sticker-{{i}}">
-          <span class="sticker-text">{{ 'collections.general.new' | t }}</span>
         </div>
       {% endif %}
 
@@ -95,6 +89,12 @@
             <span class="sticker-text">{{ 'collections.general.exclusive' | t }}</span>
           </div>
         {% endif %}
+
+      {% if product_tags contains 'NEW' %}
+        <div class="new-sticker thumbnail-sticker sticker-{{i}}">
+          <span class="sticker-text">{{ 'collections.general.new' | t }}</span>
+        </div>
+      {% endif %}
 
       	{% if product_tags contains 'DEAL' %}
           <div class="deal-sticker thumbnail-sticker sticker-{{i}}">

@@ -32,15 +32,6 @@
     </div>
   {% endif %}
 
-  <a
-    href="/pages/loyalty-rewards"
-    title="Loyalty & Rewards"
-    aria-label="Loyalty & Rewards"
-    class="header__link action-area__link"
-  >
-    {% include settings.icon, name: 'loyalty', icon_class: 'header__icon' %}
-  </a>
-
   {% if shop.customer_accounts_enabled %}
     {% comment %} Account icon {% endcomment %}
     {% if customer %}

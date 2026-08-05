@@ -385,7 +385,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Heels_for_Spring.jpg",
+              "image_top": "shopify://shop_images/Ballet_Flats_39dafde3-a999-4f9b-9bc1-754e7eed303a.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/fall-shoes",
               "image_caption_top": "<p>The Fall Shoe Edit</p>",
@@ -413,7 +413,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Shoes.jpg",
+              "image_top": "shopify://shop_images/Slingbacks_ba6d02ac-a25a-4ed4-a15a-35ea277e3fd8.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/shoes",
               "image_caption_top": "<p>Shop New Arrivals</p>",
@@ -607,7 +607,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_New_Arrivals.jpg",
+              "image_top": "shopify://shop_images/New_Arrivals_bedd28f9-aec5-48f7-ae5d-bc7cbae0b127.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new",
               "image_caption_top": "<p>Shop New Arrivals</p>",
@@ -635,7 +635,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_Dresses.jpg",
+              "image_top": "shopify://shop_images/Shop_Dresses_d8bcb9f0-c447-4c9a-90e6-b366b990bd39.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/dresses",
               "image_caption_top": "<p>Shop Dresses</p>",
@@ -723,7 +723,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Watches.jpg",
+              "image_top": "shopify://shop_images/New_Watches_60d2e463-a018-4b54-8f20-49ec5d8a143a.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new-watches",
               "image_caption_top": "<p>New Watches</p>",
@@ -953,7 +953,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/jewelry_600x800_5f9b2e99-ca53-4c0a-b5b5-029b69834f87.jpg",
+              "image_top": "shopify://shop_images/Jewelry_Best_Sellers_5b448d1b-0242-4fba-8a10-cba94b7813e7.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/best-seller-jewelry",
               "image_caption_top": "<p>Jewelry Best Sellers</p>",
@@ -981,7 +981,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Shop_Sunglasses.jpg",
+              "image_top": "shopify://shop_images/Sunglasses_8597e755-2bf5-4df6-8d60-3e5fb1301dfd.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/sunglasses",
               "image_caption_top": "<p>Sunglasses</p>",
@@ -3269,7 +3269,7 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/New_Handbags.jpg",
+              "image_top": "shopify://shop_images/New_Handbags_8b8f1116-69ce-4e69-8c2a-6b19c5ba4d66.jpg",
               "image_top_mobile-hidden": true,
               "image_link_top": "shopify://collections/new-handbags",
               "image_caption_top": "<p>What's New</p>",
@@ -3297,10 +3297,10 @@
             "type": "mixed",
             "settings": {
               "richtext_top": "",
-              "image_top": "shopify://shop_images/Handbags_1_1.jpg",
+              "image_top": "shopify://shop_images/Tote_Bags_85789aed-2995-4caa-8081-ceb9c0dc6ca2.jpg",
               "image_top_mobile-hidden": true,
-              "image_link_top": "shopify://collections/crossbody-bags",
-              "image_caption_top": "<p>Crossbody Bags</p>",
+              "image_link_top": "shopify://collections/tote-bags",
+              "image_caption_top": "<p>Tote Bags</p>",
               "menu_1": "",
               "menu_1_link": "",
               "menu_1_bottom_text": "",
@@ -6138,8 +6138,8 @@
             "settings": {
               "image": "shopify://shop_images/hf_20260722_173147_907420fe-2b13-48a3-8983-59ec2e0274ea_1.png",
               "image_alt": "",
-              "label": "Shoes",
-              "link": "shopify://collections/shoes"
+              "label": "Opticals",
+              "link": "shopify://collections/sunglasses"
             }
           }
         },
