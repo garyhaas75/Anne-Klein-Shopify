@@ -189,7 +189,7 @@
     {% endcomment %}
     <video
       class="ak-video__player ak-video__player--desktop w-full block"
-      {% if section.settings.autoplay and use_mobile == false %}autoplay{% endif %}
+      {% if section.settings.autoplay %}autoplay{% endif %}
       {% if section.settings.loop %}loop{% endif %}
       muted
       playsinline
@@ -206,6 +206,7 @@
     {% if use_mobile %}
       <video
         class="ak-video__player ak-video__player--mobile w-full block"
+        {% if section.settings.autoplay %}autoplay{% endif %}
         {% if section.settings.loop %}loop{% endif %}
         muted
         playsinline
@@ -1203,20 +1204,19 @@
     }
 
     /* --- 7. Autoplay --- */
-    /* --- 7. Autoplay --- */
     if (wantsAutoplay) {
       if (!video.paused) {
         hide(startCard);
       } else {
+        /* play() triggers loading itself — do not wait for canplay, which never
+           fires when the browser only preloaded metadata. */
         video.muted = true;
-        if (video.readyState >= 3) {
-          video.play().catch(function() {});
-        } else {
+        video.play().catch(function() {
           video.addEventListener('canplay', function() {
             video.muted = true;
             video.play().catch(function() {});
           }, { once: true });
-        }
+        });
       }
     }
 
